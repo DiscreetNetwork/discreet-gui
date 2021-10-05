@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WPF.Views.Layouts.PurpleSystemMenuLayout" d:DesignHeight="450" d:DesignWidth="800">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" VerticalAlignment="Top" Background="#8C52C0">
+      <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 100 0" >
+        <Image Source="/Assets/Buttons/minimize-window-logo.png"/>
+      </Button>
+      <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 50 0" >
+        <Image Source="/Assets/Buttons/maximize-window-logo.png"/>
+      </Button>
+      <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" >
+        <Image Source="/Assets/Buttons/close-window-logo.png"/>
+      </Button>
+    </Grid>
+    
+    <ContentControl 
+      Grid.Row="1"
+      Content="{Binding ContentViewModel}"/>
+    
+  </Grid>
+  
+</UserControl>
