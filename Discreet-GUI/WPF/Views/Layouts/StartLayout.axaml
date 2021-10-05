@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="1280"
+             x:Class="WPF.Views.Layouts.StartLayout">
+  <Grid Background="#8C52C0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+
+    <Image Grid.Row="0" Height="50" Width="100" VerticalAlignment="Top" Source="/Assets/discreet_logo_white.png"/>
+    <Label Grid.Row="1" Margin="0 0 0 0" FontSize="22" VerticalAlignment="Top" HorizontalContentAlignment="Center" Foreground="White" FontStyle="Normal" FontWeight="Normal">Discreet Wallet</Label>
+    <Image Grid.Row="2" VerticalAlignment="Top" Margin="0 125 0 0" Height="140" Source="/Assets/Images/shield.png"/>
+
+    <ContentControl
+        VerticalAlignment="Top"
+        Grid.Row="3"
+        Margin="0 125 0 0"
+        Content="{Binding ContentViewModel}"/>
+
+  </Grid>
+</UserControl>
