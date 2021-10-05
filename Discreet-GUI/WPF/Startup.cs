@@ -22,14 +22,18 @@ namespace WPF
                 RegisterFactories(services);
                 RegisterStores(services);
 
+                // Startup
+                services.AddSingleton<MainWindowViewModel>();
+                services.AddSingleton(s => new MainWindow()
+                {
+                    DataContext = s.GetRequiredService<MainWindowViewModel>()
+                });
             }).Build();
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
 
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
+            desktop.MainWindow = mainWindow;
         }
 
         public void RegisterFactories(IServiceCollection services)
