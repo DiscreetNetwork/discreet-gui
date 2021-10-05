@@ -19,11 +19,8 @@ namespace WPF
         {
             _host = new HostBuilder().ConfigureServices((hostContext, services) =>
             {
-                //Factories
-                services.AddScoped(s => new NavigationServiceFactory(_host.Services));
-
-                // Stores
-                services.AddSingleton<MainNavigationStore>();
+                RegisterFactories(services);
+                RegisterStores(services);
 
             }).Build();
 
@@ -33,6 +30,16 @@ namespace WPF
             {
                 DataContext = new MainWindowViewModel(),
             };
+        }
+
+        public void RegisterFactories(IServiceCollection services)
+        {
+            services.AddScoped(s => new NavigationServiceFactory(_host.Services));
+        }
+
+        public void RegisterStores(IServiceCollection services)
+        {
+            services.AddSingleton<MainNavigationStore>();
         }
     }
 }
