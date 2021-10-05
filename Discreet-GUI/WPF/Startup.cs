@@ -20,6 +20,7 @@ namespace WPF
         {
             _host = new HostBuilder().ConfigureServices((hostContext, services) =>
             {
+                RegisterViewModels(services);
                 RegisterFactories(services);
                 RegisterStores(services);
 
@@ -36,6 +37,12 @@ namespace WPF
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
             desktop.MainWindow = mainWindow;
+        }
+
+        public void RegisterViewModels(IServiceCollection services)
+        {
+            // Start ViewModels
+            services.AddTransient<StartViewModel>();
         }
 
         public void RegisterFactories(IServiceCollection services)
