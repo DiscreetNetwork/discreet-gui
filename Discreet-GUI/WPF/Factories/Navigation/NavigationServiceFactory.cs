@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WPF.Factories.ViewModel;
 using WPF.Services.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.Stores.Navigation;
@@ -16,15 +17,17 @@ namespace WPF.Factories.Navigation
     public class NavigationServiceFactory
     {
         private readonly MainNavigationStore _mainNavigationStore;
+        private readonly LayoutViewModelFactory _layoutViewModelFactory;
 
         public NavigationServiceFactory(IServiceProvider serviceProvider)
         {
             _mainNavigationStore = serviceProvider.GetRequiredService<MainNavigationStore>();
+            _layoutViewModelFactory = new LayoutViewModelFactory(serviceProvider);
         }
 
         public INavigationService Create<TViewModel>() where TViewModel : ViewModelBase
         {
-            if (typeof(TViewModel) == typeof(StartViewModel)) return new MainNavigationService(_mainNavigationStore, () => new StartViewModel());
+            if (typeof(TViewModel) == typeof(StartViewModel)) return new MainNavigationService(_mainNavigationStore, () => _layoutViewModelFactory.Create<TViewModel>());
 
             throw new InvalidOperationException();
         }
