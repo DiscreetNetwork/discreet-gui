@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using System;
-using WPF.ViewModels;
+using WPF.ViewModels.Common;
 
 namespace WPF
 {
