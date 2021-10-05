@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WPF.Factories.Navigation;
+using WPF.Factories.ViewModel;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
 using WPF.ViewModels.Start;
@@ -47,7 +48,11 @@ namespace WPF
 
         public void RegisterFactories(IServiceCollection services)
         {
-            services.AddScoped(s => new NavigationServiceFactory(_host.Services));
+            services.AddScoped(s => new NavigationServiceFactory(
+                _host.Services.GetRequiredService<MainNavigationStore>(), 
+                _host.Services.GetRequiredService<LayoutViewModelFactory>()));
+
+            services.AddScoped(s => new LayoutViewModelFactory(_host.Services));
         }
 
         public void RegisterStores(IServiceCollection services)

@@ -19,10 +19,10 @@ namespace WPF.Factories.Navigation
         private readonly MainNavigationStore _mainNavigationStore;
         private readonly LayoutViewModelFactory _layoutViewModelFactory;
 
-        public NavigationServiceFactory(IServiceProvider serviceProvider)
+        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, LayoutViewModelFactory layoutViewModelFactory)
         {
-            _mainNavigationStore = serviceProvider.GetRequiredService<MainNavigationStore>();
-            _layoutViewModelFactory = new LayoutViewModelFactory(serviceProvider);
+            _mainNavigationStore = mainNavigationStore;
+            _layoutViewModelFactory = layoutViewModelFactory;
         }
 
         public INavigationService Create<TViewModel>() where TViewModel : ViewModelBase
