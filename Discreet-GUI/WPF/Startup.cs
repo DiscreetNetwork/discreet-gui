@@ -7,6 +7,7 @@ using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
+using WPF.ViewModels.Start;
 using WPF.Views;
 
 namespace WPF
@@ -32,6 +33,7 @@ namespace WPF
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
 
+            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
             desktop.MainWindow = mainWindow;
         }

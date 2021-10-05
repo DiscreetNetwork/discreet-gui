@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WPF.Services.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Start;
 
 namespace WPF.Factories.Navigation
 {
@@ -22,6 +24,8 @@ namespace WPF.Factories.Navigation
 
         public INavigationService Create<TViewModel>() where TViewModel : ViewModelBase
         {
+            if (typeof(TViewModel) == typeof(StartViewModel)) return new MainNavigationService(_mainNavigationStore, () => new StartViewModel());
+
             throw new InvalidOperationException();
         }
     }
