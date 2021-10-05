@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using WPF.Services.Navigation.Common;
 using WPF.Stores.Navigation;
-using WPF.ViewModels;
+using WPF.ViewModels.Common;
 
 namespace WPF.Factories.Navigation
 {

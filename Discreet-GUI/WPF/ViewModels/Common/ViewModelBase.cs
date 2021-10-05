@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace WPF.ViewModels
+namespace WPF.ViewModels.Common
 {
     public class ViewModelBase : ReactiveObject, INotifyPropertyChanged
     {

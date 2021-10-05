@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WPF.ViewModels;
+using WPF.ViewModels.Common;
 
 namespace WPF.Stores.Navigation
 {
