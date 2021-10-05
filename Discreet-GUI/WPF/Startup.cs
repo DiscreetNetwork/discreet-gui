@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WPF.Stores.Navigation;
 using WPF.ViewModels;
 using WPF.Views;
 
@@ -17,6 +18,9 @@ namespace WPF
         {
             _host = new HostBuilder().ConfigureServices((hostContext, services) =>
             {
+
+                // Stores
+                services.AddSingleton<MainNavigationStore>();
 
             }).Build();
 

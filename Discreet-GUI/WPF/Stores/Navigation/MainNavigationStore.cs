@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using WPF.ViewModels;
 
-namespace WPF.Stores
+namespace WPF.Stores.Navigation
 {
     /// <summary>
     /// A Store to hold the ViewModelBase, that the MainWindow.xaml will be displaying
