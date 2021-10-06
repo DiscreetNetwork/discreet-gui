@@ -1,16 +1,17 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:WPF.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:startViewModels="clr-namespace:WPF.ViewModels.Start"
-        xmlns:startViews="clr-namespace:WPF.Views.Start"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WPF.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="WPF"
         Height="720" Width="1280" MinHeight="720" MinWidth="1280"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" WindowState="Normal"
+        HasSystemDecorations="False"
+        >
 
-    <ContentControl Content="{Binding CurrentViewModel}"/>
+  
+
+  <ContentControl Content="{Binding CurrentViewModel}"/>
 </Window>

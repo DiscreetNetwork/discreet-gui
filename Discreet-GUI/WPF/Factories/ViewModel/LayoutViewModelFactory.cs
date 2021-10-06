@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Layouts;
 using WPF.ViewModels.Start;
 
 namespace WPF.Factories.ViewModel
@@ -21,7 +22,10 @@ namespace WPF.Factories.ViewModel
 
         public ViewModelBase Create<TViewModel>() where TViewModel : ViewModelBase
         {
-            if (typeof(TViewModel) == typeof(StartViewModel)) return _serviceProvider.GetRequiredService<TViewModel>();
+            if (typeof(TViewModel) == typeof(StartViewModel)) 
+                return new PurpleSystemMenuLayoutViewModel(
+                    new StartLayoutViewModel(
+                    _serviceProvider.GetRequiredService<TViewModel>()));
 
             throw new InvalidOperationException();
         }
