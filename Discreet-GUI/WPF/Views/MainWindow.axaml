@@ -7,8 +7,8 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="WPF"
         Height="720" Width="1280" MinHeight="720" MinWidth="1280"
-        WindowStartupLocation="CenterScreen" WindowState="Normal"
-        HasSystemDecorations="False"
+        WindowStartupLocation="CenterScreen" WindowState="{Binding CurrentWindowState}"
+        SystemDecorations="BorderOnly" CanResize="True"
         >
 
   
