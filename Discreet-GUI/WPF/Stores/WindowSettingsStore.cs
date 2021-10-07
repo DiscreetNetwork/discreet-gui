@@ -12,7 +12,7 @@ namespace WPF.Stores
         public WindowState CurrentWindowState
         {
             get => _currentWindowState;
-            private set { _currentWindowState = value; OnCurrentWindowStateChanged(); }
+            set { _currentWindowState = value; OnCurrentWindowStateChanged(); }
         }
         public void OnCurrentWindowStateChanged()
         {
