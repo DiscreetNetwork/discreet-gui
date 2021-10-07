@@ -12,9 +12,9 @@ using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels.Layouts
 {
-    public class PurpleSystemMenuLayoutViewModel : TitleBarViewModelBase
+    public class PurpleTitleBarLayoutViewModel : TitleBarViewModelBase
     {
-        public PurpleSystemMenuLayoutViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore) : base(contentViewModel, windowSettingsStore)
+        public PurpleTitleBarLayoutViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore) : base(contentViewModel, windowSettingsStore)
         {
         }
     }

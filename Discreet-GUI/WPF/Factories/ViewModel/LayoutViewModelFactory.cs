@@ -26,7 +26,7 @@ namespace WPF.Factories.ViewModel
         public ViewModelBase Create<TViewModel>() where TViewModel : ViewModelBase
         {
             if (typeof(TViewModel) == typeof(StartViewModel)) 
-                return new PurpleSystemMenuLayoutViewModel(
+                return new PurpleTitleBarLayoutViewModel(
                     new StartLayoutViewModel(
                     _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
 

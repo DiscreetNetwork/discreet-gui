@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace WPF.Views.Layouts
 {
-    public partial class PurpleSystemMenuLayoutView : UserControl
+    public partial class PurpleTitleBarLayoutView : UserControl
     {
-        public PurpleSystemMenuLayoutView()
+        public PurpleTitleBarLayoutView()
         {
             InitializeComponent();
         }
