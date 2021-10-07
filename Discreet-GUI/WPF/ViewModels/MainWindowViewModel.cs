@@ -24,20 +24,6 @@ namespace WPF.ViewModels
             _windowSettingsStore.CurrentWindowStateChanged += OnCurrentWindowStateChanged;
             _mainNavigationStore = mainNavigationStore;
             _mainNavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
-
-            MaximizeWindowCommand = ReactiveCommand.Create(() =>
-            {
-                switch (WindowState)
-                {
-                    case WindowState.Maximized:
-                        WindowState = WindowState.Normal;
-                        break;
-
-                    case WindowState.Normal:
-                        WindowState = WindowState.Maximized;
-                        break;
-                }
-            });
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }
