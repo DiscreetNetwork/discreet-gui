@@ -10,7 +10,6 @@
         WindowStartupLocation="CenterScreen" WindowState="{Binding CurrentWindowState}"
         SystemDecorations="BorderOnly" CanResize="True"
         >
-
   
 
   <ContentControl Content="{Binding CurrentViewModel}"/>
