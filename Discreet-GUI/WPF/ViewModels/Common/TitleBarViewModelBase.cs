@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,6 +39,14 @@ namespace WPF.ViewModels.Common
         public void MinimizeWindowHandler()
         {
             _windowSettingsStore.CurrentWindowState = WindowState.Minimized;
+        }
+
+        public void CloseWindowHandler()
+        {
+            if(Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifeTime)
+            {
+                lifeTime.Shutdown();
+            }
         }
     }
 }
