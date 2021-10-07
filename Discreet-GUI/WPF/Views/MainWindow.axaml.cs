@@ -27,7 +27,10 @@ namespace WPF.Views
         private void MouseDownHandler(object sender, PointerPressedEventArgs e)
         {
             // Handled returns True for controls with a MouseDown Event, in which case we don't want to drag the window
-            if (e.Handled) return; 
+            if (e.Handled) return;
+
+            // Dont allow drag, if the window is maximized
+            if (WindowState == WindowState.Maximized) return;
 
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
                 this.BeginMoveDrag(e);
