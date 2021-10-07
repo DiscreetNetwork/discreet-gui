@@ -14,7 +14,7 @@
       <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 100 0" >
         <Image Source="/Assets/Buttons/minimize-window-logo.png"/>
       </Button>
-      <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 50 0" >
+      <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 50 0" Command="{Binding ToggleWindowStateHandler}">
         <Image Source="/Assets/Buttons/maximize-window-logo.png"/>
       </Button>
       <Button HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" >
