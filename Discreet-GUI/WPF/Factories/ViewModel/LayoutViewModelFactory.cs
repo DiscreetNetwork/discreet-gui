@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WPF.Stores;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Layouts;
 using WPF.ViewModels.Start;
@@ -14,10 +15,12 @@ namespace WPF.Factories.ViewModel
     public class LayoutViewModelFactory
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly WindowSettingsStore _windowSettingsStore;
 
-        public LayoutViewModelFactory(IServiceProvider serviceProvider)
+        public LayoutViewModelFactory(IServiceProvider serviceProvider, WindowSettingsStore windowSettingsStore)
         {
             _serviceProvider = serviceProvider;
+            _windowSettingsStore = windowSettingsStore;
         }
 
         public ViewModelBase Create<TViewModel>() where TViewModel : ViewModelBase
@@ -25,7 +28,7 @@ namespace WPF.Factories.ViewModel
             if (typeof(TViewModel) == typeof(StartViewModel)) 
                 return new PurpleSystemMenuLayoutViewModel(
                     new StartLayoutViewModel(
-                    _serviceProvider.GetRequiredService<TViewModel>()));
+                    _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
 
             throw new InvalidOperationException();
         }
