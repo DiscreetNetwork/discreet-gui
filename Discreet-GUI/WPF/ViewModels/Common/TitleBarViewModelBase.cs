@@ -33,5 +33,10 @@ namespace WPF.ViewModels.Common
                     break;
             }
         }
+
+        public void MinimizeWindowHandler()
+        {
+            _windowSettingsStore.CurrentWindowState = WindowState.Minimized;
+        }
     }
 }
