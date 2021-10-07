@@ -15,7 +15,14 @@ namespace WPF.ViewModels
         private readonly WindowSettingsStore _windowSettingsStore;
         private readonly MainNavigationStore _mainNavigationStore;
 
-        public WindowState CurrentWindowState => _windowSettingsStore.CurrentWindowState;
+        public WindowState CurrentWindowState
+        {
+            get { return _windowSettingsStore.CurrentWindowState; }
+            set
+            {
+                _windowSettingsStore.CurrentWindowState = value;
+            }
+        }
         public ViewModelBase CurrentViewModel => _mainNavigationStore.CurrentViewModel;
 
         public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore)
