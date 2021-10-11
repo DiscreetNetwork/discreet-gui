@@ -6,18 +6,18 @@
              x:Class="WPF.Views.Start.YourRecoveryPhraseView">
   <Grid Background="#292929">
     <Grid.RowDefinitions>
-      <RowDefinition/>
-      <RowDefinition/>
-      <RowDefinition/>
-      <RowDefinition/>
       <RowDefinition Height="auto"/>
-      <RowDefinition/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
     <Label Grid.Row="0" Margin="0 50 0 0" FontSize="22" HorizontalContentAlignment="Center" Foreground="White">Your recovery phrase</Label>
     <Label Grid.Row="1" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Write down or copy these words in the right order and save them lorem</Label>
 
-    <Grid Grid.Row="2" Margin="0 20 0 0">
+    <Grid Grid.Row="2" Margin="0 60 0 0">
       <StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
           <Label Margin="3" FontSize="16" Foreground="white" Background="#2D2D2D" >1 david</Label>
@@ -42,9 +42,9 @@
       </StackPanel>
     </Grid>
 
-    <Button Grid.Row="3" HorizontalAlignment="Center" Width="200" Height="40" Margin="0 40 0 0" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#D35683" >Copy Passphrase</Button>
-    <Label Grid.Row="4" Margin="0 60 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#9A9A9A" >Never share your lorem ipsum</Label>
-    <Button Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="300" Height="55" FontSize="20" Margin="0 5 0 0" Foreground="White" Background="#D35683" BorderBrush="{x:Null}"  >Continue</Button>
+    <Button Grid.Row="3" HorizontalAlignment="Center" Width="200" Height="40" Margin="0 40 0 0" FontSize="16" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#D35683" >Copy Passphrase</Button>
+    <Label Grid.Row="4" Margin="0 60 0 0" FontSize="16" HorizontalAlignment="Center" Foreground="#9A9A9A" >Never share your lorem ipsum</Label>
+    <Button Grid.Row="5" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="300" Height="55" FontSize="20" Margin="0 5 0 0" Foreground="White" Background="#D35683" BorderBrush="{x:Null}"  >Continue</Button>
 
   </Grid>
 </UserControl>
