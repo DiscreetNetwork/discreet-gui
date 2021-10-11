@@ -11,7 +11,7 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="55" Width="300" FontSize="20"  BorderBrush="{x:Null}" Foreground="#D35683" Background="White" >Create new wallet</Button>
+    <Button Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="55" Width="300" FontSize="20"  BorderBrush="{x:Null}" Foreground="#D35683" Background="White" Command="{Binding NavigateCreateWalletChoicesView}">Create new wallet</Button>
     <Button Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="55" Width="300" FontSize="20" Margin="0 15 0 0" Foreground="White" Background="#00000000" BorderBrush="#FFAE86D3" >I already have a wallet</Button>
   </Grid>
 </UserControl>

@@ -27,7 +27,8 @@ namespace WPF.Factories.Navigation
 
         public INavigationService Create<TViewModel>() where TViewModel : ViewModelBase
         {
-            if (typeof(TViewModel) == typeof(StartViewModel)) return new MainNavigationService(_mainNavigationStore, () => _layoutViewModelFactory.Create<TViewModel>());
+            if (typeof(TViewModel) == typeof(StartViewModel))                   return new MainNavigationService(_mainNavigationStore, () => _layoutViewModelFactory.Create<TViewModel>());
+            if (typeof(TViewModel) == typeof(CreateWalletChoicesViewModel))     return new MainNavigationService(_mainNavigationStore, () => _layoutViewModelFactory.Create<TViewModel>());
 
             throw new InvalidOperationException();
         }

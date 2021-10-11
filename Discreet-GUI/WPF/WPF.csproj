@@ -3,11 +3,14 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Buttons\back-logo-placeholder.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.3" />
@@ -22,6 +25,9 @@
   <ItemGroup>
     <Compile Update="Views\Layouts\PurpleTitleBarLayoutView.axaml.cs">
       <DependentUpon>PurpleTitleBarLayoutView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Start\CreateWalletChoicesView.axaml.cs">
+      <DependentUpon>CreateWalletChoicesView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

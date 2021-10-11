@@ -30,6 +30,11 @@ namespace WPF.Factories.ViewModel
                     new StartLayoutViewModel(
                     _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
 
+            if (typeof(TViewModel) == typeof(CreateWalletChoicesViewModel))
+                return new PurpleTitleBarLayoutViewModel(
+                    new StartLayoutViewModel(
+                        _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
+
             throw new InvalidOperationException();
         }
     }
