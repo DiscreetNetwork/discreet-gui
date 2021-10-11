@@ -46,6 +46,7 @@ namespace WPF
             // Start ViewModels
             services.AddTransient<StartViewModel>();
             services.AddTransient<CreateWalletChoicesViewModel>();
+            services.AddTransient<YourRecoveryPhraseViewModel>();
         }
 
         public void RegisterFactories(IServiceCollection services)

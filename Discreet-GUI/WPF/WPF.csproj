@@ -11,6 +11,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Buttons\back-logo-placeholder.png" />
+    <None Remove="Assets\Buttons\back-logo-white.png" />
+    <None Remove="Assets\Buttons\close-window-logo-dark.png" />
+    <None Remove="Assets\Buttons\maximize-window-logo-dark.png" />
+    <None Remove="Assets\Buttons\minimize-window-logo-dark.png" />
+    <None Remove="Assets\Images\Group.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.3" />

@@ -35,6 +35,9 @@ namespace WPF.Factories.ViewModel
                     new StartLayoutViewModel(
                         _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
 
+            if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))
+                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+
             throw new InvalidOperationException();
         }
     }
