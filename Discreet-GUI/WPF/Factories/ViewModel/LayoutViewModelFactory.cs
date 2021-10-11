@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Layouts;
@@ -36,7 +37,7 @@ namespace WPF.Factories.ViewModel
                         _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
 
             if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))
-                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
             throw new InvalidOperationException();
         }

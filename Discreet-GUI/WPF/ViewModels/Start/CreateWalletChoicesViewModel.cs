@@ -12,7 +12,7 @@ namespace WPF.ViewModels.Start
         INavigationService _navigateYourRecoveryPhraseService;
         public CreateWalletChoicesViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            _navigateYourRecoveryPhraseService = navigationServiceFactory.Create<YourRecoveryPhraseViewModel>();
+            _navigateYourRecoveryPhraseService = navigationServiceFactory.CreateStackNavigation<CreateWalletChoicesViewModel, YourRecoveryPhraseViewModel>();
         }
 
         public void NavigateYourRecoveryPhraseView()

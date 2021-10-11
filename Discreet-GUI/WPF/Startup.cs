@@ -58,6 +58,7 @@ namespace WPF
         public void RegisterStores(IServiceCollection services)
         {
             services.AddSingleton<MainNavigationStore>();
+            services.AddSingleton<StackNavigationStore>();
             services.AddSingleton<WindowSettingsStore>();
         }
     }
