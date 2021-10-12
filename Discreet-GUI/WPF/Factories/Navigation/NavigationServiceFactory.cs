@@ -36,6 +36,7 @@ namespace WPF.Factories.Navigation
             if (typeof(TViewModel) == typeof(CreateWalletChoicesViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))      return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(VerifyRecoveryPhraseViewModel))    return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
+            if (typeof(TViewModel) == typeof(WalletCreatedSuccessfullyViewModel)) return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
 
             throw new InvalidOperationException();
         }

@@ -16,6 +16,7 @@
     <None Remove="Assets\Buttons\maximize-window-logo-dark.png" />
     <None Remove="Assets\Buttons\minimize-window-logo-dark.png" />
     <None Remove="Assets\Images\Group.png" />
+    <None Remove="Assets\Images\shield-platform.png" />
     <None Remove="Assets\test.png" />
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ namespace WPF.ViewModels.Start
         public ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
         public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
+            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<VerifyRecoveryPhraseViewModel, WalletCreatedSuccessfullyViewModel>().Navigate);
         }
     }
 }
