@@ -9,6 +9,7 @@ using WPF.Factories.ViewModel;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
+using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Start;
 using WPF.Views;
 
@@ -35,7 +36,7 @@ namespace WPF
             }).Build();
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
-
+            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<TestNotificationViewModel>().Navigate();
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
             desktop.MainWindow = mainWindow;
@@ -47,6 +48,10 @@ namespace WPF
             services.AddTransient<StartViewModel>();
             services.AddTransient<CreateWalletChoicesViewModel>();
             services.AddTransient<YourRecoveryPhraseViewModel>();
+
+
+            // Notifications
+            services.AddTransient<TestNotificationViewModel>();
         }
 
         public void RegisterFactories(IServiceCollection services)

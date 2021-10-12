@@ -14,6 +14,7 @@ namespace WPF.ViewModels
     {
         private readonly WindowSettingsStore _windowSettingsStore;
         private readonly MainNavigationStore _mainNavigationStore;
+        private readonly ModalNavigationStore _modalNavigationStore;
 
         public WindowState CurrentWindowState
         {
@@ -24,16 +25,21 @@ namespace WPF.ViewModels
             }
         }
         public ViewModelBase CurrentViewModel => _mainNavigationStore.CurrentViewModel;
+        public ViewModelBase CurrentModalViewModel => _modalNavigationStore.CurrentModalViewModel;
 
-        public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore)
+        public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore)
         {
             _windowSettingsStore = windowSettingsStore;
             _windowSettingsStore.CurrentWindowStateChanged += OnCurrentWindowStateChanged;
             _mainNavigationStore = mainNavigationStore;
             _mainNavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            _modalNavigationStore = modalNavigationStore;
+            _modalNavigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
+
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }
         private void OnCurrentViewModelChanged() { OnPropertyChanged(nameof(CurrentViewModel)); }
+        private void OnCurrentModalViewModelChanged() { OnPropertyChanged(nameof(CurrentModalViewModel)); }
     }
 }

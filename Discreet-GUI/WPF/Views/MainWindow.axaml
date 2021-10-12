@@ -10,7 +10,8 @@
         WindowStartupLocation="CenterScreen" WindowState="{Binding CurrentWindowState, Mode=TwoWay}"
         SystemDecorations="BorderOnly" CanResize="True"
         >
-  
-
-  <ContentControl Content="{Binding CurrentViewModel}"/>
+  <Grid>
+    <ContentControl ZIndex="100" Content="{Binding CurrentModalViewModel}"/>
+    <ContentControl Content="{Binding CurrentViewModel}"/>
+  </Grid>
 </Window>

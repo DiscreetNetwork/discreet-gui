@@ -6,6 +6,7 @@ using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Layouts;
+using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Start;
 
 namespace WPF.Factories.ViewModel
@@ -38,6 +39,15 @@ namespace WPF.Factories.ViewModel
 
             if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))
                 return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+
+            throw new InvalidOperationException();
+        }
+
+
+        public ViewModelBase CreateModal<TViewModel>() where TViewModel : ViewModelBase
+        {
+            if (typeof(TViewModel) == typeof(TestNotificationViewModel))
+                return _serviceProvider.GetRequiredService<TViewModel>();
 
             throw new InvalidOperationException();
         }

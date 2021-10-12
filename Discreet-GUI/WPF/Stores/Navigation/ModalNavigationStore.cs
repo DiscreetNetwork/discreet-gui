@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Notifications;
 
 namespace WPF.Stores.Navigation
 {
+    /// <summary>
+    /// A store to hold the current Modal ViewModel, used to display notifications, popups etc.
+    /// </summary>
     public class ModalNavigationStore
     {
         public event Action CurrentModalViewModelChanged;

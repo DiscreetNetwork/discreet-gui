@@ -19,12 +19,14 @@ namespace WPF.Factories.Navigation
     {
         private readonly MainNavigationStore _mainNavigationStore;
         private readonly StackNavigationStore _stackNavigationStore;
+        private readonly ModalNavigationStore _modalNavigationStore;
         private readonly LayoutViewModelFactory _layoutViewModelFactory;
 
-        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, StackNavigationStore stackNavigationStore, LayoutViewModelFactory layoutViewModelFactory)
+        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, StackNavigationStore stackNavigationStore, ModalNavigationStore modalNavigationStore, LayoutViewModelFactory layoutViewModelFactory)
         {
             _mainNavigationStore = mainNavigationStore;
             _stackNavigationStore = stackNavigationStore;
+            _modalNavigationStore = modalNavigationStore;
             _layoutViewModelFactory = layoutViewModelFactory;
         }
 
@@ -46,5 +48,12 @@ namespace WPF.Factories.Navigation
         {
             return new PreviousNavigationService(_mainNavigationStore, _stackNavigationStore);
         }
+
+
+        public INavigationService CreateModalNavigationService<TTarget>() where TTarget : ViewModelBase
+        {
+            return new OpenModalNavigationService(_modalNavigationStore, _layoutViewModelFactory.CreateModal<TTarget>);
+        }
+        public INavigationService CreateModalNavigationService() => new CloseModalNavigationService(_modalNavigationStore);
     }
 }
