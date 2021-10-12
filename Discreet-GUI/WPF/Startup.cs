@@ -48,7 +48,7 @@ namespace WPF
             services.AddTransient<StartViewModel>();
             services.AddTransient<CreateWalletChoicesViewModel>();
             services.AddTransient<YourRecoveryPhraseViewModel>();
-
+            services.AddTransient<VerifyRecoveryPhraseViewModel>();
 
             // Notifications
             services.AddTransient<TestNotificationViewModel>();

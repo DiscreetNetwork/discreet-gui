@@ -40,6 +40,9 @@ namespace WPF.Factories.ViewModel
             if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))
                 return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
+            if (typeof(TViewModel) == typeof(VerifyRecoveryPhraseViewModel))
+                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+
             throw new InvalidOperationException();
         }
 
