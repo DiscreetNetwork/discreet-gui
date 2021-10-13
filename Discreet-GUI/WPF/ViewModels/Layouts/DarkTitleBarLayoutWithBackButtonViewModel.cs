@@ -8,10 +8,10 @@ using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels.Layouts
 {
-    public class DarkTitleBarLayoutViewModel : TitleBarViewModelBase
+    public class DarkTitleBarLayoutWithBackButtonViewModel : TitleBarViewModelBase
     {
         INavigationService _previousNavigation;
-        public DarkTitleBarLayoutViewModel(NavigationServiceFactory navigationServiceFactory, ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore) : base(contentViewModel, windowSettingsStore)
+        public DarkTitleBarLayoutWithBackButtonViewModel(NavigationServiceFactory navigationServiceFactory, ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore) : base(contentViewModel, windowSettingsStore)
         {
             _previousNavigation = navigationServiceFactory.CreateStackNavigation();
         }

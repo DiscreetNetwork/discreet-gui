@@ -38,13 +38,13 @@ namespace WPF.Factories.ViewModel
                         _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
 
             if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))
-                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+                return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
             if (typeof(TViewModel) == typeof(VerifyRecoveryPhraseViewModel))
-                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+                return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
             if (typeof(TViewModel) == typeof(WalletCreatedSuccessfullyViewModel))
-                return new DarkTitleBarLayoutViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+                return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
             throw new InvalidOperationException();
         }
