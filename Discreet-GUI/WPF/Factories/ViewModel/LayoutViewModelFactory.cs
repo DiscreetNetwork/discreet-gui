@@ -44,7 +44,7 @@ namespace WPF.Factories.ViewModel
                 return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
             if (typeof(TViewModel) == typeof(WalletCreatedSuccessfullyViewModel))
-                return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+                return new DarkTitleBarLayoutSimpleViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
             throw new InvalidOperationException();
         }

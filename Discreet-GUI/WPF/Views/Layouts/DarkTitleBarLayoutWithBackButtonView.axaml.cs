@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace WPF.Views.Layouts
 {
-    public partial class DarkTitleBarLayoutView : UserControl
+    public partial class DarkTitleBarLayoutWithBackButtonView : UserControl
     {
-        public DarkTitleBarLayoutView()
+        public DarkTitleBarLayoutWithBackButtonView()
         {
             InitializeComponent();
         }

@@ -30,6 +30,9 @@
     <PackageReference Include="Packaging.Targets" Version="0.1.189" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\Layouts\DarkTitleBarLayoutWithBackButtonView.axaml.cs">
+      <DependentUpon>DarkTitleBarLayoutWithBackButtonView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Layouts\PurpleTitleBarLayoutView.axaml.cs">
       <DependentUpon>PurpleTitleBarLayoutView.axaml</DependentUpon>
     </Compile>
