@@ -9,6 +9,7 @@ using WPF.Factories.ViewModel;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
+using WPF.ViewModels.Account;
 using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Start;
 using WPF.Views;
@@ -53,6 +54,9 @@ namespace WPF
 
             // Notifications
             services.AddTransient<TestNotificationViewModel>();
+
+            // Account
+            services.AddTransient<AccountHomeViewModel>();
         }
 
         public void RegisterFactories(IServiceCollection services)

@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WPF.Views.Account.AccountHomeView">
+  <Grid Background="#1C1C1D">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Foreground="white" Padding="4 0 0 0" Grid.Row="0" FontSize="20" FontWeight="Light" >Total Balance</Label>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 10 0 0">
+            <Label FontSize="50" Foreground="white" Padding="4 0 5 0" VerticalContentAlignment="Bottom" >8217.14</Label>
+            <Label FontSize="26" Foreground="white" VerticalContentAlignment="Bottom" FontWeight="Light" >DIS</Label>
+        </StackPanel>
+        
+        <Label Margin="0 75 0 0" Grid.Row="2" FontSize="20" FontWeight="Light" Foreground="white" >Accounts</Label>
+
+        <StackPanel Grid.Row="3" Margin="0 25 0 0" HorizontalAlignment="Left">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Height="55" VerticalAlignment="Center" Grid.Column="0" Source="/Assets/Icons/account-1.png"/>
+                <Label Margin="10 0 0 0" FontSize="16" Grid.Column="1" VerticalAlignment="Center" Foreground="white" >First Account Name</Label>
+                <Label Grid.Column="2" FontSize="16" VerticalAlignment="Center" Foreground="white" >Balance:</Label>
+                <Label Grid.Column="3" FontSize="20" VerticalAlignment="Center" Foreground="white" >1127.04 DIS</Label>
+            </Grid>
+            <Grid Margin="0 15 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Height="58" VerticalAlignment="Center" Grid.Column="0" Source="/Assets/Icons/account-2.png"/>
+                <Label Margin="10 0 0 0" FontSize="16" Grid.Column="1" VerticalAlignment="Center" Foreground="white" >Second Account Name</Label>
+                <Label Grid.Column="2" FontSize="16" VerticalAlignment="Center" Foreground="white" >Balance:</Label>
+                <Label Grid.Column="3" FontSize="20" VerticalAlignment="Center" Foreground="white" >7751.10 DIS</Label>
+            </Grid>
+        </StackPanel>
+
+        <Button Grid.Row="4" Margin="0 125 50 50" Height="55" Width="300" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="white" Background="#D35683" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Bottom">Add Account</Button>
+        
+    </Grid>
+</UserControl>

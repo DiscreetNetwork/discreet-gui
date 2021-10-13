@@ -7,7 +7,9 @@ using WPF.Factories.ViewModel;
 using WPF.Services.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.Stores.Navigation;
+using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Layouts.Account;
 using WPF.ViewModels.Start;
 
 namespace WPF.Factories.Navigation
@@ -20,13 +22,15 @@ namespace WPF.Factories.Navigation
         private readonly MainNavigationStore _mainNavigationStore;
         private readonly StackNavigationStore _stackNavigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
+        private readonly AccountNavigationStore _accountNavigationStore;
         private readonly LayoutViewModelFactory _layoutViewModelFactory;
 
-        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, StackNavigationStore stackNavigationStore, ModalNavigationStore modalNavigationStore, LayoutViewModelFactory layoutViewModelFactory)
+        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, StackNavigationStore stackNavigationStore, ModalNavigationStore modalNavigationStore, AccountNavigationStore accountNavigationStore, LayoutViewModelFactory layoutViewModelFactory)
         {
             _mainNavigationStore = mainNavigationStore;
             _stackNavigationStore = stackNavigationStore;
             _modalNavigationStore = modalNavigationStore;
+            _accountNavigationStore = accountNavigationStore;
             _layoutViewModelFactory = layoutViewModelFactory;
         }
 
@@ -61,6 +65,9 @@ namespace WPF.Factories.Navigation
 
         public INavigationService CreateAccountNavigation<TViewModel>() where TViewModel : ViewModelBase
         {
+            if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.CreateAccount<TViewModel>);
+            if (typeof(TViewModel) == typeof(AccountHomeViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.CreateAccount<TViewModel>);
+
             throw new InvalidOperationException();
         }
     }

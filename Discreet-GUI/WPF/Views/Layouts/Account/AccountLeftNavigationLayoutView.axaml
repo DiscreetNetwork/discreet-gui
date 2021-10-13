@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WPF.Views.Layouts.Account.AccountLeftNavigationLayoutView">
+  <UserControl.Styles>
+    <Style Selector="Button.NavItem">
+      <Setter Property="Height" Value="70"/>
+      <Setter Property="Width" Value="319"/>
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      <Setter Property="BorderBrush" Value="{x:Null}"/>
+      <Setter Property="BorderThickness" Value="0"/> <!--0 4 0 0-->
+      <Setter Property="Background" Value="Transparent"/>  <!--<Setter Property="Background" Value="#FF2B2B2D"/>-->
+    </Style>
+  </UserControl.Styles>
+  
+  <Grid Background="#1C1C1D">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="320"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0" BorderBrush="#4C4C4C" BorderThickness="0,0,1,0" Background="{x:Null}" />
+
+    <Grid Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+
+
+      <!-- Account overview -->
+      <Grid Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Image Margin="0 20 0 0" Height="60" Source="/Assets/Icons/account-1.png"/>
+        <Label Margin="0 5 0 0" Grid.Row="1" FontSize="18" FontWeight="Light" HorizontalAlignment="Center" Foreground="white" >Account Name</Label>
+        <Label Margin="0 20 0 0" Grid.Row="2" FontSize="30" HorizontalAlignment="Center" Foreground="white" >1127.04 DIS</Label>
+      </Grid>
+
+      <!-- Navigation menu -->
+      <Grid Grid.Row="1" Margin="0 30 0 0">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Classes="NavItem" Grid.Row="0" Command="{Binding NavigateAccountHomeCommand}">
+          <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+            <Image Margin="15 10 5 10" Height="30" Source="/Assets/Icons/grey-circle.png"/>
+            <Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E" >Accounts / Home</Label>
+          </StackPanel>
+        </Button>
+
+        <Button Classes="NavItem" Grid.Row="1" Command="{Binding NavigateAccountSendCommand}">
+          <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+            <Image Margin="15 10 5 10" Height="30" Source="/Assets/Icons/send-icon.png"/>
+            <Label FontSize="18" Margin="10 0 0 0" Foreground="#9E9E9E" VerticalAlignment="Center" >Send</Label>
+          </StackPanel>
+        </Button>
+
+        <Button Classes="NavItem" Grid.Row="2" Command="{Binding NavigateAccountReceiveCommand}">
+          <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+            <Image Margin="15 10 5 10" Height="30" Source="/Assets/Icons/receive-icon.png"/>
+            <Label FontSize="18" Margin="10 0 0 0" Foreground="#9E9E9E" VerticalAlignment="Center" >Receive</Label>
+          </StackPanel>
+        </Button>
+
+        <Button Classes="NavItem" Grid.Row="3" Command="{Binding NavigateAccountTransactionsCommand}">
+          <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+            <Image Margin="15 10 5 10" Height="30" Source="/Assets/Icons/grey-circle.png"/>
+            <Label FontSize="18" Margin="10 0 0 0" Foreground="#9E9E9E" VerticalAlignment="Center" >Transactions</Label>
+          </StackPanel>
+        </Button>
+
+        <Button Classes="NavItem" Grid.Row="4" Command="{Binding NavigateSettingsCommand}">
+          <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+            <Image Margin="15 10 5 10" Height="30" Source="/Assets/Icons/settings-icon.png"/>
+            <Label FontSize="18" Margin="10 0 0 0" Foreground="#9E9E9E" VerticalAlignment="Center" >Settings</Label>
+          </StackPanel>
+        </Button>
+      </Grid>
+    </Grid>
+
+    <ContentControl
+        Grid.Column="1"
+        Margin="40 80 0 0"
+        Content="{Binding CurrentViewModel}"/>
+  </Grid>
+</UserControl>

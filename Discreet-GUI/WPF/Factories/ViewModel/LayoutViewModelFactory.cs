@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Stores;
+using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Layouts;
+using WPF.ViewModels.Layouts.Account;
 using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Start;
 
@@ -61,6 +63,12 @@ namespace WPF.Factories.ViewModel
 
         public ViewModelBase CreateAccount<TViewModel>() where TViewModel : ViewModelBase
         {
+            if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))
+                return new DarkTitleBarLayoutSimpleViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+
+            if (typeof(TViewModel) == typeof(AccountHomeViewModel))
+                return _serviceProvider.GetRequiredService<TViewModel>();
+
             throw new InvalidOperationException();
         }
     }
