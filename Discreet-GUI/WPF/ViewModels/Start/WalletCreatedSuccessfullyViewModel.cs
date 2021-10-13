@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
+using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Layouts.Account;
 
 namespace WPF.ViewModels.Start
 {
@@ -13,7 +15,11 @@ namespace WPF.ViewModels.Start
         ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
         public WalletCreatedSuccessfullyViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateNextCommand = ReactiveCommand.Create(() => { });
+            NavigateNextCommand = ReactiveCommand.Create(() => 
+            {
+                navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+                navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
+            });
         }
     }
 }

@@ -10,6 +10,7 @@ using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
 using WPF.ViewModels.Account;
+using WPF.ViewModels.Layouts.Account;
 using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Start;
 using WPF.Views;
@@ -56,6 +57,7 @@ namespace WPF
             services.AddTransient<TestNotificationViewModel>();
 
             // Account
+            services.AddTransient<AccountLeftNavigationLayoutViewModel>();
             services.AddTransient<AccountHomeViewModel>();
         }
 
