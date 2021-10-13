@@ -19,6 +19,10 @@
       <Setter Property="BorderThickness" Value="0,4,0,0"/>
       <Setter Property="Background" Value="#FF2B2B2D"/>
     </Style>
+    <Style Selector="Button.NavButton.Active:pointerover /template/ ContentPresenter">
+      <Setter Property="BorderBrush" Value="#D95A86"/>
+      <Setter Property="BorderThickness" Value="0,4,0,0"/>
+    </Style>
     <Style Selector="StackPanel.NavButton">
       <Setter Property="Margin" Value="10 0 0 0"/>
       <Setter Property="Orientation" Value="Horizontal"/>
@@ -77,35 +81,35 @@
           <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Button Classes="NavButton Active" Grid.Row="0">
+        <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}" Grid.Row="0" Command="{Binding NavigateAccountHomeCommand}">
           <StackPanel Classes="NavButton">
             <Image Classes="NavButton" Source="/Assets/Icons/grey-circle.png"/>
             <Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E" >Accounts / Home</Label>
           </StackPanel>
         </Button>
 
-        <Button Classes="NavButton" Grid.Row="1">
+        <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateAccountSendCommand}">
           <StackPanel Classes="NavButton">
             <Image Classes="NavButton" Source="/Assets/Icons/send-icon.png"/>
             <Label Classes="NavButton">Send</Label>
           </StackPanel>
         </Button>
 
-        <Button Classes="NavButton" Grid.Row="2">
+        <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="2" Command="{Binding NavigateAccountReceiveCommand}">
           <StackPanel Classes="NavButton">
             <Image Classes="NavButton" Source="/Assets/Icons/receive-icon.png"/>
             <Label Classes="NavButton">Receive</Label>
           </StackPanel>
         </Button>
 
-        <Button Classes="NavButton" Grid.Row="3">
+        <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateAccountTransactionsCommand}">
           <StackPanel Classes="NavButton">
             <Image Classes="NavButton" Source="/Assets/Icons/grey-circle.png"/>
             <Label Classes="NavButton">Transactions</Label>
           </StackPanel>
         </Button>
 
-        <Button Classes="NavButton" Grid.Row="4">
+        <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
           <StackPanel Classes="NavButton">
             <Image Classes="NavButton" Source="/Assets/Icons/settings-icon.png"/>
             <Label Classes="NavButton">Settings</Label>
