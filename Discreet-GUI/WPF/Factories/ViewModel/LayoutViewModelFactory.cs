@@ -57,5 +57,11 @@ namespace WPF.Factories.ViewModel
 
             throw new InvalidOperationException();
         }
+
+
+        public ViewModelBase CreateAccount<TViewModel>() where TViewModel : ViewModelBase
+        {
+            throw new InvalidOperationException();
+        }
     }
 }

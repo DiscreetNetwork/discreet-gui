@@ -66,6 +66,7 @@ namespace WPF
             services.AddSingleton<MainNavigationStore>();
             services.AddSingleton<StackNavigationStore>();
             services.AddSingleton<ModalNavigationStore>();
+            services.AddSingleton<AccountNavigationStore>();
             services.AddSingleton<WindowSettingsStore>();
         }
     }

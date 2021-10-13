@@ -57,5 +57,11 @@ namespace WPF.Factories.Navigation
             return new OpenModalNavigationService(_modalNavigationStore, _layoutViewModelFactory.CreateModal<TTarget>);
         }
         public INavigationService CreateModalNavigationService() => new CloseModalNavigationService(_modalNavigationStore);
+
+
+        public INavigationService CreateAccountNavigation<TViewModel>() where TViewModel : ViewModelBase
+        {
+            throw new InvalidOperationException();
+        }
     }
 }
