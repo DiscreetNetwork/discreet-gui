@@ -75,7 +75,7 @@ namespace WPF
         public void RegisterFactories(IServiceCollection services)
         {
             services.AddScoped<NavigationServiceFactory>();
-            services.AddScoped(s => new LayoutViewModelFactory(_host.Services, _host.Services.GetRequiredService<WindowSettingsStore>()));
+            services.AddScoped(s => new LayoutViewModelFactory(_host.Services));
         }
 
         public void RegisterStores(IServiceCollection services)

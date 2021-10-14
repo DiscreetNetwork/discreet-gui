@@ -10,6 +10,7 @@ using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels.Layouts.Account
 {
+    [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
     class AccountLeftNavigationLayoutViewModel : ViewModelBase
     {
         private readonly AccountNavigationStore _accountNavigationStore;

@@ -59,15 +59,15 @@ namespace WPF.Factories.Navigation
 
         public INavigationService CreateModalNavigationService<TTarget>() where TTarget : ViewModelBase
         {
-            return new OpenModalNavigationService(_modalNavigationStore, _layoutViewModelFactory.CreateModal<TTarget>);
+            return new OpenModalNavigationService(_modalNavigationStore, _layoutViewModelFactory.Create<TTarget>);
         }
         public INavigationService CreateModalNavigationService() => new CloseModalNavigationService(_modalNavigationStore);
 
 
         public INavigationService CreateAccountNavigation<TViewModel>() where TViewModel : ViewModelBase
         {
-            if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.CreateAccount<TViewModel>);
-            if (typeof(TViewModel) == typeof(AccountHomeViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.CreateAccount<TViewModel>);
+            if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
+            if (typeof(TViewModel) == typeof(AccountHomeViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
 
             throw new InvalidOperationException();
         }

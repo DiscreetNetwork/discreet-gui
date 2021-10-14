@@ -9,6 +9,7 @@ namespace WPF.ViewModels.Layouts
     {
         public ViewModelBase ContentViewModel { get; set; }
 
+
         public StartLayoutViewModel(ViewModelBase contentViewModel)
         {
             ContentViewModel = contentViewModel;
