@@ -24,7 +24,7 @@
     <Button Grid.Row="2" Height="55" Width="300"
             HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
             FontSize="20" Foreground="white" Background="{x:Null}" BorderBrush="#FFAE86D3"
-            IsEnabled="false">Open a wallet from file</Button>
+            Command="{Binding NavigateOpenWalletFromFileCommand}">Open a wallet from file</Button>
 
     <Button Grid.Row="3" Height="55" Width="300" Margin="0 15 0 0"
             HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"

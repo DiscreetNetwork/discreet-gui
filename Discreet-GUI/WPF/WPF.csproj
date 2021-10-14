@@ -16,6 +16,7 @@
     <None Remove="Assets\Buttons\minimize-window-logo-dark.png" />
     <None Remove="Assets\Icons\account-1.png" />
     <None Remove="Assets\Icons\account-2.png" />
+    <None Remove="Assets\Icons\folder1.png" />
     <None Remove="Assets\Icons\grey-circle.png" />
     <None Remove="Assets\Icons\receive-icon.png" />
     <None Remove="Assets\Icons\send-icon.png" />
