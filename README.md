@@ -1,7 +1,8 @@
 # discreet-gui
 A graphical user interface wallet for the Discreet project
 
-## Building the project
+## Building the project 
+Run the following commands from the 'WPF' directory 
 ### Windows 
 ```dotnet publish -f netcoreapp3.1 -r win-x64 -c Release``` 
 ### Linux
