@@ -20,6 +20,7 @@ namespace WPF.ViewModels.Start
         {
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate);
             NavigateOpenWalletFromFileCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<ExistingWalletBootstrapChoicesViewModel, OpenWalletFromFileViewModel>().Navigate);
+            NavigateRestoreWalletCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<ExistingWalletBootstrapChoicesViewModel, RestoreWalletViewModel>().Navigate);
         }
     }
 }

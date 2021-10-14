@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WPF.Views.Start.RestoreWalletView">
+  <Grid Background="#292929">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0" Margin="0 60 0 0" FontSize="18" Foreground="White" HorizontalContentAlignment="Center" >Restore wallet</Label>
+    <Label Grid.Row="1" Foreground="#9A9A9A" HorizontalContentAlignment="Center" >Restore from keys or mnemonic seed.</Label>
+
+    <Grid Grid.Row="2" Margin="100 50 100 0" Width="800">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+
+      <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" >Wallet name</Label>
+      <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="My Old Wallet" Margin="0 0 10 0" Padding="6 5 6 6" VerticalContentAlignment="Center" Foreground="White" Background="Transparent" BorderBrush="#FFD55182" />
+
+      <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Foreground="White" >Wallet location</Label>
+      <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="Users/User/DiscreetWallet/wallets"  Padding="6 5 6 6"  VerticalContentAlignment="Center" Foreground="White"  Background="Transparent" BorderBrush="#FF646464" ></TextBox>
+
+      <Button Margin="0 5 5 5" Padding="5 4 5 5" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" Background="#3E3E3E" Foreground="White" BorderBrush="#FF3E3E3E" >Browse</Button>
+
+      <RadioButton IsChecked="True" Margin="0 30 20 0" Grid.Row="2" Grid.Column="0" Foreground="White" Content="Restore from seed" />
+      <RadioButton Margin="0 30 0 0" Grid.Row="2" Grid.Column="1" Foreground="White" Content="Restore from keys" />
+
+      <TextBox Margin="0 20 0 0" Padding="5 5 5 50"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Foreground="#FF949494" Text="Enter your 12 word mnemonic seed" Background="{x:Null}" BorderBrush="#FF646464"/>
+    </Grid>
+    
+    <Button Grid.Row="3" Height="40" Width="260" HorizontalAlignment="Right" Margin="0 130 25 25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Next</Button>
+
+  </Grid>
+</UserControl>
