@@ -13,10 +13,12 @@ namespace WPF.ViewModels.Start
     class ExistingWalletChoicesViewModel : ViewModelBase
     {
         ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
+        ReactiveCommand<Unit, Unit> NavigateExistingWalletBootstrapChoicesCommand { get; set; }
 
         public ExistingWalletChoicesViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
+            NavigateExistingWalletBootstrapChoicesCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletBootstrapChoicesViewModel>().Navigate);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace WPF.ViewModels.Start
     public class StartViewModel : ViewModelBase
     {
         INavigationService _navigateCreateWalletChoicesView;
-        ReactiveCommand<Unit, Unit> NavigateExistingWalletChoicesViewCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> NavigateExistingWalletChoicesViewCommand { get; set; }
         public StartViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             _navigateCreateWalletChoicesView = navigationServiceFactory.Create<CreateWalletChoicesViewModel>();

@@ -19,11 +19,11 @@
     <Button Grid.Row="1" Height="55" Width="300"
             HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
             FontSize="20" Foreground="white" Background="{x:Null}" BorderBrush="#FFAE86D3"
-            >Simple</Button>
+            IsEnabled="false">Simple</Button>
 
     <Button Grid.Row="2" Height="55" Width="300" Margin="0 15 0 0"
             HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
             FontSize="20" Foreground="white" Background="{x:Null}" BorderBrush="#FFAE86D3"
-            >Simple *Bootstrap*</Button>
+            Command="{Binding NavigateExistingWalletBootstrapChoicesCommand}">Simple *Bootstrap*</Button>
   </Grid>
 </UserControl>
