@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Services.Navigation.Common;
@@ -12,10 +14,11 @@ namespace WPF.ViewModels.Start
     public class StartViewModel : ViewModelBase
     {
         INavigationService _navigateCreateWalletChoicesView;
-
+        ReactiveCommand<Unit, Unit> NavigateExistingWalletChoicesViewCommand { get; set; }
         public StartViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             _navigateCreateWalletChoicesView = navigationServiceFactory.Create<CreateWalletChoicesViewModel>();
+            NavigateExistingWalletChoicesViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate);
         }
 
         public void NavigateCreateWalletChoicesView() => _navigateCreateWalletChoicesView.Navigate();
