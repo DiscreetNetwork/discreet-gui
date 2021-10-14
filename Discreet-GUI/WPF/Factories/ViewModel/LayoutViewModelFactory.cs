@@ -48,6 +48,11 @@ namespace WPF.Factories.ViewModel
             if (typeof(TViewModel) == typeof(WalletCreatedSuccessfullyViewModel))
                 return new DarkTitleBarLayoutSimpleViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
 
+            if (typeof(TViewModel) == typeof(CreateWalletBootstrapChoicesViewModel))
+                return new PurpleTitleBarLayoutViewModel(
+                    new StartLayoutViewModel(
+                        _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
+
             throw new InvalidOperationException();
         }
 

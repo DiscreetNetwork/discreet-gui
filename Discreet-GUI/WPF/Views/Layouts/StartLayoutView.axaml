@@ -14,13 +14,13 @@
 
     <Image Grid.Row="0" Height="50" Width="100" VerticalAlignment="Top" Source="/Assets/discreet_logo_white.png"/>
     <Label Grid.Row="1" Margin="0 0 0 0" FontSize="22" VerticalAlignment="Top" HorizontalContentAlignment="Center" Foreground="White" FontStyle="Normal" FontWeight="Normal">Discreet Wallet</Label>
-    <Image Grid.Row="2" VerticalAlignment="Top" Margin="0 125 0 0" Height="140" Source="/Assets/Images/shield.png"/>
+    <Image Grid.Row="2" VerticalAlignment="Top" Margin="0 100 0 0" Height="140" Source="/Assets/Images/shield.png"/>
 
     <ContentControl
         VerticalAlignment="Top"
         HorizontalContentAlignment="Center"
         Grid.Row="3"
-        Margin="0 125 0 0"
+        Margin="0 90 0 0"
         Content="{Binding ContentViewModel}"/>
 
   </Grid>
