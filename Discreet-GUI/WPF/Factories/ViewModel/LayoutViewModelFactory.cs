@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Stores;
@@ -19,62 +21,42 @@ namespace WPF.Factories.ViewModel
     public class LayoutViewModelFactory
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly WindowSettingsStore _windowSettingsStore;
 
-        public LayoutViewModelFactory(IServiceProvider serviceProvider, WindowSettingsStore windowSettingsStore)
+        public LayoutViewModelFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _windowSettingsStore = windowSettingsStore;
         }
 
         public ViewModelBase Create<TViewModel>() where TViewModel : ViewModelBase
         {
-            if (typeof(TViewModel) == typeof(StartViewModel)) 
-                return new PurpleTitleBarLayoutViewModel(
-                    new StartLayoutViewModel(
-                    _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
+            LayoutAttribute layoutAttribute = typeof(TViewModel).GetCustomAttribute<LayoutAttribute>();
 
-            if (typeof(TViewModel) == typeof(CreateWalletChoicesViewModel))
-                return new PurpleTitleBarLayoutViewModel(
-                    new StartLayoutViewModel(
-                        _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
+            if (layoutAttribute is null) return _serviceProvider.GetRequiredService<TViewModel>();
 
-            if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))
-                return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+            layoutAttribute.Layouts = layoutAttribute.Layouts.Reverse().ToArray();
 
-            if (typeof(TViewModel) == typeof(VerifyRecoveryPhraseViewModel))
-                return new DarkTitleBarLayoutWithBackButtonViewModel(_serviceProvider.GetRequiredService<NavigationServiceFactory>(), _serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+            ViewModelBase targetViewModel = _serviceProvider.GetRequiredService<TViewModel>();
+            for (int i = 0; i < layoutAttribute.Layouts.Length; i++)
+            {
+                Type layoutType = layoutAttribute.Layouts[i];
+                ConstructorInfo cinfo = layoutType.GetTypeInfo().DeclaredConstructors.FirstOrDefault();
 
-            if (typeof(TViewModel) == typeof(WalletCreatedSuccessfullyViewModel))
-                return new DarkTitleBarLayoutSimpleViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
+                List<object> parameters = new List<object>();
+                foreach (var pi in cinfo.GetParameters())
+                {
+                    if (pi.ParameterType == typeof(ViewModelBase))
+                    {
+                        parameters.Add(targetViewModel);
+                        continue;
+                    }
+                    object parameter = _serviceProvider.GetRequiredService(pi.ParameterType);
+                    parameters.Add(parameter);
+                }
 
-            if (typeof(TViewModel) == typeof(CreateWalletBootstrapChoicesViewModel))
-                return new PurpleTitleBarLayoutViewModel(
-                    new StartLayoutViewModel(
-                        _serviceProvider.GetRequiredService<TViewModel>()), _windowSettingsStore);
+                targetViewModel = Activator.CreateInstance(layoutType, parameters.ToArray()) as ViewModelBase;
+            }
 
-            throw new InvalidOperationException();
-        }
-
-
-        public ViewModelBase CreateModal<TViewModel>() where TViewModel : ViewModelBase
-        {
-            if (typeof(TViewModel) == typeof(TestNotificationViewModel))
-                return _serviceProvider.GetRequiredService<TViewModel>();
-
-            throw new InvalidOperationException();
-        }
-
-
-        public ViewModelBase CreateAccount<TViewModel>() where TViewModel : ViewModelBase
-        {
-            if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))
-                return new DarkTitleBarLayoutSimpleViewModel(_serviceProvider.GetRequiredService<TViewModel>(), _windowSettingsStore);
-
-            if (typeof(TViewModel) == typeof(AccountHomeViewModel))
-                return _serviceProvider.GetRequiredService<TViewModel>();
-
-            throw new InvalidOperationException();
+            return targetViewModel;
         }
     }
 }
