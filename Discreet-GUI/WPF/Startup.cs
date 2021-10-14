@@ -13,6 +13,7 @@ using WPF.ViewModels;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Layouts.Account;
+using WPF.ViewModels.Modals;
 using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Start;
 using WPF.Views;
@@ -40,7 +41,7 @@ namespace WPF
             }).Build();
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
-            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<TestNotificationViewModel>().Navigate();
+            //serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<TestNotificationViewModel>().Navigate();
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
             desktop.MainWindow = mainWindow;
@@ -56,6 +57,12 @@ namespace WPF
 
             // Notifications
             typeof(TestNotificationViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(TestNotificationViewModel).Namespace).ToList().ForEach(t =>
+            {
+                services.AddTransient(t);
+            });
+
+            // Modals
+            typeof(AboutBootstrapViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(AboutBootstrapViewModel).Namespace).ToList().ForEach(t =>
             {
                 services.AddTransient(t);
             });

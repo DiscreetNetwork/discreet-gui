@@ -18,6 +18,7 @@
     <None Remove="Assets\Icons\account-2.png" />
     <None Remove="Assets\Icons\folder1.png" />
     <None Remove="Assets\Icons\grey-circle.png" />
+    <None Remove="Assets\Icons\notification-alert.png" />
     <None Remove="Assets\Icons\receive-icon.png" />
     <None Remove="Assets\Icons\send-icon.png" />
     <None Remove="Assets\Icons\settings-icon.png" />
