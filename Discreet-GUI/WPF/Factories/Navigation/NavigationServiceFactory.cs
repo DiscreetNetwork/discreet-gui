@@ -70,6 +70,8 @@ namespace WPF.Factories.Navigation
         {
             if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(AccountHomeViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
+            if (typeof(TViewModel) == typeof(AccountSendViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
+            if (typeof(TViewModel) == typeof(AccountReceiveViewModel))                  return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
 
             throw new InvalidOperationException();
         }

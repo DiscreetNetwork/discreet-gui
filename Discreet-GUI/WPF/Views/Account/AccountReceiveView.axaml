@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WPF.Views.Account.AccountReceiveView">
+
+  <Grid Background="#1C1C1D">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0" FontSize="20" Foreground="white">Wallets</Label>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+
+      <StackPanel Grid.Column="0">
+        <Label Margin="0 20 0 0" FontSize="20" Foreground="#C0C0C0">0x57fuyw931209fj90wd</Label>
+        <Label Margin="0 0 0 0" FontSize="18" Foreground="#C0C0C0">Balance: 120.24</Label>
+      </StackPanel>
+
+      <Button Grid.Column="1" Width="100" Height="40" Margin="50 20 0 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="white" Background="#3E3E3E">COPY</Button>
+    </Grid>
+
+
+    <Button Grid.Row="2" Height="45" Width="300" FontSize="18" Margin="0 200 0 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Create New Wallet</Button>
+
+  </Grid>
+
+</UserControl>
