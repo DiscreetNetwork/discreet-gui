@@ -10,6 +10,7 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
     <Label Grid.Row="0" FontSize="20" Foreground="white">Wallets</Label>
@@ -28,8 +29,9 @@
       <Button Grid.Column="1" Width="100" Height="40" Margin="50 20 0 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="white" Background="#3E3E3E">COPY</Button>
     </Grid>
 
-
-    <Button Grid.Row="2" Height="45" Width="300" FontSize="18" Margin="0 200 0 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Create New Wallet</Button>
+    <Image Grid.Row="2" Width="200" Height="200" Margin="0 50 0 0" HorizontalAlignment="Left" Source="{Binding QrCode}"/>
+    
+    <Button Grid.Row="3" Height="45" Width="300" FontSize="18" Margin="0 150 0 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Create New Wallet</Button>
 
   </Grid>
 
