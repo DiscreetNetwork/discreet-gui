@@ -14,9 +14,19 @@
       <Setter Property="Background" Value="White"/>
     </Style>
 
-    <Style Selector="Button.light:pointerover">
-      <Setter Property="Foreground" Value="#E7769F"/>
-    </Style>
+  <Style Selector="Button.light:pointerover">
+    <Setter Property="Foreground" Value="#E7769F"/>
+  </Style>
+  
+  <Style Selector="Button.pink">
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Background" Value="#D35683"/>
+  </Style>
+
+  <Style Selector="Button.pink:pointerover">
+    <Setter Property="Background" Value="#E7769F"/>
+  </Style>
   
     <Style Selector="Button.transparent">
       <Setter Property="Background" Value="Transparent"/>
