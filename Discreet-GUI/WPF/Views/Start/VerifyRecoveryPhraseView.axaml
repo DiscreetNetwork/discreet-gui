@@ -4,6 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
              x:Class="WPF.Views.Start.VerifyRecoveryPhraseView">
+
+  <UserControl.Styles>
+    <StyleInclude Source="/ApplicationStyles.axaml"/>
+  </UserControl.Styles>
+  
   <Grid Background="#292929">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -45,7 +50,7 @@
       </StackPanel>
     </Grid>
 
-    <Button Grid.Row="5" Width="300" Height="55" FontSize="20" Margin="0 75 0 0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Background="#D35683" BorderBrush="{x:Null}" Command="{Binding NavigateNextCommand}">Continue</Button>
+    <Button Grid.Row="5" Classes="pink content-center rounded align-center" Width="300" Height="55" FontSize="20" Margin="0 75 0 0" Command="{Binding NavigateNextCommand}">Continue</Button>
 
   </Grid>
 </UserControl>
