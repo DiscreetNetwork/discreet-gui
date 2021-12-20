@@ -8,14 +8,48 @@
     
     <!-- Add Styles Here -->
 
-    <Style Selector="Button.primaryRounded">
-      <Setter Property="HorizontalContentAlignment" Value="Center"/>
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-      <Setter Property="Height" Value="55"/>
-      <Setter Property="Width" Value="300"/>
-      <Setter Property="FontSize" Value="20"/>
+    <Style Selector="Button.light">
       <Setter Property="Foreground" Value="#D35683"/>
       <Setter Property="BorderBrush" Value="{x:Null}"/>
       <Setter Property="Background" Value="White"/>
     </Style>
+
+    <Style Selector="Button.light:pointerover">
+      <Setter Property="Foreground" Value="#E7769F"/>
+    </Style>
+  
+    <Style Selector="Button.transparent">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderBrush">
+        <SolidColorBrush Color="White" Opacity="0.3"/>
+      </Setter>
+      <Setter Property="BorderThickness" Value="1, 1, 1, 1"/>
+    </Style>
+
+    <Style Selector="Button.transparent:pointerover">
+      <Setter Property="BorderBrush">
+        <SolidColorBrush Color="White" Opacity="0.5"/>
+      </Setter>
+    </Style>
+
+  <Style Selector="Button.rounded">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="30">
+            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" 
+                              Content="{TemplateBinding Content}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Margin}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.centered">
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+  
 </Styles>
