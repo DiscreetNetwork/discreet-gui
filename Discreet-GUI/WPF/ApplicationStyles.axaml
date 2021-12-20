@@ -1,0 +1,21 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+    
+    <!-- Add Styles Here -->
+
+    <Style Selector="Button.primaryRounded">
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Height" Value="55"/>
+      <Setter Property="Width" Value="300"/>
+      <Setter Property="FontSize" Value="20"/>
+      <Setter Property="Foreground" Value="#D35683"/>
+      <Setter Property="BorderBrush" Value="{x:Null}"/>
+      <Setter Property="Background" Value="White"/>
+    </Style>
+</Styles>
