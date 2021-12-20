@@ -33,23 +33,29 @@
       </Setter>
     </Style>
 
-  <Style Selector="Button.rounded">
+    <Style Selector="Button.rounded">
       <Setter Property="Template">
         <ControlTemplate>
           <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="30">
             <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" 
                               Content="{TemplateBinding Content}"
                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                              Margin="{TemplateBinding Margin}"/>
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
           </Border>
         </ControlTemplate>
       </Setter>
     </Style>
 
-    <Style Selector="Button.centered">
-      <Setter Property="HorizontalContentAlignment" Value="Center"/>
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-    </Style>
-  
+  <!-- ALIGMENTS -->
+  <Style Selector="Button.align-center">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+
+  <Style Selector="Button.content-center">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <!-- ALIGMENTS -->
+
 </Styles>
