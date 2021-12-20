@@ -15,7 +15,7 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Classes="light centered rounded" FontSize="20" Height="55" Width="300" Command="{Binding NavigateCreateWalletChoicesView}">Create new wallet</Button>
-    <Button Grid.Row="1" Classes="transparent centered rounded" FontSize="20" Height="55" Width="300" Margin="0 15 0 0" Command="{Binding NavigateExistingWalletChoicesViewCommand}">I already have a wallet</Button>
+    <Button Grid.Row="0" Classes="light content-center rounded" FontSize="20" Height="55" Width="300" Command="{Binding NavigateCreateWalletChoicesView}">Create new wallet</Button>
+    <Button Grid.Row="1" Classes="transparent content-center rounded" FontSize="20" Height="55" Width="300" Margin="0 15 0 0" Command="{Binding NavigateExistingWalletChoicesViewCommand}">I already have a wallet</Button>
   </Grid>
 </UserControl>
