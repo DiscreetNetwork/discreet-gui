@@ -47,9 +47,9 @@
       </StackPanel>
     </Grid>
 
-    <Button Grid.Row="3" HorizontalAlignment="Center" Width="200" Height="40" Margin="0 40 0 0" FontSize="16" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#D35683" >Copy Passphrase</Button>
+    <Button Grid.Row="3" Classes="btn btn-transparent-pink content-center align-center" Width="200" Height="40" Margin="0 40 0 0" FontSize="16">Copy Passphrase</Button>
     <Label Grid.Row="4" Margin="0 60 0 0" FontSize="16" HorizontalAlignment="Center" Foreground="#9A9A9A" >Never share your lorem ipsum</Label>
-    <Button Grid.Row="5" Classes="pink rounded content-center align-center" Width="300" Height="55" FontSize="20" Margin="0 5 0 0" Command="{Binding NavigateNextCommand}">Continue</Button>
+    <Button Grid.Row="5" Classes="btn-pink rounded content-center align-center" Width="300" Height="55" FontSize="20" Margin="0 5 0 0" Command="{Binding NavigateNextCommand}">Continue</Button>
 
   </Grid>
 </UserControl>

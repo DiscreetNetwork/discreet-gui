@@ -6,56 +6,93 @@
         </Border>
     </Design.PreviewWith>
     
-    <!-- Add Styles Here -->
+  
+  <!-- Button - Light -->
+  <Style Selector="Button.btn-light">
+    <Setter Property="Foreground" Value="#D35683"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Background" Value="White"/>
+  </Style>
 
-    <Style Selector="Button.light">
-      <Setter Property="Foreground" Value="#D35683"/>
-      <Setter Property="BorderBrush" Value="{x:Null}"/>
-      <Setter Property="Background" Value="White"/>
-    </Style>
-
-  <Style Selector="Button.light:pointerover">
+  <Style Selector="Button.btn-light:pointerover">
     <Setter Property="Foreground" Value="#E7769F"/>
   </Style>
+  <!-- Button - Light -->
+
   
-  <Style Selector="Button.pink">
+  <!-- Button - Pink -->
+  <Style Selector="Button.btn-pink">
     <Setter Property="Foreground" Value="White"/>
     <Setter Property="BorderBrush" Value="{x:Null}"/>
     <Setter Property="Background" Value="#D35683"/>
   </Style>
 
-  <Style Selector="Button.pink:pointerover">
+  <Style Selector="Button.btn-pink:pointerover">
     <Setter Property="Background" Value="#E7769F"/>
   </Style>
+  <!-- Button - Pink -->
+
+
   
-    <Style Selector="Button.transparent">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="Foreground" Value="White"/>
-      <Setter Property="BorderBrush">
-        <SolidColorBrush Color="White" Opacity="0.3"/>
-      </Setter>
-      <Setter Property="BorderThickness" Value="1, 1, 1, 1"/>
-    </Style>
+  <!-- Button - Outline Gray -->
+  <Style Selector="Button.btn-outline-gray">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="BorderBrush">
+      <SolidColorBrush Color="White" Opacity="0.3"/>
+    </Setter>
+    <Setter Property="BorderThickness" Value="1, 1, 1, 1"/>
+  </Style>
 
-    <Style Selector="Button.transparent:pointerover">
-      <Setter Property="BorderBrush">
-        <SolidColorBrush Color="White" Opacity="0.5"/>
-      </Setter>
-    </Style>
+  <Style Selector="Button.btn-outline-gray:pointerover">
+    <Setter Property="BorderBrush">
+      <SolidColorBrush Color="White" Opacity="0.5"/>
+    </Setter>
+  </Style>
+  <!-- Button - Outline Gray -->
 
-    <Style Selector="Button.rounded">
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="30">
-            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" 
-                              Content="{TemplateBinding Content}"
-                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-          </Border>
-        </ControlTemplate>
-      </Setter>
-    </Style>
 
+
+  <!-- Button - Transparent Pink (Text-only) -->
+  <Style Selector="Button.btn-transparent-pink">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="#D35683"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+  </Style>
+
+  <Style Selector="Button.btn-transparent-pink:pointerover">
+    <Setter Property="Foreground" Value="#E7769F"/>
+  </Style>
+  <!-- Button - Transparent Pink (Text-only) -->
+
+  <Style Selector="Button.btn">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Content="{TemplateBinding Content}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  
+  <!-- Button - Rounded -->
+  <Style Selector="Button.rounded">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="30">
+          <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" 
+                            Content="{TemplateBinding Content}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <!-- Button - Rounded -->
+
+  
+  
   <!-- ALIGMENTS -->
   <Style Selector="Button.align-center">
     <Setter Property="HorizontalAlignment" Value="Center"/>

@@ -4,6 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="WPF.Views.Start.ExistingWalletChoicesView">
+
+  <UserControl.Styles>
+    <StyleInclude Source="/ApplicationStyles.axaml"/>
+  </UserControl.Styles>
+  
   <Grid Background="#8C52C0" Width="600">
     <Grid.RowDefinitions>
       <RowDefinition/>
@@ -22,8 +27,8 @@
             IsEnabled="false">Simple</Button>
 
     <Button Grid.Row="2" Height="55" Width="300" Margin="0 15 0 0"
-            HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-            FontSize="20" Foreground="white" Background="{x:Null}" BorderBrush="#FFAE86D3"
+            Classes="btn-outline-gray content-center align-center rounded"
+            FontSize="20"
             Command="{Binding NavigateExistingWalletBootstrapChoicesCommand}">Simple *Bootstrap*</Button>
   </Grid>
 </UserControl>
