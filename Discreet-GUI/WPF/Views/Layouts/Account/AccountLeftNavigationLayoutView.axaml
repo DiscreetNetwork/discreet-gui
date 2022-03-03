@@ -17,12 +17,19 @@
     <Style Selector="Button.NavButton.Active">
       <Setter Property="BorderBrush" Value="#D95A86"/>
       <Setter Property="BorderThickness" Value="0,4,0,0"/>
-      <Setter Property="Background" Value="#FF2B2B2D"/>
+      <Setter Property="Background" Value="#282828"/>
     </Style>
+    
     <Style Selector="Button.NavButton.Active:pointerover /template/ ContentPresenter">
       <Setter Property="BorderBrush" Value="#D95A86"/>
       <Setter Property="BorderThickness" Value="0,4,0,0"/>
+      <Setter Property="Background" Value="#282828"/>
     </Style>
+
+    <Style Selector="Button.NavButton:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#252525"/>
+    </Style>
+
     <Style Selector="StackPanel.NavButton">
       <Setter Property="Margin" Value="10 0 0 0"/>
       <Setter Property="Orientation" Value="Horizontal"/>

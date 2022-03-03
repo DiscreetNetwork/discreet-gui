@@ -4,6 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="WPF.Views.Account.AccountHomeView">
+
+  <UserControl.Styles>
+    <StyleInclude Source="/ApplicationStyles.axaml"/>
+  </UserControl.Styles>
+  
   <Grid Background="#1C1C1D">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -48,7 +53,7 @@
             </Grid>
         </StackPanel>
 
-        <Button Grid.Row="4" Margin="0 125 50 50" Height="55" Width="300" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="white" Background="#D35683" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Bottom">Add Account</Button>
+        <Button Grid.Row="4" Classes="btn btn-pink content-center align-v-center align-h-right" Margin="0 125 50 50" Height="55" Width="300" FontSize="20">Add Account</Button>
         
     </Grid>
 </UserControl>

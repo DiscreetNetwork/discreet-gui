@@ -5,6 +5,10 @@
              mc:Ignorable="d"
              x:Class="WPF.Views.Account.AccountReceiveView">
 
+  <UserControl.Styles>
+    <StyleInclude Source="/ApplicationStyles.axaml"/>
+  </UserControl.Styles>
+  
   <Grid Background="#1C1C1D">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -26,12 +30,12 @@
         <Label Margin="0 0 0 0" FontSize="18" Foreground="#C0C0C0">Balance: 120.24</Label>
       </StackPanel>
 
-      <Button Grid.Column="1" Width="100" Height="40" Margin="50 20 0 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="white" Background="#3E3E3E">COPY</Button>
+      <Button Classes="btn btn-gray" Grid.Column="1" Width="100" Height="40" Margin="50 20 0 0">COPY</Button>
     </Grid>
 
     <Image Grid.Row="2" Width="200" Height="200" Margin="0 50 0 0" HorizontalAlignment="Left" Source="{Binding QrCode}"/>
     
-    <Button Grid.Row="3" Height="45" Width="300" FontSize="18" Margin="0 150 0 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Create New Wallet</Button>
+    <Button Classes="btn btn-pink" Grid.Row="3" Height="45" Width="300" FontSize="18" Margin="0 150 0 0">Create New Wallet</Button>
 
   </Grid>
 

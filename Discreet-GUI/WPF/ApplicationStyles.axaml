@@ -13,12 +13,20 @@
     <Setter Property="BorderBrush" Value="{x:Null}"/>
     <Setter Property="Background" Value="White"/>
   </Style>
-
   <Style Selector="Button.btn-light:pointerover">
     <Setter Property="Foreground" Value="#E7769F"/>
   </Style>
   <!-- Button - Light -->
 
+  <!-- Button - Gray -->
+  <Style Selector="Button.btn-gray">
+    <Setter Property="Foreground" Value="white"/>
+    <Setter Property="Background" Value="#3E3E3E"/>
+  </Style>
+  <Style Selector="Button.btn-gray:pointerover">
+    <Setter Property="Background" Value="#444444"/>
+  </Style>
+  <!-- Button - Gray -->
   
   <!-- Button - Pink -->
   <Style Selector="Button.btn-pink">
@@ -26,13 +34,10 @@
     <Setter Property="BorderBrush" Value="{x:Null}"/>
     <Setter Property="Background" Value="#D35683"/>
   </Style>
-
   <Style Selector="Button.btn-pink:pointerover">
     <Setter Property="Background" Value="#E7769F"/>
   </Style>
   <!-- Button - Pink -->
-
-
   
   <!-- Button - Outline Gray -->
   <Style Selector="Button.btn-outline-gray">
@@ -43,7 +48,6 @@
     </Setter>
     <Setter Property="BorderThickness" Value="1, 1, 1, 1"/>
   </Style>
-
   <Style Selector="Button.btn-outline-gray:pointerover">
     <Setter Property="BorderBrush">
       <SolidColorBrush Color="White" Opacity="0.5"/>
@@ -51,15 +55,12 @@
   </Style>
   <!-- Button - Outline Gray -->
 
-
-
   <!-- Button - Transparent Pink (Text-only) -->
   <Style Selector="Button.btn-transparent-pink">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Foreground" Value="#D35683"/>
     <Setter Property="BorderBrush" Value="{x:Null}"/>
   </Style>
-
   <Style Selector="Button.btn-transparent-pink:pointerover">
     <Setter Property="Foreground" Value="#E7769F"/>
   </Style>
@@ -68,10 +69,12 @@
   <Style Selector="Button.btn">
     <Setter Property="Template">
       <ControlTemplate>
-        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
-                          Content="{TemplateBinding Content}"
-                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+          <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Content="{TemplateBinding Content}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"/>
+        </Border>
       </ControlTemplate>
     </Setter>
   </Style>
@@ -91,18 +94,88 @@
   </Style>
   <!-- Button - Rounded -->
 
+
   
-  
+  <!-- A default TextBox style -->
+  <Style Selector="TextBox.input">
+    <Setter Property="Foreground" Value="White"/>
+  </Style>
+
+  <Style Selector="TextBox.input /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="Gray"/>
+    <Setter Property="Background" Value="#181818"/>
+    <Setter Property="CornerRadius" Value="6"/>
+  </Style>
+
+  <Style Selector="TextBox.input /template/ TextPresenter">
+    <Setter Property="CaretBrush" Value="White"/>
+  </Style>
+  <!-- A default TextBox style -->
+
+
+
+
   <!-- ALIGMENTS -->
   <Style Selector="Button.align-center">
     <Setter Property="HorizontalAlignment" Value="Center"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
 
+  
+
+
+  <Style Selector="Button.align-h-left">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+  </Style>
+  <Style Selector="Button.align-h-center">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.align-h-right">
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+  </Style>
+
+  <Style Selector="Button.align-v-top">
+    <Setter Property="VerticalAlignment" Value="Top"/>
+  </Style>
+  <Style Selector="Button.align-v-center">
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.align-v-bottom">
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
+  </Style>
+
   <Style Selector="Button.content-center">
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
   </Style>
+
+
+
+  <Style Selector="TextBox.align-h-left">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+  </Style>
+  <Style Selector="TextBox.align-h-center">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="TextBox.align-h-right">
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+  </Style>
+
+  <Style Selector="TextBox.align-v-top">
+    <Setter Property="VerticalAlignment" Value="Top"/>
+  </Style>
+  <Style Selector="TextBox.align-v-center">
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="TextBox.align-v-bottom">
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
+  </Style>
+
+  <Style Selector="TextBox.content-left">
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  
   <!-- ALIGMENTS -->
 
 </Styles>
