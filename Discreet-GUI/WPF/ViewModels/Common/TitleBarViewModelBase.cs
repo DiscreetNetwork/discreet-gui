@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using WPF.Stores;
 
@@ -20,6 +21,14 @@ namespace WPF.ViewModels.Common
         {
             ContentViewModel = contentViewModel;
             _windowSettingsStore = windowSettingsStore;
+
+            (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).Exit += TitleBarViewModelBase_Exit;
+        }
+
+        private void TitleBarViewModelBase_Exit(object sender, ControlledApplicationLifetimeExitEventArgs e)
+        {
+            Debug.WriteLine("Exit event");
+            Startup.Stop();
         }
 
         public void ToggleWindowStateHandler()

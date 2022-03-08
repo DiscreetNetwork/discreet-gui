@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using WPF.Factories.Navigation;
 using WPF.Factories.ViewModel;
+using WPF.Services.Hosted;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
@@ -22,7 +24,7 @@ namespace WPF
 {
     public class Startup
     {
-        private IHost _host;
+        private static IHost _host;
 
         public void Run (IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -32,6 +34,8 @@ namespace WPF
                 RegisterFactories(services);
                 RegisterStores(services);
 
+                services.AddHostedService<DaemonActivatorService>();
+
                 // Startup
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton(s => new MainWindow()
@@ -39,6 +43,8 @@ namespace WPF
                     DataContext = s.GetRequiredService<MainWindowViewModel>()
                 });
             }).Build();
+
+            _ = _host.RunAsync();
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
             //serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<TestNotificationViewModel>().Navigate();
@@ -91,6 +97,12 @@ namespace WPF
             {
                 services.AddSingleton(t);
             });
+        }
+
+        public static void Stop()
+        {
+            _ = _host.StopAsync();
+            _host.Dispose();
         }
     }
 }
