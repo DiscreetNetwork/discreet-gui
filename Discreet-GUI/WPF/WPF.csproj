@@ -47,6 +47,9 @@
     <Compile Update="Views\Layouts\PurpleTitleBarLayoutView.axaml.cs">
       <DependentUpon>PurpleTitleBarLayoutView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Modals\PasswordView.axaml.cs">
+      <DependentUpon>PasswordView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Start\CreateWalletChoicesView.axaml.cs">
       <DependentUpon>CreateWalletChoicesView.axaml</DependentUpon>
     </Compile>
