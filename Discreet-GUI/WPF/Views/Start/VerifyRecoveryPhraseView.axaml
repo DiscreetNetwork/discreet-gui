@@ -22,33 +22,43 @@
     <Label Grid.Row="0" Margin="0 50 0 0" FontSize="22" HorizontalContentAlignment="Center" Foreground="White" >Verify recovery phrase</Label>
     <Label Grid.Row="1" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Tap the first 4 words</Label>
 
-    <Grid Grid.Row="2" Margin="0 80 0 0">
-      <StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-          <Label Margin="3" FontSize="16" Foreground="black" Background="#D9D9D9" >david</Label>
-          <Label Margin="3" FontSize="16" Foreground="black" Background="#D9D9D9" >maybe</Label>
-          <Label Margin="3" FontSize="16" Foreground="black" Background="#D9D9D9" >pool</Label>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-          <Label Margin="3" FontSize="16" Foreground="black" Background="#D9D9D9" >technical</Label>
-        </StackPanel>
-      </StackPanel>
-    </Grid>
+	<ItemsControl Grid.Row="2" Margin="0 50 0 0" HorizontalAlignment="Center" Items="{Binding SelectedWords}" Width="450" VerticalAlignment="Center">
+		<ItemsControl.Styles>
+			<Style Selector="TextBlock">
+				<Setter Property="Margin" Value="5, 5"/>
+			</Style>
+		</ItemsControl.Styles>
+		<ItemsControl.DataTemplates>
+			<DataTemplate>
+				<TextBlock Text="{Binding Value}" Foreground="#DDDDDD"/>
+			</DataTemplate>
+		</ItemsControl.DataTemplates>
+		<ItemsControl.ItemsPanel>
+			<ItemsPanelTemplate>
+				<WrapPanel />
+			</ItemsPanelTemplate>
+		</ItemsControl.ItemsPanel>
+	</ItemsControl>
 
     <Separator Grid.Row="3" Height="1" Margin="0 25 0 10" Width="450" Background="#404040"/>
 
-    <Grid Grid.Row="4" Margin="0 20 0 0">
-      <StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-          <Label Margin="3" FontSize="16" Foreground="white" Background="#2D2D2D" >david</Label>
-          <Label Margin="3" FontSize="16" Foreground="white" Background="#2D2D2D" >maybe</Label>
-          <Label Margin="3" FontSize="16" Foreground="white" Background="#2D2D2D" >pool</Label>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-          <Label Margin="3" FontSize="16" Foreground="white" Background="#2D2D2D" >technical</Label>
-        </StackPanel>
-      </StackPanel>
-    </Grid>
+	<ListBox Grid.Row="4" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding GeneratedWords}" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<ListBox.Styles>
+			<Style Selector="ListBoxItem">
+				<Setter Property="Margin" Value="5, 5"/>
+			</Style>
+		</ListBox.Styles>
+		<ListBox.DataTemplates>
+			<DataTemplate>
+				<TextBlock Foreground="#DDDDDD" Text="{Binding Value}"/>
+			</DataTemplate>
+		</ListBox.DataTemplates>
+		<ListBox.ItemsPanel>
+			<ItemsPanelTemplate>
+				<WrapPanel />
+			</ItemsPanelTemplate>
+		</ListBox.ItemsPanel>
+	</ListBox>
 
     <Button Grid.Row="5" Classes="btn-pink content-center rounded align-center" Width="300" Height="55" FontSize="20" Margin="0 75 0 0" Command="{Binding NavigateNextCommand}">Continue</Button>
 
