@@ -3,6 +3,7 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
@@ -18,6 +19,8 @@ namespace WPF.ViewModels.Start
         public ObservableCollection<MnemonicWord> SelectedWords { get; set; } = new ObservableCollection<MnemonicWord>();
         public SelectionModel<MnemonicWord> Selection { get; } = new SelectionModel<MnemonicWord>();
 
+        private string _continueButtonContent = "Not correct";
+        public string ContinueButtonContent { get => _continueButtonContent; set { _continueButtonContent = value; OnPropertyChanged(nameof(ContinueButtonContent)); } }
 
         public ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
         public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
@@ -39,6 +42,11 @@ namespace WPF.ViewModels.Start
             {
                 SelectedWords.Remove(item as MnemonicWord);
             }
+
+            if (GeneratedWords.SequenceEqual(SelectedWords))
+                ContinueButtonContent = "Correct!";
+            else
+                ContinueButtonContent = "Not correct";
         }
     }
 }
