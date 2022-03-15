@@ -23,6 +23,10 @@
     <None Remove="Assets\Icons\send-icon.png" />
     <None Remove="Assets\Icons\settings-icon.png" />
     <None Remove="Assets\Images\Group.png" />
+    <None Remove="Assets\Images\process-dots-1-4.png" />
+    <None Remove="Assets\Images\process-dots-2-4.png" />
+    <None Remove="Assets\Images\process-dots-3-4.png" />
+    <None Remove="Assets\Images\process-dots-4-4.png" />
     <None Remove="Assets\Images\shield-platform.png" />
     <None Remove="Assets\test.png" />
   </ItemGroup>

@@ -5,7 +5,10 @@
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
-    
+
+    <Style Selector="Grid.bg-dark">
+		<Setter Property="Background" Value="#292929"/>
+    </Style>
   
   <!-- Button - Light -->
   <Style Selector="Button.btn-light">
