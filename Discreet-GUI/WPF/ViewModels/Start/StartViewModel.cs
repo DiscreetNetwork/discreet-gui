@@ -13,14 +13,12 @@ namespace WPF.ViewModels.Start
     [Layout(typeof(PurpleTitleBarLayoutViewModel), typeof(StartLayoutViewModel))]
     public class StartViewModel : ViewModelBase
     {
-        INavigationService _navigateCreateWalletChoicesView;
+        public ReactiveCommand<Unit, Unit> NavigateCreateWalletChoicesViewCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateExistingWalletChoicesViewCommand { get; set; }
         public StartViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            _navigateCreateWalletChoicesView = navigationServiceFactory.Create<CreateWalletChoicesViewModel>();
+            NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<CreateWalletChoicesViewModel>().Navigate);
             NavigateExistingWalletChoicesViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate);
         }
-
-        public void NavigateCreateWalletChoicesView() => _navigateCreateWalletChoicesView.Navigate();
     }
 }
