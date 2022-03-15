@@ -9,6 +9,7 @@ using WPF.Services.Navigation.Common;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.CreateWallet;
 using WPF.ViewModels.Layouts.Account;
 using WPF.ViewModels.Start;
 
@@ -36,16 +37,7 @@ namespace WPF.Factories.Navigation
 
         public INavigationService Create<TViewModel>() where TViewModel : ViewModelBase
         {
-            if (typeof(TViewModel) == typeof(StartViewModel))                   return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(CreateWalletChoicesViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(YourRecoveryPhraseViewModel))      return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(VerifyRecoveryPhraseViewModel))    return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(WalletCreatedSuccessfullyViewModel)) return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(CreateWalletBootstrapChoicesViewModel)) return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(ExistingWalletChoicesViewModel)) return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-            if (typeof(TViewModel) == typeof(ExistingWalletBootstrapChoicesViewModel)) return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
-
-            throw new InvalidOperationException();
+            return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
         }
 
         public INavigationService CreateStackNavigation<TFrom, TTarget>() where TFrom : ViewModelBase 
