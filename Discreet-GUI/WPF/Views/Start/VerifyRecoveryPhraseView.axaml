@@ -16,13 +16,16 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-    </Grid.RowDefinitions>
+	  <RowDefinition Height="auto"/>
+	  <RowDefinition Height="auto"/>
+	</Grid.RowDefinitions>
 
-    <Label Grid.Row="0" Margin="0 50 0 0" FontSize="22" HorizontalContentAlignment="Center" Foreground="White" >Verify recovery phrase</Label>
-    <Label Grid.Row="1" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Tap the first 4 words</Label>
+	<Image Grid.Row="0" Width="100" Margin="0 20 0 0" Source="/Assets/Images/process-dots-2-4.png"/>
 
-	<ItemsControl Grid.Row="2" Margin="0 50 0 0" HorizontalAlignment="Center" Items="{Binding SelectedWords}" Width="450" VerticalAlignment="Center">
+	<Label Grid.Row="1" Margin="0 50 0 0" FontSize="22" HorizontalContentAlignment="Center" Foreground="White" >Verify recovery phrase</Label>
+    <Label Grid.Row="2" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Tap the first 4 words</Label>
+
+	<ItemsControl Grid.Row="3" Margin="0 50 0 0" HorizontalAlignment="Center" Items="{Binding SelectedWords}" Width="450" VerticalAlignment="Center">
 		<ItemsControl.Styles>
 			<Style Selector="TextBlock">
 				<Setter Property="Margin" Value="5, 5"/>
@@ -40,9 +43,9 @@
 		</ItemsControl.ItemsPanel>
 	</ItemsControl>
 
-    <Separator Grid.Row="3" Height="1" Margin="0 25 0 10" Width="450" Background="#404040"/>
+    <Separator Grid.Row="4" Height="1" Margin="0 25 0 10" Width="450" Background="#404040"/>
 
-	<ListBox Grid.Row="4" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding GeneratedWords}" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<ListBox Grid.Row="5" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding GeneratedWords}" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<ListBox.Styles>
 			<Style Selector="ListBoxItem">
 				<Setter Property="Margin" Value="5, 5"/>
@@ -60,7 +63,7 @@
 		</ListBox.ItemsPanel>
 	</ListBox>
 
-    <Button Grid.Row="5" Classes="btn-pink content-center rounded align-center" Width="300" Height="55" FontSize="20" Margin="0 75 0 0" Command="{Binding NavigateNextCommand}" Content="{Binding ContinueButtonContent}"/>
+    <Button Grid.Row="6" Classes="btn-pink content-center rounded align-center" Width="300" Height="55" FontSize="20" Margin="0 75 0 0" Command="{Binding NavigateNextCommand}" Content="{Binding ContinueButtonContent}"/>
 
   </Grid>
 </UserControl>
