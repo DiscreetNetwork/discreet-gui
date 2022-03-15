@@ -8,6 +8,7 @@ using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.CreateWallet;
 using WPF.ViewModels.Layouts;
 
 namespace WPF.ViewModels.Start
@@ -25,7 +26,7 @@ namespace WPF.ViewModels.Start
         public ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
         public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<VerifyRecoveryPhraseViewModel, WalletCreatedSuccessfullyViewModel>().Navigate);
+            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<VerifyRecoveryPhraseViewModel, WalletPasswordViewModel>().Navigate);
 
             Selection.SingleSelect = false;
             Selection.SelectionChanged += SelectionChanged;

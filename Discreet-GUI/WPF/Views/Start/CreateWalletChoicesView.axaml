@@ -24,7 +24,7 @@
     <Button Grid.Row="1" Height="55" Width="300"
             Classes="btn-outline-gray content-center rounded align-center"
             FontSize="20"
-            Command="{Binding NavigateYourRecoveryPhraseView}">Simple</Button>
+            Command="{Binding NavigateWalletNameViewCommand}">Simple</Button>
 
     <Button Grid.Row="2" Height="55" Width="300" Margin="0 15 0 0"
             Classes="btn-outline-gray content-center rounded align-center"

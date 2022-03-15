@@ -6,6 +6,7 @@ using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.CreateWallet;
 using WPF.ViewModels.Layouts;
 
 namespace WPF.ViewModels.Start
@@ -15,18 +16,13 @@ namespace WPF.ViewModels.Start
     {
         ReactiveCommand<Unit, Unit> BackCommand { get; set; }
         ReactiveCommand<Unit, Unit> NavigateCreateWalletBootstrapChoicesCommand { get; set; }
+        ReactiveCommand<Unit, Unit> NavigateWalletNameViewCommand { get; set; }
 
-        INavigationService _navigateYourRecoveryPhraseService;
         public CreateWalletChoicesViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            _navigateYourRecoveryPhraseService = navigationServiceFactory.CreateStackNavigation<CreateWalletChoicesViewModel, YourRecoveryPhraseViewModel>();
             BackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
             NavigateCreateWalletBootstrapChoicesCommand = ReactiveCommand.Create(navigationServiceFactory.Create<CreateWalletBootstrapChoicesViewModel>().Navigate);
-        }
-
-        public void NavigateYourRecoveryPhraseView()
-        {
-            _navigateYourRecoveryPhraseService.Navigate();
+            NavigateWalletNameViewCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<CreateWalletChoicesViewModel, WalletNameViewModel>().Navigate);
         }
     }
 }
