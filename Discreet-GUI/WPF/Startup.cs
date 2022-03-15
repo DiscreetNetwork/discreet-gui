@@ -14,6 +14,7 @@ using WPF.Stores.Navigation;
 using WPF.ViewModels;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.CreateWallet;
 using WPF.ViewModels.Layouts.Account;
 using WPF.ViewModels.Modals;
 using WPF.ViewModels.Notifications;
@@ -64,6 +65,10 @@ namespace WPF
                 services.AddTransient(t);
             });
 
+            typeof(WalletNameViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(WalletNameViewModel).Namespace).ToList().ForEach(t =>
+            {
+                services.AddTransient(t);
+            });
 
             // Notifications
             typeof(TestNotificationViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(TestNotificationViewModel).Namespace).ToList().ForEach(t =>
