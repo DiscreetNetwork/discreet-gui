@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="WPF.Views.CreateWallet.WalletNameView">
 	
 	<UserControl.Styles>
@@ -18,26 +18,24 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
-		<Image Grid.Row="0" Width="100" Margin="0 20 0 0" Source="/Assets/Images/process-dots-1-4.png"/>
+		<Image Grid.Row="0" Width="150" Margin="0 40 0 0" Source="/Assets/Images/process-dots-1-4.png"/>
 		
-		<Label Grid.Row="1" Foreground="#DDDDDD" Margin="0 30 0 0" HorizontalContentAlignment="Center">Create New Wallet</Label>
-		<Label Grid.Row="2" Foreground="#9A9A9A" Margin="0 10 0 0" HorizontalContentAlignment="Center">Give your wallet a name</Label>
+		<Label Grid.Row="1" FontSize="26" Foreground="#DDDDDD" Margin="0 40 0 0" HorizontalContentAlignment="Center">Create New Wallet</Label>
+		<Label Grid.Row="2" FontSize="16" Foreground="#9A9A9A" Margin="0 10 0 0" HorizontalContentAlignment="Center">Give your wallet a name</Label>
 
-		<Grid Width="600" Grid.Row="3" HorizontalAlignment="Center" Margin="0 50 0 0">
+		<Grid Width="400" Grid.Row="3" HorizontalAlignment="Center" Margin="0 90 0 0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
 
-			<Label Grid.Row="0" Grid.Column="0" Foreground="#DDDDDD" Margin="0 0 0 2">Wallet name</Label>
-			<TextBox Classes="input content-left" Grid.Row="1" Grid.Column="0" Height="40" Margin="0 0 5 0"/>
+			<Label Grid.Row="0" Foreground="#DDDDDD" Margin="0 0 0 5">Wallet name</Label>
+			<TextBox Classes="input content-left" Grid.Row="1" Height="40"/>
 
-			<Label Grid.Row="0" Grid.Column="1" Foreground="#DDDDDD" Margin="5 0 0 2">Wallet location</Label>
-			<TextBox Classes="input content-left" Grid.Row="1" Grid.Column="1" Height="40" Margin="5 0 0 0"/>
+			<Label Grid.Row="2" Foreground="#DDDDDD" Margin="0 20 0 5">Wallet location</Label>
+			<TextBox Classes="input content-left" Grid.Row="3"  Height="40"/>
 		</Grid>
 
 		<Button Grid.Row="4" Classes="btn btn-pink" Width="300" Height="50" Margin="0 0 15 15" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="17" Command="{Binding NavigateYourRecoveryPhraseViewCommand}">Next</Button>
