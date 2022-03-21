@@ -1,17 +1,22 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Start;
 
 namespace WPF.ViewModels.Layouts
 {
     class DarkTitleBarLayoutSimpleViewModel : TitleBarViewModelBase
     {
-        public DarkTitleBarLayoutSimpleViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore) : base(contentViewModel, windowSettingsStore)
-        {
+        ReactiveCommand<Unit, Unit> NavigateHomeCommand { get; set; }
 
+        public DarkTitleBarLayoutSimpleViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore, NavigationServiceFactory navigationServiceFactory) : base(contentViewModel, windowSettingsStore)
+        {
+            NavigateHomeCommand = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
         }
     }
 }
