@@ -11,7 +11,9 @@
   <ItemGroup>
     <None Remove="Assets\Buttons\back-logo-placeholder.png" />
     <None Remove="Assets\Buttons\back-logo-white.png" />
+    <None Remove="Assets\Buttons\checkmark-white.png" />
     <None Remove="Assets\Buttons\close-white.png" />
+    <None Remove="Assets\Buttons\documents-white.png" />
     <None Remove="Assets\Buttons\maximize-white.png" />
     <None Remove="Assets\Buttons\minimize-white.png" />
     <None Remove="Assets\Buttons\purple-home.png" />

@@ -1,8 +1,10 @@
-﻿using Avalonia.Controls.Selection;
+﻿using Avalonia;
+using Avalonia.Controls.Selection;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
@@ -16,11 +18,26 @@ namespace WPF.ViewModels.Start
     {
         public ObservableCollection<MnemonicWord> GeneratedWords { get; set; } = new ObservableCollection<MnemonicWord>(MnemonicWord.GenerateWords(24));
 
+        private bool _passphraseCopied = false;
+        public bool PassphraseCopied { get => _passphraseCopied; set { _passphraseCopied = value; if (value) { PassphraseCopyContent = "Passphrase copied"; } else { PassphraseCopyContent = "Copy Passphrase"; } OnPropertyChanged(nameof(PassphraseCopied)); } }
+
+        private string _passphraseCopyContent = "Copy Passphrase";
+        public string PassphraseCopyContent { get => _passphraseCopyContent; set { _passphraseCopyContent = value; OnPropertyChanged(nameof(PassphraseCopyContent)); } }
+
 
         ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
+        ReactiveCommand<Unit, Unit> CopyPassphraseCommand { get; set; }
+
+        public YourRecoveryPhraseViewModel() { }
+
         public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<YourRecoveryPhraseViewModel, VerifyRecoveryPhraseViewModel>().Navigate);
+            CopyPassphraseCommand = ReactiveCommand.Create(() =>
+            {
+                PassphraseCopied = !PassphraseCopied;
+                Application.Current.Clipboard.SetTextAsync(String.Join(" ", GeneratedWords.Select(x => x.Value)));
+            });
         }
     }
 
