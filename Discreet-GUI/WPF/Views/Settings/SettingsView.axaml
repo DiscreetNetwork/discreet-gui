@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             x:Class="WPF.Views.Settings.SettingsView">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/ApplicationStyles.axaml"/>
+
+		<Style Selector="Button">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="#DDDDDD"/>
+		</Style>
+		<Style Selector="Button:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="TextBlock.Foreground" Value="White"/>
+		</Style>
+	</UserControl.Styles>
+
+	
+	
+	<Grid Background="#1C1C1D">
+		<StackPanel Margin="0 0 50 0">
+			<Label FontSize="30" Margin="0 0 0 80" Foreground="#8C52C0">Settings</Label>
+
+			<Border BorderBrush="#414141" BorderThickness="0 0 0 1" Margin="0 0 0 0">
+				<Button Padding="0 0 0 10" FontSize="18">Close this wallet</Button>
+			</Border>
+			<Border BorderBrush="#414141" BorderThickness="0 0 0 1">
+				<Button Padding="0 30 0 20" Classes="btn-transparent" FontSize="18">Show seed and keys</Button>
+			</Border>
+			<Border BorderBrush="#414141" BorderThickness="0 0 0 1">
+				<Button Padding="0 30 0 20" Classes="btn-transparent" FontSize="18">Change password</Button>
+			</Border>
+			<Border BorderBrush="#414141" BorderThickness="0 0 0 1">
+				<Button Padding="0 30 0 20" Classes="btn-transparent" FontSize="18">Set lock time for wallet</Button>
+			</Border>
+			<Border BorderBrush="#414141" BorderThickness="0 0 0 1">
+				<Button Padding="0 30 0 20" Classes="btn-transparent" FontSize="18">Developer mode</Button>
+			</Border>
+			<Border BorderBrush="#414141" BorderThickness="0 0 0 1">
+				<Button Padding="0 30 0 20" Classes="btn-transparent" FontSize="18">Log</Button>
+			</Border>
+		</StackPanel>
+	</Grid>
+
+</UserControl>

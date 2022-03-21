@@ -2,9 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
+			 xmlns:vm="using:WPF.ViewModels.Account"
+             mc:Ignorable="d" Design.Width="720" Design.Height="1100"
              x:Class="WPF.Views.Account.AccountReceiveView">
 
+	<Design.DataContext>
+		<vm:AccountReceiveViewModel/>
+	</Design.DataContext>
+	
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
   </UserControl.Styles>
@@ -14,28 +19,77 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
+      <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <Label Grid.Row="0" FontSize="20" Foreground="white">Wallets</Label>
+	<Grid Grid.Row="0">
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
 
-    <Grid Grid.Row="1">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="auto"/>
-        <ColumnDefinition Width="auto"/>
-      </Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Grid.Column="0" FontSize="30" Foreground="#8C52C0">Receive</Label>
+		<Label Grid.Row="1" Grid.Column="0" Foreground="#dddddd" FontSize="36">8127.14 DIS available</Label>
 
-      <StackPanel Grid.Column="0">
-        <Label Margin="0 20 0 0" FontSize="20" Foreground="#C0C0C0">0x57fuyw931209fj90wd</Label>
-        <Label Margin="0 0 0 0" FontSize="18" Foreground="#C0C0C0">Balance: 120.24</Label>
-      </StackPanel>
+		<Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Width="150" Margin="0 0 25 0" HorizontalAlignment="Right" Source="{Binding QrCode}"/>
+	</Grid>
 
-      <Button Classes="btn btn-gray" Grid.Column="1" Width="100" Height="40" Margin="50 20 0 0">COPY</Button>
-    </Grid>
+	<!-- ACCOUNT LABEL-->
+	<Label Grid.Row="1" Margin="0 30 0 10" FontSize="20" Foreground="white">Accounts</Label>
 
-    <Image Grid.Row="2" Width="200" Height="200" Margin="0 50 0 0" HorizontalAlignment="Left" Source="{Binding QrCode}"/>
-    
-    <Button Classes="btn btn-pink" Grid.Row="3" Height="45" Width="300" FontSize="18" Margin="0 150 0 0">Create New Wallet</Button>
+
+	<!-- ITEM -->
+	<ScrollViewer Grid.Row="2" Height="300" Margin="0 0 25 0">
+		<ItemsControl Items="{Binding MockedItems}" >
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Border Padding="15,15,15,15" BorderThickness="0 0 0 1" BorderBrush="#4F4F4F">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="75"/>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+
+							<Image Grid.Column="0" HorizontalAlignment="Left"/>
+
+							<StackPanel Grid.Column="1">
+								<Label Foreground="#D95A86" Content="{Binding AccountName}"></Label>
+								<Label Foreground="LightGray" Content="{Binding AccountAddress}"></Label>
+								<Label Foreground="#DDDDDD" Content="{Binding AccountBalance}"></Label>
+							</StackPanel>
+
+							<Button Classes="btn btn-gray" Grid.Column="2" Width="80" Height="35" Margin="0 0 25 0" HorizontalAlignment="Right">COPY</Button>
+						</Grid>
+					</Border>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+			<ItemsControl.Styles>
+				<Style Selector="Border">
+					<Setter Property="Background" Value="#1C1C1D"/>
+				</Style>
+				<Style Selector="Border:pointerover">
+					<Setter Property="Background" Value="#2D2D2E"/>
+				</Style>
+				<Style Selector="Image">
+					<Setter Property="Width" Value="50"/>
+					<Setter Property="Source" Value="/Assets/Icons/gray-ellipse.png"/>
+				</Style>
+				<Style Selector="Border:pointerover Image">
+					<Setter Property="Source" Value="/Assets/Icons/pink-ellipse.png"/>
+				</Style>
+			</ItemsControl.Styles>
+		</ItemsControl>
+	</ScrollViewer>
+	
+
+	<!-- BUTTON -->
+	<Button Classes="btn btn-pink" Grid.Row="3" Margin="0 0 25 25" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right">Create new address</Button>
 
   </Grid>
 

@@ -20,6 +20,6 @@
     <Label Grid.Row="0" Margin="0 50 0 0" FontSize="22" HorizontalAlignment="Center" Foreground="white" >Success!</Label>
     <Label Grid.Row="1" FontSize="16" HorizontalAlignment="Center" Foreground="#BFFFFFFF" >Your wallet was successfully created!</Label>
     <Image Grid.Row="2" Margin="0 40 0 0" Height="300" HorizontalAlignment="Center" Source="/Assets/Images/shield-platform.png"/>
-    <Button Grid.Row="3" Classes="btn-pink content-center align-center rounded" Margin="0 58 0 0" Height="55" Width="300" FontSize="20" Command="{Binding NavigateNextCommand}">Continue</Button>
+    <Button Grid.Row="3" Classes="btn btn-pink content-center align-center" Margin="0 58 0 0" Height="50" Width="300" FontSize="20" Command="{Binding NavigateNextCommand}">Continue</Button>
   </Grid>
 </UserControl>

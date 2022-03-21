@@ -6,9 +6,11 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="Grid.bg-dark">
+    <Style Selector="Grid.bg-dark, StackPanel.bg-dark">
 		<Setter Property="Background" Value="#292929"/>
     </Style>
+	
+	
   
   <!-- Button - Light -->
   <Style Selector="Button.btn-light">
@@ -68,6 +70,16 @@
     <Setter Property="Foreground" Value="#E7769F"/>
   </Style>
   <!-- Button - Transparent Pink (Text-only) -->
+
+	<!-- Button - Transparent (Text-only) -->
+	<Style Selector="Button.btn-transparent">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="{x:Null}"/>
+	</Style>
+	<Style Selector="Button.btn-transparent:pointerover">
+		<Setter Property="Foreground" Value="#E7769F"/>
+	</Style>
+	<!-- Button - Transparent (Text-only) -->
 
   <Style Selector="Button.btn">
     <Setter Property="Template">

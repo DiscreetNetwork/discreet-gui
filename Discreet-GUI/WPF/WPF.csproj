@@ -16,18 +16,26 @@
     <None Remove="Assets\Buttons\minimize-window-logo-dark.png" />
     <None Remove="Assets\Icons\account-1.png" />
     <None Remove="Assets\Icons\account-2.png" />
+    <None Remove="Assets\Icons\account-home.png" />
+    <None Remove="Assets\Icons\account-receive.png" />
+    <None Remove="Assets\Icons\account-send.png" />
+    <None Remove="Assets\Icons\account-transactions.png" />
     <None Remove="Assets\Icons\folder1.png" />
+    <None Remove="Assets\Icons\gray-ellipse.png" />
     <None Remove="Assets\Icons\grey-circle.png" />
     <None Remove="Assets\Icons\notification-alert.png" />
+    <None Remove="Assets\Icons\pink-checkmark.png" />
     <None Remove="Assets\Icons\receive-icon.png" />
     <None Remove="Assets\Icons\send-icon.png" />
     <None Remove="Assets\Icons\settings-icon.png" />
+    <None Remove="Assets\Icons\wifi-white.png" />
     <None Remove="Assets\Images\Group.png" />
     <None Remove="Assets\Images\process-dots-1-4.png" />
     <None Remove="Assets\Images\process-dots-2-4.png" />
     <None Remove="Assets\Images\process-dots-3-4.png" />
     <None Remove="Assets\Images\process-dots-4-4.png" />
     <None Remove="Assets\Images\shield-platform.png" />
+    <None Remove="Assets\pink-ellipse.png" />
     <None Remove="Assets\test.png" />
   </ItemGroup>
   <ItemGroup>

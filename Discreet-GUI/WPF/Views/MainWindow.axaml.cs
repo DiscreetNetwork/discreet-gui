@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System.Windows.Input;
@@ -26,8 +27,8 @@ namespace WPF.Views
 
         private void MouseDownHandler(object sender, PointerPressedEventArgs e)
         {
-            // Handled returns True for controls with a MouseDown Event, in which case we don't want to drag the window
-            if (e.Handled) return;
+            var pos = e.GetCurrentPoint(this);
+            if (e.Handled || pos.Position.Y > 100) return;
 
             // Dont allow drag, if the window is maximized
             if (WindowState == WindowState.Maximized) return;

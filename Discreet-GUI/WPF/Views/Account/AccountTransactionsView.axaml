@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:WPF.ViewModels.Account"
+             mc:Ignorable="d" Design.Height="1100"
+             x:Class="WPF.Views.Account.AccountTransactionsView">
+
+	<Design.DataContext>
+		<vm:AccountTransactionsViewModel/>
+	</Design.DataContext>
+	
+	<StackPanel Background="#1C1C1D">
+		<Label Foreground="#8C52C0" Margin="15 0 0 0" FontSize="30">Transactions</Label>
+
+		<Border Grid.Row="0" Grid.Column="0" BorderThickness="0 0 0 1" Padding="20 0 20 5" Margin="0 30 50 30" BorderBrush="#8E8E8E">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="150"/>
+					<ColumnDefinition Width="410"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0" Grid.Column="0" Foreground="LightGray" FontSize="18">Time</Label>
+				<Label Grid.Row="0" Grid.Column="1" Foreground="LightGray" FontSize="18">Date</Label>
+				<Label Grid.Row="0" Grid.Column="2" Foreground="LightGray" FontSize="18">Receiving account</Label>
+				<Label Grid.Row="0" Grid.Column="3" Foreground="LightGray" FontSize="18">Amount</Label>
+			</Grid>
+		</Border>
+
+		<ScrollViewer Margin="20 0 70 0" Height="450">
+			<ItemsControl Items="{Binding MockItems}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border Padding="0 15 0 15" BorderThickness="0 0 0 1" BorderBrush="#414141">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="100"/>
+									<ColumnDefinition Width="150"/>
+									<ColumnDefinition Width="410"/>
+									<ColumnDefinition Width="auto"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+
+								<Label Grid.Row="0" Grid.Column="0" Foreground="LightGray" FontSize="18" Content="{Binding Time}"/>
+								<Label Grid.Row="0" Grid.Column="1" Foreground="LightGray" FontSize="18" Content="{Binding DateFormatted}"/>
+								<Label Grid.Row="0" Grid.Column="2" Foreground="LightGray" FontSize="18" Content="{Binding ReceivingAccount}"/>
+								<Label Grid.Row="0" Grid.Column="3" Foreground="LightGray" FontSize="18" Content="{Binding Amount}"/>
+							</Grid>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+
+	</StackPanel>
+</UserControl>

@@ -26,6 +26,7 @@ namespace WPF.ViewModels
         }
         public ViewModelBase CurrentViewModel => _mainNavigationStore.CurrentViewModel;
         public ViewModelBase CurrentModalViewModel => _modalNavigationStore.CurrentModalViewModel;
+        
 
         public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore)
         {

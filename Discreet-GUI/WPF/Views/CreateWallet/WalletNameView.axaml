@@ -38,6 +38,6 @@
 			<TextBox Classes="input content-left" Grid.Row="3"  Height="40"/>
 		</Grid>
 
-		<Button Grid.Row="4" Classes="btn btn-pink" Width="300" Height="50" Margin="0 0 15 15" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="17" Command="{Binding NavigateYourRecoveryPhraseViewCommand}">Next</Button>
+		<Button Grid.Row="4" Classes="btn btn-pink" Width="300" Height="50" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="17" Command="{Binding NavigateYourRecoveryPhraseViewCommand}">Next</Button>
 	</Grid>
 </UserControl>

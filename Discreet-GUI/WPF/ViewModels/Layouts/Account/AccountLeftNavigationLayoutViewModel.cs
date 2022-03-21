@@ -9,6 +9,7 @@ using WPF.Factories.Navigation;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Settings;
 
 namespace WPF.ViewModels.Layouts.Account
 {
@@ -45,8 +46,16 @@ namespace WPF.ViewModels.Layouts.Account
                 ResetButtonStates(); ButtonActiveStates[2] = true;
                 navigationServiceFactory.CreateAccountNavigation<AccountReceiveViewModel>().Navigate();
             });
-            NavigateAccountTransactionsCommand      = ReactiveCommand.Create(() => { ResetButtonStates(); ButtonActiveStates[3] = true; });
-            NavigateAccountSettingsCommand          = ReactiveCommand.Create(() => { ResetButtonStates(); ButtonActiveStates[4] = true; });
+            NavigateAccountTransactionsCommand      = ReactiveCommand.Create(() => 
+            { 
+                ResetButtonStates(); ButtonActiveStates[3] = true;
+                navigationServiceFactory.CreateAccountNavigation<AccountTransactionsViewModel>().Navigate();
+            });
+            NavigateAccountSettingsCommand          = ReactiveCommand.Create(() => 
+            { 
+                ResetButtonStates(); ButtonActiveStates[4] = true;
+                navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
+            });
         }
 
         private void OnCurrentViewModelChanged()

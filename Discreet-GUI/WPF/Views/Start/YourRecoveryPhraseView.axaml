@@ -18,7 +18,7 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
 	  <RowDefinition Height="auto"/>
-	  <RowDefinition Height="auto"/>
+	  <RowDefinition/>
 	</Grid.RowDefinitions>
 
 	<Image Grid.Row="0" Width="150" Margin="0 50 0 0" Source="/Assets/Images/process-dots-2-4.png"/>
@@ -46,7 +46,7 @@
 
     <Button Grid.Row="4" Classes="btn btn-transparent-pink content-center align-center" Width="200" Height="40" Margin="0 40 0 0" FontSize="16">Copy Passphrase</Button>
     <Label Grid.Row="5" Margin="0 60 0 0" FontSize="16" HorizontalAlignment="Center" Foreground="#9A9A9A" >Never share your lorem ipsum</Label>
-    <Button Grid.Row="6" Classes="btn-pink rounded content-center align-center" Width="300" Height="55" FontSize="20" Margin="0 5 0 0" Command="{Binding NavigateNextCommand}">Continue</Button>
+    <Button Grid.Row="6" Classes="btn btn-pink content-center align-center" Width="300" Height="50" FontSize="20" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding NavigateNextCommand}">Continue</Button>
 
   </Grid>
 </UserControl>
