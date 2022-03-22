@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using WPF.Attributes;
 using WPF.Factories.Navigation;
 using WPF.Factories.ViewModel;
 using WPF.Services.Hosted;
@@ -15,6 +16,7 @@ using WPF.ViewModels;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.CreateWallet;
+using WPF.ViewModels.Layouts;
 using WPF.ViewModels.Layouts.Account;
 using WPF.ViewModels.Modals;
 using WPF.ViewModels.Notifications;
@@ -59,45 +61,20 @@ namespace WPF
             desktop.MainWindow = mainWindow;
         }
 
+
+        /// <summary>
+        /// Assembly scan for all types with a baseType of 'ViewModelBase' and register them in the container 
+        /// This will ignore any types with the class attribute 'AssemblyScanIgnore'
+        /// </summary>
+        /// <param name="services"></param>
         public void RegisterViewModels(IServiceCollection services)
         {
-            typeof(StartViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(StartViewModel).Namespace).ToList().ForEach(t =>
+            var vms = typeof(Startup).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && !t.CustomAttributes.Any(t => t.AttributeType == typeof(AssemblyScanIgnoreAttribute)));
+            
+            foreach (Type viewModel in vms)
             {
-                services.AddTransient(t);
-            });
-
-            typeof(WalletNameViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(WalletNameViewModel).Namespace).ToList().ForEach(t =>
-            {
-                services.AddTransient(t);
-            });
-
-            typeof(SettingsViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(SettingsViewModel).Namespace).ToList().ForEach(t =>
-            {
-                services.AddTransient(t);
-            });
-
-            // Notifications
-            typeof(TestNotificationViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(TestNotificationViewModel).Namespace).ToList().ForEach(t =>
-            {
-                services.AddTransient(t);
-            });
-
-            // Modals
-            typeof(AboutBootstrapViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(AboutBootstrapViewModel).Namespace).ToList().ForEach(t =>
-            {
-                services.AddTransient(t);
-            });
-
-
-            // Account
-            typeof(AccountHomeViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(AccountHomeViewModel).Namespace).ToList().ForEach(t =>
-            {
-                services.AddTransient(t);
-            });
-            typeof(AccountLeftNavigationLayoutViewModel).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && t.Namespace == typeof(AccountLeftNavigationLayoutViewModel).Namespace).ToList().ForEach(t =>
-            {
-                services.AddTransient(t);
-            });
+                services.AddTransient(viewModel);
+            }
         }
 
         public void RegisterFactories(IServiceCollection services)

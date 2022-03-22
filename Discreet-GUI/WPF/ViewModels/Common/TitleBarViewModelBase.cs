@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using WPF.Attributes;
 using WPF.Stores;
 
 namespace WPF.ViewModels.Common
@@ -12,6 +13,7 @@ namespace WPF.ViewModels.Common
     /// <summary>
     /// A base model that future custom title bar ViewModels can inherit from
     /// </summary>
+    [AssemblyScanIgnore]
     public abstract class TitleBarViewModelBase : ViewModelBase
     {
         public ViewModelBase ContentViewModel { get; }

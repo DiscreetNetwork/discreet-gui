@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Text;
+using WPF.Attributes;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels
 {
+    [AssemblyScanIgnore]
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly WindowSettingsStore _windowSettingsStore;
