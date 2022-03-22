@@ -16,6 +16,8 @@
     <None Remove="Assets\Buttons\close-bright-white.png" />
     <None Remove="Assets\Buttons\close-white.png" />
     <None Remove="Assets\Buttons\documents-white.png" />
+    <None Remove="Assets\Buttons\eye-closed-gray.png" />
+    <None Remove="Assets\Buttons\eye-open-white.png" />
     <None Remove="Assets\Buttons\maximize-bright-white.png" />
     <None Remove="Assets\Buttons\maximize-white.png" />
     <None Remove="Assets\Buttons\minimize-bright-white.png" />
