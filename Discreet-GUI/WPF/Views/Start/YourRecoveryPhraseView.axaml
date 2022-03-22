@@ -35,7 +35,7 @@
 	  <RowDefinition/>
 	</Grid.RowDefinitions>
 
-	<Image Grid.Row="0" Width="150" Margin="0 50 0 0" Source="/Assets/Images/process-dots-2-4.png"/>
+	<Image Grid.Row="0" Width="115" Margin="0 50 0 0" Source="/Assets/Images/process-dots-2-4.png"/>
 
 	<Label Grid.Row="1" Margin="0 50 0 0" FontSize="26" HorizontalContentAlignment="Center" Foreground="White">Your recovery phrase</Label>
     <Label Grid.Row="2" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Write down or copy these words in the right order and save them lorem</Label>

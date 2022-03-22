@@ -21,6 +21,7 @@
     <None Remove="Assets\Buttons\minimize-bright-white.png" />
     <None Remove="Assets\Buttons\minimize-white.png" />
     <None Remove="Assets\Buttons\purple-home.png" />
+    <None Remove="Assets\discreet-logo-purple.png" />
     <None Remove="Assets\Icons\account-1.png" />
     <None Remove="Assets\Icons\account-2.png" />
     <None Remove="Assets\Icons\account-home.png" />
