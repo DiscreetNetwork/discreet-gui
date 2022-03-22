@@ -11,7 +11,7 @@ using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels
 {
-    [AssemblyScanIgnore]
+    [AssemblyScanIgnore("This viewModel is manually registered in Startup")]
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly WindowSettingsStore _windowSettingsStore;

@@ -13,7 +13,7 @@ namespace WPF.ViewModels.Common
     /// <summary>
     /// A base model that future custom title bar ViewModels can inherit from
     /// </summary>
-    [AssemblyScanIgnore]
+    [AssemblyScanIgnore("This viewModel is only used for other titleBar viewModels to inherit from")]
     public abstract class TitleBarViewModelBase : ViewModelBase
     {
         public ViewModelBase ContentViewModel { get; }
