@@ -30,6 +30,7 @@
     <None Remove="Assets\Icons\account-receive.png" />
     <None Remove="Assets\Icons\account-send.png" />
     <None Remove="Assets\Icons\account-transactions.png" />
+    <None Remove="Assets\Icons\arrow-right-gray.png" />
     <None Remove="Assets\Icons\folder1.png" />
     <None Remove="Assets\Icons\gray-ellipse.png" />
     <None Remove="Assets\Icons\grey-circle.png" />

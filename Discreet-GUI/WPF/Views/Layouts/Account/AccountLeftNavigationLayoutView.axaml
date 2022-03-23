@@ -46,6 +46,12 @@
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="Foreground" Value="#9E9E9E"/>
     </Style>
+	<Style Selector="Image.Arrow">
+		<Setter Property="Source" Value="{x:Null}"/>
+	</Style>
+	<Style Selector="Image.Arrow.Active">
+		<Setter Property="Source" Value="/Assets/Icons/arrow-right-gray.png"/>
+	</Style>
   </UserControl.Styles>
   
   <Grid Background="#1C1C1D">
@@ -93,7 +99,8 @@
 			<Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateAccountHomeCommand}">
 				<StackPanel Classes="NavButton">
 					<Image Classes="NavButton" Source="/Assets/Icons/account-home.png"/>
-					<Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E" >Accounts / Home</Label>
+					<Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E">Home</Label>
+                    <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[0]}" Height="15" Margin="140 0 0 0"/>
 				</StackPanel>
 			</Button>
 		</Border>
@@ -101,8 +108,9 @@
 		<Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
 		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateAccountSendCommand}">
                 <StackPanel Classes="NavButton">
-                <Image Classes="NavButton" Source="/Assets/Icons/account-send.png"/>
-                <Label Classes="NavButton">Send</Label>
+                    <Image Classes="NavButton" Source="/Assets/Icons/account-send.png"/>
+                    <Label Classes="NavButton">Send</Label>
+					<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[1]}" Height="15" Margin="145 0 0 0"/>
                 </StackPanel>
             </Button>
 		</Border>
@@ -112,7 +120,8 @@
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/account-receive.png"/>
                 <Label Classes="NavButton">Receive</Label>
-              </StackPanel>
+				  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[2]}" Height="15" Margin="122 0 0 0"/>
+			  </StackPanel>
             </Button>
 		</Border>
 
@@ -121,7 +130,8 @@
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/account-transactions.png"/>
                 <Label Classes="NavButton">Transactions</Label>
-              </StackPanel>
+				<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[3]}" Height="15" Margin="80 0 0 0"/>
+			  </StackPanel>
             </Button>
 		</Border>
 
@@ -130,7 +140,8 @@
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/settings-icon.png"/>
                 <Label Classes="NavButton">Settings</Label>
-              </StackPanel>
+				<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[4]}" Height="15" Margin="120 0 0 0"/>
+			  </StackPanel>
             </Button>
 		</Border>
 
