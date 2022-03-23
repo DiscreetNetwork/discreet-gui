@@ -152,7 +152,7 @@
 
     <ContentControl
         Grid.Column="1"
-        Margin="60 60 0 0"
+        Margin="60 40 0 0"
         Content="{Binding CurrentViewModel}"/>
   </Grid>
 </UserControl>
