@@ -20,7 +20,7 @@
     <Grid Background="{x:Null}" Width="300" Height="50">
       <Image Source="/Assets/test.png" Width="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8 0 0 0"/>
       <Label HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 80 0">Success!</Label>
-      <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 8 0" Background="{x:Null}" Command="{Binding CloseCommand}">X</Button>
+      <Button HorizontalAlignment="Right" Cursor="Hand" VerticalAlignment="Center" Margin="0 0 8 0" Background="{x:Null}" Command="{Binding CloseCommand}">X</Button>
     </Grid>
   </Border>
 </UserControl>

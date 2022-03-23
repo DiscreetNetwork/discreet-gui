@@ -16,7 +16,7 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
+    <Button Grid.Row="0" Classes="hand" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
 		<StackPanel Orientation="Horizontal">
 			<Image Height="30" Source="/Assets/Buttons/back-arrow-white.png"/>
 			<Label Margin="10 0 0 0" Foreground="White" FontWeight="300" FontSize="16" VerticalAlignment="Center">Back</Label>
@@ -24,13 +24,14 @@
     </Button>
     <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="20">I already have a wallet</Label>
 
-    <Button Grid.Row="1" Height="55" Width="300"
+    <Button Grid.Row="1" Height="55" Width="300" 
+			Classes="hand"
             HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
             FontSize="20" Foreground="white" Background="{x:Null}" BorderBrush="#FFAE86D3"
             IsEnabled="false">Simple</Button>
 
     <Button Grid.Row="2" Height="55" Width="300" Margin="0 15 0 0"
-            Classes="btn-outline-gray content-center align-center rounded"
+            Classes="btn-outline-gray hand content-center align-center rounded"
             FontSize="20"
             Command="{Binding NavigateExistingWalletBootstrapChoicesCommand}">Simple *Bootstrap*</Button>
   </Grid>

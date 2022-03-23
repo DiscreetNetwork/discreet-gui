@@ -14,7 +14,7 @@
 
     <Label Grid.Row="0" FontSize="18" Margin="0 0 0 20" Foreground="#66FFFFFF" HorizontalAlignment="Center">Create new wallet</Label>
 
-    <Button Grid.Row="1" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding BackCommand}">
+    <Button Grid.Row="1" Width="100" Cursor="Hand" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding BackCommand}">
 		<StackPanel Orientation="Horizontal">
 			<Image Height="30" Source="/Assets/Buttons/back-arrow-white.png"/>
 			<Label Margin="10 0 0 0" Foreground="White" FontWeight="300" FontSize="16" VerticalAlignment="Center">Back</Label>

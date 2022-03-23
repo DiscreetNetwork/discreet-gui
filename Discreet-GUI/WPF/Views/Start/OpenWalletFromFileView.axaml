@@ -39,7 +39,7 @@
     </Grid>
 
     <Label Grid.Row="3" Margin="0 90 0 0" FontSize="13" Foreground="#9A9A9A" HorizontalContentAlignment="Center">or</Label>
-    <Button Grid.Row="4" Margin="0 10 0 0" Width="290" Height="45"  FontSize="15"  HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" BorderBrush="#646464" Background="#292929">Browse files on your computer</Button>
+    <Button Grid.Row="4" Cursor="hand" Margin="0 10 0 0" Width="290" Height="45"  FontSize="15"  HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" BorderBrush="#646464" Background="#292929">Browse files on your computer</Button>
 
 
   </Grid>

@@ -19,7 +19,7 @@
 
     <Label Grid.Row="0" FontSize="18" Margin="0 0 0 20" Foreground="#66FFFFFF" HorizontalAlignment="Center">I already have a wallet</Label>
 
-    <Button Grid.Row="1" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
+    <Button Grid.Row="1" Classes="hand" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
 		<StackPanel Orientation="Horizontal">
 			<Image Height="30" Source="/Assets/Buttons/back-arrow-white.png"/>
 			<Label Margin="10 0 0 0" Foreground="White" FontWeight="300" FontSize="16" VerticalAlignment="Center">Back</Label>
@@ -30,12 +30,12 @@
 
 
     <Button Grid.Row="2" Height="55" Width="300"
-            Classes="btn-outline-gray content-center align-center rounded"
+            Classes="btn-outline-gray hand content-center align-center rounded"
             FontSize="20"
             Command="{Binding NavigateOpenWalletFromFileCommand}">Open a wallet from file</Button>
 
     <Button Grid.Row="3" Height="55" Width="300" Margin="0 15 0 0"
-            Classes="btn-outline-gray content-center align-center rounded"
+            Classes="btn-outline-gray hand content-center align-center rounded"
             FontSize="20"
             Command="{Binding NavigateRestoreWalletCommand}">Restore using seed or keys</Button>
   </Grid>

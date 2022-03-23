@@ -44,7 +44,7 @@
       <TextBox Margin="0 20 0 0" Padding="5 5 5 50"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Foreground="#FF949494" Text="Enter your 12 word mnemonic seed" Background="{x:Null}" BorderBrush="#FF646464"/>
     </Grid>
     
-    <Button Grid.Row="3" Height="40" Width="260" HorizontalAlignment="Right" Margin="0 130 25 25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Next</Button>
+    <Button Grid.Row="3" Cursor="Hand" Height="50" Width="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 25 25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="17" Foreground="White" Background="#D35683" BorderBrush="{x:Null}">Next</Button>
 
   </Grid>
 </UserControl>

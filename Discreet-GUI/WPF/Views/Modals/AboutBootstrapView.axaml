@@ -27,7 +27,7 @@
       </RadioButton.Content>
     </RadioButton>
 
-    <Button Grid.Row="5" Width="300" Height="45" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="#646464" Background="Transparent" Command="{Binding ContinueCommand}">Continue</Button>
+    <Button Grid.Row="5" Cursor="Hand" Width="300" Height="50" Margin="0 20 0 0" FontSize="17" Foreground="White" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="#646464" Background="Transparent" Command="{Binding ContinueCommand}">Continue</Button>
 
   </Grid>
 </UserControl>

@@ -90,7 +90,7 @@
         </Grid.RowDefinitions>
 
 		<Border Grid.Row="0" BorderThickness="0 1 0 1" BorderBrush="#4D4D4D">
-			<Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateAccountHomeCommand}">
+			<Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateAccountHomeCommand}">
 				<StackPanel Classes="NavButton">
 					<Image Classes="NavButton" Source="/Assets/Icons/account-home.png"/>
 					<Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E" >Accounts / Home</Label>
@@ -99,7 +99,7 @@
 		</Border>
 
 		<Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
-		    <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateAccountSendCommand}">
+		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateAccountSendCommand}">
                 <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/account-send.png"/>
                 <Label Classes="NavButton">Send</Label>
@@ -108,7 +108,7 @@
 		</Border>
 
 		<Border Grid.Row="2" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
-		    <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="2" Command="{Binding NavigateAccountReceiveCommand}">
+		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="2" Command="{Binding NavigateAccountReceiveCommand}">
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/account-receive.png"/>
                 <Label Classes="NavButton">Receive</Label>
@@ -117,7 +117,7 @@
 		</Border>
 
 		<Border Grid.Row="3" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
-		    <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateAccountTransactionsCommand}">
+		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateAccountTransactionsCommand}">
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/account-transactions.png"/>
                 <Label Classes="NavButton">Transactions</Label>
@@ -126,7 +126,7 @@
 		</Border>
 
 		<Border Grid.Row="4" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
-		    <Button Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
+		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Source="/Assets/Icons/settings-icon.png"/>
                 <Label Classes="NavButton">Settings</Label>
