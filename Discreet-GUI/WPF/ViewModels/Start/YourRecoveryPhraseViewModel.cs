@@ -35,7 +35,7 @@ namespace WPF.ViewModels.Start
 
         public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<YourRecoveryPhraseViewModel, VerifyRecoveryPhraseViewModel>().Navigate);
+            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletNameViewModel>().Navigate);
 
             CopyPassphraseCommand = ReactiveCommand.Create(() =>

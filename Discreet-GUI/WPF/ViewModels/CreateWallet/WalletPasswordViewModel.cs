@@ -38,7 +38,7 @@ namespace WPF.ViewModels.CreateWallet
 
         public WalletPasswordViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateWalletDetailsViewCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<WalletPasswordViewModel, WalletDetailsViewModel>().Navigate);
+            NavigateWalletDetailsViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletDetailsViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
 
             ToggleDisplayEnterPasswordCommand = ReactiveCommand.Create(() =>

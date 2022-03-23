@@ -28,7 +28,7 @@ namespace WPF.ViewModels.Start
 
         public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<VerifyRecoveryPhraseViewModel, WalletPasswordViewModel>().Navigate);
+            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
 
             Selection.SingleSelect = false;
