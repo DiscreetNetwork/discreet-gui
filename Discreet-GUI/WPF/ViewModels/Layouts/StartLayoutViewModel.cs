@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using WPF.Attributes;
 using WPF.ViewModels.Common;
 
@@ -12,9 +13,31 @@ namespace WPF.ViewModels.Layouts
         public ViewModelBase ContentViewModel { get; set; }
 
 
+        private int _carouselIndex = 0;
+        public int CarouselIndex { get => _carouselIndex; set { _carouselIndex = value; OnPropertyChanged(nameof(CarouselIndex)); } }
+
         public StartLayoutViewModel(ViewModelBase contentViewModel)
         {
             ContentViewModel = contentViewModel;
+
+            //_ = InitializeCarousel();
+        }
+
+
+        async Task InitializeCarousel()
+        {
+            while(true)
+            {
+                await Task.Delay(2000);
+
+                if(CarouselIndex == 2)
+                {
+                    CarouselIndex = 0;
+                    continue;
+                }
+
+                CarouselIndex++;
+            }
         }
     }
 }

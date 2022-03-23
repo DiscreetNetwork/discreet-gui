@@ -46,7 +46,13 @@
     <None Remove="Assets\Images\process-dots-3-4.png" />
     <None Remove="Assets\Images\process-dots-4-4.png" />
     <None Remove="Assets\Images\shield-platform.png" />
+    <None Remove="Assets\mining.png" />
     <None Remove="Assets\pink-ellipse.png" />
+    <None Remove="Assets\privacy.png" />
+    <None Remove="Assets\process-dots-1-3.png" />
+    <None Remove="Assets\process-dots-2-3.png" />
+    <None Remove="Assets\process-dots-3-3.png" />
+    <None Remove="Assets\speed.png" />
     <None Remove="Assets\test.png" />
   </ItemGroup>
   <ItemGroup>
