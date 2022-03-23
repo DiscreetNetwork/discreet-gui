@@ -151,8 +151,21 @@
   </Style>
   <!-- A default TextBox style -->
 
-
-
+	
+	
+  <Style Selector="TextBox.input-gray">
+	  <Setter Property="Foreground" Value="White"/>
+	  <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="TextBox.input-gray /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="#707070"/>
+    <Setter Property="Background" Value="#333333"/>
+    <Setter Property="CornerRadius" Value="4"/>
+	<Setter Property="BorderThickness" Value="1"/>
+  </Style>
+  <Style Selector="TextBox.input-gray /template/ TextPresenter">
+    <Setter Property="CaretBrush" Value="White"/>
+  </Style>
 
   <!-- ALIGMENTS -->
   <Style Selector="Button.align-center">
