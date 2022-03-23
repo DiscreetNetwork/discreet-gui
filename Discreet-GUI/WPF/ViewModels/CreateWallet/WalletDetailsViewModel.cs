@@ -18,10 +18,12 @@ namespace WPF.ViewModels.CreateWallet
         public int SelectedNetworkTypeIndex { get; set; }
 
         ReactiveCommand<Unit, Unit> NavigateWalletCreatedViewCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
         public WalletDetailsViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateWalletCreatedViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletCreatedSuccessfullyViewModel>().Navigate);
+            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate);
         }
     }
 }

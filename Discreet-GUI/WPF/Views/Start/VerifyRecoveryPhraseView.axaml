@@ -53,7 +53,7 @@
 		</ListBox.Styles>
 		<ListBox.DataTemplates>
 			<DataTemplate>
-				<TextBlock Foreground="#DDDDDD" Text="{Binding Value}"/>
+				<TextBlock Foreground="#DDDDDD" Text="{Binding Value}" Cursor="Hand"/>
 			</DataTemplate>
 		</ListBox.DataTemplates>
 		<ListBox.ItemsPanel>
@@ -63,7 +63,8 @@
 		</ListBox.ItemsPanel>
 	</ListBox>
 
-    <Button Grid.Row="6" Classes="btn btn-pink content-center align-center" Width="300" Height="50" FontSize="20" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding NavigateNextCommand}" Content="{Binding ContinueButtonContent}"/>
+	<Button Grid.Row="6" Classes="btn-outline-pink hand" Width="300" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" Margin="25 0 0 25" Command="{Binding NavigateBackCommand}">Back</Button>
+    <Button Grid.Row="6" Classes="btn btn-pink content-center align-center hand" Width="300" Height="50" FontSize="20" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding NavigateNextCommand}" Content="{Binding ContinueButtonContent}"/>
 
   </Grid>
 </UserControl>

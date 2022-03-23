@@ -9,6 +9,7 @@ using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.CreateWallet;
 using WPF.ViewModels.Layouts;
 
 namespace WPF.ViewModels.Start
@@ -27,12 +28,16 @@ namespace WPF.ViewModels.Start
 
         ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
         ReactiveCommand<Unit, Unit> CopyPassphraseCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
+
 
         public YourRecoveryPhraseViewModel() { }
 
         public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<YourRecoveryPhraseViewModel, VerifyRecoveryPhraseViewModel>().Navigate);
+            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletNameViewModel>().Navigate);
+
             CopyPassphraseCommand = ReactiveCommand.Create(() =>
             {
                 PassphraseCopied = !PassphraseCopied;

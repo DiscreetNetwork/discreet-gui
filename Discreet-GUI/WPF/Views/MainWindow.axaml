@@ -12,10 +12,11 @@
         CanResize="True"
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaChromeHints="NoChrome"
+		Background="Transparent"
         >
-  <Grid>
-    <ContentControl ZIndex="200" Content="{Binding NotificationViewModel}"/>
-    <ContentControl ZIndex="100" Content="{Binding CurrentModalViewModel}"/>
-	<TransitioningContentControl Content="{Binding CurrentViewModel}"/>
-  </Grid>
+	<Grid>
+		<ContentControl ZIndex="200" Content="{Binding NotificationViewModel}"/>
+		<ContentControl ZIndex="100" Content="{Binding CurrentModalViewModel}"/>
+		<TransitioningContentControl Content="{Binding CurrentViewModel}"/>
+	</Grid>
 </Window>

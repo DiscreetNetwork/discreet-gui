@@ -1,3 +1,4 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
 using ReactiveUI;
 using System;
@@ -8,6 +9,7 @@ using WPF.Attributes;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
+using static Avalonia.Animation.PageSlide;
 
 namespace WPF.ViewModels
 {
@@ -28,7 +30,7 @@ namespace WPF.ViewModels
         }
         public ViewModelBase CurrentViewModel => _mainNavigationStore.CurrentViewModel;
         public ViewModelBase CurrentModalViewModel => _modalNavigationStore.CurrentModalViewModel;
-        
+
 
         public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore)
         {
@@ -38,7 +40,6 @@ namespace WPF.ViewModels
             _mainNavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
             _modalNavigationStore = modalNavigationStore;
             _modalNavigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
-
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }

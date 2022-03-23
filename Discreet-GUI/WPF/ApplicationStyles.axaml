@@ -9,8 +9,32 @@
     <Style Selector="Grid.bg-dark, StackPanel.bg-dark">
 		<Setter Property="Background" Value="#292929"/>
     </Style>
+
+  <Style Selector="Button.hand">
+	  <Setter Property="Cursor" Value="Hand"/>
+  </Style>
 	
 	
+  <!-- Button Outline Pink -->
+  <Style Selector="Button.btn-outline-pink">
+	  <Setter Property="Background" Value="Transparent"/>
+	  <Setter Property="Foreground" Value="White"/>
+	  <Setter Property="BorderBrush">
+		  <SolidColorBrush Color="#D95A86"/>
+	  </Setter>
+	  <Setter Property="BorderThickness" Value="1, 1, 1, 1"/>
+	  <Setter Property="HorizontalContentAlignment" Value="Center"/>
+	  <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.btn-outline-pink:pointerover /template/ ContentPresenter">
+	  <Setter Property="Background" Value="Transparent"/>
+	  <Setter Property="BorderBrush">
+		  <SolidColorBrush Color="#DB809E"/>
+	  </Setter>
+  </Style> 
+  <Style Selector="Button.btn-outline-pink:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+	  <Setter Property="TextBlock.Foreground" Value="White"/>
+  </Style>
   
   <!-- Button - Light -->
   <Style Selector="Button.btn-light">

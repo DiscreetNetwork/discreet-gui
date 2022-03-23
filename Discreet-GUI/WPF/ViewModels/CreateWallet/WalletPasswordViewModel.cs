@@ -6,6 +6,7 @@ using System.Text;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Layouts;
+using WPF.ViewModels.Start;
 
 namespace WPF.ViewModels.CreateWallet
 {
@@ -31,12 +32,14 @@ namespace WPF.ViewModels.CreateWallet
         public bool DisplayConfirmPassword { get => _displayConfirmPassword; set { _displayConfirmPassword = value; OnPropertyChanged(nameof(DisplayConfirmPassword)); } }
 
         ReactiveCommand<Unit, Unit> ToggleDisplayConfirmPasswordCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
         public WalletPasswordViewModel() { }
 
         public WalletPasswordViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateWalletDetailsViewCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<WalletPasswordViewModel, WalletDetailsViewModel>().Navigate);
+            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
 
             ToggleDisplayEnterPasswordCommand = ReactiveCommand.Create(() =>
             {

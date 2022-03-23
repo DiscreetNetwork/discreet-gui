@@ -5,20 +5,22 @@ using WPF.Factories.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.Stores;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Start;
 
 namespace WPF.ViewModels.Layouts
 {
     public class DarkTitleBarLayoutWithBackButtonViewModel : TitleBarViewModelBase
     {
-        INavigationService _previousNavigation;
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+
         public DarkTitleBarLayoutWithBackButtonViewModel(NavigationServiceFactory navigationServiceFactory, ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore) : base(contentViewModel, windowSettingsStore)
         {
-            _previousNavigation = navigationServiceFactory.CreateStackNavigation();
+            _navigationServiceFactory = navigationServiceFactory;
         }
 
         public void NavigateBack()
         {
-            _previousNavigation.Navigate();
+            _navigationServiceFactory.Create<StartViewModel>().Navigate();
         }
     }
 }

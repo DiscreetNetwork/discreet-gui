@@ -24,9 +24,12 @@ namespace WPF.ViewModels.Start
         public string ContinueButtonContent { get => _continueButtonContent; set { _continueButtonContent = value; OnPropertyChanged(nameof(ContinueButtonContent)); } }
 
         public ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
+
         public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<VerifyRecoveryPhraseViewModel, WalletPasswordViewModel>().Navigate);
+            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
 
             Selection.SingleSelect = false;
             Selection.SelectionChanged += SelectionChanged;

@@ -14,10 +14,13 @@ namespace WPF.ViewModels.CreateWallet
     class WalletNameViewModel : ViewModelBase
     {
         public ReactiveCommand<Unit, Unit> NavigateYourRecoveryPhraseViewCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
+
 
         public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateYourRecoveryPhraseViewCommand = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<WalletNameViewModel, YourRecoveryPhraseViewModel>().Navigate);
+            NavigateYourRecoveryPhraseViewCommand   = ReactiveCommand.Create(navigationServiceFactory.CreateStackNavigation<WalletNameViewModel, YourRecoveryPhraseViewModel>().Navigate);
+            NavigateBackCommand                     = ReactiveCommand.Create(navigationServiceFactory.Create<CreateWalletChoicesViewModel>().Navigate);
         }
     }
 }
