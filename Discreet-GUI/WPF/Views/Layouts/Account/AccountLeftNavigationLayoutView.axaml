@@ -148,7 +148,7 @@
 	</Grid>
 
 	  <!-- Wallet status area -->
-      <StackPanel Grid.Row="2" Margin="15 15 15 0">
+      <StackPanel Grid.Row="2" Margin="15 0 15 20" VerticalAlignment="Bottom">
 		  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Wallet is synchronised</Label>
 		  <ProgressBar Margin="0 3 0 10" Background="#858585" Height="10" CornerRadius="5" Value="100" Foreground="#D95A86"/>
 		  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Daemon is synchronized</Label>
