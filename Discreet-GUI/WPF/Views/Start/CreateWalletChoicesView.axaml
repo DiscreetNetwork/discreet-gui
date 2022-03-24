@@ -9,7 +9,7 @@
     <StyleInclude Source="/ApplicationStyles.axaml"/>
   </UserControl.Styles>
   
-  <Grid Background="#8C52C0" Width="600">
+  <Grid Background="Transparent" Width="600">
     <Grid.RowDefinitions>
       <RowDefinition/>
       <RowDefinition/>

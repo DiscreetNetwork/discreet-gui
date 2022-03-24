@@ -14,9 +14,13 @@
 		ExtendClientAreaChromeHints="NoChrome"
 		Background="Transparent"
         >
-	<Grid>
+	<Grid Background="#1C1C1D">
 		<ContentControl ZIndex="200" Content="{Binding NotificationViewModel}"/>
 		<ContentControl ZIndex="100" Content="{Binding CurrentModalViewModel}"/>
-		<TransitioningContentControl Content="{Binding CurrentViewModel}"/>
+		<TransitioningContentControl Content="{Binding CurrentViewModel}">
+			<TransitioningContentControl.PageTransition>
+				<CrossFade Duration="0:00:00.200"/>
+			</TransitioningContentControl.PageTransition>
+		</TransitioningContentControl>
 	</Grid>
 </Window>
