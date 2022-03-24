@@ -20,7 +20,7 @@ namespace WPF.ViewModels.CreateWallet
         public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateYourRecoveryPhraseViewCommand   = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
-            NavigateBackCommand                     = ReactiveCommand.Create(navigationServiceFactory.Create<CreateWalletChoicesViewModel>().Navigate);
+            NavigateBackCommand                     = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
         }
     }
 }

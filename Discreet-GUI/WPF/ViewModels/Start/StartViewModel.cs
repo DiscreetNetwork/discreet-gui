@@ -10,6 +10,7 @@ using WPF.Factories.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.CreateWallet;
 using WPF.ViewModels.Layouts;
 using WPF.ViewModels.Layouts.Account;
 
@@ -48,7 +49,7 @@ namespace WPF.ViewModels.Start
             NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
             {
                 _cancellationTokenSource.Cancel();
-                navigationServiceFactory.Create<CreateWalletChoicesViewModel>().Navigate();
+                navigationServiceFactory.Create<WalletNameViewModel>().Navigate();
             });
 
             /*
