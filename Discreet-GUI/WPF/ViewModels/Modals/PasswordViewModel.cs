@@ -9,7 +9,7 @@ using WPF.ViewModels.Layouts;
 
 namespace WPF.ViewModels.Modals
 {
-    [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
+    [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class PasswordViewModel : ViewModelBase
     {
         ReactiveCommand<Unit, Unit> EnterCommand { get; set; }

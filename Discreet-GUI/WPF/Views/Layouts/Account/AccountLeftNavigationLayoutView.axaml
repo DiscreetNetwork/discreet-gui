@@ -5,6 +5,7 @@
              mc:Ignorable="d"
              x:Class="WPF.Views.Layouts.Account.AccountLeftNavigationLayoutView"
              d:DesignHeight="720" d:DesignWidth="1280">
+	
   <UserControl.Styles>
     <Style Selector="Button.NavButton">
       <Setter Property="Height" Value="70"/>

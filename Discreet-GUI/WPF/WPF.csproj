@@ -79,8 +79,8 @@
     <Compile Update="Views\Modals\PasswordView.axaml.cs">
       <DependentUpon>PasswordView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Start\CreateWalletChoicesView.axaml.cs">
-      <DependentUpon>CreateWalletChoicesView.axaml</DependentUpon>
+    <Compile Update="Views\Start\ExistingWalletChoicesView.axaml.cs">
+      <DependentUpon>ExistingWalletChoicesView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

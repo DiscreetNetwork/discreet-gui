@@ -14,7 +14,7 @@
       <Button Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 100 0" Command="{Binding MinimizeWindowHandler}">
         <Image Width="15" Source="/Assets/Buttons/minimize-bright-white.png"/>
       </Button>
-      <Button Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 50 0" Command="{Binding ToggleWindowStateHandler}">
+      <Button Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 50 0" Command="{Binding ToggleWindowStateHandler}">
         <Image Height="15" Source="/Assets/Buttons/maximize-bright-white.png"/>
       </Button>
       <Button Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Command="{Binding CloseWindowHandler}">

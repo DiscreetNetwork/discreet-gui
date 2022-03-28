@@ -2,18 +2,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:WPF.ViewModels.Start"
              mc:Ignorable="d" 
-             x:Class="WPF.Views.Start.VerifyRecoveryPhraseView">
-
+             x:Class="WPF.Views.Start.VerifyRecoveryPhraseView"
+			 Design.Width="800" Design.Height="800">
+	
+	<Design.DataContext>
+		<vm:VerifyRecoveryPhraseViewModel/>
+	</Design.DataContext>
+	
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
   </UserControl.Styles>
   
-  <Grid Background="#292929">
+  <Grid Background="#282529">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
 	  <RowDefinition Height="auto"/>
@@ -23,12 +29,15 @@
 	<Image Grid.Row="0" Width="115" Margin="0 50 0 0" Source="/Assets/Images/process-dots-2-4.png"/>
 
 	<Label Grid.Row="1" Margin="0 50 0 0" FontSize="26" HorizontalContentAlignment="Center" Foreground="White" >Verify recovery phrase</Label>
-    <Label Grid.Row="2" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Tap the first 4 words</Label>
+    <Label Grid.Row="2" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Tap the words in the correct order</Label>
 
-	<ItemsControl Grid.Row="3" Margin="0 50 0 0" HorizontalAlignment="Center" Items="{Binding SelectedWords}" Width="450" VerticalAlignment="Center">
+	<ItemsControl Grid.Row="3" Margin="0 0 0 0" HorizontalAlignment="Center" Items="{Binding SelectedWords}" Width="450" VerticalAlignment="Center">
 		<ItemsControl.Styles>
-			<Style Selector="TextBlock">
+			<Style Selector="ContentPresenter">
+				<Setter Property="Background" Value="#2D2D2D"/>
 				<Setter Property="Margin" Value="5, 5"/>
+				<Setter Property="Padding" Value="8"/>
+				<Setter Property="CornerRadius" Value="6"/>
 			</Style>
 		</ItemsControl.Styles>
 		<ItemsControl.DataTemplates>
@@ -48,6 +57,9 @@
 	<ListBox Grid.Row="5" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding GeneratedWords}" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<ListBox.Styles>
 			<Style Selector="ListBoxItem">
+				<Setter Property="CornerRadius" Value="6"/>
+				<Setter Property="Background" Value="#2D2D2D"/>
+				<Setter Property="Padding" Value="8"/>
 				<Setter Property="Margin" Value="5, 5"/>
 			</Style>
 		</ListBox.Styles>

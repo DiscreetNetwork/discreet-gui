@@ -21,6 +21,7 @@ namespace WPF.ViewModels.Layouts
         public void NavigateBack()
         {
             _navigationServiceFactory.Create<StartViewModel>().Navigate();
+            _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
     }
 }

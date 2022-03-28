@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
+             mc:Ignorable="d" Design.Height="1100"
              x:Class="WPF.Views.Start.StartView">
 
   <UserControl.Styles>
@@ -22,10 +22,10 @@
 	<Grid Background="#8C52C0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
@@ -41,7 +41,7 @@
 		</Label>
 
 		<Carousel Grid.Row="2" SelectedIndex="{Binding CarouselIndex}"
-				  Margin="0 100 0 0" Width="500"
+				  Margin="0 0 0 0" Width="500"
 				  HorizontalAlignment="Center" VerticalAlignment="Center">
 			<Image Source="/Assets/mining.png" Width="200"/>
 			<Image Source="/Assets/privacy.png" Width="161"/>
@@ -59,15 +59,15 @@
 			   
 		<Button Grid.Row="4"
 				Classes="btn-light content-center rounded hand" 
-				HorizontalAlignment="Center" VerticalAlignment="Center"
-				FontSize="20" Height="55" Width="300" Margin="0 100 0 0"
+				HorizontalAlignment="Center" VerticalAlignment="Bottom"
+				FontSize="20" Height="55" Width="300" Margin="0 0 0 0"
 				Command="{Binding NavigateCreateWalletChoicesViewCommand}">Create new wallet
 		</Button>
 		
 		<Button Grid.Row="5" 
 				Classes="btn-outline-gray content-center rounded hand" 
-				HorizontalAlignment="Center" VerticalAlignment="Center"
-				FontSize="20" Height="55" Width="300" Margin="0 15 0 0" 
+				HorizontalAlignment="Center" VerticalAlignment="Bottom"
+				FontSize="20" Height="55" Width="300" Margin="0 15 0 70" 
 				Command="{Binding NavigateExistingWalletChoicesViewCommand}">I already have a wallet</Button>
 	</Grid>
 </UserControl>

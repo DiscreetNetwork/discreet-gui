@@ -3,36 +3,58 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="WPF.Views.Start.ExistingWalletChoicesView">
+             x:Class="WPF.Views.Start.ExistingWalletChoicesView" Design.Height="1100">
 
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
   </UserControl.Styles>
-  
-  <Grid Background="#8C52C0" Width="600">
-    <Grid.RowDefinitions>
-      <RowDefinition/>
-      <RowDefinition/>
-      <RowDefinition/>
-    </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Classes="hand" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
+  <Grid Background="#8C52C0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="auto"/>
+	  <RowDefinition Height="*"/>
+      <RowDefinition Height="auto"/>
+	  <RowDefinition Height="auto"/>
+	</Grid.RowDefinitions>
+
+	<Image Grid.Row="0"
+			Height="50" Width="100"
+			HorizontalAlignment="Center" VerticalAlignment="Top"
+			Source="/Assets/discreet_logo_white.png"/>
+
+	<Label Grid.Row="1"
+			Margin="0 0 0 0"
+			FontSize="22" FontStyle="Normal" FontWeight="Normal" Foreground="White"
+			VerticalAlignment="Top" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+		Discreet Wallet
+	</Label>
+	  
+	<Image Grid.Row="2"
+		   VerticalAlignment="Center"
+		   Source="/Assets/Images/shield.png"
+		   Width="125"/>
+	  
+    <Label Grid.Row="3" FontSize="18" Margin="0 0 0 19" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center">I already have a wallet</Label>
+
+    <Button Grid.Row="3" Classes="hand" Margin="0 0 500 10" Width="100" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
 		<StackPanel Orientation="Horizontal">
 			<Image Height="30" Source="/Assets/Buttons/back-arrow-white.png"/>
 			<Label Margin="10 0 0 0" Foreground="White" FontWeight="300" FontSize="16" VerticalAlignment="Center">Back</Label>
 		</StackPanel>
     </Button>
-    <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="20">I already have a wallet</Label>
 
-    <Button Grid.Row="1" Height="55" Width="300" 
-			Classes="hand"
-            HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-            FontSize="20" Foreground="white" Background="{x:Null}" BorderBrush="#FFAE86D3"
-            IsEnabled="false">Simple</Button>
-
-    <Button Grid.Row="2" Height="55" Width="300" Margin="0 15 0 0"
+    <Button Grid.Row="4" Height="55" Width="300"
+			VerticalAlignment="Bottom"
             Classes="btn-outline-gray hand content-center align-center rounded"
             FontSize="20"
-            Command="{Binding NavigateExistingWalletBootstrapChoicesCommand}">Simple *Bootstrap*</Button>
+            Command="{Binding NavigateOpenWalletFromFileCommand}">Open a wallet from file</Button>
+
+    <Button Grid.Row="5" Height="55" Width="300" Margin="0 15 0 70"
+			VerticalAlignment="Bottom"
+            Classes="btn-outline-gray hand content-center align-center rounded"
+            FontSize="20"
+            Command="{Binding NavigateRestoreWalletCommand}">Restore using seed or keys</Button>
   </Grid>
 </UserControl>
