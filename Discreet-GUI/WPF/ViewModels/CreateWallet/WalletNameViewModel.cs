@@ -22,9 +22,12 @@ namespace WPF.ViewModels.CreateWallet
         public ReactiveCommand<Unit, Unit> NavigateYourRecoveryPhraseViewCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
-        public string WalletName { get => _newWalletCache.WalletName; set { _newWalletCache.WalletName = value; } }
+        public string WalletName { get => _newWalletCache.WalletName; set { _newWalletCache.WalletName = value; ValidateCanContinue(); } }
 
-        public string WalletLocation { get => _newWalletCache.WalletLocation; set { _newWalletCache.WalletLocation = value; OnPropertyChanged(nameof(WalletLocation)); } }
+        public string WalletLocation { get => _newWalletCache.WalletLocation; set { _newWalletCache.WalletLocation = value; OnPropertyChanged(nameof(WalletLocation)); ValidateCanContinue(); } }
+
+        private bool _canContinue = false;
+        public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
 
         public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
         {
@@ -46,6 +49,23 @@ namespace WPF.ViewModels.CreateWallet
                 }
             }
 
+        }
+
+        public void ValidateCanContinue()
+        {
+            if (string.IsNullOrWhiteSpace(WalletName))
+            {
+                CanContinue = false;
+                return;
+            }
+
+            if(string.IsNullOrWhiteSpace(WalletLocation))
+            {
+                CanContinue = false;
+                return;
+            }
+
+            CanContinue = true;
         }
     }
 }
