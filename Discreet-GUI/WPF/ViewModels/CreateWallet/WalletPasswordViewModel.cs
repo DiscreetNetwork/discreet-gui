@@ -37,10 +37,13 @@ namespace WPF.ViewModels.CreateWallet
 
         private readonly NewWalletCache _newWalletCache;
 
-        public string SelectedPassword { get => _newWalletCache.Password; set => _newWalletCache.Password = value; }
+        public string SelectedPassword { get => _newWalletCache.Password; set { _newWalletCache.Password = value; ValidateCanContinue(); } }
 
         private string _selectedPasswordConfirm = string.Empty;
-        public string SelectedPasswordConfirm { get => _selectedPasswordConfirm; set { _selectedPasswordConfirm = value; } }
+        public string SelectedPasswordConfirm { get => _selectedPasswordConfirm; set { _selectedPasswordConfirm = value; ValidateCanContinue(); } }
+
+        private bool _canContinue = false;
+        public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
 
         public WalletPasswordViewModel() { }
 
@@ -62,6 +65,31 @@ namespace WPF.ViewModels.CreateWallet
             });
             
             _newWalletCache = newWalletCache;
+
+            ValidateCanContinue();
+        }
+
+        public void ValidateCanContinue()
+        {
+            if(string.IsNullOrWhiteSpace(SelectedPassword))
+            {
+                CanContinue = false;
+                return;
+            }
+
+            if(string.IsNullOrWhiteSpace(SelectedPasswordConfirm))
+            {
+                CanContinue = false;
+                return;
+            }
+
+            if(!SelectedPassword.Equals(SelectedPasswordConfirm))
+            {
+                CanContinue = false;
+                return;
+            }
+
+            CanContinue = true;
         }
     }
 }

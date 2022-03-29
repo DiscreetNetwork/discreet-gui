@@ -35,6 +35,8 @@ namespace WPF.ViewModels.CreateWallet
 
             NavigateYourRecoveryPhraseViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
             NavigateBackCommand                     = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
+
+            ValidateCanContinue();
         }
 
         public async Task OpenFolderDialogCommand()
