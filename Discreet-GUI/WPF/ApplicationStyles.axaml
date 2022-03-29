@@ -35,7 +35,7 @@
   <Style Selector="Button.btn-outline-pink:pointerover /template/ ContentPresenter#PART_ContentPresenter">
 	  <Setter Property="TextBlock.Foreground" Value="White"/>
   </Style>
-  
+
   <!-- Button - Light -->
   <Style Selector="Button.btn-light">
     <Setter Property="Foreground" Value="#D35683"/>
@@ -65,6 +65,10 @@
   </Style>
   <Style Selector="Button.btn-pink:pointerover">
     <Setter Property="Background" Value="#E7769F"/>
+  </Style>
+  <Style Selector="Button.btn-pink:disabled">
+	  <Setter Property="Background" Value="#373737"/>
+	  <Setter Property="TextBlock.Foreground" Value="#646464"/>
   </Style>
   <!-- Button - Pink -->
   
