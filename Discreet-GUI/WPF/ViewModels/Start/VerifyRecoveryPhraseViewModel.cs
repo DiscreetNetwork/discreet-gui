@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Text;
+using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.CreateWallet;
@@ -16,7 +17,7 @@ namespace WPF.ViewModels.Start
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class VerifyRecoveryPhraseViewModel : ViewModelBase
     {
-        public ObservableCollection<MnemonicWord> GeneratedWords { get; set; } = new ObservableCollection<MnemonicWord>(MnemonicWord.GenerateWords(24));
+        public ObservableCollection<MnemonicWord> GeneratedWords { get; set; } = new ObservableCollection<MnemonicWord>();
         public ObservableCollection<MnemonicWord> SelectedWords { get; set; } = new ObservableCollection<MnemonicWord>();
         public SelectionModel<MnemonicWord> Selection { get; } = new SelectionModel<MnemonicWord>();
 
@@ -27,10 +28,12 @@ namespace WPF.ViewModels.Start
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
         public VerifyRecoveryPhraseViewModel() { }
-        public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
+        public VerifyRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
         {
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
+
+            newWalletCache.SeedPhrase.ForEach(p => GeneratedWords.Add(p));
 
             Selection.SingleSelect = false;
             Selection.SelectionChanged += SelectionChanged;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using WPF.Attributes;
+using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Factories.ViewModel;
 using WPF.Services.Hosted;
@@ -37,6 +38,7 @@ namespace WPF
                 RegisterViewModels(services);
                 RegisterFactories(services);
                 RegisterStores(services);
+                RegisterCaches(services);
 
                 services.AddHostedService<DaemonActivatorService>();
 
@@ -91,6 +93,13 @@ namespace WPF
             });
         }
 
+        public void RegisterCaches(IServiceCollection services)
+        {
+            typeof(NewWalletCache).Assembly.GetTypes().Where(t => t.Name.Contains("Cache") && (t.Namespace == typeof(NewWalletCache).Namespace)).ToList().ForEach(t =>
+            {
+                services.AddSingleton(t);
+            });
+        }
         public static void Stop()
         {
             _ = _host.StopAsync();

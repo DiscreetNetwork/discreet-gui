@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Text;
+using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.CreateWallet;
@@ -17,7 +18,7 @@ namespace WPF.ViewModels.Start
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class YourRecoveryPhraseViewModel : ViewModelBase
     {
-        public ObservableCollection<MnemonicWord> GeneratedWords { get; set; } = new ObservableCollection<MnemonicWord>(MnemonicWord.GenerateWords(24));
+        public ObservableCollection<MnemonicWord> GeneratedWords { get; set; } = new ObservableCollection<MnemonicWord>();
 
         private bool _passphraseCopied = false;
         public bool PassphraseCopied { get => _passphraseCopied; set { _passphraseCopied = value; if (value) { PassphraseCopyContent = "Passphrase copied"; } else { PassphraseCopyContent = "Copy Passphrase"; } OnPropertyChanged(nameof(PassphraseCopied)); } }
@@ -33,7 +34,7 @@ namespace WPF.ViewModels.Start
 
         public YourRecoveryPhraseViewModel() { }
 
-        public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory)
+        public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
         {
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletNameViewModel>().Navigate);
@@ -43,6 +44,13 @@ namespace WPF.ViewModels.Start
                 PassphraseCopied = !PassphraseCopied;
                 Application.Current.Clipboard.SetTextAsync(String.Join(" ", GeneratedWords.Select(x => x.Value)));
             });
+
+            if(newWalletCache.SeedPhrase is null)
+            {
+                newWalletCache.SeedPhrase = MnemonicWord.GenerateWords(24);
+            }
+
+            newWalletCache.SeedPhrase.ForEach(p => GeneratedWords.Add(p));
         }
     }
 

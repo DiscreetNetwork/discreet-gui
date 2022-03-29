@@ -8,8 +8,11 @@
 	<UserControl.Styles>
 		<StyleInclude Source="/ApplicationStyles.axaml"/>
 
-		<Style Selector="RadioButton">
+		<Style Selector="RadioButton:checked Border">
 			<Setter Property="BorderBrush" Value="#dddddd"/>
+		</Style>
+		<Style Selector="RadioButton AccessText">
+			<Setter Property="Foreground" Value="#dddddd"/>
 		</Style>
 	</UserControl.Styles>
 	
@@ -48,7 +51,7 @@
       <Button Classes="btn btn-gray hand" Margin="0 5 5 5" Width="75" Height="30" Padding="5 4 5 5" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" Background="#3E3E3E" Foreground="White" BorderBrush="#FF3E3E3E" Command="{Binding OpenFileDialogCommand}">Browse</Button>
 
       <RadioButton IsChecked="True" FontWeight="200" Margin="0 30 20 0" Grid.Row="2" Grid.Column="0" Foreground="White" Content="Restore from seed" />
-      <RadioButton Margin="0 30 0 0" Grid.Row="2" FontWeight="200" Grid.Column="1" Foreground="White" Content="Restore from keys" />
+      <RadioButton Margin="0 30 0 0" Grid.Row="2" FontWeight="200" Grid.Column="1" Content="Restore from keys" />
 
       <TextBox Classes="input" Margin="0 20 0 0" TextWrapping="Wrap" Height="100" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Watermark="Enter your 12 word mnemonic seed" Background="{x:Null}" Padding="10 10 10 10" BorderBrush="#FF646464"/>
     </Grid>
