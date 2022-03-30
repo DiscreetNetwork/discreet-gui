@@ -13,8 +13,43 @@
   <Style Selector="Button.hand">
 	  <Setter Property="Cursor" Value="Hand"/>
   </Style>
-	
-	
+
+
+	<!-- ComboBox style -->
+	<Style Selector="ComboBox.dropdown-dark">
+		<Setter Property="BorderBrush" Value="Gray"/>
+		<Setter Property="Foreground" Value="#dddddd"/>
+		<Setter Property="Background" Value="#181818"/>
+		<Setter Property="CornerRadius" Value="6"/>
+	</Style>
+	<Style Selector="ComboBox.dropdown-dark:pointerover /template/ Border#Background">
+		<Setter Property="Background" Value="#181818"/>
+		<Setter Property="BorderBrush" Value="Gray"/>
+	</Style>
+	<Style Selector="ComboBox.dropdown-dark /template/ Path#DropDownGlyph">
+		<Setter Property="Fill" Value="White"/>
+	</Style>
+
+	<Style Selector="ComboBox.dropdown-dark /template/ Popup#PART_Popup Border">
+		<Setter Property="Background" Value="Red"/>
+	</Style>
+
+	<Style Selector="ComboBox.dropdown-dark ComboBoxItem">
+		<Setter Property="Background" Value="#181818"/>
+		<Setter Property="Foreground" Value="#dddddd"/>
+		<Setter Property="CornerRadius" Value="6"/>
+		<Setter Property="Margin" Value="5 3"/>
+		<Setter Property="Padding" Value="10"/>
+	</Style>
+	<Style Selector="ComboBox.dropdown-dark ComboBoxItem:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="#262626"/>
+		<Setter Property="TextBlock.Foreground" Value="#dddddd"/>
+	</Style>
+	<Style Selector="ComboBox.dropdown-dark ComboBoxItem:selected /template/ ContentPresenter">
+		<Setter Property="Background" Value="#181818"/>
+		<Setter Property="TextBlock.Foreground" Value="#dddddd"/>
+	</Style>
+
   <!-- Button Outline Pink -->
   <Style Selector="Button.btn-outline-pink">
 	  <Setter Property="Background" Value="Transparent"/>

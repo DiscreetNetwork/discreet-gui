@@ -20,6 +20,7 @@
 	  <RowDefinition Height="auto"/>
 	  <RowDefinition Height="auto"/>
 	  <RowDefinition Height="auto"/>
+	  <RowDefinition Height="auto"/>
       <RowDefinition/>
     </Grid.RowDefinitions>
 
@@ -30,18 +31,27 @@
             <Label FontSize="24" Foreground="white" VerticalAlignment="Bottom" Margin="0 0 0 2" FontWeight="100" >DIS available</Label>
     </StackPanel>
 	  
-    <Label Grid.Row="2" FontSize="16" Margin="0 40 0 0" FontWeight="300" Foreground="#C0C0C0">Receiver Address</Label>
-    <TextBox Classes="input-gray" HorizontalAlignment="Left" FontWeight="300" Grid.Row="3" Height="40" Width="350" Margin="0 5 0 0" Text="{Binding Receiver}"/>
+    <Label Grid.Row="2" FontSize="16" Margin="0 40 0 0" FontWeight="300" Foreground="#C0C0C0">Receiver address</Label>
+    <TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="3" Height="40" Width="350" Margin="0 5 0 0"/>
 
-    <Label Grid.Row="4" Margin="0 10 0 0" FontSize="16" FontWeight="300" Foreground="#C0C0C0">Amount</Label>
-    <TextBox Classes="input-gray" HorizontalAlignment="Left" FontWeight="300" Grid.Row="5" Height="40" Width="350" Margin="0 5 0 0" Text="{Binding Amount}"/>
+    <Label Grid.Row="4" Margin="0 15 0 0" FontSize="16" FontWeight="300" Foreground="#C0C0C0">Amount</Label>
+    <TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="5" Height="40" Width="350" Margin="0 5 0 0"/>
 
-    <Label Grid.Row="6" Margin="0 10 0 0" FontWeight="300" FontSize="16" Foreground="#C0C0C0">Add description +</Label>
-	  
-	<Label Grid.Row="7" FontSize="16" FontWeight="300" Margin="0 25 0 0" Foreground="#C0C0C0">Transaction fee</Label>
-    <ComboBox CornerRadius="8" Grid.Row="8" Height="40" Width="350" Margin="0 5 0 0"/>
+    <Label Grid.Row="6" Margin="0 15 0 0" FontWeight="300" FontSize="16" Foreground="#C0C0C0">Sender address</Label>
+	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="7" Height="40" Width="350" Margin="0 5 0 0">
+		<ComboBox.Resources>
+			<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+		</ComboBox.Resources>
+	</ComboBox>
 
-    <Button Classes="btn btn-pink hand" Grid.Row="9" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25" Command="{Binding SendTransaction}">Send</Button>
+	<Label Grid.Row="8" FontSize="16" FontWeight="300" Margin="0 50 0 0" Foreground="#C0C0C0">Transaction fee</Label>
+	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="9" Height="40" Width="350" Margin="0 5 0 0">
+		<ComboBox.Resources>
+			<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+		</ComboBox.Resources>
+	</ComboBox>
+
+    <Button Classes="btn btn-pink hand" Grid.Row="10" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25" Command="{Binding SendTransaction}">Send</Button>
 
   </Grid>
   

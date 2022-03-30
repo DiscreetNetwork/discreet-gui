@@ -13,7 +13,7 @@ namespace WPF.Views
         {
             InitializeComponent();
 
-            this.AddHandler(PointerPressedEvent, MouseDownHandler, handledEventsToo: true);
+            this.AddHandler(PointerPressedEvent, MouseDownHandler, handledEventsToo: false);
 
 #if DEBUG
             this.AttachDevTools();
@@ -28,7 +28,11 @@ namespace WPF.Views
         private void MouseDownHandler(object sender, PointerPressedEventArgs e)
         {
             var pos = e.GetCurrentPoint(this);
-            if (e.Handled || pos.Position.Y > 100) return;
+
+            // A fix to ensure the window wont begin drag, if you click on a ComboBoxItem
+            if (pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.ComboBoxItem) return;
+
+            if (pos.Position.Y > 100 || e.Handled) return;
 
             // Dont allow drag, if the window is maximized
             if (WindowState == WindowState.Maximized) return;

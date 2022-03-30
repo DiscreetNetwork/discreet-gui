@@ -166,9 +166,14 @@
 		
 	</Grid>
 
-    <ContentControl
-        Grid.Column="1"
-        Margin="60 40 0 0"
-        Content="{Binding CurrentViewModel}"/>
+	<TransitioningContentControl
+		Grid.Column="1"
+		Margin="60 40 0 0"
+		Content="{Binding CurrentViewModel}">
+		<TransitioningContentControl.PageTransition>
+			<CrossFade Duration="0:00:00.100"/>
+		</TransitioningContentControl.PageTransition>
+	</TransitioningContentControl>
+    
   </Grid>
 </UserControl>
