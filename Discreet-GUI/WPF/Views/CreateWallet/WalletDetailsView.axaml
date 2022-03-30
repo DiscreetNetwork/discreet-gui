@@ -41,7 +41,11 @@
 			<TextBox Classes="input content-left" Text="{Binding WalletLocation}" Grid.Row="3" Margin="0 5 0 0" Height="40"/>
 
 			<Label Grid.Row="4" Foreground="#DDDDDD" Margin="0 20 0 0">Network type</Label>
-			<DropDown Grid.Row="5" Width="350" Height="40" Margin="0 5 0 0" Items="{Binding NetworkTypes}" SelectedIndex="{Binding SelectedNetworkTypeIndex}"/>
+			<ComboBox Classes="dropdown-dark" Grid.Row="5" Width="350" Height="40" Margin="0 5 0 0" Items="{Binding NetworkTypes}" SelectedIndex="{Binding SelectedNetworkTypeIndex}">
+				<ComboBox.Resources>
+					<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+				</ComboBox.Resources>
+			</ComboBox>
 			
 			<CheckBox Grid.Row="6" Cursor="Hand" Margin="0 15 0 0" Content="Bootstrap" IsChecked="{Binding Bootstrap}">
 				<CheckBox.Styles>
