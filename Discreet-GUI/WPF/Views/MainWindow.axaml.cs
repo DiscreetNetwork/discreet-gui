@@ -28,7 +28,6 @@ namespace WPF.Views
         private void MouseDownHandler(object sender, PointerPressedEventArgs e)
         {
             var pos = e.GetCurrentPoint(this);
-            var t = pos.Pointer.Captured.InteractiveParent;
 
             // A fix to ensure the window wont begin drag, if you click on a ComboBoxItem
             if (pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.ComboBoxItem) return;
