@@ -29,6 +29,8 @@ namespace WPF.ViewModels.Account
             _rpcServer = rpcServer;
 
             SendTransaction = ReactiveCommand.Create(CreateAndSendTransaction);
+
+            SendTransaction = ReactiveCommand.CreateFromTask(CreateAndSendTransactionAsync); // New
         }
 
         public void CreateAndSendTransaction()
@@ -52,6 +54,26 @@ namespace WPF.ViewModels.Account
                 await _rpcServer.Request(new DaemonRequest("create_transaction", req));
             }).ConfigureAwait(false);
             
+        }
+
+        // New
+        public async Task CreateAndSendTransactionAsync()
+        {
+            CreateTransactionParam p = new CreateTransactionParam
+            {
+                Amount = Amount,
+                To = Receiver
+            };
+
+            CreateTransactionRequest req = new CreateTransactionRequest
+            {
+                Address = _walletCache.Accounts[0].Address,
+                Params = new List<CreateTransactionParam>(new CreateTransactionParam[] { p }),
+                Raw = false,
+                Relay = true
+            };
+
+            await _rpcServer.Request(new DaemonRequest("create_transaction", req));
         }
     }
 }
