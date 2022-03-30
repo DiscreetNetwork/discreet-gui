@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPF.Caches;
+using WPF.ExtensionMethods;
 using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels.Account
@@ -21,32 +22,33 @@ namespace WPF.ViewModels.Account
         public WalletManager WalletManager { get; set; }
 
         //public ObservableCollection<WalletCache.Account> Accounts { get; set; } = new ObservableCollection<WalletCache.Account>();
-        public List<WalletCache.Account> Accounts => WalletCache.Accounts; // New
+        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => WalletCache.Accounts; // New
 
 
         //public decimal TotalBalance { get; set; }
-        public decimal TotalBalance => Accounts.Sum(x => x.Balance);
+        public decimal TotalBalance => WalletCache.TotalBalance;
 
+        public AccountHomeViewModel() { }
         public AccountHomeViewModel(WalletCache walletCache, WalletManager walletManager)
         {
             WalletCache = walletCache;
             WalletManager = walletManager;
 
-            walletCache.Accounts.ForEach(x => Accounts.Add(x));
+            //walletCache.Accounts.ForEach(x => Accounts.Add(x));
             //TotalBalance = WalletCache.TotalBalance;
 
             //walletManager.OnWalletChange += WalletManager_OnWalletChange;
-            walletCache.AccountsChanged += OnAccountsChanged;
-
-            _ = Task.Run(() => walletManager.Start(walletCache.Label)).ConfigureAwait(false);
+            //walletCache.AccountsChanged += OnAccountsChanged;
+            walletCache.TotalBalanceChanged += () => OnPropertyChanged(nameof(TotalBalance));
+            //_ = Task.Run(() => walletManager.Start(walletCache.Label)).ConfigureAwait(false);
         }
 
-        // New
-        void OnAccountsChanged()
-        {
-            OnPropertyChanged(nameof(Accounts));
-            OnPropertyChanged(nameof(TotalBalance));
-        }
+        //// New
+        //void OnAccountsChanged()
+        //{
+        //    OnPropertyChanged(nameof(Accounts));
+        //    OnPropertyChanged(nameof(TotalBalance));
+        //}
 
         private void WalletManager_OnWalletChange(object sender, WalletChangeEventArgs e)
         {

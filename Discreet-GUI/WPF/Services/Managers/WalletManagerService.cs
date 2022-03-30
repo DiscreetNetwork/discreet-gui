@@ -24,41 +24,41 @@ namespace WPF.Services.Managers
             _walletCache = walletCache;
         }
 
-        public async Task Start(CancellationToken token)
-        {
-            while (!token.IsCancellationRequested)
-            {
-                if (_walletCache.Accounts != null)
-                {
-                    _walletCache.Accounts.ForEach(async account =>
-                    {
-                        var resp = await _rpcServer.Request(new DaemonRequest("get_balance", account.Address));
+        //public async Task Start(CancellationToken token)
+        //{
+        //    while (!token.IsCancellationRequested)
+        //    {
+        //        if (_walletCache.Accounts != null)
+        //        {
+        //            _walletCache.Accounts.ForEach(async account =>
+        //            {
+        //                var resp = await _rpcServer.Request(new DaemonRequest("get_balance", account.Address));
 
-                        if (resp != null)
-                        {
-                            if (resp.Result.GetType() == typeof(JsonElement))
-                            {
-                                var json = (JsonElement)resp.Result;
+        //                if (resp != null)
+        //                {
+        //                    if (resp.Result.GetType() == typeof(JsonElement))
+        //                    {
+        //                        var json = (JsonElement)resp.Result;
 
-                                if (json.ValueKind == JsonValueKind.Number)
-                                {
-                                    // the request was good
-                                    account.Balance = json.GetUInt64();
-                                }
-                                else
-                                {
-                                    // error type
-                                    var err = JsonSerializer.Deserialize<DaemonErrorResult>(json);
+        //                        if (json.ValueKind == JsonValueKind.Number)
+        //                        {
+        //                            // the request was good
+        //                            account.Balance = json.GetUInt64();
+        //                        }
+        //                        else
+        //                        {
+        //                            // error type
+        //                            var err = JsonSerializer.Deserialize<DaemonErrorResult>(json);
 
-                                    System.Diagnostics.Debug.WriteLine("WalletManager getting balance : " + err.ErrMsg);
-                                }
-                            }
-                        }
-                    });
+        //                            System.Diagnostics.Debug.WriteLine("WalletManager getting balance : " + err.ErrMsg);
+        //                        }
+        //                    }
+        //                }
+        //            });
 
-                    await Task.Delay(100);
-                }
-            }
-        }
+        //            await Task.Delay(100);
+        //        }
+        //    }
+        //}
     }
 }

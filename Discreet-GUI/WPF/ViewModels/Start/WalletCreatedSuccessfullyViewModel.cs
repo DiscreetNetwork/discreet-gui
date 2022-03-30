@@ -25,7 +25,7 @@ namespace WPF.ViewModels.Start
 
             walletCache.Label = response.Label;
             walletCache.TotalBalance = response.Addresses.Select(x => x.Balance).Aggregate((x, y) => x + y);
-            walletCache.Accounts = response.Addresses.Select(x => new WalletCache.Account { Address = x.Address, Balance = x.Balance, Name = x.Name }).ToList();
+            walletCache.Accounts = new ExtensionMethods.ObservableCollectionEx<WalletCache.WalletAddress>(response.Addresses.Select(x => new WalletCache.WalletAddress { Address = x.Address, Balance = x.Balance, Name = x.Name }));
 
             newWalletCache.Clear();
 

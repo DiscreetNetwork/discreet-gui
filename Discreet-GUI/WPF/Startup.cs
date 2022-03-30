@@ -12,6 +12,7 @@ using WPF.Attributes;
 using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Factories.ViewModel;
+using WPF.Hosted;
 using WPF.Services.Hosted;
 using WPF.Stores;
 using WPF.Stores.Navigation;
@@ -46,6 +47,7 @@ namespace WPF
                 services.AddSingleton<WalletManager>();
 
                 services.AddHostedService<DaemonActivatorService>();
+                services.AddHostedService<WalletPollerBackgroundService>();
 
                 // Startup
                 services.AddSingleton<MainWindowViewModel>();
