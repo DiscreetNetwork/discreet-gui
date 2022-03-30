@@ -26,7 +26,12 @@ namespace WPF.ViewModels.Start
 
         public RestoreWalletViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NextCommand = ReactiveCommand.Create(navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate);
+            NextCommand = ReactiveCommand.Create(() =>
+            {
+                navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+                navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
+            });
+
             BackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate);
 
             OpenFileDialogCommand = ReactiveCommand.CreateFromTask(async () =>
