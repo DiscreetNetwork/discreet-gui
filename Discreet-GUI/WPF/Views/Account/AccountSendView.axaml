@@ -2,9 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:WPF.ViewModels.Account"
              mc:Ignorable="d"
              x:Class="WPF.Views.Account.AccountSendView">
 
+  <UserControl.DataContext>
+	  <vm:AccountSendViewModel/>
+  </UserControl.DataContext>
+	
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
   </UserControl.Styles>
@@ -38,17 +43,27 @@
     <TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="5" Height="40" Width="350" Margin="0 5 0 0"/>
 
     <Label Grid.Row="6" Margin="0 15 0 0" FontWeight="300" FontSize="16" Foreground="#C0C0C0">Sender address</Label>
-	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="7" Height="40" Width="350" Margin="0 5 0 0">
+	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="7" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding FeeItems}" SelectedIndex="{Binding SelectedFeeItemsIndex}">
 		<ComboBox.Resources>
 			<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
 		</ComboBox.Resources>
+		<ComboBox.DataTemplates>
+			<DataTemplate>
+				<TextBlock Text="{Binding Fee}"/>
+			</DataTemplate>
+		</ComboBox.DataTemplates>
 	</ComboBox>
 
 	<Label Grid.Row="8" FontSize="16" FontWeight="300" Margin="0 50 0 0" Foreground="#C0C0C0">Transaction fee</Label>
-	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="9" Height="40" Width="350" Margin="0 5 0 0">
+	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="9" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding SenderAccountItems}" SelectedIndex="{Binding SelectedSenderAccountItemsIndex}">
 		<ComboBox.Resources>
 			<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
 		</ComboBox.Resources>
+		<ComboBox.DataTemplates>
+			<DataTemplate>
+				<TextBlock Text="{Binding Address}"/>
+			</DataTemplate>
+		</ComboBox.DataTemplates>
 	</ComboBox>
 
     <Button Classes="btn btn-pink hand" Grid.Row="10" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25" Command="{Binding SendTransaction}">Send</Button>
