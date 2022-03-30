@@ -1,6 +1,6 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
-using DesktopNotifications.Avalonia;
+//using DesktopNotifications.Avalonia;
 
 namespace WPF
 {
@@ -16,7 +16,7 @@ namespace WPF
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .SetupDesktopNotifications()
+                //.SetupDesktopNotifications()
                 .LogToTrace()
                 .UseReactiveUI();
     }

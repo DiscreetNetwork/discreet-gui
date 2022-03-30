@@ -8,9 +8,18 @@ namespace Services.Daemon.Common
 {
     public class DaemonResponse
     {
+        [JsonPropertyName("jsonrpc")]
         public string RpcVersion { get; set; }
-        public int Id { get; set; }
+
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("result")]
         public object Result { get; set; }
+
+        public DaemonResponse() { }
+
+        public static DaemonResponse Deserialize(string respText) => JsonSerializer.Deserialize<DaemonResponse>(respText, new JsonSerializerOptions());
     }
 
     public class DaemonErrorResult

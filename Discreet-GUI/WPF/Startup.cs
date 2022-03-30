@@ -1,6 +1,8 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Services.Daemon;
+using Services.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,9 @@ namespace WPF
                 RegisterFactories(services);
                 RegisterStores(services);
                 RegisterCaches(services);
+
+                services.AddSingleton<RPCServer>();
+                services.AddSingleton<WalletManager>();
 
                 services.AddHostedService<DaemonActivatorService>();
 
@@ -100,6 +105,7 @@ namespace WPF
                 services.AddSingleton(t);
             });
         }
+
         public static void Stop()
         {
             _ = _host.StopAsync();

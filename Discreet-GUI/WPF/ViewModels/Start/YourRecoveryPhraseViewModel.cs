@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls.Selection;
 using ReactiveUI;
+using Services.Daemon;
+using Services.Daemon.Responses;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +36,7 @@ namespace WPF.ViewModels.Start
 
         public YourRecoveryPhraseViewModel() { }
 
-        public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
+        public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, RPCServer rpcServer)
         {
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletNameViewModel>().Navigate);
@@ -47,7 +49,8 @@ namespace WPF.ViewModels.Start
 
             if(newWalletCache.SeedPhrase is null)
             {
-                newWalletCache.SeedPhrase = MnemonicWord.GenerateWords(24);
+                newWalletCache.SeedPhrase = GetMnemonicResponse.GetMnemonic(rpcServer).Mnemonic.Split(' ').Select(x => new MnemonicWord { Value = x }).ToList();
+                //newWalletCache.SeedPhrase = MnemonicWord.GenerateWords(24);
             }
 
             newWalletCache.SeedPhrase.ForEach(p => GeneratedWords.Add(p));

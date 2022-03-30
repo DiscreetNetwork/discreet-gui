@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Text;
+using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Account;
@@ -26,8 +27,12 @@ namespace WPF.ViewModels.Layouts.Account
         public ReactiveCommand<Unit, Unit> NavigateAccountSettingsCommand { get; set; }
         public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
 
-        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory)
+        public WalletCache WalletCache { get; set; }
+
+        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache)
         {
+            WalletCache = walletCache;
+
             _accountNavigationStore = accountNavigationStore;
             accountNavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
 

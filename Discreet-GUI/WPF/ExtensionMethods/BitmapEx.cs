@@ -19,13 +19,15 @@ namespace WPF.ExtensionMethods
         public static Avalonia.Media.Imaging.Bitmap CreateQRCode(string text)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
-            System.Drawing.Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            /*QRCodeData qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+            //QRC qrCode = new QRCode(qrCodeData);
+            System.Drawing.Bitmap qrCodeImage = qrCodeData.GetGraphic(20);
 
             using MemoryStream ms = new MemoryStream();
             qrCodeImage.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-            ms.Position = 0;
+            ms.Position = 0;*/
+
+            using var ms = new MemoryStream();
 
             Avalonia.Media.Imaging.Bitmap avaloniaBitmap = new Avalonia.Media.Imaging.Bitmap(ms);
             return avaloniaBitmap;

@@ -18,6 +18,7 @@ namespace WPF.ViewModels.Start
     public class VerifyRecoveryPhraseViewModel : ViewModelBase
     {
         public ObservableCollection<MnemonicWord> GeneratedWords { get; set; } = new ObservableCollection<MnemonicWord>();
+        public ObservableCollection<MnemonicWord> RandomizedWords { get; set; } = new ObservableCollection<MnemonicWord>();
         public ObservableCollection<MnemonicWord> SelectedWords { get; set; } = new ObservableCollection<MnemonicWord>();
         public SelectionModel<MnemonicWord> Selection { get; } = new SelectionModel<MnemonicWord>();
 
@@ -33,7 +34,9 @@ namespace WPF.ViewModels.Start
             NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate);
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
 
+            var random = new Random();
             newWalletCache.SeedPhrase.ForEach(p => GeneratedWords.Add(p));
+            newWalletCache.SeedPhrase.OrderBy(x => random.Next(0, newWalletCache.SeedPhrase.Count)).ToList().ForEach(p => RandomizedWords.Add(p));
 
             Selection.SingleSelect = false;
             Selection.SelectionChanged += SelectionChanged;

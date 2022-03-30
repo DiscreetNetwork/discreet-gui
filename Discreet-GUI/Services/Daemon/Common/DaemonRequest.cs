@@ -11,8 +11,13 @@ namespace Services.Daemon.Common
     /// </summary>
     public class DaemonRequest
     {
+        [JsonPropertyName("jsonrpc")]
         public string RpcVersion { get => "2.0"; }
+
+        [JsonPropertyName("method")]
         public string Method { get; set; }
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
         [JsonPropertyName("params")]

@@ -54,7 +54,7 @@
 
     <Separator Grid.Row="4" Height="1" Margin="0 25 0 10" Width="450" Background="#404040"/>
 
-	<ListBox Grid.Row="5" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding GeneratedWords}" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<ListBox Grid.Row="5" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding RandomizedWords}" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<ListBox.Styles>
 			<Style Selector="ListBoxItem">
 				<Setter Property="CornerRadius" Value="6"/>

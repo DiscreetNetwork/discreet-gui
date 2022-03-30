@@ -1,8 +1,12 @@
 ﻿using ReactiveUI;
+using Services.Daemon;
+using Services.Daemon.Responses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Text;
+using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
@@ -15,8 +19,16 @@ namespace WPF.ViewModels.Start
     class WalletCreatedSuccessfullyViewModel : ViewModelBase
     {
         ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
-        public WalletCreatedSuccessfullyViewModel(NavigationServiceFactory navigationServiceFactory)
+        public WalletCreatedSuccessfullyViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletCache walletCache, RPCServer rpcServer)
         {
+            var response = CreateWalletResponse.CreateWallet(rpcServer, newWalletCache.WalletName, newWalletCache.SeedPhrase.Select(x => x.Value).Aggregate((x, y) => x + " " + y), newWalletCache.Password);
+
+            walletCache.Label = response.Label;
+            walletCache.TotalBalance = response.Addresses.Select(x => x.Balance).Aggregate((x, y) => x + y);
+            walletCache.Accounts = response.Addresses.Select(x => new WalletCache.Account { Address = x.Address, Balance = x.Balance, Name = x.Name }).ToList();
+
+            newWalletCache.Clear();
+
             NavigateNextCommand = ReactiveCommand.Create(() => 
             {
                 navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
