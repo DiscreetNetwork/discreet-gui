@@ -19,6 +19,7 @@ namespace WPF.ViewModels.Account
         public string Receiver { get; set; }
         public ulong Amount { get; set; }
 
+        // New
         ObservableCollection<FeeMock> FeeItems { get; set; } = new ObservableCollection<FeeMock>() { new FeeMock { Fee = "12 DIS" }, new FeeMock { Fee = "30 DIS" } };
         int SelectedFeeItemsIndex { get; set; } = 0;
         ObservableCollection<SenderAccountMock> SenderAccountItems { get; set; } = new ObservableCollection<SenderAccountMock>() { new SenderAccountMock { Address = "123asd456xtg" }, new SenderAccountMock { Address = "85321sajcv932" } };

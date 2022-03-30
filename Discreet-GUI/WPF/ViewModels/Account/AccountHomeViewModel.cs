@@ -20,9 +20,12 @@ namespace WPF.ViewModels.Account
         public WalletCache WalletCache { get; set; }
         public WalletManager WalletManager { get; set; }
 
-        public ObservableCollection<WalletCache.Account> Accounts { get; set; } = new ObservableCollection<WalletCache.Account>();
+        //public ObservableCollection<WalletCache.Account> Accounts { get; set; } = new ObservableCollection<WalletCache.Account>();
+        public List<WalletCache.Account> Accounts => WalletCache.Accounts; // New
 
-        public decimal TotalBalance { get; set; }
+
+        //public decimal TotalBalance { get; set; }
+        public decimal TotalBalance => Accounts.Sum(x => x.Balance);
 
         public AccountHomeViewModel(WalletCache walletCache, WalletManager walletManager)
         {
@@ -30,18 +33,26 @@ namespace WPF.ViewModels.Account
             WalletManager = walletManager;
 
             walletCache.Accounts.ForEach(x => Accounts.Add(x));
-            TotalBalance = WalletCache.TotalBalance;
+            //TotalBalance = WalletCache.TotalBalance;
 
-            walletManager.OnWalletChange += WalletManager_OnWalletChange;
+            //walletManager.OnWalletChange += WalletManager_OnWalletChange;
+            walletCache.AccountsChanged += OnAccountsChanged;
 
             _ = Task.Run(() => walletManager.Start(walletCache.Label)).ConfigureAwait(false);
+        }
+
+        // New
+        void OnAccountsChanged()
+        {
+            OnPropertyChanged(nameof(Accounts));
+            OnPropertyChanged(nameof(TotalBalance));
         }
 
         private void WalletManager_OnWalletChange(object sender, WalletChangeEventArgs e)
         {
             // update GUI information...
             WalletCache.TotalBalance = e.cache.Wallet.TotalBalance;
-            TotalBalance = e.cache.Wallet.TotalBalance;
+            //TotalBalance = e.cache.Wallet.TotalBalance;
 
             //WalletCache.Accounts.Zip(e.cache.Wallet.Addresses).ToList().ForEach(x => x.First.Balance = x.Second.Balance);
             foreach (var account in WalletCache.Accounts)
