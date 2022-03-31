@@ -1,9 +1,11 @@
 ﻿using Services.Daemon;
+using Services.Daemon.Common;
 using Services.Daemon.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WPF.Caches;
 using WPF.Factories.Navigation;
@@ -31,23 +33,42 @@ namespace WPF.ViewModels.Modals
             _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
 
-        public void ConfirmTransactionCommand()
+        public async Task ConfirmTransactionCommand()
         {
             CreateTransactionParam p = new CreateTransactionParam
             {
-                Amount = _sendTransactionCache.Amount,
+                Amount = (ulong)_sendTransactionCache.Amount,
                 To = _sendTransactionCache.Receiver
             };
 
             CreateTransactionRequest req = new CreateTransactionRequest
             {
-                Address = _walletCache.Accounts[0].Address,
+                Address = _sendTransactionCache.Sender,
                 Params = new List<CreateTransactionParam>(new CreateTransactionParam[] { p }),
                 Raw = false,
                 Relay = true
             };
 
-            await _rpcServer.Request(new DaemonRequest("create_transaction", req));
+            var resp = await _rpcServer.Request(new DaemonRequest("create_transaction", req));
+
+            if (resp != null && resp.Result != null)
+            {
+                if (resp.Result is JsonElement json) 
+                {
+                    try
+                    {
+                        DaemonErrorResult errResult = JsonSerializer.Deserialize<DaemonErrorResult>(json);
+                        System.Diagnostics.Debug.WriteLine($"CreateTransactionResponse: {errResult.ErrMsg}");
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"CreateTransactionResponse: {e.Message}");
+                    }
+                } 
+            }
+
+            _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
     }
 }

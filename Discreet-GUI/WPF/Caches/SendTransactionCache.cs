@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace WPF.Caches
 {
-    class SendTransactionCache
+    public class SendTransactionCache
     {
         public string Receiver { get; set; }
-        public ulong Amount { get; set; }
+        public double Amount { get; set; }
+        public string Sender { get; set; }
     }
 }

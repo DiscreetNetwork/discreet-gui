@@ -2,67 +2,89 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
+			 xmlns:converters="using:WPF.ValueConverters"
+			 mc:Ignorable="d"
              x:Class="WPF.Views.Account.AccountSendView">
 	
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
   </UserControl.Styles>
-  
-  <Grid Background="#1C1C1D">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-	  <RowDefinition Height="auto"/>
-	  <RowDefinition Height="auto"/>
-	  <RowDefinition Height="auto"/>
-	  <RowDefinition Height="auto"/>
-	  <RowDefinition Height="auto"/>
-      <RowDefinition/>
-    </Grid.RowDefinitions>
 
-    <Label Grid.Row="0" FontSize="30" Foreground="#8C52C0">Send</Label>
-	  
-	<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 20 0 0">
-            <Label FontSize="50" Foreground="white" Padding="4 0 5 0"  FontWeight="300" >8217.14</Label>
-            <Label FontSize="24" Foreground="white" VerticalAlignment="Bottom" Margin="0 0 0 2" FontWeight="100" >DIS available</Label>
-    </StackPanel>
-	  
-    <Label Grid.Row="2" FontSize="16" Margin="0 40 0 0" FontWeight="300" Foreground="#C0C0C0">Receiver address</Label>
-    <TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="3" Height="40" Width="350" Margin="0 5 0 0"/>
+	<Grid Background="#1C1C1D">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
 
-    <Label Grid.Row="4" Margin="0 15 0 0" FontSize="16" FontWeight="300" Foreground="#C0C0C0">Amount</Label>
-    <TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="5" Height="40" Width="350" Margin="0 5 0 0"/>
+		<Label Grid.Row="0" FontSize="30" Foreground="#8C52C0">Send</Label>
 
-    <Label Grid.Row="6" Margin="0 15 0 0" FontWeight="300" FontSize="16" Foreground="#C0C0C0">Sender address</Label>
-	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="7" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding SenderAccounts}" SelectedIndex="{Binding SelectedSenderAccountIndex}">
-		<ComboBox.Resources>
-			<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
-		</ComboBox.Resources>
-		<ComboBox.DataTemplates>
-			<DataTemplate>
-				<TextBlock Text="{Binding Display}"/>
-			</DataTemplate>
-		</ComboBox.DataTemplates>
-	</ComboBox>
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 20 0 0">
+			<Label FontSize="50" Foreground="white" Padding="4 0 5 0"  FontWeight="300" >8217.14</Label>
+			<Label FontSize="24" Foreground="white" VerticalAlignment="Bottom" Margin="0 0 0 2" FontWeight="100" >DIS available</Label>
+		</StackPanel>
 
-	<Label Grid.Row="8" FontSize="16" FontWeight="300" Margin="0 50 0 0" Foreground="#C0C0C0">Transaction fee</Label>
-	<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="9" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding FeeItems}" SelectedIndex="{Binding SelectedFeeItemsIndex}">
-		<ComboBox.Resources>
-			<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
-		</ComboBox.Resources>
-		<ComboBox.DataTemplates>
-			<DataTemplate>
-				<TextBlock Text="{Binding Fee}"/>
-			</DataTemplate>
-		</ComboBox.DataTemplates>
-	</ComboBox>
+		<Label Grid.Row="2" FontSize="16" Margin="0 40 0 0" FontWeight="300" Foreground="#C0C0C0">Receiver address</Label>
+		<TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="3" Height="40" Width="350" Margin="0 5 0 0" Text="{Binding Receiver, Mode=TwoWay}"/>
 
-    <Button Classes="btn btn-pink hand" Grid.Row="10" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25" Command="{Binding DisplayConfirm}">Send</Button>
+		<Label Grid.Row="4" Margin="0 15 0 0" FontSize="16" FontWeight="300" Foreground="#C0C0C0">Amount</Label>
+		<NumericUpDown Grid.Row="5" 
+					   VerticalContentAlignment="Center" HorizontalAlignment="Left"
+					   Height="40" Width="350"
+					   ShowButtonSpinner="False" Value="{Binding Amount}" FontWeight="300">
+			<NumericUpDown.Styles>
+				<Style Selector="NumericUpDown, NumericUpDown:pointerover">
+					<Setter Property="Background" Value="#181818"/>
+					<Setter Property="BorderBrush" Value="Gray"/>
+					<Setter Property="CornerRadius" Value="6"/>
+					<Setter Property="Foreground" Value="White"/>
+				</Style>
+				<Style Selector="NumericUpDown:pointerover Border, NumericUpDown:focus-within Border">
+					<Setter Property="TextBox.Foreground" Value="White"/>
+					<Setter Property="BorderBrush" Value="Gray"/>
+					<Setter Property="CornerRadius" Value="6"/>
+					<Setter Property="Background" Value="#181818"/>
+				</Style>
+				<Style Selector="TextBox">
+					<Setter Property="CaretBrush" Value="White"/>
+				</Style>
+			</NumericUpDown.Styles>
+		</NumericUpDown>
 
-  </Grid>
+		<Label Grid.Row="6" Margin="0 15 0 0" FontWeight="300" FontSize="16" Foreground="#C0C0C0">Sender address</Label>
+		<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="7" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding SenderAccounts}" SelectedIndex="{Binding SelectedSenderAccountIndex}">
+			<ComboBox.Resources>
+				<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+			</ComboBox.Resources>
+			<ComboBox.DataTemplates>
+				<DataTemplate>
+					<TextBlock Text="{Binding Display}"/>
+				</DataTemplate>
+			</ComboBox.DataTemplates>
+		</ComboBox>
+
+		<Label Grid.Row="8" FontSize="16" FontWeight="300" Margin="0 50 0 0" Foreground="#C0C0C0">Transaction fee</Label>
+		<ComboBox Classes="dropdown-dark" CornerRadius="8" Grid.Row="9" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding FeeItems}" SelectedIndex="{Binding SelectedFeeItemsIndex}">
+			<ComboBox.Resources>
+				<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+			</ComboBox.Resources>
+			<ComboBox.DataTemplates>
+				<DataTemplate>
+					<TextBlock Text="{Binding Fee}"/>
+				</DataTemplate>
+			</ComboBox.DataTemplates>
+		</ComboBox>
+
+		<Button Classes="btn btn-pink hand" Grid.Row="10" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25" Command="{Binding DisplayConfirm}">Send</Button>
+
+	</Grid>
   
 </UserControl>

@@ -59,8 +59,6 @@ namespace WPF
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
 
-            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<ConfirmViewModel>().Navigate();
-
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();

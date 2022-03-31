@@ -53,7 +53,7 @@
 				</Button>
 				
 				<Button 
-					Grid.Row="2" Classes="btn btn-pink" Cursor="Hand" Command="{Binding CancelTransactionCommand}"
+					Grid.Row="2" Classes="btn btn-pink" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
 					Width="200" Height="45" FontWeight="300" 
 					HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 					Confirm
