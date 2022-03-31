@@ -41,8 +41,16 @@ namespace WPF.ViewModels.Account
 
 
         int _selectedSenderAccountIndex = 0;
-        int SelectedSenderAccountIndex { get => _selectedSenderAccountIndex; set { _selectedSenderAccountIndex = value; OnPropertyChanged(nameof(SelectedAccount)); } }
-
+        int SelectedSenderAccountIndex
+        {
+            get => _selectedSenderAccountIndex;
+            set
+            {
+                if (value < 0) _selectedSenderAccountIndex = 0;
+                else _selectedSenderAccountIndex = value;
+                OnPropertyChanged(nameof(SelectedAccount));
+            }
+        }
 
         public AccountSendViewModel(WalletCache walletCache, NavigationServiceFactory navigationServiceFactory, SendTransactionCache sendTransactionCache)
         {
