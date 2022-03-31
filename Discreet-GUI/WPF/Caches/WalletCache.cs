@@ -78,6 +78,9 @@ namespace WPF.Caches
             private long _height;
             public long Height { get => _height; set { _height = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Height))); } }
 
+            private Avalonia.Media.Imaging.Bitmap _identicon;
+            public Avalonia.Media.Imaging.Bitmap Identicon { get => _identicon; set { _identicon = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Identicon))); } }
+
             public ObservableCollection<int> UTXOs { get; set; } 
         }
 

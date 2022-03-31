@@ -51,7 +51,7 @@
 								  <ColumnDefinition Width="*"/>
 							  </Grid.ColumnDefinitions>
 
-							  <Image Height="55" VerticalAlignment="Center" Grid.Column="0" Source="/Assets/Icons/account-1.png"/>
+							  <Image Height="45" Width="45" Margin="5 0 0 0" VerticalAlignment="Center" Grid.Column="0" Source="{Binding Identicon}"/>
 							  <Label Margin="10 0 0 0" FontSize="16" FontWeight="200" Grid.Column="1" VerticalAlignment="Center" Foreground="white" Content="{Binding Name}"></Label>
 							  <Label Grid.Column="2" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
 							  <Label Grid.Column="3" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>

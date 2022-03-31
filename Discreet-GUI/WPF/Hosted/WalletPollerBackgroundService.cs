@@ -2,6 +2,11 @@
 using Services.Daemon;
 using Services.Daemon.Common;
 using Services.Daemon.Responses;
+using Services.Jazzicon;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -90,7 +95,7 @@ namespace WPF.Hosted
 
                             wallet.Addresses.ForEach(a =>
                             {
-                                _walletCache.Accounts.Add(new WalletCache.WalletAddress
+                                var accnt = new WalletCache.WalletAddress
                                 {
                                     Name = a.Name,
                                     Address = a.Address,
@@ -99,7 +104,21 @@ namespace WPF.Hosted
                                     Synced = a.Synced,
                                     Syncer = a.Syncer,
                                     UTXOs = new ObservableCollection<int>(a.UTXOs)
-                                });
+                                };
+
+                                var icon = new Jazzicon(160, accnt.Address);
+
+                                using (var _ms = new System.IO.MemoryStream())
+                                {
+                                    var encoder = icon.Identicon.GetConfiguration().ImageFormatsManager.FindEncoder(PngFormat.Instance);
+                                    icon.Identicon.Save(_ms, encoder);
+
+                                    _ms.Seek(0, System.IO.SeekOrigin.Begin);
+
+                                    accnt.Identicon = new Avalonia.Media.Imaging.Bitmap(_ms);
+                                }
+
+                                _walletCache.Accounts.Add(accnt);
                             });
 
                             wallet.Addresses.ForEach(a => System.Diagnostics.Debug.WriteLine($"address is \"{a.Address}\""));
