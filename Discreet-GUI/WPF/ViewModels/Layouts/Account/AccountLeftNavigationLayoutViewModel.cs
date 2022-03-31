@@ -3,9 +3,11 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using WPF.Caches;
+using WPF.ExtensionMethods;
 using WPF.Factories.Navigation;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Account;
@@ -27,18 +29,20 @@ namespace WPF.ViewModels.Layouts.Account
         public ReactiveCommand<Unit, Unit> NavigateAccountSettingsCommand { get; set; }
         public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
 
-        public decimal TotalBalance => WalletCache.TotalBalance;
+        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
+        public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
 
-        public WalletCache WalletCache { get; set; }
+
+        private readonly WalletCache _walletCache;
 
         public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache)
         {
-            WalletCache = walletCache;
+            _walletCache = walletCache;
 
-            walletCache.TotalBalanceChanged += () => OnPropertyChanged(nameof(TotalBalance));
+            Accounts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(TotalBalance));
 
             _accountNavigationStore = accountNavigationStore;
-            accountNavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
 
             NavigateAccountHomeCommand              = ReactiveCommand.Create(() => 
             { 
@@ -65,11 +69,6 @@ namespace WPF.ViewModels.Layouts.Account
                 ResetButtonStates(); ButtonActiveStates[4] = true;
                 navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
             });
-        }
-
-        private void OnCurrentViewModelChanged()
-        {
-            OnPropertyChanged(nameof(CurrentViewModel));
         }
 
         void ResetButtonStates()

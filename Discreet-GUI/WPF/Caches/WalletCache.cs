@@ -21,9 +21,9 @@ namespace WPF.Caches
         public string Label { get => _label; set { _label = value; LabelChanged?.Invoke(); } }
 
 
-        public event Action TotalBalanceChanged;
-        ulong _totalBalance;
-        public ulong TotalBalance { get => _totalBalance; set { _totalBalance = value; TotalBalanceChanged?.Invoke(); } }
+        //public event Action TotalBalanceChanged;
+        //ulong _totalBalance;
+        //public ulong TotalBalance { get => _totalBalance; set { _totalBalance = value; TotalBalanceChanged?.Invoke(); } }
 
 
         public event Action LastSeenHeightChanged;

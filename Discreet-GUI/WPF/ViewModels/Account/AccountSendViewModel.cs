@@ -21,22 +21,27 @@ namespace WPF.ViewModels.Account
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly SendTransactionCache _sendTransactionCache;
+        private readonly WalletCache _walletCache;
+
 
         public string Receiver { get; set; }
-
         public double Amount { get; set; }
 
-        public decimal TotalBalance => _walletCache.TotalBalance;
 
+        decimal _selectedAccountBalance;
+        public decimal SelectedAccountBalance { get => _selectedAccountBalance; set { _selectedAccountBalance = value; OnPropertyChanged(nameof(SelectedAccountBalance)); } }
+
+        
         ObservableCollection<FeeMock> FeeItems { get; set; } = new ObservableCollection<FeeMock>() { new FeeMock { Fee = "12 DIS" }, new FeeMock { Fee = "30 DIS" } };
         int SelectedFeeItemsIndex { get; set; } = 0;
 
 
-        public ObservableCollectionEx<WalletCache.WalletAddress> SenderAccounts => _walletCache.Accounts;
-        int SelectedSenderAccountIndex { get; set; } = 0;
+        public ObservableCollectionEx<WalletCache.WalletAddress> SenderAccounts { get => _walletCache.Accounts; set => SenderAccountsChanged(); }
+        public WalletCache.WalletAddress SelectedAccount => SenderAccounts[SelectedSenderAccountIndex]; 
 
 
-        private WalletCache _walletCache { get; set; }
+        int _selectedSenderAccountIndex = 0;
+        int SelectedSenderAccountIndex { get => _selectedSenderAccountIndex; set { _selectedSenderAccountIndex = value; OnPropertyChanged(nameof(SelectedAccount)); } }
 
 
         public AccountSendViewModel(WalletCache walletCache, NavigationServiceFactory navigationServiceFactory, SendTransactionCache sendTransactionCache)
@@ -44,7 +49,11 @@ namespace WPF.ViewModels.Account
             _walletCache = walletCache;
             _navigationServiceFactory = navigationServiceFactory;
             _sendTransactionCache = sendTransactionCache;
-            _walletCache.TotalBalanceChanged += () => OnPropertyChanged(nameof(TotalBalance));
+        }
+
+        public void SenderAccountsChanged()
+        {
+            //SelectedAccountBalance = SenderAccounts[SelectedSenderAccountIndex].Balance;
         }
 
         public void DisplayConfirm()

@@ -28,12 +28,12 @@
 		<Label Grid.Row="0" FontSize="30" Foreground="#8C52C0">Send</Label>
 
 		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 20 0 0">
-			<Label FontSize="50" Foreground="white" Padding="4 0 5 0"  FontWeight="300" >8217.14</Label>
+			<Label FontSize="50" Foreground="white" Padding="4 0 5 0"  FontWeight="300" Content="{Binding SelectedAccount.Balance}"/>
 			<Label FontSize="24" Foreground="white" VerticalAlignment="Bottom" Margin="0 0 0 2" FontWeight="100" >DIS available</Label>
 		</StackPanel>
 
 		<Label Grid.Row="2" FontSize="16" Margin="0 40 0 0" FontWeight="300" Foreground="#C0C0C0">Receiver address</Label>
-		<TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="3" Height="40" Width="350" Margin="0 5 0 0" Text="{Binding Receiver, Mode=TwoWay}"/>
+		<TextBox Classes="input" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontWeight="300" Grid.Row="3" Height="40" Width="350" Margin="0 5 0 0" Text="{Binding Receiver}"/>
 
 		<Label Grid.Row="4" Margin="0 15 0 0" FontSize="16" FontWeight="300" Foreground="#C0C0C0">Amount</Label>
 		<NumericUpDown Grid.Row="5" 

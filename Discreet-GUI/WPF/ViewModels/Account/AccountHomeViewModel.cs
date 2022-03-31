@@ -1,4 +1,6 @@
-﻿using WPF.Caches;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using WPF.Caches;
 using WPF.ExtensionMethods;
 using WPF.ViewModels.Common;
 
@@ -10,13 +12,14 @@ namespace WPF.ViewModels.Account
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
 
-        public decimal TotalBalance => _walletCache.TotalBalance;
+        public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
 
         public AccountHomeViewModel() { }
         public AccountHomeViewModel(WalletCache walletCache)
         {
             _walletCache = walletCache;
-            _walletCache.TotalBalanceChanged += () => OnPropertyChanged(nameof(TotalBalance));
+
+            Accounts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(TotalBalance));
         }
     }
 }

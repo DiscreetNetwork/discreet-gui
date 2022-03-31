@@ -83,7 +83,7 @@ namespace WPF.Hosted
                             }
 
                             _walletCache.Label = wallet.Label;
-                            _walletCache.TotalBalance = wallet.Addresses.Select(x => x.Balance).Aggregate((a, b) => a + b);
+                            //_walletCache.TotalBalance = wallet.Addresses.Select(x => x.Balance).Aggregate((a, b) => a + b);
                             _walletCache.LastSeenHeight = wallet.LastSeenHeight;
                             _walletCache.Synced = wallet.Synced;
 
@@ -157,8 +157,8 @@ namespace WPF.Hosted
                 }
             }
 
-            var totalBalance = _walletCache.Accounts.Select(x => x.Balance).Aggregate((a, b) => a + b);
-            if (_walletCache.TotalBalance != totalBalance) _walletCache.TotalBalance = totalBalance;
+            //var totalBalance = _walletCache.Accounts.Select(x => x.Balance).Aggregate((a, b) => a + b);
+            //if (_walletCache.TotalBalance != totalBalance) _walletCache.TotalBalance = totalBalance;
         }
         public async Task UpdateAddressHeights()
         {
