@@ -20,6 +20,11 @@ namespace Services.Jazzicon
     /// </summary>
     public class Jazzicon
     {
+        /// <summary>
+        /// Number of shapes to use in identicon. Default is four for now.
+        /// </summary>
+        public const int NUM_SHAPES = 4;
+
         public static Color[] Colors = new Color[]
         {
             Color.ParseHex("#01888C"), // teal
@@ -229,7 +234,7 @@ namespace Services.Jazzicon
             Identicon.Mutate(i => i.Fill(GenColor(colors)));
 
             /* now perform writing of squares */
-            const int shapeCount = 8;
+            const int shapeCount = NUM_SHAPES;
 
             for (int i = 0; i < shapeCount - 1; i++)
             {
