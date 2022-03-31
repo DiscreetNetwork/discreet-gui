@@ -46,7 +46,7 @@ namespace Services.Jazzicon
 
         public Jazzicon(int diameter, string address)
         {
-            Generate(160, address);
+            Generate(diameter, address);
         }
 
         public Color GenColor(List<Color> colors)
@@ -57,75 +57,142 @@ namespace Services.Jazzicon
             return color;
         }
 
-        public static Color HSBtoRGB(float hue, float saturation, float brightness)
+        public static (float h, float s, float v) RGBToHSB(float r, float g, float b)
         {
-            int r = 0, g = 0, b = 0;
-            if (saturation == 0)
+            /* preconvert r, g, and b to 0-1 range */
+            r /= 255.5f;
+            g /= 255.5f;
+            b /= 255.5f;
+
+            double min = r < g ? r : g;
+            min = min < b ? min : b;
+
+            double max = r > g ? r : g;
+            max = max > b ? max : b;
+
+            double v = max;
+            double h = 0f;
+            double s = 0f;
+            double delta = max - min;
+
+            if (delta < 0.00001f)
             {
-                r = g = b = (int)(brightness * 255.0f + 0.5f);
+                return ((float)h, (float)s, (float)v);
+            }
+
+            if (max > 0)
+            {
+                s = delta / max;
             }
             else
             {
-                float h = (hue - (float)Math.Floor(hue)) * 6.0f;
-                float f = h - (float)Math.Floor(h);
-                float p = brightness * (1.0f - saturation);
-                float q = brightness * (1.0f - saturation * f);
-                float t = brightness * (1.0f - (saturation * (1.0f - f)));
-                switch ((int)h)
-                {
-                    case 0:
-                        r = (int)(brightness * 255.0f + 0.5f);
-                        g = (int)(t * 255.0f + 0.5f);
-                        b = (int)(p * 255.0f + 0.5f);
-                        break;
-                    case 1:
-                        r = (int)(q * 255.0f + 0.5f);
-                        g = (int)(brightness * 255.0f + 0.5f);
-                        b = (int)(p * 255.0f + 0.5f);
-                        break;
-                    case 2:
-                        r = (int)(p * 255.0f + 0.5f);
-                        g = (int)(brightness * 255.0f + 0.5f);
-                        b = (int)(t * 255.0f + 0.5f);
-                        break;
-                    case 3:
-                        r = (int)(p * 255.0f + 0.5f);
-                        g = (int)(q * 255.0f + 0.5f);
-                        b = (int)(brightness * 255.0f + 0.5f);
-                        break;
-                    case 4:
-                        r = (int)(t * 255.0f + 0.5f);
-                        g = (int)(p * 255.0f + 0.5f);
-                        b = (int)(brightness * 255.0f + 0.5f);
-                        break;
-                    case 5:
-                        r = (int)(brightness * 255.0f + 0.5f);
-                        g = (int)(p * 255.0f + 0.5f);
-                        b = (int)(q * 255.0f + 0.5f);
-                        break;
-                }
+                return (float.NaN, 0f, (float)v);
             }
-            return Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
+
+            if (r >= max)
+            {
+                h = (g - b) / delta;
+            }
+            else if (g >= max)
+            {
+                h = 2.0 + (b - r) / delta;
+            }
+            else
+            {
+                h = 4.0 + (r - g) / delta;
+            }
+
+            h *= 60;
+
+            if (h < 0)
+            {
+                h += 360;
+            }
+
+            return ((float)h, (float)s, (float)v);
+        }
+
+        public static (float r, float g, float b) HSBToRGB(float h, float s, float v)
+        {
+            double hh, p, q, t, ff;
+            long i;
+
+            double r, g, b;
+
+            if (s <= 0.0)
+            {
+                r = v * 255.5;
+                g = v * 255.5;
+                b = v * 255.5;
+
+                return ((float)r, (float)g, (float)b);
+            }
+
+            hh = h;
+            if (hh >= 360) hh = 0;
+            hh /= 60;
+
+            i = (long)Math.Floor(hh);
+
+            ff = hh - i;
+            p = v * (1 - s);
+            q = v * (1 - s * ff);
+            t = v * (1 - (s * (1 - ff)));
+
+            switch (i)
+            {
+                case 0:
+                    r = v * 255 + 0.5;
+                    g = t * 255 + 0.5;
+                    b = p * 255 + 0.5;
+                    break;
+                case 1:
+                    r = q * 255 + 0.5;
+                    g = v * 255 + 0.5;
+                    b = p * 255 + 0.5;
+                    break;
+                case 2:
+                    r = p * 255 + 0.5;
+                    g = v * 255 + 0.5;
+                    b = t * 255 + 0.5;
+                    break;
+                case 3:
+                    r = p * 255 + 0.5;
+                    g = q * 255 + 0.5;
+                    b = v * 255 + 0.5;
+                    break;
+                case 4:
+                    r = t * 255 + 0.5;
+                    g = p * 255 + 0.5;
+                    b = v * 255 + 0.5;
+                    break;
+                case 5:
+                default:
+                    r = v * 255 + 0.5;
+                    g = p * 255 + 0.5;
+                    b = q * 255 + 0.5;
+                    break;
+            }
+
+            return ((float)r, (float)g, (float)b);
         }
 
         public List<Color> HueShift(List<Color> colors)
         {
             const double wobble = 30;
 
-            var amount = Generator.NextDouble() * 30 - wobble / 2;
+            var amount = Generator.NextDouble() * wobble - wobble / 2;
 
             return colors.Select(x =>
             {
                 ColorSpaceConverter converter = new ColorSpaceConverter();
-                var rgbPixel = x.ToPixel<Rgb24>();
-                var rgb = new Rgb(rgbPixel.R, rgbPixel.G, rgbPixel.B);
-                var hsv = converter.ToHsv(rgb);
-                var v = hsv.V;
-                var s = hsv.S;
-                var h = (hsv.H + (float)amount) % 360;
+                var rgb = x.ToPixel<Rgba32>();
+                (var h, var s, var v) = RGBToHSB((float)rgb.R, (float)rgb.G, (float)rgb.B);
+                h = (h + (float)amount) % 360f;
                 if (h < 0) h += 360f;
 
-                return HSBtoRGB(h, s, v);
+                (var r, var g, var b) = HSBToRGB(h, s, v);
+                return Color.FromRgb(Convert.ToByte((int)Math.Floor(r)), Convert.ToByte((int)Math.Floor(g)), Convert.ToByte((int)Math.Floor(b)));
             }).ToList();
         }
 
@@ -157,7 +224,7 @@ namespace Services.Jazzicon
             Generator = new Random(Seed);
 
             Identicon = new Image<Rgba32>(diameter, diameter);
-            var colors = new List<Color>(Colors);
+            var colors = HueShift(new List<Color>(Colors));
 
             /* first fill */
             Identicon.Mutate(i => i.Fill(GenColor(colors)));
