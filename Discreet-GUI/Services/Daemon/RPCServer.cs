@@ -33,6 +33,12 @@ namespace Services.Daemon
             await _semaphore.WaitAsync();
 
             var responseText = _client.UploadString("/", req.Serialize());
+
+            if(string.IsNullOrWhiteSpace(responseText))
+            {
+                _semaphore.Release();
+            }
+
             var resp = DaemonResponse.Deserialize(responseText);
 
             _semaphore.Release();
