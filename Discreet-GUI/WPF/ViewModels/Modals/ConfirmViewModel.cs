@@ -3,6 +3,7 @@ using Services.Daemon.Common;
 using Services.Daemon.Requests;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -49,7 +50,17 @@ namespace WPF.ViewModels.Modals
                 Relay = true
             };
 
-            var resp = await _rpcServer.Request(new DaemonRequest("create_transaction", req));
+
+            DaemonResponse resp = null;
+            try
+            {
+                resp = await _rpcServer.Request(new DaemonRequest("create_transaction", req));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                _navigationServiceFactory.CreateModalNavigationService().Navigate();
+            }
 
             if (resp != null && resp.Result != null)
             {
@@ -59,7 +70,6 @@ namespace WPF.ViewModels.Modals
                     {
                         DaemonErrorResult errResult = JsonSerializer.Deserialize<DaemonErrorResult>(json);
                         System.Diagnostics.Debug.WriteLine($"CreateTransactionResponse: {errResult.ErrMsg}");
-                        return;
                     }
                     catch (Exception e)
                     {
