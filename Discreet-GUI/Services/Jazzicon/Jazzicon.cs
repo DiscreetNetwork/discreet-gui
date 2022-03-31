@@ -185,7 +185,6 @@ namespace Services.Jazzicon
 
             return colors.Select(x =>
             {
-                ColorSpaceConverter converter = new ColorSpaceConverter();
                 var rgb = x.ToPixel<Rgba32>();
                 (var h, var s, var v) = RGBToHSB((float)rgb.R, (float)rgb.G, (float)rgb.B);
                 h = (h + (float)amount) % 360f;
