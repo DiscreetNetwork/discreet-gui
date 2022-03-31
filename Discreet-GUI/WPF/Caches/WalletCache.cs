@@ -43,7 +43,7 @@ namespace WPF.Caches
 
 
 
-        public ObservableCollectionEx<WalletAddress> Accounts { get; set; }
+        public ObservableCollectionEx<WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletAddress>();
 
         public void AddAccount(string name, string address, ulong balance)
         {

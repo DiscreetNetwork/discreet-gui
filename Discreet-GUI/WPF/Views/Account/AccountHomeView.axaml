@@ -45,7 +45,9 @@
 								  <ColumnDefinition Width="50"/>
 								  <ColumnDefinition Width="250"/>
 								  <ColumnDefinition Width="70"/>
-								  <ColumnDefinition Width="300"/>
+								  <ColumnDefinition Width="*"/>
+								  <ColumnDefinition Width="100"/>
+								  <ColumnDefinition Width="*"/>
 								  <ColumnDefinition Width="*"/>
 							  </Grid.ColumnDefinitions>
 
@@ -53,7 +55,11 @@
 							  <Label Margin="10 0 0 0" FontSize="16" FontWeight="200" Grid.Column="1" VerticalAlignment="Center" Foreground="white" Content="{Binding Name}"></Label>
 							  <Label Grid.Column="2" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
 							  <Label Grid.Column="3" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>
-							  <Image Width="20" Grid.Column="4" Source="/Assets/Icons/pink-checkmark.png" HorizontalAlignment="Right" Margin="0 0 25 0"/>
+							  <Label Grid.Column="4" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300" Content="{Binding Address}"/>
+							  <Button Grid.Column="5" Width="40" Height="40">
+								  <Image Source="/Assets/Buttons/documents-white.png"/>
+							  </Button>
+							  <Image Width="20" Grid.Column="6" Source="/Assets/Icons/pink-checkmark.png" HorizontalAlignment="Right" Margin="0 0 25 0"/>
 						  </Grid>
 					  </Border>
 				  </DataTemplate>

@@ -39,7 +39,7 @@ namespace WPF.ViewModels.Layouts.Account
         {
             _walletCache = walletCache;
 
-            Accounts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(TotalBalance));
+            Accounts.CollectionChanged += AccountsChanged;
 
             _accountNavigationStore = accountNavigationStore;
             accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
@@ -69,6 +69,11 @@ namespace WPF.ViewModels.Layouts.Account
                 ResetButtonStates(); ButtonActiveStates[4] = true;
                 navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
             });
+        }
+
+        private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(TotalBalance));
         }
 
         void ResetButtonStates()

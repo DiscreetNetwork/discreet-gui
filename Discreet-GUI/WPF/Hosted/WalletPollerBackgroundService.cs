@@ -87,16 +87,20 @@ namespace WPF.Hosted
                             _walletCache.LastSeenHeight = wallet.LastSeenHeight;
                             _walletCache.Synced = wallet.Synced;
 
-                            _walletCache.Accounts = new ExtensionMethods.ObservableCollectionEx<WalletCache.WalletAddress>(wallet.Addresses.Select(a => new WalletCache.WalletAddress
+
+                            wallet.Addresses.ForEach(a =>
                             {
-                                Name = a.Name,
-                                Address = a.Address,
-                                Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
-                                Balance = a.Balance,
-                                Synced = a.Synced,
-                                Syncer = a.Syncer,
-                                UTXOs = new ObservableCollection<int>(a.UTXOs)
-                            }));
+                                _walletCache.Accounts.Add(new WalletCache.WalletAddress
+                                {
+                                    Name = a.Name,
+                                    Address = a.Address,
+                                    Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
+                                    Balance = a.Balance,
+                                    Synced = a.Synced,
+                                    Syncer = a.Syncer,
+                                    UTXOs = new ObservableCollection<int>(a.UTXOs)
+                                });
+                            });
 
                             wallet.Addresses.ForEach(a => System.Diagnostics.Debug.WriteLine($"address is \"{a.Address}\""));
 

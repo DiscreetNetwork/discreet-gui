@@ -19,7 +19,12 @@ namespace WPF.ViewModels.Account
         {
             _walletCache = walletCache;
 
-            Accounts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(TotalBalance));
+            Accounts.CollectionChanged += AccountsChanged;
+        }
+
+        private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(TotalBalance));
         }
     }
 }

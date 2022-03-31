@@ -12,12 +12,6 @@ namespace WPF.ExtensionMethods
     public class ObservableCollectionEx<T> : ObservableCollection<T> where T : INotifyPropertyChanged
     {
         // this collection also reacts to changes in its components' properties
-
-        public ObservableCollectionEx(IEnumerable<T> values) : base(values)
-        {
-            this.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(ObservableCollectionEx_CollectionChanged);
-        }
-
         public ObservableCollectionEx() : base()
         {
             this.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(ObservableCollectionEx_CollectionChanged);
