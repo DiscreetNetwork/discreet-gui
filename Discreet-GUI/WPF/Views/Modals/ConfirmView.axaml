@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WPF.Views.Modals.ConfirmView">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/ApplicationStyles.axaml"/>
+	</UserControl.Styles>
+	
+	<Grid Background="Transparent">
+		<Grid.Transitions>
+			<Transitions>
+				<DoubleTransition Property="Opacity" Duration="0:0:0.2" Delay="0:0:1"/>
+			</Transitions>
+		</Grid.Transitions>
+		
+		<Rectangle Fill="#181818" Opacity="0.95"/>
+
+		<Border 
+			Background="#181818"
+			Width="550" Height="250"
+			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
+			VerticalAlignment="Center" HorizontalAlignment="Center">
+
+			<Grid Margin="30 20 30 0">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0" FontSize="30" FontWeight="300" Foreground="White">Are you sure?</Label>
+
+				<TextBlock Grid.Row="1" Foreground="White" Margin="0 -20 0 0" FontWeight="300" FontSize="14" TextWrapping="Wrap">You are about to send 143.23 DIST to 3150921...1324091 please confirm to proceed.</TextBlock>
+
+				<Button Grid.Row="2" HorizontalAlignment="Left" Cursor="Hand" Command="{Binding CancelTransactionCommand}">
+					Cancel transaction
+					<Button.DataTemplates>
+						<DataTemplate>
+							<TextBlock TextDecorations="Underline" Text="Cancel transaction" Foreground="Gray"/>
+						</DataTemplate>
+					</Button.DataTemplates>
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Button.Styles>
+				</Button>
+				
+				<Button 
+					Grid.Row="2" Classes="btn btn-pink" Cursor="Hand" Command="{Binding CancelTransactionCommand}"
+					Width="200" Height="45" FontWeight="300" 
+					HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+					Confirm
+				</Button>
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>

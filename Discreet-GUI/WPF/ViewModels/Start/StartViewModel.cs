@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WPF.Factories.Navigation;
+using WPF.Services;
 using WPF.Services.Navigation.Common;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
@@ -44,8 +45,10 @@ namespace WPF.ViewModels.Start
         /// </summary>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public StartViewModel(NavigationServiceFactory navigationServiceFactory)
+        public StartViewModel(NavigationServiceFactory navigationServiceFactory, NotificationService notificationService)
         {
+            notificationService.Display<Notifications.TestNotificationViewModel>();
+
             NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
             {
                 _cancellationTokenSource.Cancel();

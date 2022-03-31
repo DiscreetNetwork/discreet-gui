@@ -1,6 +1,7 @@
 ﻿using Services.Daemon.Responses;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -42,16 +43,12 @@ namespace WPF.Caches
 
 
 
-        //public event Action AccountsChanged;
-        //ObservableCollectionEx<WalletAddress> _accounts = new ObservableCollectionEx<WalletAddress>();
         public ObservableCollectionEx<WalletAddress> Accounts { get; set; }
-        //void OnAccountsChanged() { AccountsChanged?.Invoke(); }
 
         public void AddAccount(string name, string address, ulong balance)
         {
             Accounts.Add(new WalletAddress { Name = name, Address = address, Balance = balance });
         }
-
 
 
 
@@ -64,7 +61,8 @@ namespace WPF.Caches
             public string Address { get; set; }
             public AddressType Type { get; set; }
 
-            
+            public string Display => $"{Name} ({Address.Substring(0, 4)}...{Address.Substring(Address.Length - 4, 4)})";
+
             private ulong _balance;
             public ulong Balance { get => _balance; set { _balance = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Balance))); } }
 
@@ -80,8 +78,7 @@ namespace WPF.Caches
             private long _height;
             public long Height { get => _height; set { _height = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Height))); } }
 
-
-            public List<int> UTXOs { get; set; } = new List<int>();
+            public ObservableCollection<int> UTXOs { get; set; } 
         }
 
         public enum AddressType

@@ -20,7 +20,7 @@ namespace WPF.ViewModels.Notifications
             CloseCommand = ReactiveCommand.Create(() =>
             {
                 Opacity = 0;
-                Task.Delay(200).ContinueWith(_ => navigationServiceFactory.CreateModalNavigationService().Navigate());
+                Task.Delay(200).ContinueWith(_ => navigationServiceFactory.DismissNotification().Navigate());
             });
         }
     }

@@ -6,6 +6,7 @@ using System.Text;
 using WPF.Factories.ViewModel;
 using WPF.Services.Navigation;
 using WPF.Services.Navigation.Common;
+using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
@@ -25,14 +26,16 @@ namespace WPF.Factories.Navigation
         private readonly StackNavigationStore _stackNavigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly AccountNavigationStore _accountNavigationStore;
+        private readonly NotificationStore _notificationStore;
         private readonly LayoutViewModelFactory _layoutViewModelFactory;
 
-        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, StackNavigationStore stackNavigationStore, ModalNavigationStore modalNavigationStore, AccountNavigationStore accountNavigationStore, LayoutViewModelFactory layoutViewModelFactory)
+        public NavigationServiceFactory(MainNavigationStore mainNavigationStore, StackNavigationStore stackNavigationStore, ModalNavigationStore modalNavigationStore, AccountNavigationStore accountNavigationStore, NotificationStore notificationStore, LayoutViewModelFactory layoutViewModelFactory)
         {
             _mainNavigationStore = mainNavigationStore;
             _stackNavigationStore = stackNavigationStore;
             _modalNavigationStore = modalNavigationStore;
             _accountNavigationStore = accountNavigationStore;
+            _notificationStore = notificationStore;
             _layoutViewModelFactory = layoutViewModelFactory;
         }
 
@@ -57,6 +60,10 @@ namespace WPF.Factories.Navigation
             return new OpenModalNavigationService(_modalNavigationStore, _layoutViewModelFactory.Create<TTarget>);
         }
         public INavigationService CreateModalNavigationService() => new CloseModalNavigationService(_modalNavigationStore);
+
+
+        public INavigationService DisplayNotification<TTarget>() where TTarget : ViewModelBase => new DisplayNotificationNavigationService(_notificationStore, _layoutViewModelFactory.Create<TTarget>);
+        public INavigationService DismissNotification() => new DismissNotificationNavigationService(_notificationStore);
 
 
         public INavigationService CreateAccountNavigation<TViewModel>() where TViewModel : ViewModelBase

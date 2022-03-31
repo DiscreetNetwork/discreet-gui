@@ -27,11 +27,15 @@ namespace WPF.ViewModels.Layouts.Account
         public ReactiveCommand<Unit, Unit> NavigateAccountSettingsCommand { get; set; }
         public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
 
+        public decimal TotalBalance => WalletCache.TotalBalance;
+
         public WalletCache WalletCache { get; set; }
 
         public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache)
         {
             WalletCache = walletCache;
+
+            walletCache.TotalBalanceChanged += () => OnPropertyChanged(nameof(TotalBalance));
 
             _accountNavigationStore = accountNavigationStore;
             accountNavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;

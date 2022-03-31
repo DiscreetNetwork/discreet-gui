@@ -4,6 +4,7 @@ using Services.Daemon.Common;
 using Services.Daemon.Responses;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -94,7 +95,7 @@ namespace WPF.Hosted
                                 Balance = a.Balance,
                                 Synced = a.Synced,
                                 Syncer = a.Syncer,
-                                UTXOs = a.UTXOs
+                                UTXOs = new ObservableCollection<int>(a.UTXOs)
                             }));
 
                             wallet.Addresses.ForEach(a => System.Diagnostics.Debug.WriteLine($"address is \"{a.Address}\""));
@@ -156,7 +157,8 @@ namespace WPF.Hosted
                 }
             }
 
-            _walletCache.TotalBalance = _walletCache.Accounts.Select(x => x.Balance).Aggregate((a, b) => a + b);
+            var totalBalance = _walletCache.Accounts.Select(x => x.Balance).Aggregate((a, b) => a + b);
+            if (_walletCache.TotalBalance != totalBalance) _walletCache.TotalBalance = totalBalance;
         }
         public async Task UpdateAddressHeights()
         {

@@ -9,62 +9,47 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using WPF.Caches;
+using WPF.ExtensionMethods;
+using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Modals;
 using WPF.Views.Layouts;
 
 namespace WPF.ViewModels.Account
 {
     public class AccountSendViewModel : ViewModelBase
     {
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+
         public string Receiver { get; set; }
         public ulong Amount { get; set; }
+        public decimal TotalBalance => _walletCache.TotalBalance;
 
-        // New
         ObservableCollection<FeeMock> FeeItems { get; set; } = new ObservableCollection<FeeMock>() { new FeeMock { Fee = "12 DIS" }, new FeeMock { Fee = "30 DIS" } };
         int SelectedFeeItemsIndex { get; set; } = 0;
-        ObservableCollection<SenderAccountMock> SenderAccountItems { get; set; } = new ObservableCollection<SenderAccountMock>() { new SenderAccountMock { Address = "123asd456xtg" }, new SenderAccountMock { Address = "85321sajcv932" } };
-        int SelectedSenderAccountItemsIndex { get; set; } = 0;
+
+
+        public ObservableCollectionEx<WalletCache.WalletAddress> SenderAccounts => _walletCache.Accounts;
+        int SelectedSenderAccountIndex { get; set; } = 0;
+
 
         private RPCServer _rpcServer { get; set; }
         private WalletCache _walletCache { get; set; }
 
         public ReactiveCommand<Unit, Unit> SendTransaction { get; set; }
 
-        public AccountSendViewModel() { }
-        public AccountSendViewModel(WalletCache walletCache, RPCServer rpcServer)
+        //public AccountSendViewModel() { }
+        public AccountSendViewModel(WalletCache walletCache, RPCServer rpcServer, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
             _rpcServer = rpcServer;
+            _navigationServiceFactory = navigationServiceFactory;
+            _walletCache.TotalBalanceChanged += () => OnPropertyChanged(nameof(TotalBalance));
 
-            SendTransaction = ReactiveCommand.Create(CreateAndSendTransaction);
 
-            SendTransaction = ReactiveCommand.CreateFromTask(CreateAndSendTransactionAsync); // New
+            SendTransaction = ReactiveCommand.CreateFromTask(CreateAndSendTransactionAsync);
         }
 
-        public void CreateAndSendTransaction()
-        {
-            _ = Task.Run(async () =>
-            {
-                CreateTransactionParam p = new CreateTransactionParam
-                {
-                    Amount = Amount,
-                    To = Receiver
-                };
-
-                CreateTransactionRequest req = new CreateTransactionRequest
-                {
-                    Address = _walletCache.Accounts[0].Address,
-                    Params = new List<CreateTransactionParam>(new CreateTransactionParam[] { p }),
-                    Raw = false,
-                    Relay = true
-                };
-
-                await _rpcServer.Request(new DaemonRequest("create_transaction", req));
-            }).ConfigureAwait(false);
-            
-        }
-
-        // New
         public async Task CreateAndSendTransactionAsync()
         {
             CreateTransactionParam p = new CreateTransactionParam
@@ -84,16 +69,14 @@ namespace WPF.ViewModels.Account
             await _rpcServer.Request(new DaemonRequest("create_transaction", req));
         }
 
-
+        public void DisplayConfirm()
+        {
+            _navigationServiceFactory.CreateModalNavigationService<ConfirmViewModel>().Navigate();
+        }
 
         class FeeMock
         {
             public string Fee { get; set; }
-        }
-
-        class SenderAccountMock
-        {
-            public string Address { get; set; }
         }
     }
 }

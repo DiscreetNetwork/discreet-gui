@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Daemon;
-using Services.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,7 @@ using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Factories.ViewModel;
 using WPF.Hosted;
-using WPF.Services.Hosted;
+using WPF.Services;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
@@ -44,8 +43,7 @@ namespace WPF
                 RegisterCaches(services);
 
                 services.AddSingleton<RPCServer>();
-                services.AddSingleton<WalletManager>();
-
+                services.AddScoped<NotificationService>();
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
 
@@ -61,8 +59,7 @@ namespace WPF
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
 
-            //serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<TestNotificationViewModel>().Navigate();
-            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<PasswordViewModel>().Navigate();
+            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<ConfirmViewModel>().Navigate();
 
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
