@@ -24,18 +24,31 @@
 			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
 			VerticalAlignment="Center" HorizontalAlignment="Center">
 
-			<Grid Margin="30 20 30 0">
+			<Grid Margin="30 20 30 20">
 				<Grid.RowDefinitions>
-					<RowDefinition/>
+					<RowDefinition Height="65"/>
+					<RowDefinition Height="auto"/>
 					<RowDefinition/>
 					<RowDefinition/>
 				</Grid.RowDefinitions>
 
-				<Label Grid.Row="0" Margin="-3 0 0 0" FontSize="30" FontWeight="300" Foreground="White">Are you sure?</Label>
+				<Label Grid.Row="0" Margin="-3 0 0 0" VerticalAlignment="Top" FontSize="30" FontWeight="300" Foreground="White">Are you sure?</Label>
 
-				<TextBlock Grid.Row="1" Foreground="White" Margin="0 -20 0 0" FontWeight="300" FontSize="14" TextWrapping="Wrap">You are about to send 143.23 DIST to 3150921...1324091 please confirm to proceed.</TextBlock>
+				<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+					<Label Foreground="White" FontWeight="200">You are about to send</Label>
+					<Label Foreground="White" FontWeight="Bold" Content="{Binding Amount}"/>
+					<Label Foreground="White" FontWeight="200">DIST, this is an irreversible transaction.</Label>
+				</StackPanel>
 
-				<Button Grid.Row="2" HorizontalAlignment="Left" Cursor="Hand" Command="{Binding CancelTransactionCommand}">
+				<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" VerticalAlignment="Center">
+					<Label Foreground="White" FontWeight="200">The transaction will be sent to</Label>
+					<Label Foreground="White" FontWeight="Bold" Content="{Binding ReceiverAddress}"/>
+					<Label Foreground="White" FontWeight="200">if confirmed.</Label>
+				</StackPanel>
+
+
+
+				<Button Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" Command="{Binding CancelTransactionCommand}">
 					Cancel transaction
 					<Button.DataTemplates>
 						<DataTemplate>
@@ -52,10 +65,11 @@
 					</Button.Styles>
 				</Button>
 				
-				<Button 
-					Grid.Row="2" Classes="btn btn-pink" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
+				<Button
+					HotKey="ENTER"
+					Grid.Row="3" Classes="btn btn-pink" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
 					Width="200" Height="45" FontWeight="300" 
-					HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+					HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 					Confirm
 				</Button>
 			</Grid>

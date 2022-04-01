@@ -10,8 +10,6 @@ namespace WPF.ValueConverters
 {
     public class FullAddressToTruncatedAddressConverter : IValueConverter
     {
-        //public string Display => $"{Name} ({Address.Substring(0, 4)}...{Address.Substring(Address.Length - 4, 4)})";
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string fullAddress = (string)value;
