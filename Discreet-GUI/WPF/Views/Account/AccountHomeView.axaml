@@ -3,8 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:WPF.ViewModels.Account"
+			 xmlns:converters="using:WPF.ValueConverters"
              mc:Ignorable="d"
-             x:Class="WPF.Views.Account.AccountHomeView" Design.Height="800">
+             x:Class="WPF.Views.Account.AccountHomeView" Design.Height="800" Design.Width="1000">
+
+	<UserControl.Resources>
+		<converters:AddressTypeToPublicPrivateStringConverter x:Key="AddressTypeToPublicPrivateStringConverter"/>
+		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
+	</UserControl.Resources>
 	
 	<Design.DataContext>
 		<vm:AccountHomeViewModel/>
@@ -42,24 +48,66 @@
 					  <Border Margin="0 10 0 0" Padding="0 7 0 7" BorderThickness="0 0 0 1" BorderBrush="#313131">
 						  <Grid>
 							  <Grid.ColumnDefinitions>
+								  <!-- Image -->
 								  <ColumnDefinition Width="50"/>
-								  <ColumnDefinition Width="250"/>
-								  <ColumnDefinition Width="70"/>
-								  <ColumnDefinition Width="*"/>
+								  <!-- Name -->
+								  <ColumnDefinition Width="200"/>
+								  <!-- AccountType -->
 								  <ColumnDefinition Width="100"/>
+								  <!-- Balance (Text) -->
+								  <ColumnDefinition Width="70"/>
+								  <!-- Balance (Value) -->
+								  <ColumnDefinition Width="150"/>
+								  <!-- Address Button -->
+								  <ColumnDefinition Width="auto"/>
+								  <!-- Synced Checkbox -->
 								  <ColumnDefinition Width="*"/>
+								  
 								  <ColumnDefinition Width="*"/>
 							  </Grid.ColumnDefinitions>
 
-							  <Image Height="45" Width="45" Margin="5 0 0 0" VerticalAlignment="Center" Grid.Column="0" Source="{Binding Identicon}"/>
-							  <Label Margin="10 0 0 0" FontSize="16" FontWeight="200" Grid.Column="1" VerticalAlignment="Center" Foreground="white" Content="{Binding Name}"></Label>
-							  <Label Grid.Column="2" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
-							  <Label Grid.Column="3" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>
-							  <Label Grid.Column="4" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300" Content="{Binding Address}"/>
-							  <Button Grid.Column="5" Width="40" Height="40">
-								  <Image Source="/Assets/Buttons/documents-white.png"/>
+							  <Image Grid.Column="0" Height="45" Width="45" Margin="5 0 0 0" VerticalAlignment="Center" Source="{Binding Identicon}"/>
+							  <Label Grid.Column="1" Margin="10 0 0 0" FontSize="16" FontWeight="200" VerticalAlignment="Center" Foreground="white" Content="{Binding Name}"></Label>
+							  <Label Grid.Column="2" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="23" Width="60" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding Type, Converter={StaticResource AddressTypeToPublicPrivateStringConverter}}"/>
+							  <Label Grid.Column="3" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
+							  <Label Grid.Column="4" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>
+							  <Button Grid.Column="5" Height="40" Cursor="Hand" Command="{Binding $parent[ItemsControl].DataContext.CopyAddress}" CommandParameter="{Binding Address}">
+								  <StackPanel Orientation="Horizontal">
+									  <Label FontSize="16" VerticalAlignment="Center" FontWeight="300" Content="{Binding Address, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
+									  <!--
+									  <Image Margin="30 0 0 0"/>
+									  -->
+								  </StackPanel>
+
+								  <Button.Styles>
+									  <Style Selector="Button">
+										  <Setter Property="Background" Value="Transparent"/>
+										  <Setter Property="Foreground" Value="#6F6F6F"/>
+									  </Style>
+									  <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+										  <Setter Property="Background" Value="Transparent"/>
+									  </Style>
+									  <Style Selector="Button:pointerover Label">
+										  <Setter Property="Foreground" Value="#D35683"/>
+									  </Style>
+									  <Style Selector="Image">
+										  <Setter Property="Source" Value="/Assets/Buttons/copy_wallet_default.png"/>
+									  </Style>
+									  <Style Selector="Button:pointerover Image">
+										  <Setter Property="Source" Value="/Assets/Buttons/copy_wallet_hover.png"/>
+									  </Style>
+								  </Button.Styles>
 							  </Button>
-							  <Image Width="20" Grid.Column="6" Source="/Assets/Icons/pink-checkmark.png" HorizontalAlignment="Right" Margin="0 0 25 0"/>
+							  <Image Grid.Column="7" Classes.Synced="{Binding Synced}" Width="20" HorizontalAlignment="Right" Margin="0 0 25 0">
+								  <Image.Styles>
+									  <Style Selector="Image">
+										  <Setter Property="Source" Value="/Assets/Icons/unsynced-wallet.png"/>
+									  </Style>
+									  <Style Selector="Image.Synced">
+										  <Setter Property="Source" Value="/Assets/Icons/pink-checkmark.png"/>
+									  </Style>
+								  </Image.Styles>
+							  </Image>
 						  </Grid>
 					  </Border>
 				  </DataTemplate>

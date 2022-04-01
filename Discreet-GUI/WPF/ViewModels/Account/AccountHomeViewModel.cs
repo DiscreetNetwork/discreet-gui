@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using Avalonia;
+using ReactiveUI;
+using System.Diagnostics;
+using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 using WPF.Caches;
 using WPF.ExtensionMethods;
@@ -11,10 +15,35 @@ namespace WPF.ViewModels.Account
         private readonly WalletCache _walletCache;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
+        /* Mock data
+        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletCache.WalletAddress>()
+        {
+            new WalletCache.WalletAddress
+            {
+                Address = "1AxastPBd7LTHktMoMJvrAfG1h5cEtrT83SdGqzcW3NqRgJA3TzqFAr4wbgXPLBSuA9xhTPy44B84EYHFkrGSNwBLoSbAJh",
+                Name = "taStealth",
+                Balance = 350259,
+                Type = WalletCache.AddressType.STEALTH,
+                Synced = true
+            },
+            new WalletCache.WalletAddress
+            {
+                Address = "1AxastPBd7LTHktMoMJvrAfG1h5cEtrT83SdGqzcW3NqRgJA3TzqFAr4wbgXPLBSuA9xhTPy44B84EYHFkrGSNwBLoSbAJh",
+                Name = "taStealth",
+                Balance = 350259,
+                Type = WalletCache.AddressType.TRANSPARENT,
+                Synced = false
+            }
+        };
+        */
 
         public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
 
-        public AccountHomeViewModel() { }
+
+        public AccountHomeViewModel() 
+        {
+        }
+
         public AccountHomeViewModel(WalletCache walletCache)
         {
             _walletCache = walletCache;
@@ -25,6 +54,11 @@ namespace WPF.ViewModels.Account
         private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(TotalBalance));
+        }
+
+        public async Task CopyAddress(string parameter)
+        {
+            await Application.Current.Clipboard.SetTextAsync(parameter);
         }
     }
 }
