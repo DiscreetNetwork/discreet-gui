@@ -12,7 +12,7 @@
 	<Grid Background="Transparent">
 		<Grid.Transitions>
 			<Transitions>
-				<DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+				<DoubleTransition Property="Opacity" Duration="0:0:0.001"/>
 			</Transitions>
 		</Grid.Transitions>
 		
@@ -31,7 +31,7 @@
 					<RowDefinition/>
 				</Grid.RowDefinitions>
 
-				<Label Grid.Row="0" FontSize="30" FontWeight="300" Foreground="White">Are you sure?</Label>
+				<Label Grid.Row="0" Margin="-3 0 0 0" FontSize="30" FontWeight="300" Foreground="White">Are you sure?</Label>
 
 				<TextBlock Grid.Row="1" Foreground="White" Margin="0 -20 0 0" FontWeight="300" FontSize="14" TextWrapping="Wrap">You are about to send 143.23 DIST to 3150921...1324091 please confirm to proceed.</TextBlock>
 

@@ -17,9 +17,9 @@
 		
 		<ContentControl ZIndex="200" Content="{Binding CurrentNotificationViewModel}"/>
 
-		<TransitioningContentControl ZIndex="100" Content="{Binding CurrentModalViewModel}">
+		<TransitioningContentControl  ZIndex="100" Content="{Binding CurrentModalViewModel}">
 			<TransitioningContentControl.PageTransition>
-				<CrossFade Duration="0:00:00.200"/>
+				<CrossFade Duration="0:00:00.001"/>
 			</TransitioningContentControl.PageTransition>
 		</TransitioningContentControl>
 		
