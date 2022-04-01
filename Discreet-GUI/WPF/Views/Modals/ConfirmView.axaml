@@ -12,7 +12,7 @@
 	<Grid Background="Transparent">
 		<Grid.Transitions>
 			<Transitions>
-				<DoubleTransition Property="Opacity" Duration="0:0:0.2" Delay="0:0:1"/>
+				<DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
 			</Transitions>
 		</Grid.Transitions>
 		
