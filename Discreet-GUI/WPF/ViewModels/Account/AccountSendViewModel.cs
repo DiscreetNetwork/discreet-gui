@@ -24,14 +24,20 @@ namespace WPF.ViewModels.Account
         private readonly WalletCache _walletCache;
 
 
-        public string Receiver { get; set; }
-        public double Amount { get; set; }
+        string _receiver;
+        public string Receiver { get => _receiver; set { _receiver = value; ValidateReceiverInput(); } }
+        double _amount;
+        public double Amount { get => _amount; set { _amount = value; ValidateAmountInput(); } }
 
 
-        decimal _selectedAccountBalance;
-        public decimal SelectedAccountBalance { get => _selectedAccountBalance; set { _selectedAccountBalance = value; OnPropertyChanged(nameof(SelectedAccountBalance)); } }
+        // Validation error messages
+        string _receiverValidationMessage;
+        public string ReceiverValidationMessage { get => _receiverValidationMessage; set { _receiverValidationMessage = value; OnPropertyChanged(nameof(ReceiverValidationMessage)); } }
 
-        
+        string _amountValidationMessage;
+        public string AmountValidationMessage { get => _amountValidationMessage; set { _amountValidationMessage = value; OnPropertyChanged(nameof(AmountValidationMessage)); } }
+
+
         ObservableCollection<FeeMock> FeeItems { get; set; } = new ObservableCollection<FeeMock>() { new FeeMock { Fee = "12 DIS" }, new FeeMock { Fee = "30 DIS" } };
         int SelectedFeeItemsIndex { get; set; } = 0;
 
@@ -64,8 +70,45 @@ namespace WPF.ViewModels.Account
             //SelectedAccountBalance = SenderAccounts[SelectedSenderAccountIndex].Balance;
         }
 
+        bool ValidateReceiverInput()
+        {
+            if (string.IsNullOrWhiteSpace(Receiver))
+            {
+                ReceiverValidationMessage = "Receiver address cannot be empty";
+                return false;
+            }
+
+            ReceiverValidationMessage = string.Empty;
+            return true;
+        }
+
+        bool ValidateAmountInput()
+        {
+            if(Amount == 0)
+            {
+                AmountValidationMessage = "Amount must be greater than 0";
+                return false;
+            }
+
+            if(Amount > SelectedAccount.Balance)
+            {
+                AmountValidationMessage = "Not enough DIST in the selected account";
+                return false;
+            }
+
+            AmountValidationMessage = string.Empty;
+            return true;
+        }
+
+        public bool CanDisplayConfirm()
+        {
+            return ValidateReceiverInput() && ValidateAmountInput();
+        }
+
         public void DisplayConfirm()
         {
+            if (!ValidateReceiverInput() || !ValidateAmountInput()) return;
+
             _sendTransactionCache.Amount = Amount;
             _sendTransactionCache.Receiver = Receiver;
             _sendTransactionCache.Sender = SenderAccounts[SelectedSenderAccountIndex].Address;

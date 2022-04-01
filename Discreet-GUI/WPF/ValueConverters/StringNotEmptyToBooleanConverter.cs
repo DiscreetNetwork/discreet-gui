@@ -8,16 +8,13 @@ using System.Threading.Tasks;
 
 namespace WPF.ValueConverters
 {
-    public class NameToTruncatedStringConverter : IValueConverter
+    public class StringNotEmptyToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int characters = 15;
             string s = (string)value;
 
-            if (s.Length <= characters) return (string)value;
-
-            return $"{s.Substring(0, 15)}...";
+            return !string.IsNullOrEmpty(s);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
