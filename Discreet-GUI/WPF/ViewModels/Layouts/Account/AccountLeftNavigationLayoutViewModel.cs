@@ -31,7 +31,7 @@ namespace WPF.ViewModels.Layouts.Account
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
-
+        public string WalletLabel => _walletCache.Label;
 
         private readonly WalletCache _walletCache;
 
