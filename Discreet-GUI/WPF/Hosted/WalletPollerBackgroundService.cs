@@ -168,8 +168,16 @@ namespace WPF.Hosted
 
                             if (address.Balance != balance)
                             {
+                                if(address.Balance < balance)
+                                {
+                                    _notificationService.Display("You received some DIS!");
+                                }
+                                else
+                                {
+                                    _notificationService.Display("You successfully sent some DIS!");
+                                }
+
                                 address.Balance = balance;
-                                _notificationService.Display("You received some DIST!");
                             }
                         }
                         else
