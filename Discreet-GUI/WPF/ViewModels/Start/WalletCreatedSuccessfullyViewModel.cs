@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Services.Daemon;
 using Services.Daemon.Responses;
+using Services.Daemon.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace WPF.ViewModels.Start
     class WalletCreatedSuccessfullyViewModel : ViewModelBase
     {
         ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
-        public WalletCreatedSuccessfullyViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletCache walletCache, RPCServer rpcServer)
+        public WalletCreatedSuccessfullyViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletCache walletCache, WalletService walletService)
         {
-            var response = CreateWalletResponse.CreateWallet(rpcServer, newWalletCache.WalletName, newWalletCache.SeedPhrase.Select(x => x.Value).Aggregate((x, y) => x + " " + y), newWalletCache.Password);
+            var response = walletService.CreateWalletSync(newWalletCache.WalletName, newWalletCache.SeedPhrase.Select(x => x.Value).Aggregate((x, y) => x + " " + y), newWalletCache.Password);
 
             walletCache.Label = response.Label;
             //walletCache.TotalBalance = response.Addresses.Select(x => x.Balance).Aggregate((x, y) => x + y);

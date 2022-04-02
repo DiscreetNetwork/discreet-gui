@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Services.Daemon;
 using Services.Daemon.Common;
+using Services.Daemon.Models;
 using Services.Daemon.Responses;
 using Services.Jazzicon;
 using SixLabors.ImageSharp;
