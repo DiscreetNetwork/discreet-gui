@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Daemon;
+using Services.Daemon.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace WPF
                 services.AddScoped<NotificationService>();
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
+                services.AddSingleton<WalletService>();
 
                 // Startup
                 services.AddSingleton<MainWindowViewModel>();

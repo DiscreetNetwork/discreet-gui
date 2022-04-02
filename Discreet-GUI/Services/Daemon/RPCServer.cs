@@ -37,6 +37,8 @@ namespace Services.Daemon
             if(string.IsNullOrWhiteSpace(responseText))
             {
                 _semaphore.Release();
+
+                return null;
             }
 
             var resp = DaemonResponse.Deserialize(responseText);

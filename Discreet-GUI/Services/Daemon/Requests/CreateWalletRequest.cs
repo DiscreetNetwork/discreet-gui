@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services.Daemon.Requests
 {
-    public class CreateWalletParams
+    public class CreateWalletRequest
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         public string Label { get; set; }
@@ -47,6 +47,6 @@ namespace Services.Daemon.Requests
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool? ScanForBalance { get; set; }
 
-        public CreateWalletParams() { }
+        public CreateWalletRequest() { }
     }
 }

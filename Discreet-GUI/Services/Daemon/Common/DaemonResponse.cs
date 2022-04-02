@@ -20,6 +20,20 @@ namespace Services.Daemon.Common
         public DaemonResponse() { }
 
         public static DaemonResponse Deserialize(string respText) => JsonSerializer.Deserialize<DaemonResponse>(respText, new JsonSerializerOptions());
+
+        public bool IsOK()
+        {
+            try
+            {
+                return (Result != null && Result.GetType() == typeof(JsonElement) &&
+                    ((JsonElement)Result).ValueKind == JsonValueKind.String &&
+                    ((JsonElement)Result).GetString() == "OK");
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 
     public class DaemonErrorResult
