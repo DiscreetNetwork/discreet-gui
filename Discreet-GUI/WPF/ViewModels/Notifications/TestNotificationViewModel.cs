@@ -3,25 +3,39 @@ using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using WPF.Attributes;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels.Notifications
 {
-    class TestNotificationViewModel : ViewModelBase
+    [AssemblyScanIgnore("This notification will get instantiated manually by the NotificationService")]
+    class TestNotificationViewModel : NotificationViewModelBase
     {
-        public ReactiveCommand<Unit, Unit> CloseCommand { get; set; }
-
         float _opacity = 1;
         public float Opacity { get => _opacity; set { _opacity = value; OnPropertyChanged(nameof(Opacity)); } }
-        public TestNotificationViewModel(NavigationServiceFactory navigationServiceFactory)
+
+
+        public TestNotificationViewModel(string text) : base(text)
         {
-            CloseCommand = ReactiveCommand.Create(() =>
-            {
-                Opacity = 0;
-                Task.Delay(200).ContinueWith(_ => navigationServiceFactory.DismissNotification().Navigate());
-            });
+            //_ = AutoDismiss();
+        }
+
+        public async Task Dismiss()
+        {
+            Opacity = 0;
+            await Task.Delay(200);
+            DismissNotification();
+        }
+
+        public async Task AutoDismiss()
+        {
+            await Task.Delay(5000);
+            Opacity = 0;
+            await Task.Delay(200);
+            DismissNotification();
         }
     }
 }

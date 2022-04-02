@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using WPF.Caches;
+using WPF.Services;
 
 namespace WPF.Hosted
 {
@@ -23,11 +24,13 @@ namespace WPF.Hosted
     {
         private readonly WalletCache _walletCache;
         private readonly RPCServer _rpcServer;
+        private readonly NotificationService _notificationService;
 
-        public WalletPollerBackgroundService(WalletCache walletCache, RPCServer rpcServer)
+        public WalletPollerBackgroundService(WalletCache walletCache, RPCServer rpcServer, NotificationService notificationService)
         {
             _walletCache = walletCache;
             _rpcServer = rpcServer;
+            _notificationService = notificationService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -88,7 +91,6 @@ namespace WPF.Hosted
                             }
 
                             _walletCache.Label = wallet.Label;
-                            //_walletCache.TotalBalance = wallet.Addresses.Select(x => x.Balance).Aggregate((a, b) => a + b);
                             _walletCache.LastSeenHeight = wallet.LastSeenHeight;
                             _walletCache.Synced = wallet.Synced;
 
@@ -167,6 +169,7 @@ namespace WPF.Hosted
                             if (address.Balance != balance)
                             {
                                 address.Balance = balance;
+                                _notificationService.Display("You received some DIST!");
                             }
                         }
                         else

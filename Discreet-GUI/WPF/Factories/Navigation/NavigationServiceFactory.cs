@@ -62,10 +62,6 @@ namespace WPF.Factories.Navigation
         public INavigationService CreateModalNavigationService() => new CloseModalNavigationService(_modalNavigationStore);
 
 
-        public INavigationService DisplayNotification<TTarget>() where TTarget : ViewModelBase => new DisplayNotificationNavigationService(_notificationStore, _layoutViewModelFactory.Create<TTarget>);
-        public INavigationService DismissNotification() => new DismissNotificationNavigationService(_notificationStore);
-
-
         public INavigationService CreateAccountNavigation<TViewModel>() where TViewModel : ViewModelBase
         {
             if (typeof(TViewModel) == typeof(AccountLeftNavigationLayoutViewModel))     return new MainNavigationService(_mainNavigationStore, _layoutViewModelFactory.Create<TViewModel>);

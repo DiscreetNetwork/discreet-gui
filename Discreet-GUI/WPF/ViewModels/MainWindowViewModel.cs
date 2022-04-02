@@ -9,6 +9,7 @@ using WPF.Attributes;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Notifications;
 using static Avalonia.Animation.PageSlide;
 
 namespace WPF.ViewModels
@@ -19,7 +20,7 @@ namespace WPF.ViewModels
         private readonly WindowSettingsStore _windowSettingsStore;
         private readonly MainNavigationStore _mainNavigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
-        private readonly NotificationStore _notificationStore;
+
 
         public WindowState CurrentWindowState
         {
@@ -31,10 +32,11 @@ namespace WPF.ViewModels
         }
         public ViewModelBase CurrentViewModel => _mainNavigationStore.CurrentViewModel;
         public ViewModelBase CurrentModalViewModel => _modalNavigationStore.CurrentModalViewModel;
-        public ViewModelBase CurrentNotificationViewModel => _notificationStore.CurrentNotificationViewModel;
 
+        public ViewModelBase NotificationContainerViewModel { get; set; }
 
-        public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore, NotificationStore notificationStore)
+        public MainWindowViewModel() { }
+        public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore, NotificationContainerViewModel notificationContainerViewModel)
         {
             _windowSettingsStore = windowSettingsStore;
             _windowSettingsStore.CurrentWindowStateChanged += OnCurrentWindowStateChanged;
@@ -45,8 +47,7 @@ namespace WPF.ViewModels
             _modalNavigationStore = modalNavigationStore;
             _modalNavigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
 
-            _notificationStore = notificationStore;
-            _notificationStore.CurrentNotificationViewModelChanged += () => OnPropertyChanged(nameof(CurrentNotificationViewModel));
+            NotificationContainerViewModel = notificationContainerViewModel;
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }

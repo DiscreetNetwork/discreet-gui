@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls.Notifications;
+using ReactiveUI;
 using Services.Daemon;
 using Services.Daemon.Common;
 using Services.Daemon.Requests;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using WPF.Caches;
 using WPF.ExtensionMethods;
 using WPF.Factories.Navigation;
+using WPF.Services;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Modals;
 using WPF.Views.Layouts;
@@ -42,7 +44,7 @@ namespace WPF.ViewModels.Account
         int SelectedFeeItemsIndex { get; set; } = 0;
 
 
-        public ObservableCollectionEx<WalletCache.WalletAddress> SenderAccounts { get => _walletCache.Accounts; set => SenderAccountsChanged(); }
+        public ObservableCollectionEx<WalletCache.WalletAddress> SenderAccounts => _walletCache.Accounts; 
         public WalletCache.WalletAddress SelectedAccount => SenderAccounts[SelectedSenderAccountIndex]; 
 
 
@@ -63,11 +65,6 @@ namespace WPF.ViewModels.Account
             _walletCache = walletCache;
             _navigationServiceFactory = navigationServiceFactory;
             _sendTransactionCache = sendTransactionCache;
-        }
-
-        public void SenderAccountsChanged()
-        {
-            //SelectedAccountBalance = SenderAccounts[SelectedSenderAccountIndex].Balance;
         }
 
         bool ValidateReceiverInput()
@@ -98,11 +95,6 @@ namespace WPF.ViewModels.Account
 
             AmountValidationMessage = string.Empty;
             return true;
-        }
-
-        public bool CanDisplayConfirm()
-        {
-            return ValidateReceiverInput() && ValidateAmountInput();
         }
 
         public void DisplayConfirm()
