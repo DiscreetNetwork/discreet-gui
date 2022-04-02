@@ -10,7 +10,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0" VerticalAlignment="Top" Background="#1C1C1D">
+    <Grid Grid.Row="0" VerticalAlignment="Top" Background="#09090A">
 	  <Button Height="50" Padding="15 0 15 0" Cursor="Hand" VerticalAlignment="Center" Margin="0 0 0 0" Background="Transparent" BorderBrush="{x:Null}" Command="{Binding NavigateHomeCommand}">
 		  <Image Height="25" Source="/Assets/Buttons/purple-home.png"/>
 	  </Button>
