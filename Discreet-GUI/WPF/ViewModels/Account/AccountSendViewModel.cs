@@ -69,12 +69,6 @@ namespace WPF.ViewModels.Account
             _walletCache = walletCache;
             _navigationServiceFactory = navigationServiceFactory;
             _sendTransactionCache = sendTransactionCache;
-
-            _ = Task.Run(async () =>
-            {
-                await Task.Delay(5000);
-                _walletCache.Accounts[1].Balance += 20;
-            });
         }
 
         bool ValidateReceiverInput()
