@@ -18,14 +18,15 @@ namespace WPF.ViewModels.Modals
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly RPCServer _rpcServer;
-        private readonly WalletCache _walletCache;
         private readonly SendTransactionCache _sendTransactionCache;
 
-        public ConfirmViewModel(NavigationServiceFactory navigationServiceFactory, RPCServer rpcServer, WalletCache walletCache, SendTransactionCache sendTransactionCache)
+        public string ReceiverAddress => $"{_sendTransactionCache.Receiver.Substring(0, 6)}...{_sendTransactionCache.Receiver.Substring(_sendTransactionCache.Receiver.Length - 6, 6)}";
+        public double Amount => _sendTransactionCache.Amount;
+
+        public ConfirmViewModel(NavigationServiceFactory navigationServiceFactory, RPCServer rpcServer, SendTransactionCache sendTransactionCache)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _rpcServer = rpcServer;
-            _walletCache = walletCache;
             _sendTransactionCache = sendTransactionCache;
         }
 

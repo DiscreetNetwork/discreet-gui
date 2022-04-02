@@ -37,6 +37,7 @@
     <None Remove="Assets\Icons\gray-ellipse.png" />
     <None Remove="Assets\Icons\grey-circle.png" />
     <None Remove="Assets\Icons\notification-alert.png" />
+    <None Remove="Assets\Icons\notifications-bell.png" />
     <None Remove="Assets\Icons\pink-checkmark.png" />
     <None Remove="Assets\Icons\receive-icon.png" />
     <None Remove="Assets\Icons\send-icon.png" />

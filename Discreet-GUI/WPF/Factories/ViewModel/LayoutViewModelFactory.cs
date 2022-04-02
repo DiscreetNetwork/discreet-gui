@@ -58,5 +58,12 @@ namespace WPF.Factories.ViewModel
 
             return targetViewModel;
         }
+
+        public ViewModelBase CreateNotification<TNotificationViewModel>(string text) where TNotificationViewModel : NotificationViewModelBase 
+        {
+            var vm = _serviceProvider.GetRequiredService<TNotificationViewModel>();
+            vm.Text = text;
+            return vm;
+        }
     }
 }

@@ -13,13 +13,14 @@
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaChromeHints="NoChrome"
 		Background="Transparent">
+
 	<Grid Background="#1C1C1D">
 		
-		<ContentControl ZIndex="200" Content="{Binding CurrentNotificationViewModel}"/>
+		<ContentControl ZIndex="200" Margin="0 75 25 0" HorizontalAlignment="Right" Content="{Binding NotificationContainerViewModel}"/>
 
-		<TransitioningContentControl ZIndex="100" Content="{Binding CurrentModalViewModel}">
+		<TransitioningContentControl  ZIndex="100" Content="{Binding CurrentModalViewModel}">
 			<TransitioningContentControl.PageTransition>
-				<CrossFade Duration="0:00:00.200"/>
+				<CrossFade Duration="0:00:00.001"/>
 			</TransitioningContentControl.PageTransition>
 		</TransitioningContentControl>
 		

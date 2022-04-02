@@ -4,30 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPF.Factories.Navigation;
+using WPF.Stores;
 using WPF.ViewModels.Common;
+using WPF.ViewModels.Notifications;
 
 namespace WPF.Services
 {
     public class NotificationService
     {
-        private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly NotificationStore _notificationStore;
 
-        public NotificationService(NavigationServiceFactory navigationServiceFactory)
+        public NotificationService(NotificationStore notificationStore)
         {
-            _navigationServiceFactory = navigationServiceFactory;
+            _notificationStore = notificationStore;
         }
 
-        public void Display(string content, NotificationSeverity severity)
+        public void Display(string content)
         {
-
+            _notificationStore.Add(new NotificationBody(content));
         }
-
-        public void Display<TViewModel>() where TViewModel : ViewModelBase => _navigationServiceFactory.DisplayNotification<TViewModel>().Navigate();
-        public void Dismiss() => _navigationServiceFactory.DismissNotification().Navigate();
-    }
-
-    public enum NotificationSeverity
-    {
-        Success
     }
 }

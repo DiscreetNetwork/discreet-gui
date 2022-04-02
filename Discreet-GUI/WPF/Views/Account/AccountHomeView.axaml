@@ -10,6 +10,7 @@
 	<UserControl.Resources>
 		<converters:AddressTypeToPublicPrivateStringConverter x:Key="AddressTypeToPublicPrivateStringConverter"/>
 		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
+		<converters:NameToTruncatedStringConverter x:Key="NameToTruncatedStringConverter"/>
 	</UserControl.Resources>
 	
 	<Design.DataContext>
@@ -67,7 +68,7 @@
 							  </Grid.ColumnDefinitions>
 
 							  <Image Grid.Column="0" Height="45" Width="45" Margin="5 0 0 0" VerticalAlignment="Center" Source="{Binding Identicon}"/>
-							  <Label Grid.Column="1" Margin="10 0 0 0" FontSize="16" FontWeight="200" VerticalAlignment="Center" Foreground="white" Content="{Binding Name}"></Label>
+							  <Label Grid.Column="1" Margin="10 0 0 0" FontSize="16" FontWeight="200" VerticalAlignment="Center" Foreground="white" Content="{Binding Name, Converter={StaticResource NameToTruncatedStringConverter}}"></Label>
 							  <Label Grid.Column="2" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="23" Width="60" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding Type, Converter={StaticResource AddressTypeToPublicPrivateStringConverter}}"/>
 							  <Label Grid.Column="3" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
 							  <Label Grid.Column="4" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>

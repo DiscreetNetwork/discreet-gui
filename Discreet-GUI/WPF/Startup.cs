@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Daemon;
@@ -39,15 +40,18 @@ namespace WPF
             _host = new HostBuilder().ConfigureServices((hostContext, services) =>
             {
                 RegisterViewModels(services);
+                RegisterNotificationViewModels(services);
                 RegisterFactories(services);
                 RegisterStores(services);
                 RegisterCaches(services);
 
+                services.AddSingleton<NotificationContainerViewModel>();
                 services.AddSingleton<RPCServer>();
-                services.AddScoped<NotificationService>();
+                services.AddSingleton<NotificationService>();
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
                 services.AddSingleton<WalletService>();
+
 
                 // Startup
                 services.AddSingleton<MainWindowViewModel>();
@@ -64,6 +68,7 @@ namespace WPF
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
+
             desktop.MainWindow = mainWindow;
         }
 
@@ -77,6 +82,16 @@ namespace WPF
         {
             var vms = typeof(Startup).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && !t.CustomAttributes.Any(t => t.AttributeType == typeof(AssemblyScanIgnoreAttribute)));
             
+            foreach (Type viewModel in vms)
+            {
+                services.AddTransient(viewModel);
+            }
+        }
+
+        public void RegisterNotificationViewModels(IServiceCollection services)
+        {
+            var vms = typeof(Startup).Assembly.GetTypes().Where(t => t.BaseType == typeof(NotificationViewModelBase) && !t.CustomAttributes.Any(t => t.AttributeType == typeof(AssemblyScanIgnoreAttribute)));
+
             foreach (Type viewModel in vms)
             {
                 services.AddTransient(viewModel);

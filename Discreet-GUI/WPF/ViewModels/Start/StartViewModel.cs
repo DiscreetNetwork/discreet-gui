@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls.Notifications;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -45,23 +46,14 @@ namespace WPF.ViewModels.Start
         /// </summary>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public StartViewModel(NavigationServiceFactory navigationServiceFactory, NotificationService notificationService)
+        public StartViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            notificationService.Display<Notifications.TestNotificationViewModel>();
-
             NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
             {
                 _cancellationTokenSource.Cancel();
                 navigationServiceFactory.Create<WalletNameViewModel>().Navigate();
             });
 
-            /*
-            NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
-            {
-                navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
-                navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
-            });
-            */
 
             NavigateExistingWalletChoicesViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate);
 
