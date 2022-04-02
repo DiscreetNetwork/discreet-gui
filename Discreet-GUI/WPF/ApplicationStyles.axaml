@@ -30,10 +30,6 @@
 		<Setter Property="Fill" Value="White"/>
 	</Style>
 
-	<Style Selector="ComboBox.dropdown-dark /template/ Popup#PART_Popup Border">
-		<Setter Property="Background" Value="Red"/>
-	</Style>
-
 	<Style Selector="ComboBox.dropdown-dark ComboBoxItem">
 		<Setter Property="Background" Value="#181818"/>
 		<Setter Property="Foreground" Value="#dddddd"/>
@@ -42,11 +38,11 @@
 		<Setter Property="Padding" Value="10"/>
 	</Style>
 	<Style Selector="ComboBox.dropdown-dark ComboBoxItem:pointerover /template/ ContentPresenter">
-		<Setter Property="Background" Value="#262626"/>
+		<Setter Property="Background" Value="#333333"/>
 		<Setter Property="TextBlock.Foreground" Value="#dddddd"/>
 	</Style>
 	<Style Selector="ComboBox.dropdown-dark ComboBoxItem:selected /template/ ContentPresenter">
-		<Setter Property="Background" Value="#181818"/>
+		<Setter Property="Background" Value="#262626"/>
 		<Setter Property="TextBlock.Foreground" Value="#dddddd"/>
 	</Style>
 

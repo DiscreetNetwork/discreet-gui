@@ -30,7 +30,8 @@ namespace WPF.Views
             var pos = e.GetCurrentPoint(this);
 
             // A fix to ensure the window wont begin drag, if you click on a ComboBoxItem
-            if (pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.ComboBoxItem) return;
+            if (pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.ComboBoxItem ||
+                pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.Presenters.ContentPresenter) return;
 
             if (pos.Position.Y > 100 || e.Handled) return;
 
