@@ -54,8 +54,12 @@ namespace WPF.ViewModels.Account
             get => _selectedSenderAccountIndex;
             set
             {
-                if (value < 0) _selectedSenderAccountIndex = 0;
-                else _selectedSenderAccountIndex = value;
+                // When the ComboBox rerenders, value will be -1, and it will end up selecting the first account again
+                // Currently we ignore that, because if the second+ account is selected, and we receive DIS on any account, it will rerender and display the first account again
+                // We always want to stay at the selected account. This "fix" might cause issues later, when we allow deleting accounts etc.
+                // Possible future fix, is to also check that `SelectedSenderAccountIndex` is not greater than the amount of accounts, in that case, we would allow the index to reset back to 0
+                if (value < 0) return;
+                else _selectedSenderAccountIndex = value; 
                 OnPropertyChanged(nameof(SelectedAccount));
             }
         }
@@ -65,6 +69,12 @@ namespace WPF.ViewModels.Account
             _walletCache = walletCache;
             _navigationServiceFactory = navigationServiceFactory;
             _sendTransactionCache = sendTransactionCache;
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                _walletCache.Accounts[1].Balance += 20;
+            });
         }
 
         bool ValidateReceiverInput()
