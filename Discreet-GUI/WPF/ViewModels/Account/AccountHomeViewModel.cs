@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using WPF.Caches;
 using WPF.ExtensionMethods;
+using WPF.Services;
 using WPF.ViewModels.Common;
 
 namespace WPF.ViewModels.Account
@@ -13,6 +14,7 @@ namespace WPF.ViewModels.Account
     public class AccountHomeViewModel : ViewModelBase
     {
         private readonly WalletCache _walletCache;
+        private readonly NotificationService _notificationService;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         /* Mock data
@@ -44,10 +46,10 @@ namespace WPF.ViewModels.Account
         {
         }
 
-        public AccountHomeViewModel(WalletCache walletCache)
+        public AccountHomeViewModel(WalletCache walletCache, NotificationService notificationService)
         {
             _walletCache = walletCache;
-
+            _notificationService = notificationService;
             Accounts.CollectionChanged += AccountsChanged;
         }
 
@@ -59,6 +61,7 @@ namespace WPF.ViewModels.Account
         public async Task CopyAddress(string parameter)
         {
             await Application.Current.Clipboard.SetTextAsync(parameter);
+            _notificationService.Display("Copied address to clipboard");
         }
     }
 }
