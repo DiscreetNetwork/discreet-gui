@@ -1,8 +1,13 @@
+using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using WPF.Attributes;
@@ -10,7 +15,6 @@ using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
 using WPF.ViewModels.Notifications;
-using static Avalonia.Animation.PageSlide;
 
 namespace WPF.ViewModels
 {
@@ -36,7 +40,7 @@ namespace WPF.ViewModels
         public ViewModelBase NotificationContainerViewModel { get; set; }
 
         public MainWindowViewModel() { }
-        public MainWindowViewModel(WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore, NotificationContainerViewModel notificationContainerViewModel)
+        public MainWindowViewModel(IConfiguration configuration, WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore, NotificationContainerViewModel notificationContainerViewModel)
         {
             _windowSettingsStore = windowSettingsStore;
             _windowSettingsStore.CurrentWindowStateChanged += OnCurrentWindowStateChanged;
@@ -48,6 +52,21 @@ namespace WPF.ViewModels
             _modalNavigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
 
             NotificationContainerViewModel = notificationContainerViewModel;
+
+
+            (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).Exit += (s, e) =>
+            {
+                Startup.Stop();
+
+                if(configuration.GetValue<bool>("DaemonSettings:UseActivator"))
+                {
+                    Process daemonProcess = Process.GetProcessesByName("Discreet").FirstOrDefault();
+                    if (daemonProcess != null)
+                    {
+                        daemonProcess.Kill();
+                    }
+                }
+            };
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }

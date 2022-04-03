@@ -16,6 +16,12 @@ namespace WPF.Caches
     /// </summary>
     public class WalletCache
     {
+        public event Action VisorStartupCompleteChanged;
+        private bool _visorStartupComplete = false;
+        public bool VisorStartupComplete { get => _visorStartupComplete; set { _visorStartupComplete = value; VisorStartupCompleteChanged?.Invoke(); } }
+
+
+
         public event Action LabelChanged;
         string _label;
         public string Label { get => _label; set { _label = value; LabelChanged?.Invoke(); } }

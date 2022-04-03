@@ -42,6 +42,7 @@
     <None Remove="Assets\Icons\receive-icon.png" />
     <None Remove="Assets\Icons\send-icon.png" />
     <None Remove="Assets\Icons\settings-icon.png" />
+    <None Remove="Assets\Icons\spinner.png" />
     <None Remove="Assets\Icons\unsynced-wallet.png" />
     <None Remove="Assets\Icons\wifi-white.png" />
     <None Remove="Assets\Images\Group.png" />

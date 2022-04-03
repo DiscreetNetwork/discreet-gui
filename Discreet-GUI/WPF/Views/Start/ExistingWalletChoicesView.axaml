@@ -49,7 +49,7 @@
 			VerticalAlignment="Bottom"
             Classes="btn-outline-gray hand content-center align-center rounded"
             FontSize="20"
-            Command="{Binding NavigateOpenWalletFromFileCommand}">Open a wallet from file</Button>
+            Command="{Binding OpenWalletFromFile}">Open a wallet from file</Button>
 
     <Button Grid.Row="5" Height="55" Width="300" Margin="0 15 0 70"
 			VerticalAlignment="Bottom"

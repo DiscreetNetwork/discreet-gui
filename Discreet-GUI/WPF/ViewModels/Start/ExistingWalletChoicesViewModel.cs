@@ -13,25 +13,30 @@ namespace WPF.ViewModels.Start
     [Layout(typeof(PurpleTitleBarLayoutViewModel))]
     class ExistingWalletChoicesViewModel : ViewModelBase
     {
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+
         ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
-        ReactiveCommand<Unit, Unit> NavigateOpenWalletFromFileCommand { get; set; }
         ReactiveCommand<Unit, Unit> NavigateRestoreWalletCommand { get; set; }
 
         public ExistingWalletChoicesViewModel(NavigationServiceFactory navigationServiceFactory)
         {
             NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
 
-            NavigateOpenWalletFromFileCommand = ReactiveCommand.Create(() =>
-            {
-                //navigationServiceFactory.CreateModalNavigationService<AboutBootstrapViewModel>().Navigate();
-                navigationServiceFactory.CreateStackNavigation<ExistingWalletChoicesViewModel, OpenWalletFromFileViewModel>().Navigate();
-            });
+            
+
             NavigateRestoreWalletCommand = ReactiveCommand.Create(() =>
             {
 
                 //navigationServiceFactory.CreateModalNavigationService<AboutBootstrapViewModel>().Navigate();
                 navigationServiceFactory.CreateStackNavigation<ExistingWalletChoicesViewModel, RestoreWalletViewModel>().Navigate();
             });
+            _navigationServiceFactory = navigationServiceFactory;
+        }
+
+
+        public void OpenWalletFromFile()
+        {
+            _navigationServiceFactory.Create<PasswordViewModel>().Navigate();
         }
     }
 }

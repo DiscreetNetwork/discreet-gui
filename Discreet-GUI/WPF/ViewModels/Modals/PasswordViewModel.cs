@@ -33,7 +33,10 @@ namespace WPF.ViewModels.Modals
         public string EnteredPassword { get; set; }
 
         public List<Wallet> LoadedWallets { get; set; }
-        public int SelectedWalletIndex { get; set; }
+        public Wallet SelectedWallet => LoadedWallets[SelectedWalletIndex];
+
+        private int _selectedWalletIndex;
+        public int SelectedWalletIndex { get => _selectedWalletIndex; set { _selectedWalletIndex = value; OnPropertyChanged(nameof(SelectedWallet)); } }
 
         public PasswordViewModel() { }
 
@@ -75,10 +78,6 @@ namespace WPF.ViewModels.Modals
 
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
-            
-            Thread.Sleep(1000);
-
-            _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
 
         async Task LockWallet()
@@ -94,10 +93,14 @@ namespace WPF.ViewModels.Modals
 
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+        }
 
-            Thread.Sleep(1000);
+        void LoadWallet()
+        {
+            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
 
-            _navigationServiceFactory.CreateModalNavigationService().Navigate();
+            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
+            _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }
     }
 }

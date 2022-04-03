@@ -1,8 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 
 namespace WPF.Views

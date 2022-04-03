@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WPF.Caches;
 using WPF.Services;
 
 namespace WPF.Hosted
@@ -16,11 +17,13 @@ namespace WPF.Hosted
     {
         private readonly IConfiguration _configuration;
         private readonly NotificationService _notificationService;
+        private readonly WalletCache _walletCache;
 
-        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService)
+        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache)
         {
             _configuration = configuration;
             _notificationService = notificationService;
+            _walletCache = walletCache;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -73,6 +76,11 @@ namespace WPF.Hosted
                         p.StartInfo.RedirectStandardOutput = true;
                         p.OutputDataReceived += (s, e) =>
                         {
+                            if(e.Data != null && e.Data.Contains("Visor startup complete"))
+                            {
+                                _walletCache.VisorStartupComplete = true;
+                            }
+
                             if(e.Data is null)
                             {
                                 if (outputBuilder.Length == 0) return;

@@ -70,11 +70,15 @@ namespace WPF
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
 
-            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<PasswordViewModel>().Navigate();
-
-
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
+
+
+            if(serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
+            {
+                serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+            }
+
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
 
             desktop.MainWindow = mainWindow;
