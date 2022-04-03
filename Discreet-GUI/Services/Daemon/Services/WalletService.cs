@@ -258,5 +258,25 @@ namespace Services.Daemon
                 return null;
             }
         }
+
+        /// <summary>
+        /// Returns the transaction history for the specified account's wallet address.
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public async Task<List<TransactionHistoryElement>> GetTransactionHistory(string address)
+        {
+            var req = new DaemonRequest("get_transaction_history", address);
+
+            var resp = await _rpcServer.Request(req);
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<TransactionHistoryElement>>((JsonElement)resp.Result);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
