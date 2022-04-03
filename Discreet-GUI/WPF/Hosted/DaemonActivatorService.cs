@@ -31,6 +31,12 @@ namespace WPF.Hosted
             bool useDaemonActivator = _configuration.GetValue<bool>("DaemonSettings:UseActivator");
             if (!useDaemonActivator) return;
 
+            if(Process.GetProcessesByName(_configuration.GetValue<string>("DaemonSettings:ExecutableName")).FirstOrDefault() != null)
+            {
+                _walletCache.VisorStartupComplete = true;
+                return;
+            }
+
             var executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
             while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath))
             {
