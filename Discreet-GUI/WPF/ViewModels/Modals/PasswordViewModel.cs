@@ -62,6 +62,18 @@ namespace WPF.ViewModels.Modals
             PasswordCharacter = DisplayPassword ? string.Empty : "*";
         }
 
+        void LoadWallet()
+        {
+            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
+
+            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
+            _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+
+            Thread.Sleep(1000);
+
+            _navigationServiceFactory.CreateModalNavigationService().Navigate();
+        }
+
         async Task UnlockWallet()
         {
             var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
