@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Daemon;
@@ -59,6 +60,10 @@ namespace WPF
                 {
                     DataContext = s.GetRequiredService<MainWindowViewModel>()
                 });
+            })
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddJsonFile("appsettings.json");
             }).Build();
 
             _ = _host.RunAsync();

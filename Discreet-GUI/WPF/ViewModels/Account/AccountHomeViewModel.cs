@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using ReactiveUI;
+using Services.Daemon;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
@@ -15,6 +16,7 @@ namespace WPF.ViewModels.Account
     {
         private readonly WalletCache _walletCache;
         private readonly NotificationService _notificationService;
+        private readonly WalletService _walletService;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         /* Mock data
@@ -46,10 +48,11 @@ namespace WPF.ViewModels.Account
         {
         }
 
-        public AccountHomeViewModel(WalletCache walletCache, NotificationService notificationService)
+        public AccountHomeViewModel(WalletCache walletCache, NotificationService notificationService, WalletService walletService)
         {
             _walletCache = walletCache;
             _notificationService = notificationService;
+            _walletService = walletService;
             Accounts.CollectionChanged += AccountsChanged;
         }
 
