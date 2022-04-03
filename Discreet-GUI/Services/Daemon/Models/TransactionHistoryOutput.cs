@@ -9,6 +9,6 @@ namespace Services.Daemon.Models
     public class TransactionHistoryOutput
     {
         public string Address { get; set; }
-        public string Amount { get; set; }
+        public ulong Amount { get; set; }
     }
 }

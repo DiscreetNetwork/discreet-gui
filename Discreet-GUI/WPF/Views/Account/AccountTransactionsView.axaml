@@ -3,9 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:WPF.ViewModels.Account"
-             mc:Ignorable="d" Design.Height="800"
+			 xmlns:converters="using:WPF.ValueConverters"
+			 mc:Ignorable="d" Design.Height="800"
              x:Class="WPF.Views.Account.AccountTransactionsView">
 
+	<UserControl.Resources>
+		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>		
+	</UserControl.Resources>
+	
 	<Design.DataContext>
 		<vm:AccountTransactionsViewModel/>
 	</Design.DataContext>
@@ -42,7 +47,7 @@
 		</Border>
 
 		<ScrollViewer Margin="20 0 70 20" Grid.Row="2">
-			<ItemsControl Items="{Binding MockItems}">
+			<ItemsControl Items="{Binding Transactions}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Border Padding="0 15 0 15" BorderThickness="0 0 0 1" BorderBrush="#414141">
@@ -60,9 +65,9 @@
 									<RowDefinition/>
 								</Grid.RowDefinitions>
 
-								<Label Grid.Row="0" Grid.Column="0" Foreground="LightGray" FontSize="18" Content="{Binding Time}"/>
+								<Label Grid.Row="0" Grid.Column="0" Foreground="LightGray" FontSize="18" Content="{Binding TimeFormatted}"/>
 								<Label Grid.Row="0" Grid.Column="1" Foreground="LightGray" FontSize="18" Content="{Binding DateFormatted}"/>
-								<Label Grid.Row="0" Grid.Column="2" Foreground="LightGray" FontSize="18" Content="{Binding ReceivingAccount}"/>
+								<Label Grid.Row="0" Grid.Column="2" Foreground="LightGray" FontSize="18" Content="{Binding ReceivingAccount, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
 								<Label Grid.Row="0" Grid.Column="3" Foreground="LightGray" FontSize="18" Content="{Binding Amount}"/>
 							</Grid>
 						</Border>
