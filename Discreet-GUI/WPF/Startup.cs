@@ -31,6 +31,7 @@ using WPF.ViewModels.Notifications;
 using WPF.ViewModels.Settings;
 using WPF.ViewModels.Start;
 using WPF.Views;
+using WPF.Views.Account.Modals;
 
 namespace WPF
 {
@@ -95,6 +96,7 @@ namespace WPF
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
 
+            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<TransactionDetailsViewModel>().Navigate();
 
             //if(serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
             //{
