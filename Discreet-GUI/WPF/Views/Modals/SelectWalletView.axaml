@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:WPF.ViewModels.Modals"
              mc:Ignorable="d"
-             x:Class="WPF.Views.Modals.PasswordView">
+             x:Class="WPF.Views.Modals.SelectWalletView">
 
 	<Design.DataContext>
 		<vm:PasswordViewModel/>
@@ -49,7 +49,7 @@
 			</ComboBox>
 
 			<Label Grid.Row="2" Foreground="#DDDDDD" Margin="0 5 0 0" Content="Locked: "/>
-			<Label Grid.Row="2" Foreground="#DDDDDD" FontWeight="Bold" Margin="60 5 0 0" Content="[Not implemented]"/>
+			<Label Grid.Row="2" Foreground="#DDDDDD" FontWeight="Bold" Margin="60 5 0 0" Content="{Binding SelectedWalletStatus.Status}"/>
 			
 			<Label Grid.Row="3" Foreground="#DDDDDD" Margin="0 25 0 0">Enter password</Label>
 
@@ -63,6 +63,7 @@
 			<Button Classes="btn btn-gray" Cursor="Hand" Grid.Row="5" Width="95" Height="35" Margin="0 10 0 0" Command="{Binding UnlockWallet}">Unlock</Button>
 			<Button Classes="btn btn-gray" Cursor="Hand" Grid.Row="5" Width="95" Height="35" Margin="100 10 0 0" Command="{Binding LoadWallet}">Load</Button>
 			<Button Classes="btn btn-gray" Cursor="Hand" Grid.Row="5" Width="95" Height="35" Margin="200 10 0 0" Command="{Binding LockWallet}">Lock</Button>
+			<Button Classes="btn btn-gray" Cursor="Hand" Grid.Row="5" Width="180" Height="35" Margin="300 10 0 0" Command="{Binding JustNavigate}">Just give me the data</Button>
 		</Grid>
 	</Grid>
 

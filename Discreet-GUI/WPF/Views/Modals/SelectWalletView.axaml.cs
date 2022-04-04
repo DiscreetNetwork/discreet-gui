@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace WPF.Views.Modals
 {
-    public partial class PasswordView : UserControl
+    public partial class SelectWalletView : UserControl
     {
-        public PasswordView()
+        public SelectWalletView()
         {
             InitializeComponent();
         }

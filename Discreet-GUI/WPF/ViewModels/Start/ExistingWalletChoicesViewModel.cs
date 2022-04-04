@@ -36,7 +36,7 @@ namespace WPF.ViewModels.Start
 
         public void OpenWalletFromFile()
         {
-            _navigationServiceFactory.Create<PasswordViewModel>().Navigate();
+            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
     }
 }

@@ -18,7 +18,7 @@ using WPF.ViewModels.Layouts.Account;
 namespace WPF.ViewModels.Modals
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
-    public class PasswordViewModel : ViewModelBase
+    public class SelectWalletViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly WalletService _walletService;
@@ -35,12 +35,16 @@ namespace WPF.ViewModels.Modals
         public List<Wallet> LoadedWallets { get; set; }
         public Wallet SelectedWallet => LoadedWallets[SelectedWalletIndex];
 
+        public List<WalletStatusData> WalletStatuses { get; set; }
+
+        public WalletStatusData SelectedWalletStatus => WalletStatuses[SelectedWalletIndex];
+
         private int _selectedWalletIndex;
-        public int SelectedWalletIndex { get => _selectedWalletIndex; set { _selectedWalletIndex = value; OnPropertyChanged(nameof(SelectedWallet)); } }
+        public int SelectedWalletIndex { get => _selectedWalletIndex; set { _selectedWalletIndex = value; OnPropertyChanged(nameof(SelectedWallet)); OnPropertyChanged(nameof(SelectedWalletStatus));  } }
 
-        public PasswordViewModel() { }
+        public SelectWalletViewModel() { }
 
-        public PasswordViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService, NotificationService notificationService, WalletCache walletCache)
+        public SelectWalletViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService, NotificationService notificationService, WalletCache walletCache)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _walletService = walletService;
@@ -56,6 +60,10 @@ namespace WPF.ViewModels.Modals
             {
                 LoadedWallets = wallets;
             }
+
+
+            var statusesTask = walletService.GetWalletStatuses();
+            WalletStatuses = statusesTask.Result;
         }
 
 
@@ -74,10 +82,7 @@ namespace WPF.ViewModels.Modals
                 return;
             }
 
-            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
-
-            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
-            _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
 
         async Task LockWallet()
@@ -89,16 +94,25 @@ namespace WPF.ViewModels.Modals
                 return;
             }
 
-            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
-
-            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
-            _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
 
-        void LoadWallet()
+        async Task LoadWallet()
+        {
+            var w = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+            if (w is not null)
+            {
+                _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
+                return;
+            }
+
+            _notificationService.Display("Loaded, maybe?");
+            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
+        }
+
+        void JustNavigate()
         {
             _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
-
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }
