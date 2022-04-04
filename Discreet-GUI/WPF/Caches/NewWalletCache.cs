@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WPF.ViewModels.Start;
+using WPF.Views.Start;
 
 namespace WPF.Caches
 {

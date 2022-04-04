@@ -10,7 +10,7 @@ using WPF.ExtensionMethods;
 using WPF.Services;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Account
+namespace WPF.Views.Account
 {
     public class AccountHomeViewModel : ViewModelBase
     {

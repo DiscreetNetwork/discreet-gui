@@ -10,7 +10,7 @@ using System.Windows.Input;
 using WPF.Stores;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Layouts
+namespace WPF.Views.Layouts
 {
     public class PurpleTitleBarLayoutViewModel : TitleBarViewModelBase
     {

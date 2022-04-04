@@ -14,9 +14,9 @@ using WPF.Attributes;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Notifications;
+using WPF.Views.Notifications;
 
-namespace WPF.ViewModels
+namespace WPF.Views
 {
     [AssemblyScanIgnore("This viewModel is manually registered in Startup")]
     public class MainWindowViewModel : ViewModelBase

@@ -10,11 +10,11 @@ using WPF.Caches;
 using WPF.ExtensionMethods;
 using WPF.Factories.Navigation;
 using WPF.Stores.Navigation;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Settings;
+using WPF.Views.Account;
+using WPF.Views.Settings;
 
-namespace WPF.ViewModels.Layouts.Account
+namespace WPF.Views.Layouts.Account
 {
     [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
     class AccountLeftNavigationLayoutViewModel : ViewModelBase

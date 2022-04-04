@@ -21,17 +21,11 @@ using WPF.Services;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.CreateWallet;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
-using WPF.ViewModels.Modals;
-using WPF.ViewModels.Notifications;
-using WPF.ViewModels.Settings;
-using WPF.ViewModels.Start;
 using WPF.Views;
 using WPF.Views.Account.Modals;
+using WPF.Views.Notifications;
+using WPF.Views.Start;
 
 namespace WPF
 {

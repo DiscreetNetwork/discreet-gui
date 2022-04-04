@@ -9,12 +9,12 @@ using System.Reactive;
 using System.Text;
 using WPF.Caches;
 using WPF.Factories.Navigation;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
+using WPF.Views.Account;
+using WPF.Views.Layouts;
+using WPF.Views.Layouts.Account;
 
-namespace WPF.ViewModels.Start
+namespace WPF.Views.Start
 {
     [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
     class WalletCreatedSuccessfullyViewModel : ViewModelBase

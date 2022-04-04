@@ -7,12 +7,12 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
+using WPF.Views.Account;
+using WPF.Views.Layouts;
+using WPF.Views.Layouts.Account;
 
-namespace WPF.ViewModels.Start
+namespace WPF.Views.Start
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     class RestoreWalletViewModel : ViewModelBase

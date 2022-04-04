@@ -5,9 +5,9 @@ using WPF.Factories.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.Stores;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Start;
+using WPF.Views.Start;
 
-namespace WPF.ViewModels.Layouts
+namespace WPF.Views.Layouts
 {
     public class DarkTitleBarLayoutWithBackButtonViewModel : TitleBarViewModelBase
     {

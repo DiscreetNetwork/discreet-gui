@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Services;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
+using WPF.Views.Account;
+using WPF.Views.Layouts;
+using WPF.Views.Layouts.Account;
 
-namespace WPF.ViewModels.Modals
+namespace WPF.Views.Modals
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class SelectWalletViewModel : ViewModelBase

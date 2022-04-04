@@ -9,10 +9,10 @@ using System.Text;
 using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.CreateWallet;
-using WPF.ViewModels.Layouts;
+using WPF.Views.CreateWallet;
+using WPF.Views.Layouts;
 
-namespace WPF.ViewModels.Start
+namespace WPF.Views.Start
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class VerifyRecoveryPhraseViewModel : ViewModelBase

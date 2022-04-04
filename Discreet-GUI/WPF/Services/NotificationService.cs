@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Notifications;
 
 namespace WPF.Services
 {

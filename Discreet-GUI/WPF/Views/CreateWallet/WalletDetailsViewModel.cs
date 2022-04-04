@@ -7,10 +7,10 @@ using System.Text;
 using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Start;
+using WPF.Views.Layouts;
+using WPF.Views.Start;
 
-namespace WPF.ViewModels.CreateWallet
+namespace WPF.Views.CreateWallet
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     class WalletDetailsViewModel : ViewModelBase

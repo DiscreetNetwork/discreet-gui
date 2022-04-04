@@ -14,10 +14,10 @@ using WPF.ExtensionMethods;
 using WPF.Factories.Navigation;
 using WPF.Services;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Modals;
 using WPF.Views.Layouts;
+using WPF.Views.Modals;
 
-namespace WPF.ViewModels.Account
+namespace WPF.Views.Account
 {
     public class AccountSendViewModel : ViewModelBase
     {

@@ -11,7 +11,7 @@ using WPF.Services;
 using WPF.Stores;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Notifications
+namespace WPF.Views.Notifications
 {
     [AssemblyScanIgnore("Registered manually as a singleton")]
     public class NotificationContainerViewModel : ViewModelBase

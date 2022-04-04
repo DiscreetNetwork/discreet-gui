@@ -12,7 +12,7 @@ using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Modals
+namespace WPF.Views.Modals
 {
     public class ConfirmViewModel : ViewModelBase
     {

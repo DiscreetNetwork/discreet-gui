@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using WPF.ExtensionMethods;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Account
+namespace WPF.Views.Account
 {
     public class AccountReceiveViewModel : ViewModelBase
     {

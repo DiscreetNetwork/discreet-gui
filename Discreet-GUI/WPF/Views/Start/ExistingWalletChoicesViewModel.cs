@@ -5,10 +5,10 @@ using System.Reactive;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Modals;
+using WPF.Views.Layouts;
+using WPF.Views.Modals;
 
-namespace WPF.ViewModels.Start
+namespace WPF.Views.Start
 {
     [Layout(typeof(PurpleTitleBarLayoutViewModel))]
     class ExistingWalletChoicesViewModel : ViewModelBase

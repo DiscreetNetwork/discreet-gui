@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 using WPF.Factories.Navigation;
 using WPF.Services;
 using WPF.Services.Navigation.Common;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.CreateWallet;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
+using WPF.Views.CreateWallet;
+using WPF.Views.Layouts;
 
-namespace WPF.ViewModels.Start
+namespace WPF.Views.Start
 {
     [Layout(typeof(PurpleTitleBarLayoutViewModel))]
     public class StartViewModel : ViewModelBase

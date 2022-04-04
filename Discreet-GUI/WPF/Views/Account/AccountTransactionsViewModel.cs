@@ -8,7 +8,7 @@ using System.Text;
 using WPF.Caches;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Account
+namespace WPF.Views.Account
 {
     public class AccountTransactionsViewModel : ViewModelBase
     {

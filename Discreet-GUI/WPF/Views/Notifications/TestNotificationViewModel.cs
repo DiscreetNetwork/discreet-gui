@@ -9,7 +9,7 @@ using WPF.Attributes;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 
-namespace WPF.ViewModels.Notifications
+namespace WPF.Views.Notifications
 {
     [AssemblyScanIgnore("This notification will get instantiated manually by the NotificationService")]
     class TestNotificationViewModel : NotificationViewModelBase
