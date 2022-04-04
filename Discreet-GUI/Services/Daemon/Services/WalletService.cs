@@ -120,6 +120,28 @@ namespace Services.Daemon
         }
 
         /// <summary>
+        /// Retrieves all wallet statuses from the Daemon, including unloaded wallets.
+        /// </summary>
+        /// <returns>A <see cref='List{T}'/> of <see cref='WalletStatusData'/> containing wallet status data on success; <see langword='null'/> if the call fails.</returns>
+        public async Task<List<WalletStatusData>> GetWalletStatuses()
+        {
+            var req = new DaemonRequest("get_wallet_statuses");
+
+            var resp = await _rpcServer.Request(req);
+
+            try
+            {
+                var data = JsonSerializer.Deserialize<List<WalletStatusRV>>((JsonElement)resp.Result);
+
+                return data.Select(x => new WalletStatusData { Label = x.Label, Status = (WalletStatus)x.Status }).ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Loads a wallet from the Daemon's WalletDB with the specified parameters.
         /// </summary>
         /// <param name="label">The label of the wallet to load.</param>
