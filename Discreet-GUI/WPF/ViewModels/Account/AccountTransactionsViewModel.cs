@@ -27,7 +27,7 @@ namespace WPF.ViewModels.Account
 
                 if (accountTxs is null) continue;
 
-                txs.AddRange(accountTxs.Select(x => new AccountTransaction(x.Timestamp, account.Address, x.SentAmount)));
+                txs.AddRange(accountTxs.Select(x => new AccountTransaction(x.Timestamp, account.Address, x.SentAmount == 0 ? $"+{x.ReceivedAmount}" : $"-{x.SentAmount}")));
             }
 
             Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
@@ -42,10 +42,14 @@ namespace WPF.ViewModels.Account
             public string TimeFormatted => TransactionDate.TimeOfDay.ToString("hh':'mm");
             public string DateFormatted => TransactionDate.ToString("dd/MM/yyyy");
             public string ReceivingAccount { get; set; }
-            public ulong Amount { get; set; }
+
+            /// <summary>
+            /// This is a string, so we can append a "-" sign to it to display if the amount were received or sent
+            /// </summary>
+            public string Amount { get; set; }
 
 
-            public AccountTransaction(long unix, string receiver, ulong amount)
+            public AccountTransaction(long unix, string receiver, string amount)
             {
                 TransactionDate = new DateTime(unix);
                 ReceivingAccount = receiver;
