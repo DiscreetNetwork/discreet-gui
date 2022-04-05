@@ -74,5 +74,10 @@ namespace WPF.Views.Account
         {
             _navigationServiceFactory.CreateModalNavigationService<Modals.AccountDetailsViewModel>().Navigate();
         }
+
+        public void DisplayCreateNewAccount()
+        {
+            _navigationServiceFactory.CreateModalNavigationService<Modals.CreateNewAccountViewModel>().Navigate();
+        }
     }
 }

@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WPF.Views.Account.Modals.CreateNewAccountView">
+	<Grid Background="Transparent">
+		<Grid.Transitions>
+			<Transitions>
+				<DoubleTransition Property="Opacity" Duration="0:0:0.001"/>
+			</Transitions>
+		</Grid.Transitions>
+
+		<Rectangle Fill="#181818" Opacity="0.95"/>
+
+		<Border
+			Background="#181818"
+			Width="500" Height="250"
+			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			BoxShadow="0 3 7 #ff0a0a0a">
+
+			<Grid>
+				<Button Cursor="Hand" Width="40" HorizontalAlignment="Right" Command="{Binding Dismiss}" VerticalAlignment="Top" Margin="0 15 15 0">
+					<Image Source="/Assets/Icons/close-icon.png"/>
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Button.Styles>
+				</Button>
+
+				<Label VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="White" FontWeight="300" Margin="15 15 0 0">Create new account</Label>
+				
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>

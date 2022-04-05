@@ -132,7 +132,7 @@
 		  </ItemsControl>
 	  </ScrollViewer>
 
-    <Button Grid.Row="5" Classes="btn btn-pink content-center align-v-bottom align-h-right hand" Margin="0 0 25 25" Height="50" Width="300" FontWeight="300" FontSize="18">Add Account</Button>
+    <Button Grid.Row="5" Classes="btn btn-outline-pink content-center align-v-bottom align-h-right hand" Margin="0 0 25 25" Height="50" Width="300" FontWeight="300" FontSize="18" Command="{Binding DisplayCreateNewAccount}">Create new account</Button>
         
     </Grid>
 </UserControl>
