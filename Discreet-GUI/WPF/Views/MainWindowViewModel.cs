@@ -14,6 +14,7 @@ using WPF.Attributes;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels.Common;
+using WPF.Views.DebugUtility;
 using WPF.Views.Notifications;
 
 namespace WPF.Views
@@ -24,7 +25,7 @@ namespace WPF.Views
         private readonly WindowSettingsStore _windowSettingsStore;
         private readonly MainNavigationStore _mainNavigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
-
+        private readonly MainDebugWindowViewModel _mainDebugWindowViewModel;
 
         public WindowState CurrentWindowState
         {
@@ -40,7 +41,7 @@ namespace WPF.Views
         public ViewModelBase NotificationContainerViewModel { get; set; }
 
         public MainWindowViewModel() { }
-        public MainWindowViewModel(IConfiguration configuration, WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore, NotificationContainerViewModel notificationContainerViewModel)
+        public MainWindowViewModel(IConfiguration configuration, WindowSettingsStore windowSettingsStore, MainNavigationStore mainNavigationStore, ModalNavigationStore modalNavigationStore, NotificationContainerViewModel notificationContainerViewModel, MainDebugWindowViewModel mainDebugWindowViewModel)
         {
             _windowSettingsStore = windowSettingsStore;
             _windowSettingsStore.CurrentWindowStateChanged += OnCurrentWindowStateChanged;
@@ -52,8 +53,7 @@ namespace WPF.Views
             _modalNavigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
 
             NotificationContainerViewModel = notificationContainerViewModel;
-
-
+            _mainDebugWindowViewModel = mainDebugWindowViewModel;
             (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).Exit += (s, e) =>
             {
                 Startup.Stop();
@@ -72,5 +72,23 @@ namespace WPF.Views
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }
         private void OnCurrentViewModelChanged() { OnPropertyChanged(nameof(CurrentViewModel)); }
         private void OnCurrentModalViewModelChanged() { OnPropertyChanged(nameof(CurrentModalViewModel)); }
+
+
+#if DEBUG
+        private MainDebugWindowView _debugView;
+        void DisplayDebugProcess()
+        {
+            if(_debugView is null)
+            {
+                _debugView = new MainDebugWindowView();
+                _debugView.DataContext = _mainDebugWindowViewModel;
+                _debugView.Closing += (s, e) => _debugView = null; 
+                _debugView.Show();
+                return;
+            }
+
+            _debugView.Activate();
+        }
     }
+#endif
 }

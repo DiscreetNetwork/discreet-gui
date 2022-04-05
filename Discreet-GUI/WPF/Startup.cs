@@ -24,6 +24,7 @@ using WPF.ViewModels;
 using WPF.ViewModels.Common;
 using WPF.Views;
 using WPF.Views.Account.Modals;
+using WPF.Views.DebugUtility;
 using WPF.Views.Notifications;
 using WPF.Views.Start;
 
@@ -67,20 +68,54 @@ namespace WPF
                     try
                     {
                         Directory.CreateDirectory(walletConfigPath);
-                        if (!File.Exists(Path.Combine(walletConfigPath, "appsettings.json")))
-                        {
-                            using var fs = File.Create(Path.Combine(walletConfigPath, "appsettings.json"));
-                            using var sw = new StreamWriter(fs);
-                            sw.Write($"{{\n  \"DaemonSettings\": {{\n    \"UseActivator\": true,\n    \"RedirectOutput\": true,\n    \"ExecutableName\": \"Discreet\",\n    \"ExecutablePath\": \"path to Discreet.exe\"\n  }}\n}}");
-                        }
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder and file: \n{e.Message}");
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder: \n{e.Message}");
+                    }
+                }
+                if (!File.Exists(Path.Combine(walletConfigPath, "appsettings.json")))
+                {
+                    try
+                    {
+                        using var fs = File.Create(Path.Combine(walletConfigPath, "appsettings.json"));
+                        using var sw = new StreamWriter(fs);
+                        sw.Write($"{{\n  \"DaemonSettings\": {{\n    \"UseActivator\": true,\n    \"RedirectOutput\": true,\n    \"ExecutableName\": \"Discreet\",\n    \"ExecutablePath\": \"path to Discreet.exe\"\n  }}\n}}");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet appsettings.json file: \n{e.Message}");
                     }
                 }
 
                 config.AddJsonFile(Path.Combine(walletConfigPath, "appsettings.json"));
+#if DEBUG
+                if (!Directory.Exists(walletConfigPath))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(walletConfigPath);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder: \n{e.Message}");
+                    }
+                }
+                if (!File.Exists(Path.Combine(walletConfigPath, "debugsettings.json")))
+                {
+                    try
+                    {
+                        using var fs = File.Create(Path.Combine(walletConfigPath, "debugsettings.json"));
+                        using var sw = new StreamWriter(fs);
+                        sw.Write($"{{\n  \"FaucetRemoteNode\": \"http://ip:port/\"\n}}");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default debugsettings.json file: \n{e.Message}");
+                    }
+                }
+                config.AddJsonFile(Path.Combine(walletConfigPath, "debugsettings.json"));
+#endif
             }).Build();
 
             _ = _host.RunAsync();

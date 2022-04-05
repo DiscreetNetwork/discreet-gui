@@ -81,6 +81,9 @@
     <Compile Update="Views\Account\Modals\AccountDetailsView.axaml.cs">
       <DependentUpon>AccountDetailsView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\DebugUtility\MainDebugWindowView.axaml.cs">
+      <DependentUpon>MainDebugWindowView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Layouts\DarkTitleBarLayoutWithBackButtonView.axaml.cs">
       <DependentUpon>DarkTitleBarLayoutWithBackButtonView.axaml</DependentUpon>
     </Compile>

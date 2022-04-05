@@ -1,0 +1,107 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:c="using:WPF.ValueConverters"
+		xmlns:v="using:WPF.Views.DebugUtility"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450" Width="400"
+        x:Class="WPF.Views.DebugUtility.MainDebugWindowView"
+        Title="Debug">
+
+	<Window.Resources>
+		<c:StringNotEmptyToBooleanConverter x:Key="StringNotEmptyToBooleanConverter"/>
+	</Window.Resources>
+	
+	<Window.Styles>
+		<!-- A default TextBox style -->
+		<Style Selector="TextBox.input">
+			<Setter Property="Foreground" Value="#dddddd"/>
+			<Setter Property="HorizontalAlignment" Value="Left"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Height" Value="30"/>
+		</Style>
+
+		<Style Selector="TextBox.input /template/ Border#PART_BorderElement">
+			<Setter Property="BorderBrush" Value="Gray"/>
+			<Setter Property="Background" Value="#181818"/>
+			<Setter Property="CornerRadius" Value="6"/>
+		</Style>
+
+		<Style Selector="TextBox.input /template/ TextPresenter">
+			<Setter Property="CaretBrush" Value="White"/>
+		</Style>
+
+		<!-- A default Button style -->
+		<Style Selector="Button.btn">
+			<Setter Property="BorderBrush" Value="Gray"/>
+			<Setter Property="Background" Value="#181818"/>
+			<Setter Property="CornerRadius" Value="6"/>
+			<Setter Property="Foreground" Value="#dddddd"/>
+			<Setter Property="Padding" Value="10 5 10 5"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Height" Value="32"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="Button.btn:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="#181818"/>
+			<Setter Property="BorderBrush" Value="Gray"/>
+			<Setter Property="TextBlock.Foreground" Value="#dddddd"/>
+		</Style>
+
+		<!-- A default NumericUpDown style -->
+		<Style Selector="NumericUpDown">
+			<Setter Property="ShowButtonSpinner" Value="False"/>
+			<Setter Property="Height" Value="32"/>
+			<Setter Property="FontSize" Value="12"/>
+		</Style>
+		<Style Selector="NumericUpDown, NumericUpDown:pointerover">
+			<Setter Property="Background" Value="#181818"/>
+			<Setter Property="BorderBrush" Value="Gray"/>
+			<Setter Property="CornerRadius" Value="6"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontWeight" Value="300"/>
+		</Style>
+		<Style Selector="NumericUpDown:pointerover Border, NumericUpDown:focus-within Border">
+			<Setter Property="TextBox.Foreground" Value="White"/>
+			<Setter Property="BorderBrush" Value="Gray"/>
+			<Setter Property="CornerRadius" Value="6"/>
+			<Setter Property="Background" Value="#181818"/>
+		</Style>
+		<Style Selector="TextBox">
+			<Setter Property="CaretBrush" Value="White"/>
+		</Style>
+		
+		<!-- Default style Label Red Status Message -->
+		<Style Selector="Label.status">
+			<Setter Property="Foreground" Value="Red"/>
+		</Style>
+	</Window.Styles>
+	
+	<Border Background="#282529">
+		<StackPanel Margin="15 25 0 0">
+			<Label VerticalAlignment="Top" Foreground="#DDDDDD" FontSize="24" HorizontalAlignment="Center">Debug window</Label>
+
+			<Grid Height="50">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0" Margin="0 30 0 0" Foreground="#dddddd">Send coins from faucet</Label>
+
+				<TextBox Grid.Row="1" Classes="input" Margin="0 5 0 0" Width="370" Watermark="Address" Text="{Binding FaucetTargetAddress}"/>
+				<Button Grid.Row="2" Classes="btn" Margin="295 5 0 0" Command="{Binding GetCoinsFromFaucet}">Execute</Button>
+
+				<NumericUpDown Grid.Row="2"  Margin="0 5 0 0"
+					   VerticalContentAlignment="Center" HorizontalAlignment="Left"
+					   Width="290"
+					   Value="{Binding FaucetAmount}">
+				</NumericUpDown>
+				<Label Grid.Row="3" Classes="status" Margin="0 5 0 0" Content="{Binding FaucetStatus}" IsVisible="{Binding FaucetStatus, Converter={StaticResource StringNotEmptyToBooleanConverter}}"/>
+			</Grid>
+		</StackPanel>
+	</Border>
+</Window>
