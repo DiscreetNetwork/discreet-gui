@@ -44,9 +44,6 @@ namespace WPF.Views.DebugUtility
             {
                 FaucetStatus = e.Message;
             }
-            
-            FaucetTargetAddress = string.Empty;
-            FaucetAmount = 0;
         }
     }
 }
