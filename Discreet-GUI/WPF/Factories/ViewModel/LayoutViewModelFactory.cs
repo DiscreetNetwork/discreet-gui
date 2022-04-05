@@ -6,12 +6,7 @@ using System.Reflection;
 using System.Text;
 using WPF.Factories.Navigation;
 using WPF.Stores;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
-using WPF.ViewModels.Notifications;
-using WPF.ViewModels.Start;
 
 namespace WPF.Factories.ViewModel
 {

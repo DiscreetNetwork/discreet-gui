@@ -27,7 +27,7 @@ namespace WPF.Hosted
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
+        { 
             bool useDaemonActivator = _configuration.GetValue<bool>("DaemonSettings:UseActivator");
             if (!useDaemonActivator) return;
 

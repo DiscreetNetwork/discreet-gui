@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:vm="using:WPF.ViewModels.Account"
+			 xmlns:vm="using:WPF.Views.Account"
 			 xmlns:converters="using:WPF.ValueConverters"
 			 mc:Ignorable="d" Design.Height="800"
              x:Class="WPF.Views.Account.AccountTransactionsView">
@@ -50,7 +50,7 @@
 			<ItemsControl Items="{Binding Transactions}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Border Padding="0 15 0 15" BorderThickness="0 0 0 1" BorderBrush="#414141">
+						<Button Padding="0 15 0 15" Cursor="Hand" BorderThickness="0 0 0 1" Margin="0 0 0 5" Command="{Binding $parent[ItemsControl].DataContext.DisplayTransactionDetails}" CommandParameter="{Binding TransactionId}">
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="100"/>
@@ -65,12 +65,30 @@
 									<RowDefinition/>
 								</Grid.RowDefinitions>
 
-								<Label Grid.Row="0" Grid.Column="0" Foreground="LightGray" FontSize="18" Content="{Binding TimeFormatted}"/>
-								<Label Grid.Row="0" Grid.Column="1" Foreground="LightGray" FontSize="18" Content="{Binding DateFormatted}"/>
-								<Label Grid.Row="0" Grid.Column="2" Foreground="LightGray" FontSize="18" Content="{Binding ReceivingAccount, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
-								<Label Grid.Row="0" Grid.Column="3" Foreground="LightGray" FontSize="18" Content="{Binding Amount}"/>
+								<Label Grid.Row="0" Grid.Column="0" FontSize="18" Content="{Binding TimeFormatted}"/>
+								<Label Grid.Row="0" Grid.Column="1" FontSize="18" Content="{Binding DateFormatted}"/>
+								<Label Grid.Row="0" Grid.Column="2" FontSize="18" Content="{Binding ReceivingAccount, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
+								<Label Grid.Row="0" Grid.Column="3" FontSize="18" Content="{Binding Amount}"/>
 							</Grid>
-						</Border>
+
+							<Button.Styles>
+								<Style Selector="Button">
+									<Setter Property="Background" Value="Transparent"/>
+									<Setter Property="BorderBrush" Value="#414141"/>
+								</Style>
+								<Style Selector="Button:pointerover /template/ ContentPresenter">
+									<Setter Property="Background" Value="Transparent"/>
+									<Setter Property="BorderBrush" Value="#414141"/>
+								</Style>
+
+								<Style Selector="Label">
+									<Setter Property="Foreground" Value="LightGray"/>
+								</Style>
+								<Style Selector="Button:pointerover Label">
+									<Setter Property="Foreground" Value="#D35683"/>
+								</Style>
+							</Button.Styles>
+						</Button>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

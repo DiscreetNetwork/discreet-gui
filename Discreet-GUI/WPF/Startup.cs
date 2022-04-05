@@ -7,6 +7,8 @@ using Services.Daemon;
 using Services.Daemon.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,16 +21,11 @@ using WPF.Services;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.CreateWallet;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
-using WPF.ViewModels.Modals;
-using WPF.ViewModels.Notifications;
-using WPF.ViewModels.Settings;
-using WPF.ViewModels.Start;
 using WPF.Views;
+using WPF.Views.Account.Modals;
+using WPF.Views.Notifications;
+using WPF.Views.Start;
 
 namespace WPF
 {
@@ -63,7 +60,27 @@ namespace WPF
             })
             .ConfigureAppConfiguration((context, config) =>
             {
-                config.AddJsonFile("appsettings.json");
+                var walletConfigPath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? Environment.GetEnvironmentVariable("HOME") : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+                walletConfigPath = Path.Combine($"{walletConfigPath}", "discreet/wallet-config");
+                if (!Directory.Exists(walletConfigPath))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(walletConfigPath);
+                        if (!File.Exists(Path.Combine(walletConfigPath, "appsettings.json")))
+                        {
+                            using var fs = File.Create(Path.Combine(walletConfigPath, "appsettings.json"));
+                            using var sw = new StreamWriter(fs);
+                            sw.Write($"{{\n  \"DaemonSettings\": {{\n    \"UseActivator\": true,\n    \"RedirectOutput\": true,\n    \"ExecutableName\": \"Discreet\",\n    \"ExecutablePath\": \"path to Discreet.exe\"\n  }}\n}}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder and file: \n{e.Message}");
+                    }
+                }
+
+                config.AddJsonFile(Path.Combine(walletConfigPath, "appsettings.json"));
             }).Build();
 
             _ = _host.RunAsync();
@@ -73,11 +90,10 @@ namespace WPF
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
 
-
-            if(serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
-            {
-                serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
-            }
+            //if(serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
+            //{
+            //    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+            //}
 
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
 

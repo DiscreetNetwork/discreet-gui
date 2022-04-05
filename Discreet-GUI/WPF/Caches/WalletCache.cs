@@ -57,6 +57,14 @@ namespace WPF.Caches
         }
 
 
+        public void ClearCache()
+        {
+            Label = String.Empty;
+            Initialized = false;
+            Accounts = new ObservableCollectionEx<WalletAddress>();
+            LastSeenHeight = 0;
+            Synced = false;
+        }
 
 
         public class WalletAddress : INotifyPropertyChanged

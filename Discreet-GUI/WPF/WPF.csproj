@@ -27,12 +27,13 @@
     <None Remove="Assets\Buttons\purple-home.png" />
     <None Remove="Assets\discreet-logo-purple.png" />
     <None Remove="Assets\Icons\account-1.png" />
-    <None Remove="Assets\Icons\account-2.png" />
     <None Remove="Assets\Icons\account-home.png" />
     <None Remove="Assets\Icons\account-receive.png" />
     <None Remove="Assets\Icons\account-send.png" />
     <None Remove="Assets\Icons\account-transactions.png" />
     <None Remove="Assets\Icons\arrow-right-gray.png" />
+    <None Remove="Assets\Icons\close-icon.png" />
+    <None Remove="Assets\Icons\close-icon2.png" />
     <None Remove="Assets\Icons\folder1.png" />
     <None Remove="Assets\Icons\gray-ellipse.png" />
     <None Remove="Assets\Icons\grey-circle.png" />
@@ -59,6 +60,7 @@
     <None Remove="Assets\process-dots-3-3.png" />
     <None Remove="Assets\speed.png" />
     <None Remove="Assets\test.png" />
+    <None Remove="Assets\Vector.svg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.13" />
@@ -76,22 +78,20 @@
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\Account\Modals\AccountDetailsView.axaml.cs">
+      <DependentUpon>AccountDetailsView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Layouts\DarkTitleBarLayoutWithBackButtonView.axaml.cs">
       <DependentUpon>DarkTitleBarLayoutWithBackButtonView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Layouts\PurpleTitleBarLayoutView.axaml.cs">
       <DependentUpon>PurpleTitleBarLayoutView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Modals\PasswordView.axaml.cs">
-      <DependentUpon>PasswordView.axaml</DependentUpon>
+    <Compile Update="Views\Modals\SelectWalletView.axaml.cs">
+      <DependentUpon>SelectWalletView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Start\ExistingWalletChoicesView.axaml.cs">
       <DependentUpon>ExistingWalletChoicesView.axaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
