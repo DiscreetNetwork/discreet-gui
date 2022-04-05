@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Text;
+using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
@@ -12,11 +13,21 @@ namespace WPF.Views.Layouts
 {
     class DarkTitleBarLayoutSimpleViewModel : TitleBarViewModelBase
     {
-        ReactiveCommand<Unit, Unit> NavigateHomeCommand { get; set; }
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly WalletCache _walletCache;
 
-        public DarkTitleBarLayoutSimpleViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore, NavigationServiceFactory navigationServiceFactory) : base(contentViewModel, windowSettingsStore)
+        public DarkTitleBarLayoutSimpleViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache) : base(contentViewModel, windowSettingsStore)
         {
-            NavigateHomeCommand = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
+            _navigationServiceFactory = navigationServiceFactory;
+            _walletCache = walletCache;
+        }
+
+
+        public void NavigateHomeCommand()
+        {
+            _walletCache.ClearCache();
+
+            _navigationServiceFactory.Create<StartViewModel>().Navigate();
         }
     }
 }
