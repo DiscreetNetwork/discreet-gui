@@ -7,6 +7,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using WPF.Caches;
 using WPF.ExtensionMethods;
+using WPF.Factories.Navigation;
 using WPF.Services;
 using WPF.ViewModels.Common;
 
@@ -17,6 +18,7 @@ namespace WPF.Views.Account
         private readonly WalletCache _walletCache;
         private readonly NotificationService _notificationService;
         private readonly WalletService _walletService;
+        private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         /* Mock data
@@ -48,11 +50,12 @@ namespace WPF.Views.Account
         {
         }
 
-        public AccountHomeViewModel(WalletCache walletCache, NotificationService notificationService, WalletService walletService)
+        public AccountHomeViewModel(WalletCache walletCache, NotificationService notificationService, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
             _notificationService = notificationService;
             _walletService = walletService;
+            _navigationServiceFactory = navigationServiceFactory;
             Accounts.CollectionChanged += AccountsChanged;
         }
 
@@ -65,6 +68,11 @@ namespace WPF.Views.Account
         {
             await Application.Current.Clipboard.SetTextAsync(parameter);
             _notificationService.Display("Copied address to clipboard");
+        }
+
+        public void DisplayAccountDetails(string accountName)
+        {
+            _navigationServiceFactory.CreateModalNavigationService<Modals.AccountDetailsViewModel>().Navigate();
         }
     }
 }

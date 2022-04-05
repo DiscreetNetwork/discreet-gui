@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:vm="using:WPF.ViewModels.Account"
+			 xmlns:vm="using:WPF.Views.Account"
 			 xmlns:converters="using:WPF.ValueConverters"
              mc:Ignorable="d"
              x:Class="WPF.Views.Account.AccountHomeView" Design.Height="800" Design.Width="1000">
@@ -68,7 +68,23 @@
 							  </Grid.ColumnDefinitions>
 
 							  <Image Grid.Column="0" Height="45" Width="45" Margin="5 0 0 0" VerticalAlignment="Center" Source="{Binding Identicon}"/>
-							  <Label Grid.Column="1" Margin="10 0 0 0" FontSize="16" FontWeight="200" VerticalAlignment="Center" Foreground="white" Content="{Binding Name, Converter={StaticResource NameToTruncatedStringConverter}}"></Label>
+							  <Button Grid.Column="1" Cursor="Hand" Margin="10 0 0 0" Padding="0" Command="{Binding $parent[ItemsControl].DataContext.DisplayAccountDetails}" CommandParameter="{Binding Name}">
+								  <Label FontSize="16" FontWeight="200" VerticalAlignment="Center" Content="{Binding Name, Converter={StaticResource NameToTruncatedStringConverter}}"/>
+								  <Button.Styles>
+									  <Style Selector="Button">
+										<Setter Property="Background" Value="Transparent"/>
+									  </Style>
+									  <Style Selector="Button:pointerover /template/ ContentPresenter">
+										  <Setter Property="Background" Value="Transparent"/>
+									  </Style>
+									  <Style Selector="Label">
+										  <Setter Property="Foreground" Value="White"/>
+									  </Style>
+									  <Style Selector="Button:pointerover Label">
+										  <Setter Property="Foreground" Value="#D35683"/>
+									  </Style>
+								  </Button.Styles>
+							  </Button>
 							  <Label Grid.Column="2" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="23" Width="60" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding Type, Converter={StaticResource AddressTypeToPublicPrivateStringConverter}}"/>
 							  <Label Grid.Column="3" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
 							  <Label Grid.Column="4" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>
