@@ -47,7 +47,7 @@ namespace WPF.Caches
         {
             WalletName = string.Empty; 
             WalletLocation = string.Empty;
-            SeedPhrase = new List<MnemonicWord>();
+            SeedPhrase = null;
             Password = string.Empty;
             NetworkType = string.Empty;
             Bootstrap = false;

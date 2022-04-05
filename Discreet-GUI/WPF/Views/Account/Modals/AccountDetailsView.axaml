@@ -17,7 +17,8 @@
 			Background="#181818"
 			Width="500" Height="250"
 			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
-			VerticalAlignment="Center" HorizontalAlignment="Center">
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			BoxShadow="0 3 7 #ff0a0a0a">
 
 			<Grid>
 				<Button Cursor="Hand" Width="40" HorizontalAlignment="Right" Command="{Binding Dismiss}" VerticalAlignment="Top" Margin="0 15 15 0">
