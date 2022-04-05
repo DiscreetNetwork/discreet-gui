@@ -6,17 +6,20 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using WPF.Caches;
+using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 
 namespace WPF.Views.Account
 {
     public class AccountTransactionsViewModel : ViewModelBase
     {
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+
         List<AccountTransaction> Transactions { get; set; }
 
         public AccountTransactionsViewModel() { }
 
-        public AccountTransactionsViewModel(WalletCache walletCache, WalletService walletService)
+        public AccountTransactionsViewModel(WalletCache walletCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
             var accounts = walletCache.Accounts.ToList();
             var txs = new List<AccountTransaction>();
@@ -27,17 +30,23 @@ namespace WPF.Views.Account
 
                 if (accountTxs is null) continue;
 
-                txs.AddRange(accountTxs.Select(x => new AccountTransaction(x.Timestamp, account.Address, x.SentAmount == 0 ? $"+{x.ReceivedAmount}" : $"-{x.SentAmount}")));
+                txs.AddRange(accountTxs.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, x.SentAmount == 0 ? $"+{x.ReceivedAmount}" : $"-{x.SentAmount}")));
             }
 
             Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
+            _navigationServiceFactory = navigationServiceFactory;
         }
 
 
+        void DisplayTransactionDetails(string transactionId)
+        {
+            _navigationServiceFactory.CreateModalNavigationService<Modals.TransactionDetailsViewModel>().Navigate();
+        }
 
 
         class AccountTransaction
         {
+            public string TransactionId { get; set; }
             public DateTime TransactionDate { get; set; }
             public string TimeFormatted => TransactionDate.TimeOfDay.ToString("hh':'mm");
             public string DateFormatted => TransactionDate.ToString("dd/MM/yyyy");
@@ -49,8 +58,9 @@ namespace WPF.Views.Account
             public string Amount { get; set; }
 
 
-            public AccountTransaction(long unix, string receiver, string amount)
+            public AccountTransaction(string transactionId, long unix, string receiver, string amount)
             {
+                TransactionId = transactionId;
                 TransactionDate = new DateTime(unix);
                 ReceivingAccount = receiver;
                 Amount = amount;
