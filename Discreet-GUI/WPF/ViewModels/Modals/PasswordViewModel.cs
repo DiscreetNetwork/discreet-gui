@@ -95,16 +95,10 @@ namespace WPF.ViewModels.Modals
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }
 
-        async Task LoadWallet()
+        void LoadWallet()
         {
-            var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
-            if (!success)
-            {
-                _notificationService.Display("Wrong passphrase");
-                return;
-            }
-
             _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
+
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }
