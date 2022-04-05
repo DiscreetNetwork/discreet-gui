@@ -73,6 +73,38 @@ namespace WPF.Views.Modals
             PasswordCharacter = DisplayPassword ? string.Empty : "*";
         }
 
+
+        /// <summary>
+        /// Handler responsible for taking the appropiate action on the selected wallet, based on its state. Used to go forward with the 'Select Wallet' process
+        /// </summary>
+        /// <returns></returns>
+        async Task Continue()
+        {
+            if(SelectedWalletStatus.Status == WalletStatus.UNLOADED)
+            {
+                var w = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+                if (w is not null)
+                {
+                    _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
+                    return;
+                }
+            }
+            else if(SelectedWalletStatus.Status == WalletStatus.LOCKED)
+            {
+                var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+                if (!unlocked)
+                {
+                    _notificationService.Display("Wrong passphrase");
+                    return;
+                }
+            }
+
+            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
+            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
+            _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+        }
+
+
         async Task UnlockWallet()
         {
             var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
