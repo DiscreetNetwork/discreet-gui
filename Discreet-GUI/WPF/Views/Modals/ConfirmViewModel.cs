@@ -23,6 +23,13 @@ namespace WPF.Views.Modals
         public string ReceiverAddress => $"{_sendTransactionCache.Receiver.Substring(0, 6)}...{_sendTransactionCache.Receiver.Substring(_sendTransactionCache.Receiver.Length - 6, 6)}";
         public double Amount => _sendTransactionCache.Amount;
 
+         
+        /// <summary>
+        /// Can be used to display visuals, when the transaction request is processing
+        /// </summary>
+        private bool _isLoading;
+        public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
+
         public ConfirmViewModel(NavigationServiceFactory navigationServiceFactory, RPCServer rpcServer, SendTransactionCache sendTransactionCache)
         {
             _navigationServiceFactory = navigationServiceFactory;
@@ -37,6 +44,8 @@ namespace WPF.Views.Modals
 
         public async Task ConfirmTransactionCommand()
         {
+            IsLoading = true;
+
             CreateTransactionParam p = new CreateTransactionParam
             {
                 Amount = (ulong)_sendTransactionCache.Amount,
