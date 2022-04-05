@@ -147,7 +147,7 @@ namespace Services.Daemon
         /// <param name="label">The label of the wallet to load.</param>
         /// <param name="passphrase">The passphrase of the wallet to load.</param>
         /// <returns>The loaded <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<Wallet> LoadWallet(string label, string passphrase)
+        public async Task<bool> LoadWallet(string label, string passphrase)
         {
             var loadWalletRequest = new LoadWalletRequest
             {
@@ -161,11 +161,11 @@ namespace Services.Daemon
 
             try
             {
-                return JsonSerializer.Deserialize<Wallet>((JsonElement)resp.Result);
+                return resp.IsOK();
             }
             catch
             {
-                return null;
+                return false;
             }
         }
 

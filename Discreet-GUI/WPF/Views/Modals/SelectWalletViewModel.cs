@@ -82,8 +82,8 @@ namespace WPF.Views.Modals
         {
             if(SelectedWalletStatus.Status == WalletStatus.UNLOADED)
             {
-                var w = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
-                if (w is not null)
+                var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+                if (!success)
                 {
                     _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
                     return;
@@ -131,14 +131,14 @@ namespace WPF.Views.Modals
 
         async Task LoadWallet()
         {
-            var w = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
-            if (w is not null)
+            var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+            if (!success)
             {
                 _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
                 return;
             }
 
-            _notificationService.Display("Loaded, maybe?");
+            _notificationService.Display("Loaded wallet");
             _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
 
