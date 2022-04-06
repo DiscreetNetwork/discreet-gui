@@ -17,6 +17,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using WPF.Caches;
+using WPF.ExtensionMethods;
 using WPF.Services;
 
 namespace WPF.Hosted
@@ -109,17 +110,8 @@ namespace WPF.Hosted
                                     UTXOs = new ObservableCollection<int>(a.UTXOs)
                                 };
 
-                                var icon = new Jazzicon(160, accnt.Address);
-
-                                using (var _ms = new System.IO.MemoryStream())
-                                {
-                                    var encoder = icon.Identicon.GetConfiguration().ImageFormatsManager.FindEncoder(PngFormat.Instance);
-                                    icon.Identicon.Save(_ms, encoder);
-
-                                    _ms.Seek(0, System.IO.SeekOrigin.Begin);
-
-                                    accnt.Identicon = new Avalonia.Media.Imaging.Bitmap(_ms);
-                                }
+                                var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
+                                accnt.Identicon = icon;
 
                                 _walletCache.Accounts.Add(accnt);
                             });

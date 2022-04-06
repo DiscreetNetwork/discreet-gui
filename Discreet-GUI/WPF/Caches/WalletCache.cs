@@ -51,9 +51,10 @@ namespace WPF.Caches
 
         public ObservableCollectionEx<WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletAddress>();
 
-        public void AddAccount(string name, string address, ulong balance)
+        public void AddAccount(string name, string address, ulong balance, AddressType addressType)
         {
-            Accounts.Add(new WalletAddress { Name = name, Address = address, Balance = balance });
+            Accounts.Add(new WalletAddress { Name = name, Address = address, Balance = balance, Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, address), Type = addressType });
+
         }
 
 
