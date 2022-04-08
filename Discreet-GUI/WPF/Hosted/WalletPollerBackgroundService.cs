@@ -3,6 +3,7 @@ using Services.Daemon;
 using Services.Daemon.Common;
 using Services.Daemon.Models;
 using Services.Daemon.Responses;
+using Services.Daemon.Services;
 using Services.Jazzicon;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -27,12 +28,14 @@ namespace WPF.Hosted
         private readonly WalletCache _walletCache;
         private readonly RPCServer _rpcServer;
         private readonly NotificationService _notificationService;
+        private readonly StatusService _statusService;
 
-        public WalletPollerBackgroundService(WalletCache walletCache, RPCServer rpcServer, NotificationService notificationService)
+        public WalletPollerBackgroundService(WalletCache walletCache, RPCServer rpcServer, NotificationService notificationService, StatusService statusService)
         {
             _walletCache = walletCache;
             _rpcServer = rpcServer;
             _notificationService = notificationService;
+            _statusService = statusService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -134,6 +137,7 @@ namespace WPF.Hosted
                     await UpdateAddressBalances();
                     await UpdateAddressHeights();
                     await UpdateWalletHeight();
+                    await UpdatePeerCount();
                 }
                 
 
@@ -142,6 +146,14 @@ namespace WPF.Hosted
         }
 
 
+        public async Task UpdatePeerCount()
+        {
+            var numberOfConnections = await _statusService.GetNumConnections();
+            if (numberOfConnections == -1) return;
+
+            var previous = _walletCache.NumberOfConnections;
+            if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections;
+        }
 
 
         public async Task UpdateAddressBalances()

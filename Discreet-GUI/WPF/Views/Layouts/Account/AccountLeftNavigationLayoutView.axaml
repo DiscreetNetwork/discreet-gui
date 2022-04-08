@@ -159,7 +159,8 @@
 		  <ProgressBar Margin="0 3 0 16" Background="#858585" Height="10" CornerRadius="5" Value="50" Foreground="#D95A86"/>
 		  <StackPanel Orientation="Horizontal">
 			  <Image Source="/Assets/Icons/wifi-white.png" Width="20" Margin="0 0 10 0"/>
-			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">8 peers connected to network</Label>
+			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding NumberOfConnections}"/>
+			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">peers connected to network</Label>
 		  </StackPanel>
 	  </StackPanel>
 		

@@ -33,6 +33,8 @@ namespace WPF.Views.Layouts.Account
         public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
         public string WalletLabel => _walletCache.Label;
 
+        public int NumberOfConnections => _walletCache.NumberOfConnections;
+
         private readonly WalletCache _walletCache;
 
         public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache)

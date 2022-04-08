@@ -48,6 +48,9 @@ namespace WPF.Caches
         public bool Initialized { get; set; }
 
 
+        public event Action NumberOfConnectionsChanged;
+        private int _numberOfConnections;
+        public int NumberOfConnections { get => _numberOfConnections; set { _numberOfConnections = value; NumberOfConnectionsChanged?.Invoke(); } }
 
         public ObservableCollectionEx<WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletAddress>();
 

@@ -50,6 +50,7 @@ namespace WPF
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
                 services.AddSingleton<WalletService>();
+                services.AddSingleton<StatusService>();
 
 
                 // Startup
