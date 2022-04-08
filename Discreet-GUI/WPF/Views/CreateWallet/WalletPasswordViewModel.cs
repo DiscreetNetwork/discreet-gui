@@ -17,21 +17,24 @@ namespace WPF.Views.CreateWallet
         ReactiveCommand<Unit, Unit> NavigateWalletDetailsViewCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
+        public string EnterPasswordFontSize { get => DisplayEnterPassword ? "14" : "10"; }
 
-        private string _enterPasswordCharacter = "*";
+        private string _enterPasswordCharacter = "●";
         public string EnterPasswordCharacter { get => _enterPasswordCharacter; set { _enterPasswordCharacter = value; OnPropertyChanged(nameof(EnterPasswordCharacter)); } }
 
         private bool _displayEnterPassword = false;
-        public bool DisplayEnterPassword { get => _displayEnterPassword; set { _displayEnterPassword = value; OnPropertyChanged(nameof(DisplayEnterPassword)); } }
+        public bool DisplayEnterPassword { get => _displayEnterPassword; set { _displayEnterPassword = value; OnPropertyChanged(nameof(DisplayEnterPassword)); OnPropertyChanged(nameof(EnterPasswordFontSize)); } }
         ReactiveCommand<Unit, Unit> ToggleDisplayEnterPasswordCommand { get; set; }
 
 
-        private string _confirmPasswordCharacter = "*";
+        public string ConfirmPasswordFontSize { get => DisplayConfirmPassword ? "14" : "10"; }
+
+        private string _confirmPasswordCharacter = "●";
         public string ConfirmPasswordCharacter { get => _confirmPasswordCharacter; set { _confirmPasswordCharacter = value; OnPropertyChanged(nameof(ConfirmPasswordCharacter)); } }
 
         private bool _displayConfirmPassword = false;
 
-        public bool DisplayConfirmPassword { get => _displayConfirmPassword; set { _displayConfirmPassword = value; OnPropertyChanged(nameof(DisplayConfirmPassword)); } }
+        public bool DisplayConfirmPassword { get => _displayConfirmPassword; set { _displayConfirmPassword = value; OnPropertyChanged(nameof(DisplayConfirmPassword)); OnPropertyChanged(nameof(ConfirmPasswordFontSize)); } }
         ReactiveCommand<Unit, Unit> ToggleDisplayConfirmPasswordCommand { get; set; }
 
 
@@ -55,13 +58,13 @@ namespace WPF.Views.CreateWallet
             ToggleDisplayEnterPasswordCommand = ReactiveCommand.Create(() =>
             {
                 DisplayEnterPassword = !DisplayEnterPassword;
-                EnterPasswordCharacter = DisplayEnterPassword ? string.Empty : "*";
+                EnterPasswordCharacter = DisplayEnterPassword ? string.Empty : "●";
             });
 
             ToggleDisplayConfirmPasswordCommand = ReactiveCommand.Create(() =>
             {
                 DisplayConfirmPassword = !DisplayConfirmPassword;
-                ConfirmPasswordCharacter = DisplayConfirmPassword ? string.Empty : "*";
+                ConfirmPasswordCharacter = DisplayConfirmPassword ? string.Empty : "●";
             });
             
             _newWalletCache = newWalletCache;

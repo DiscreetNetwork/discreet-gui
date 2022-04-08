@@ -24,10 +24,13 @@ namespace WPF.Views.Modals
         private readonly WalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly WalletCache _walletCache;
+
         private bool _displayPassword = false;
-        public bool DisplayPassword { get => _displayPassword; set { _displayPassword = value; OnPropertyChanged(nameof(DisplayPassword)); } }
-        private string _passwordCharacter = "*";
-        
+        public bool DisplayPassword { get => _displayPassword; set { _displayPassword = value; OnPropertyChanged(nameof(DisplayPassword)); OnPropertyChanged(nameof(PasswordFontSize)); } }
+
+        public string PasswordFontSize { get => DisplayPassword ? "14" : "10"; }
+
+        private string _passwordCharacter = "●";
         public string PasswordCharacter { get => _passwordCharacter; set { _passwordCharacter = value; OnPropertyChanged(nameof(PasswordCharacter)); } }
 
         public string EnteredPassword { get; set; }
@@ -70,7 +73,7 @@ namespace WPF.Views.Modals
         void ToggleDisplayPasswordCommand()
         {
             DisplayPassword = !DisplayPassword;
-            PasswordCharacter = DisplayPassword ? string.Empty : "*";
+            PasswordCharacter = DisplayPassword ? string.Empty : "●";
         }
 
 
