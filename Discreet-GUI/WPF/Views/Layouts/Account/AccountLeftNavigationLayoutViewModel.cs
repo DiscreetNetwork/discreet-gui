@@ -42,6 +42,7 @@ namespace WPF.Views.Layouts.Account
             _walletCache = walletCache;
 
             Accounts.CollectionChanged += AccountsChanged;
+            _walletCache.NumberOfConnectionsChanged += () => OnPropertyChanged(nameof(NumberOfConnections));
 
             _accountNavigationStore = accountNavigationStore;
             accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
