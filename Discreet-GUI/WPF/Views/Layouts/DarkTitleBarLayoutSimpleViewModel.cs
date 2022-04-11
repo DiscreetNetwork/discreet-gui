@@ -7,6 +7,7 @@ using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
+using WPF.Views.Modals;
 using WPF.Views.Start;
 
 namespace WPF.Views.Layouts
@@ -22,12 +23,29 @@ namespace WPF.Views.Layouts
             _walletCache = walletCache;
         }
 
-
         public void NavigateHomeCommand()
         {
             _walletCache.ClearCache();
-
             _navigationServiceFactory.Create<StartViewModel>().Navigate();
+        }
+
+
+        public void LockWallet()
+        {
+            _walletCache.ClearCache();
+            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
+        }
+
+        public void GotoHome()
+        {
+            _walletCache.ClearCache();
+            _navigationServiceFactory.Create<StartViewModel>().Navigate();
+        }
+
+        public void Exit()
+        {
+            _walletCache.ClearCache();
+            base.CloseWindowHandler();
         }
     }
 }

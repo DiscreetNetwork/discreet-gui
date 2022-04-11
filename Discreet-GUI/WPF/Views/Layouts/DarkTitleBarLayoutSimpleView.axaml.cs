@@ -1,6 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
 namespace WPF.Views.Layouts
@@ -15,11 +13,6 @@ namespace WPF.Views.Layouts
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-        }
-
-        void ClickHandler(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
         }
     }
 }

@@ -12,7 +12,7 @@
 
     <Grid Grid.Row="0" VerticalAlignment="Top" Background="#09090A">
 
-		<MenuItem Margin="5 0 0 0" HorizontalAlignment="Left" Cursor="Hand" Click="ClickHandler">
+		<MenuItem Margin="5 0 0 0" HorizontalAlignment="Left" Cursor="Hand">
 			<MenuItem.Icon>
 				<Border Classes="icon" Margin="5 1 0 0" Width="40" Height="35" CornerRadius="8">
 					<Image Height="25" Width="25" Source="/Assets/Buttons/purple-home.png"/>
@@ -20,9 +20,9 @@
 			</MenuItem.Icon>
 			<MenuItem.ContextMenu>
 				<ContextMenu BorderBrush="LightGray" Background="#09090A">
-					<MenuItem Header="Lock wallet" Foreground="#dddddd" Cursor="Hand"/>
-					<MenuItem Header="Exit to home" Foreground="#dddddd" Cursor="Hand"/>
-					<MenuItem Header="Exit Discreet" Foreground="#dddddd" Cursor="Hand"/>
+					<MenuItem Header="Lock wallet" Foreground="#dddddd" Cursor="Hand" Command="{Binding LockWallet}"/>
+					<MenuItem Header="Exit to home" Foreground="#dddddd" Cursor="Hand" Command="{Binding GotoHome}"/>
+					<MenuItem Header="Exit Discreet" Foreground="#dddddd" Cursor="Hand" Command="{Binding Exit}"/>
 				</ContextMenu>
 			</MenuItem.ContextMenu>
 
