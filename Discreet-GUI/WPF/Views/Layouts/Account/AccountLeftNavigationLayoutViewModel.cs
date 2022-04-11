@@ -20,14 +20,15 @@ namespace WPF.Views.Layouts.Account
     class AccountLeftNavigationLayoutViewModel : ViewModelBase
     {
         private readonly AccountNavigationStore _accountNavigationStore;
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+
         public ViewModelBase CurrentViewModel => _accountNavigationStore.CurrentViewModel;
 
         public ReactiveCommand<Unit, Unit> NavigateAccountHomeCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateAccountSendCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateAccountReceiveCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateAccountTransactionsCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateAccountSettingsCommand { get; set; }
-        public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
+        public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false, false };
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
@@ -45,6 +46,7 @@ namespace WPF.Views.Layouts.Account
             _walletCache.NumberOfConnectionsChanged += () => OnPropertyChanged(nameof(NumberOfConnections));
 
             _accountNavigationStore = accountNavigationStore;
+            _navigationServiceFactory = navigationServiceFactory;
             accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
 
             NavigateAccountHomeCommand              = ReactiveCommand.Create(() => 
@@ -67,11 +69,20 @@ namespace WPF.Views.Layouts.Account
                 ResetButtonStates(); ButtonActiveStates[3] = true;
                 navigationServiceFactory.CreateAccountNavigation<AccountTransactionsViewModel>().Navigate();
             });
-            NavigateAccountSettingsCommand          = ReactiveCommand.Create(() => 
-            { 
-                ResetButtonStates(); ButtonActiveStates[4] = true;
-                navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
-            });
+        }
+
+
+        void NavigateSubmitIssueCommand()
+        {
+            ResetButtonStates();
+            ButtonActiveStates[4] = true;
+            _navigationServiceFactory.CreateAccountNavigation<SubmitIssueViewModel>().Navigate();
+        }
+
+        void NavigateAccountSettingsCommand() 
+        {
+            ResetButtonStates(); ButtonActiveStates[5] = true;
+            _navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
         }
 
         private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

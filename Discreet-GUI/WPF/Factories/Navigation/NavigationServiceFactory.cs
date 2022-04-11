@@ -67,6 +67,7 @@ namespace WPF.Factories.Navigation
             if (typeof(TViewModel) == typeof(AccountSendViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(AccountReceiveViewModel))                  return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(AccountTransactionsViewModel))             return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
+            if (typeof(TViewModel) == typeof(SubmitIssueViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(SettingsViewModel))                        return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
 
             throw new InvalidOperationException();
