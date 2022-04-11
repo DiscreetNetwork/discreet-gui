@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF.Caches;
 using WPF.ExtensionMethods;
 using WPF.ViewModels.Common;
 
@@ -15,6 +17,9 @@ namespace WPF.Views.Account
 {
     public class AccountReceiveViewModel : ViewModelBase
     {
+        private readonly WalletCache _walletCache;
+
+
         public ObservableCollection<MockedItem> MockedItems { get; set; } = new ObservableCollection<MockedItem>
         {
             new MockedItem
@@ -43,19 +48,21 @@ namespace WPF.Views.Account
             }
         };
 
+        // QR Code
         Avalonia.Media.Imaging.Bitmap _qrCode = null;
-        public Avalonia.Media.Imaging.Bitmap QrCode
-        {
-            get => _qrCode;
-            set
-            {
-                _qrCode = value;
-                OnPropertyChanged(nameof(QrCode));
-            }
-        }
 
-        public AccountReceiveViewModel()
+        public Avalonia.Media.Imaging.Bitmap QrCode { get => _qrCode; set { _qrCode = value; OnPropertyChanged(nameof(QrCode)); } }
+
+
+        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
+        public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
+
+        public AccountReceiveViewModel(WalletCache walletCache)
         {
+            _walletCache = walletCache;
+            Accounts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(TotalBalance));
+
+
             QrCode = BitmapEx.CreateQRCode("0x57fuyw931209fj90wd");
         }
     }
