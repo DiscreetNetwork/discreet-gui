@@ -32,6 +32,18 @@ namespace WPF.Views
         {
             var pos = e.GetCurrentPoint(this);
 
+            // Check if this is the MenuItem we are clicking
+            if (pos.Pointer.Captured.InteractiveParent is Border c)
+            {
+                if (c.Classes.Contains("icon"))
+                {
+                    MenuItem mi = c.Parent as MenuItem;
+                    var ctx = mi.ContextMenu;
+                    ctx.Open();
+                    return;
+                }
+            }
+
             // A fix to ensure the window wont begin drag, if you click on a ComboBoxItem
             if (pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.ComboBoxItem ||
                 pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.Presenters.ContentPresenter) return;
