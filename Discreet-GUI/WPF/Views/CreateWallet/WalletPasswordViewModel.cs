@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Text;
 using WPF.Caches;
 using WPF.Factories.Navigation;
+using WPF.Utility;
 using WPF.ViewModels.Common;
 using WPF.Views.Layouts;
 using WPF.Views.Start;
@@ -40,10 +41,16 @@ namespace WPF.Views.CreateWallet
 
         private readonly NewWalletCache _newWalletCache;
 
-        public string SelectedPassword { get => _newWalletCache.Password; set { _newWalletCache.Password = value; ValidateCanContinue(); } }
+        public string SelectedPassword { get => _newWalletCache.Password; set { _newWalletCache.Password = value; PasswordStrength = PasswordStrengthIndicator.CalculatePasswordStrength(value); ValidateCanContinue(); } }
 
         private string _selectedPasswordConfirm = string.Empty;
         public string SelectedPasswordConfirm { get => _selectedPasswordConfirm; set { _selectedPasswordConfirm = value; ValidateCanContinue(); } }
+
+
+        // Password strength
+        private PasswordStrength _passwordStrength = PasswordStrength.VeryWeak;
+        public PasswordStrength PasswordStrength { get => _passwordStrength; set { _passwordStrength = value; OnPropertyChanged(nameof(PasswordStrength)); } }
+
 
         private bool _canContinue = false;
         public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
@@ -69,6 +76,7 @@ namespace WPF.Views.CreateWallet
             
             _newWalletCache = newWalletCache;
 
+            PasswordStrength = PasswordStrengthIndicator.CalculatePasswordStrength(SelectedPassword);
             ValidateCanContinue();
         }
 
