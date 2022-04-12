@@ -28,7 +28,13 @@ namespace WPF.ValueConverters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if ((double)value == 0) return PasswordStrength.VeryWeak;
+            if ((double)value == 25) return PasswordStrength.Weak;
+            if ((double)value == 50) return PasswordStrength.Medium;
+            if ((double)value == 75) return PasswordStrength.Strong;
+            if ((double)value == 100) return PasswordStrength.ExtremelyStrong;
+
+            return value;
         }
     }
 }
