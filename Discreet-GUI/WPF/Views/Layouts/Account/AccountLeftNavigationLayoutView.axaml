@@ -150,7 +150,7 @@
 					<Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Source="/Assets/Buttons/report-issue-testnet.png"/>
 					<Label Classes="NavButton">Submit issue</Label>
 					<Label Margin="10 0 0 0" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="18" Width="50" FontSize="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="Alpha"/>
-					<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[4]}" Height="15" Margin="60 0 0 0"/>
+					<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[4]}" Height="15" Margin="20 0 0 0"/>
 				</StackPanel>
 			</Button>
 		</Border>
