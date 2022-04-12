@@ -49,7 +49,9 @@ namespace WPF.Views.CreateWallet
 
         // Password strength
         private PasswordStrength _passwordStrength = PasswordStrength.VeryWeak;
-        public PasswordStrength PasswordStrength { get => _passwordStrength; set { _passwordStrength = value; OnPropertyChanged(nameof(PasswordStrength)); } }
+        public PasswordStrength PasswordStrength { get => _passwordStrength; set { if (_passwordStrength == value) return; _passwordStrength = value; OnPropertyChanged(nameof(PasswordStrength)); } }
+
+
 
 
         private bool _canContinue = false;

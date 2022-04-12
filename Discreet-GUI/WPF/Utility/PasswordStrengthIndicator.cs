@@ -11,9 +11,16 @@ namespace WPF.Utility
         public static PasswordStrength CalculatePasswordStrength(string password)
         {
             int strength = 0;
-            if (password.Length >= 8) strength++;
-            if (password.Any(c => char.IsLower(c)) && password.Any(c => char.IsUpper(c))) strength++;
+            if (password.Length >= 1) strength++;
+            
+            if (password.Any(c => char.IsLower(c)) && password.Any(c => char.IsUpper(c)) && password.Length >= 8)
+            {
+                strength++;
+            }
+            else return (PasswordStrength)strength;
+
             if (password.Any(c => char.IsDigit(c))) strength++;
+            
             if (password.IndexOfAny("!@#$%^&*?_~-£().,".ToCharArray()) != -1) strength++;
 
             return (PasswordStrength)strength;

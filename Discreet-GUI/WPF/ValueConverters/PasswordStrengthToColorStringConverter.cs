@@ -18,11 +18,11 @@ namespace WPF.ValueConverters
 
             switch(ps)
             {
-                case PasswordStrength.VeryWeak:         return Brush.Parse("#EB1435");
-                case PasswordStrength.Weak:             return Brush.Parse("#EB1435");
-                case PasswordStrength.Medium:           return Brush.Parse("#F3BC0C");
-                case PasswordStrength.Strong:           return Brush.Parse("#45D728");
-                case PasswordStrength.ExtremelyStrong:  return Brush.Parse("#45D728");
+                case PasswordStrength.VeryWeak:         return Brush.Parse("#a20e24");
+                case PasswordStrength.Weak:             return Brush.Parse("#a20e24");
+                case PasswordStrength.Medium:           return Brush.Parse("#c79a0a");
+                case PasswordStrength.Strong:           return Brush.Parse("#2a8318");
+                case PasswordStrength.ExtremelyStrong:  return Brush.Parse("#2a8318");
                 default:                                return value;
             }
         }

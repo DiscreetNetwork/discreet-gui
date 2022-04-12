@@ -20,7 +20,7 @@ namespace WPF.ValueConverters
                 case PasswordStrength.VeryWeak:         return "Very weak";
                 case PasswordStrength.Weak:             return "Weak";
                 case PasswordStrength.Medium:           return "Medium";
-                case PasswordStrength.Strong:           return "strong";
+                case PasswordStrength.Strong:           return "Strong";
                 case PasswordStrength.ExtremelyStrong:  return "Extremely strong";
                 default:                                return value;
             }
