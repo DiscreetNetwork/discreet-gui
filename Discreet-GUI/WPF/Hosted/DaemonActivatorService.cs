@@ -83,7 +83,7 @@ namespace WPF.Hosted
                         p.StartInfo.RedirectStandardOutput = true;
                         p.OutputDataReceived += (s, e) =>
                         {
-                            if(e.Data != null && e.Data.Contains("Visor startup complete"))
+                            if(e.Data != null && e.Data.Contains("Daemon startup complete"))
                             {
                                 _walletCache.VisorStartupComplete = true;
                             }
