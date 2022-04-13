@@ -44,7 +44,7 @@ namespace WPF.Views.Modals
         private List<WalletStatusData> _walletStatuses;
         public List<WalletStatusData> WalletStatuses { get => _walletStatuses; set { _walletStatuses = value; OnPropertyChanged(nameof(WalletStatuses)); OnPropertyChanged(nameof(SelectedWalletStatus)); } }
 
-        public WalletStatusData SelectedWalletStatus => WalletStatuses?[SelectedWalletIndex];
+        public WalletStatusData SelectedWalletStatus => SelectedWalletIndex == -1 ? null : WalletStatuses is null ? null : WalletStatuses[SelectedWalletIndex];
 
         private int _selectedWalletIndex;
         public int SelectedWalletIndex { get => _selectedWalletIndex; set { _selectedWalletIndex = value; OnPropertyChanged(nameof(SelectedWallet)); OnPropertyChanged(nameof(SelectedWalletStatus));  } }
