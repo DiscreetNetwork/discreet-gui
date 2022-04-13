@@ -6,9 +6,6 @@
              mc:Ignorable="d"
              x:Class="WPF.Views.Start.YourRecoveryPhraseView">
 
-	<Design.DataContext>
-		<vm:YourRecoveryPhraseViewModel/>
-	</Design.DataContext>
 	
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
@@ -40,7 +37,7 @@
 	<Label Grid.Row="1" Margin="0 50 0 0" FontSize="26" HorizontalContentAlignment="Center" Foreground="White">Your recovery phrase</Label>
     <Label Grid.Row="2" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Remember to write down or copy these words in the correct order</Label>
 
-	<ItemsControl Grid.Row="3" Margin="0 0 0 0" HorizontalAlignment="Center" Items="{Binding GeneratedWords}" Width="440" VerticalAlignment="Center">
+	<ItemsControl Grid.Row="3" Margin="0 0 0 0" HorizontalAlignment="Center" Items="{Binding GeneratedMnemonic}" Width="440" VerticalAlignment="Center">
 		<ItemsControl.Styles>
 			<Style Selector="ContentPresenter">
 				<Setter Property="Background" Value="#2D2D2D"/>
@@ -54,7 +51,7 @@
 		</ItemsControl.Styles>
 		<ItemsControl.DataTemplates>
 			<DataTemplate>
-				<TextBlock Text="{Binding Value}" Foreground="#DDDDDD"/>
+				<TextBlock Text="{Binding}" Foreground="#DDDDDD"/>
 			</DataTemplate>
 		</ItemsControl.DataTemplates>
 		<ItemsControl.ItemsPanel>

@@ -24,7 +24,7 @@ namespace WPF.Caches
         /// <summary>
         /// The generated seedphrase that is associated with the new wallet
         /// </summary>
-        public List<MnemonicWord> SeedPhrase { get; set; } = null;
+        public List<string> Mnemonic { get; set; } = null;
 
         /// <summary>
         /// Password used for the wallet
@@ -47,7 +47,7 @@ namespace WPF.Caches
         {
             WalletName = string.Empty; 
             WalletLocation = string.Empty;
-            SeedPhrase = null;
+            Mnemonic = null;
             Password = string.Empty;
             NetworkType = string.Empty;
             Bootstrap = false;

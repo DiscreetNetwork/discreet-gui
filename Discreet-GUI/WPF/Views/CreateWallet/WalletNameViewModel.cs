@@ -1,9 +1,12 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using Services.Daemon;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using WPF.Caches;
@@ -18,6 +21,7 @@ namespace WPF.Views.CreateWallet
     class WalletNameViewModel : ViewModelBase
     {
         private readonly NewWalletCache _newWalletCache;
+        private readonly WalletService _walletService;
 
         public ReactiveCommand<Unit, Unit> NavigateYourRecoveryPhraseViewCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
@@ -29,14 +33,32 @@ namespace WPF.Views.CreateWallet
         private bool _canContinue = false;
         public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
 
-        public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
+        private bool _isLoading;
+        public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
+
+        public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletService walletService)
         {
             _newWalletCache = newWalletCache;
-
+            _walletService = walletService;
             NavigateYourRecoveryPhraseViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
             NavigateBackCommand                     = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
 
             ValidateCanContinue();
+            RxApp.MainThreadScheduler.Schedule(OnActivated);
+        }
+
+
+        async void OnActivated()
+        {
+            IsLoading = true;
+
+            if (_newWalletCache.Mnemonic is null)
+            {
+                var mnemonic = await _walletService.GetMnemonic();
+                _newWalletCache.Mnemonic = mnemonic.Value.Split(' ').Select(x => x).ToList();
+            }
+
+            IsLoading = false;
         }
 
         public async Task OpenFolderDialogCommand()
@@ -50,7 +72,6 @@ namespace WPF.Views.CreateWallet
                     WalletLocation = result;
                 }
             }
-
         }
 
         public void ValidateCanContinue()
@@ -62,6 +83,12 @@ namespace WPF.Views.CreateWallet
             }
 
             if(string.IsNullOrWhiteSpace(WalletLocation))
+            {
+                CanContinue = false;
+                return;
+            }
+
+            if(IsLoading)
             {
                 CanContinue = false;
                 return;

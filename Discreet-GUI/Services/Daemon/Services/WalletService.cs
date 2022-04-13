@@ -300,5 +300,25 @@ namespace Services.Daemon
                 return null;
             }
         }
+
+        public async Task<Mnemonic> GetMnemonic()
+        {
+            var req = new DaemonRequest("get_mnemonic");
+
+            var resp = await _rpcServer.Request(req);
+
+            var result = JsonSerializer.Deserialize<GetMnemonicResponse>((JsonElement)resp.Result);
+
+            if (result.ErrMsg != null && result.ErrMsg != "")
+            {
+                System.Diagnostics.Debug.WriteLine("GetMnemonic : " + result.ErrMsg);
+            }
+
+            return new Mnemonic 
+            { 
+                Value = result.Mnemonic, 
+                Entropy = result.Entropy 
+            };
+        }
     }
 }
