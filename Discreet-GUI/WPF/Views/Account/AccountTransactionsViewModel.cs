@@ -1,9 +1,11 @@
-﻿using Services.Daemon;
+﻿using ReactiveUI;
+using Services.Daemon;
 using Services.Daemon.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using WPF.Caches;
 using WPF.Factories.Navigation;
@@ -13,30 +15,39 @@ namespace WPF.Views.Account
 {
     public class AccountTransactionsViewModel : ViewModelBase
     {
+        private readonly WalletCache _walletCache;
+        private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
-        List<AccountTransaction> Transactions { get; set; }
+        private List<AccountTransaction> _transactions;
+        List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
 
         public AccountTransactionsViewModel() { }
 
         public AccountTransactionsViewModel(WalletCache walletCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
-            var accounts = walletCache.Accounts.ToList();
+            _walletCache = walletCache;
+            _walletService = walletService;
+            _navigationServiceFactory = navigationServiceFactory;
+
+            RxApp.MainThreadScheduler.Schedule(OnActivated);
+        }
+
+        public async void OnActivated()
+        {
+            var accounts = _walletCache.Accounts.ToList();
             var txs = new List<AccountTransaction>();
             foreach (var account in accounts)
             {
-                var txTask = walletService.GetTransactionHistory(account.Address);
-                var accountTxs = txTask.Result;
+                var transactions = await _walletService.GetTransactionHistory(account.Address);
 
-                if (accountTxs is null) continue;
+                if (transactions is null) continue;
 
-                txs.AddRange(accountTxs.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, x.SentAmount == 0 ? $"+{x.ReceivedAmount}" : $"-{x.SentAmount}")));
+                txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, x.SentAmount == 0 ? $"+{x.ReceivedAmount}" : $"-{x.SentAmount}")));
             }
 
             Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
-            _navigationServiceFactory = navigationServiceFactory;
         }
-
 
         void DisplayTransactionDetails(string transactionId)
         {
