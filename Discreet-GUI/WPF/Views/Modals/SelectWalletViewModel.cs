@@ -37,12 +37,14 @@ namespace WPF.Views.Modals
 
         public string EnteredPassword { get; set; }
 
-        public List<Wallet> LoadedWallets { get; set; }
+        private List<Wallet> _loadedWallets;
+        public List<Wallet> LoadedWallets { get => _loadedWallets; set { _loadedWallets = value; OnPropertyChanged(nameof(LoadedWallets)); OnPropertyChanged(nameof(SelectedWallet)); } }
         public Wallet SelectedWallet => LoadedWallets[SelectedWalletIndex];
 
-        public List<WalletStatusData> WalletStatuses { get; set; }
+        private List<WalletStatusData> _walletStatuses;
+        public List<WalletStatusData> WalletStatuses { get => _walletStatuses; set { _walletStatuses = value; OnPropertyChanged(nameof(WalletStatuses)); OnPropertyChanged(nameof(SelectedWalletStatus)); } }
 
-        public WalletStatusData SelectedWalletStatus => WalletStatuses[SelectedWalletIndex];
+        public WalletStatusData SelectedWalletStatus => WalletStatuses?[SelectedWalletIndex];
 
         private int _selectedWalletIndex;
         public int SelectedWalletIndex { get => _selectedWalletIndex; set { _selectedWalletIndex = value; OnPropertyChanged(nameof(SelectedWallet)); OnPropertyChanged(nameof(SelectedWalletStatus));  } }
@@ -72,8 +74,15 @@ namespace WPF.Views.Modals
                 LoadedWallets = wallets;
             }
 
-            var statusesTask = _walletService.GetWalletStatuses();
-            WalletStatuses = statusesTask.Result;
+            var statuses = await _walletService.GetWalletStatuses();
+            if (statuses is null)
+            {
+                _notificationService.Display("Failed to load wallet statuses");
+            }
+            else
+            {
+                WalletStatuses = statuses;
+            }
         }
 
         void ToggleDisplayPasswordCommand()

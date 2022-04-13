@@ -44,13 +44,15 @@ namespace WPF
                 RegisterStores(services);
                 RegisterCaches(services);
 
+                services.AddHttpClient();
+
                 services.AddSingleton<NotificationContainerViewModel>();
-                services.AddSingleton<RPCServer>();
+                services.AddScoped<RPCServer>();
                 services.AddSingleton<NotificationService>();
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
-                services.AddSingleton<WalletService>();
-                services.AddSingleton<StatusService>();
+                services.AddScoped<WalletService>();
+                services.AddScoped<StatusService>();
 
 
                 // Startup
