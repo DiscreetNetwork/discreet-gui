@@ -13,14 +13,13 @@ namespace Services.Daemon
 {
     public class RPCServer
     {
-        private WebClient _client;
-
+        private readonly HttpClient _httpClient;
         private SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        public RPCServer()
+        public RPCServer(HttpClient httpClient)
         {
-            _client = new WebClient();
-            _client.BaseAddress = "http://localhost:8350";
+            httpClient.BaseAddress = new Uri("http://localhost:8350");
+            _httpClient = httpClient;
         }
 
         /// <summary>
@@ -32,7 +31,8 @@ namespace Services.Daemon
         {
             await _semaphore.WaitAsync();
 
-            var responseText = _client.UploadString("/", req.Serialize());
+            var httpResponse = await _httpClient.PostAsync("/", new StringContent(req.Serialize()));
+            var responseText = await httpResponse.Content.ReadAsStringAsync(); 
 
             if(string.IsNullOrWhiteSpace(responseText))
             {
@@ -55,7 +55,10 @@ namespace Services.Daemon
         /// <returns></returns>
         public DaemonResponse RequestUnsafe(DaemonRequest req)
         {
-            var responseText = _client.UploadString("/", req.Serialize());
+            var requestTask = _httpClient.PostAsync("/", new StringContent(req.Serialize()));
+            var responseResult = requestTask.Result;
+            var responseText = responseResult.Content.ReadAsStringAsync().Result;
+
             var resp = DaemonResponse.Deserialize(responseText);
 
             return resp;
