@@ -3,7 +3,9 @@ using Services.Daemon;
 using Services.Daemon.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,22 +55,26 @@ namespace WPF.Views.Modals
             _walletService = walletService;
             _notificationService = notificationService;
             _walletCache = walletCache;
-            var task = walletService.GetWallets();
-            var wallets = task.Result;
-            if(wallets is null)
+
+            RxApp.MainThreadScheduler.Schedule(OnActivated);
+        }
+
+        public async void OnActivated()
+        {
+            Debug.WriteLine("OnActivated");
+            var wallets = await _walletService.GetWallets();
+            if (wallets is null)
             {
-                notificationService.Display("Failed to load wallets");
+                _notificationService.Display("Failed to load wallets");
             }
             else
             {
                 LoadedWallets = wallets;
             }
 
-
-            var statusesTask = walletService.GetWalletStatuses();
+            var statusesTask = _walletService.GetWalletStatuses();
             WalletStatuses = statusesTask.Result;
         }
-
 
         void ToggleDisplayPasswordCommand()
         {
