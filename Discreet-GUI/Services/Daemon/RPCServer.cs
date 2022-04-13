@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Threading;
+using System.IO;
 
 namespace Services.Daemon
 {
@@ -55,9 +56,16 @@ namespace Services.Daemon
         /// <returns></returns>
         public DaemonResponse RequestUnsafe(DaemonRequest req)
         {
-            var requestTask = _httpClient.PostAsync("/", new StringContent(req.Serialize()));
-            var responseResult = requestTask.Result;
-            var responseText = responseResult.Content.ReadAsStringAsync().Result;
+            var response = _httpClient.Send(new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("/", UriKind.Relative),
+                Content = new StringContent(req.Serialize())
+            });
+
+            using var sr = new StreamReader(response.Content.ReadAsStream());
+
+            var responseText = sr.ReadToEnd();
 
             var resp = DaemonResponse.Deserialize(responseText);
 
