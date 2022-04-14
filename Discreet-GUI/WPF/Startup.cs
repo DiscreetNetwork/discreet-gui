@@ -5,6 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Daemon;
 using Services.Daemon.Services;
+using Services.ZMQ;
+using Services.ZMQ.Handlers.Common;
+using Services.ZMQ.Registries;
+using Services.ZMQ.Registries.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using WPF.Attributes;
 using WPF.Caches;
 using WPF.Factories.Navigation;
@@ -33,6 +38,7 @@ namespace WPF
     public class Startup
     {
         private static IHost _host;
+        private Subscriber _subscriber;
 
         public void Run (IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -43,6 +49,15 @@ namespace WPF
                 RegisterFactories(services);
                 RegisterStores(services);
                 RegisterCaches(services);
+
+                // ZMQ Dependencies
+                var handlers = typeof(ServiceProviderMessageHandlerRegistry).Assembly.GetTypes().Where(t => t.BaseType == typeof(MessageHandler));
+                foreach (var handler in handlers)
+                {
+                    services.AddScoped(handler);
+                }
+                services.AddSingleton<IMessageHandlerRegistry, ServiceProviderMessageHandlerRegistry>();
+                services.AddScoped<Subscriber>();
 
                 services.AddHttpClient();
 
@@ -124,6 +139,10 @@ namespace WPF
             _ = _host.RunAsync();
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
+
+            // ZMQ
+            _subscriber = serviceScope.ServiceProvider.GetRequiredService<Subscriber>();
+            _ = Task.Factory.StartNew(_subscriber.Start);
 
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
