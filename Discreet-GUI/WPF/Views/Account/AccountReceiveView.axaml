@@ -39,7 +39,7 @@
 		</Grid.ColumnDefinitions>
 
 		<Label Grid.Row="0" Grid.Column="0" FontSize="30" Foreground="#8C52C0">Receive</Label>
-		<Label Grid.Row="1" Grid.Column="0" Foreground="#dddddd" FontSize="36">8127.14 DIS available</Label>
+		<Label Grid.Row="1" Grid.Column="0" Foreground="#dddddd" FontSize="36">8127.14 DIST available</Label>
 
 		<Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Width="150" Margin="0 0 25 0" HorizontalAlignment="Right" Source="{Binding QrCode}"/>
 	</Grid>

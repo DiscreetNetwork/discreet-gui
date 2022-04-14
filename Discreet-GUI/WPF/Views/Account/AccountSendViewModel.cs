@@ -40,7 +40,7 @@ namespace WPF.Views.Account
         public string AmountValidationMessage { get => _amountValidationMessage; set { _amountValidationMessage = value; OnPropertyChanged(nameof(AmountValidationMessage)); } }
 
 
-        ObservableCollection<FeeMock> FeeItems { get; set; } = new ObservableCollection<FeeMock>() { new FeeMock { Fee = "12 DIS" }, new FeeMock { Fee = "30 DIS" } };
+        ObservableCollection<FeeMock> FeeItems { get; set; } = new ObservableCollection<FeeMock>() { new FeeMock { Fee = "Low" }, new FeeMock { Fee = "Average" }, new FeeMock { Fee = "Priority" } };
         int SelectedFeeItemsIndex { get; set; } = 0;
 
 
