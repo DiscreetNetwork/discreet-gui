@@ -92,7 +92,6 @@ namespace WPF.Hosted
                     await UpdatePeerCount();
                 }
                 
-
                 await Task.Delay(100);
             }
         }

@@ -111,7 +111,7 @@ namespace Services.Daemon
             if (wallets is null) return null;
 
             var walletToFind = wallets.Where(w => w.Label.Equals(label)).FirstOrDefault();
-            if (walletToFind != null) return null;
+            if (walletToFind is null) return null;
 
             return walletToFind;
         }
