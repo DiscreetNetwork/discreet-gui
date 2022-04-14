@@ -26,14 +26,14 @@ namespace WPF.Hosted
     public class WalletPollerBackgroundService : BackgroundService
     {
         private readonly WalletCache _walletCache;
-        private readonly RPCServer _rpcServer;
+        private readonly WalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly StatusService _statusService;
 
-        public WalletPollerBackgroundService(WalletCache walletCache, RPCServer rpcServer, NotificationService notificationService, StatusService statusService)
+        public WalletPollerBackgroundService(WalletCache walletCache, WalletService walletService, NotificationService notificationService, StatusService statusService)
         {
             _walletCache = walletCache;
-            _rpcServer = rpcServer;
+            _walletService = walletService;
             _notificationService = notificationService;
             _statusService = statusService;
         }
@@ -51,83 +51,32 @@ namespace WPF.Hosted
                 // first get the wallet
                 if (!_walletCache.Initialized)
                 {
-                    var resp = await _rpcServer.Request(new DaemonRequest("get_wallets_from_db"));
+                    var walletToFind = await _walletService.GetWallet(_walletCache.Label);
+                    if (walletToFind == null) throw new Exception("WalletPollerBackgroundService: Could not find the selected wallet");
 
-                    if (resp != null && resp.Result != null)
+                    _walletCache.LastSeenHeight = walletToFind.LastSeenHeight;
+                    _walletCache.Synced = walletToFind.Synced;
+
+                    walletToFind.Addresses.ForEach(a =>
                     {
-                        if (resp.Result is JsonElement json)
+                        var accnt = new WalletCache.WalletAddress
                         {
-                            List<Wallet> wallets;
+                            Name = a.Name,
+                            Address = a.Address,
+                            Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
+                            Balance = a.Balance,
+                            Synced = a.Synced,
+                            Syncer = a.Syncer,
+                            UTXOs = new ObservableCollection<int>(a.UTXOs)
+                        };
 
-                            // try to decode the result as a list of Wallets (defined in CreateWalletResponse.cs)
-                            try
-                            {
-                                wallets = JsonSerializer.Deserialize<List<Wallet>>(json);
-                            }
-                            catch (Exception)
-                            {
-                                try
-                                {
-                                    // first check if the call to the daemon returned an RPC error
-                                    DaemonErrorResult result = JsonSerializer.Deserialize<DaemonErrorResult>(json);
+                        var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
+                        accnt.Identicon = icon;
 
-                                    System.Diagnostics.Debug.WriteLine("WalletManager getting wallets : " + result.ErrMsg);
-                                }
-                                catch (Exception ex2)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("WalletManager getting wallets : " + ex2.Message);
-                                }
+                        _walletCache.Accounts.Add(accnt);
+                    });
 
-                                continue;
-                            }
-
-                            if (wallets.Count == 0)
-                            {
-                                System.Diagnostics.Debug.WriteLine("WalletManager getting wallets, count was zero");
-                                continue;
-                            }
-
-                            var wallet = wallets.Where(x => x.Label == _walletCache.Label).FirstOrDefault();
-
-                            if (wallet == null)
-                            {
-                                System.Diagnostics.Debug.WriteLine("WalletManager getting wallets, none with specified label");
-                                continue;
-                            }
-
-                            _walletCache.Label = wallet.Label;
-                            _walletCache.LastSeenHeight = wallet.LastSeenHeight;
-                            _walletCache.Synced = wallet.Synced;
-
-
-                            wallet.Addresses.ForEach(a =>
-                            {
-                                var accnt = new WalletCache.WalletAddress
-                                {
-                                    Name = a.Name,
-                                    Address = a.Address,
-                                    Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
-                                    Balance = a.Balance,
-                                    Synced = a.Synced,
-                                    Syncer = a.Syncer,
-                                    UTXOs = new ObservableCollection<int>(a.UTXOs)
-                                };
-
-                                var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
-                                accnt.Identicon = icon;
-
-                                _walletCache.Accounts.Add(accnt);
-                            });
-
-                            wallet.Addresses.ForEach(a => System.Diagnostics.Debug.WriteLine($"address is \"{a.Address}\""));
-
-                            _walletCache.Initialized = true;
-                        }
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallets, result was null");
-                    }
+                    _walletCache.Initialized = true;
                 }
 
 
@@ -155,7 +104,7 @@ namespace WPF.Hosted
             if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections;
         }
 
-
+        // FIX THIS TO USE WALLET SERVICE
         public async Task UpdateAddressBalances()
         {
             foreach (var address in _walletCache.Accounts)

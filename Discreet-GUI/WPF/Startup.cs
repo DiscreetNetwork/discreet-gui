@@ -68,6 +68,7 @@ namespace WPF
                 services.AddHostedService<WalletPollerBackgroundService>();
                 services.AddScoped<WalletService>();
                 services.AddScoped<StatusService>();
+                services.AddScoped<AccountService>();
 
 
                 // Startup
