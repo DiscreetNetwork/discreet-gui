@@ -1,4 +1,5 @@
 ﻿using Services.Daemon.Common;
+using Services.Daemon.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,30 @@ namespace Services.Daemon.Services
 
                         System.Diagnostics.Debug.WriteLine("WalletManager getting balance : " + err.ErrMsg);
                     }
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<GetAddressHeightResponse> GetState(string accountAddress)
+        {
+            var req = new DaemonRequest("get_address_height", accountAddress);
+
+            var resp = await _rpcServer.Request(req);
+
+            if (resp != null && resp.Result != null)
+            {
+                if (resp.Result is JsonElement json)
+                {
+                    var getAddressHeightResponse = JsonSerializer.Deserialize<GetAddressHeightResponse>(json);
+
+                    if (getAddressHeightResponse.ErrMsg != null && getAddressHeightResponse.ErrMsg != "")
+                    {
+                        System.Diagnostics.Debug.WriteLine("WalletManager getting address height : " + getAddressHeightResponse.ErrMsg);
+                    }
+
+                    return getAddressHeightResponse;
                 }
             }
 

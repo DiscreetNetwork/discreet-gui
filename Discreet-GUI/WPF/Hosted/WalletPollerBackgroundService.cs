@@ -128,35 +128,16 @@ namespace WPF.Hosted
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var resp = await _rpcServer.Request(new DaemonRequest("get_address_height", address.Address));
-
-                if (resp != null && resp.Result != null)
+                var addressState = await _accountService.GetState(address.Address);
+                if(addressState is null)
                 {
-                    if (resp.Result is JsonElement json)
-                    {
-                        var getAddressHeightResponse = JsonSerializer.Deserialize<GetAddressHeightResponse>(json);
-
-                        if (getAddressHeightResponse.ErrMsg != null && getAddressHeightResponse.ErrMsg != "")
-                        {
-                            System.Diagnostics.Debug.WriteLine("WalletManager getting address height : " + getAddressHeightResponse.ErrMsg);
-                        }
-
-                        if (address.Synced != getAddressHeightResponse.Synced)
-                        {
-                            address.Synced = getAddressHeightResponse.Synced;
-                        }
-
-                        if (address.Syncer != getAddressHeightResponse.Syncer)
-                        {
-                            address.Syncer = getAddressHeightResponse.Syncer;
-                        }
-
-                        if (address.Height != getAddressHeightResponse.Height)
-                        {
-                            address.Height = getAddressHeightResponse.Height;
-                        }
-                    }
+                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for account: {address.Address}");
+                    continue;
                 }
+
+                if (address.Height != addressState.Height) address.Height = addressState.Height;
+                if (address.Syncer != addressState.Syncer) address.Syncer = addressState.Syncer;
+                if (address.Synced != addressState.Synced) address.Synced = addressState.Synced;
             }
         }
         public async Task UpdateWalletHeight()
