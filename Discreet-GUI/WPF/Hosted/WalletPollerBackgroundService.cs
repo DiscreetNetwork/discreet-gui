@@ -12,6 +12,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -29,13 +30,15 @@ namespace WPF.Hosted
         private readonly WalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly StatusService _statusService;
+        private readonly AccountService _accountService;
 
-        public WalletPollerBackgroundService(WalletCache walletCache, WalletService walletService, NotificationService notificationService, StatusService statusService)
+        public WalletPollerBackgroundService(WalletCache walletCache, WalletService walletService, NotificationService notificationService, StatusService statusService, AccountService accountService)
         {
             _walletCache = walletCache;
             _walletService = walletService;
             _notificationService = notificationService;
             _statusService = statusService;
+            _accountService = accountService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -104,50 +107,23 @@ namespace WPF.Hosted
             if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections;
         }
 
-        // FIX THIS TO USE WALLET SERVICE
+        
         public async Task UpdateAddressBalances()
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var resp = await _rpcServer.Request(new DaemonRequest("get_balance", address.Address));
-
-                if (resp != null && resp.Result != null)
+                var fetchedBalance = await _accountService.GetBalance(address.Address);
+                if(fetchedBalance == null)
                 {
-                    if (resp.Result is JsonElement json)
-                    {
-                        if (json.ValueKind == JsonValueKind.Number)
-                        {
-                            // the request was good
-                            var balance = json.GetUInt64();
-
-                            if (address.Balance != balance)
-                            {
-                                if(address.Balance < balance)
-                                {
-                                    _notificationService.Display("You received some DIS!");
-                                }
-                                else
-                                {
-                                    _notificationService.Display("You successfully sent some DIS!");
-                                }
-
-                                address.Balance = balance;
-                            }
-                        }
-                        else
-                        {
-                            // error type
-                            var err = JsonSerializer.Deserialize<DaemonErrorResult>(json);
-
-                            System.Diagnostics.Debug.WriteLine("WalletManager getting balance : " + err.ErrMsg);
-                        }
-                    }
+                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch balance for account: {address.Address}");
+                    continue;
                 }
-            }
 
-            //var totalBalance = _walletCache.Accounts.Select(x => x.Balance).Aggregate((a, b) => a + b);
-            //if (_walletCache.TotalBalance != totalBalance) _walletCache.TotalBalance = totalBalance;
+                if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
+            }
         }
+
+
         public async Task UpdateAddressHeights()
         {
             foreach (var address in _walletCache.Accounts)
