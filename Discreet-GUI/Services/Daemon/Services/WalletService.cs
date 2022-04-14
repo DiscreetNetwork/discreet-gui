@@ -337,5 +337,33 @@ namespace Services.Daemon
                 Entropy = result.Entropy 
             };
         }
+
+        /// <summary>
+        /// State of the wallet
+        /// </summary>
+        /// <returns>Wallet height & synced status</returns>
+        public async Task<GetWalletHeightResponse> GetState(string label)
+        {
+            var req = new DaemonRequest("get_wallet_height", label);
+
+            var resp = await _rpcServer.Request(req);
+
+            if (resp != null && resp.Result != null)
+            {
+                if (resp.Result is JsonElement json)
+                {
+                    var getWalletHeightResponse = JsonSerializer.Deserialize<GetWalletHeightResponse>(json);
+
+                    if (getWalletHeightResponse.ErrMsg != null && getWalletHeightResponse.ErrMsg != "")
+                    {
+                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallet height : " + getWalletHeightResponse.ErrMsg);
+                    }
+
+                    return getWalletHeightResponse;
+                }
+            }
+
+            return null;
+        }
     }
 }

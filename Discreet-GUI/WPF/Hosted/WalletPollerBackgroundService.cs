@@ -140,32 +140,18 @@ namespace WPF.Hosted
                 if (address.Synced != addressState.Synced) address.Synced = addressState.Synced;
             }
         }
+
         public async Task UpdateWalletHeight()
         {
-            var resp = await _rpcServer.Request(new DaemonRequest("get_wallet_height", _walletCache.Label));
-
-            if (resp != null && resp.Result != null)
+            var walletState = await _walletService.GetState(_walletCache.Label);
+            if(walletState is null)
             {
-                if (resp.Result is JsonElement json)
-                {
-                    var getWalletHeightResponse = JsonSerializer.Deserialize<GetWalletHeightResponse>(json);
-
-                    if (getWalletHeightResponse.ErrMsg != null && getWalletHeightResponse.ErrMsg != "")
-                    {
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallet height : " + getWalletHeightResponse.ErrMsg);
-                    }
-
-                    if (_walletCache.Synced != getWalletHeightResponse.Synced)
-                    {
-                        _walletCache.Synced = getWalletHeightResponse.Synced;
-                    }
-
-                    if (_walletCache.LastSeenHeight != getWalletHeightResponse.Height)
-                    {
-                        _walletCache.LastSeenHeight = getWalletHeightResponse.Height;
-                    }
-                }
+                Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for wallet: {_walletCache.Label}");
+                return;
             }
+
+            if (_walletCache.LastSeenHeight != walletState.Height) _walletCache.LastSeenHeight = walletState.Height;
+            if (_walletCache.Synced != walletState.Synced) _walletCache.Synced = walletState.Synced;
         }
     }
 }
