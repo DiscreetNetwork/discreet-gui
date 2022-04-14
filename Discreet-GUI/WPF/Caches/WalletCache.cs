@@ -16,6 +16,12 @@ namespace WPF.Caches
     /// </summary>
     public class WalletCache
     {
+        /// <summary>
+        /// A flag to indicate if the current wallet has been initialized with data
+        /// </summary>
+        public bool Initialized { get; set; }
+
+
         public event Action VisorStartupCompleteChanged;
         private bool _visorStartupComplete = false;
         public bool VisorStartupComplete { get => _visorStartupComplete; set { _visorStartupComplete = value; VisorStartupCompleteChanged?.Invoke(); } }
@@ -42,10 +48,7 @@ namespace WPF.Caches
         public bool Synced { get => _synced; set { _synced = value; SyncedChanged?.Invoke(); } }
 
 
-        /// <summary>
-        /// Not sure what flag to use for the background service, as i have removed the WalletData object
-        /// </summary>
-        public bool Initialized { get; set; }
+        
 
 
         public event Action NumberOfConnectionsChanged;

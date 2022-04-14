@@ -99,6 +99,23 @@ namespace Services.Daemon
             }
         }
 
+
+        /// <summary>
+        /// Retrieves a wallet based on the provided label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns>A <see cref="Wallet"/> on sucess; <see langword="null"/> if the call failed.</returns>
+        public async Task<Wallet> GetWallet(string label)
+        {
+            var wallets = await GetWallets();
+            if (wallets is null) return null;
+
+            var walletToFind = wallets.Where(w => w.Label.Equals(label)).FirstOrDefault();
+            if (walletToFind != null) return null;
+
+            return walletToFind;
+        }
+
         /// <summary>
         /// Retrieves all wallets from the Daemon's WalletDB.
         /// </summary>
