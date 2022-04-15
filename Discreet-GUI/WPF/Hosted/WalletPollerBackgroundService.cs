@@ -79,18 +79,14 @@ namespace WPF.Hosted
                         _walletCache.Accounts.Add(accnt);
                     });
 
-                    _walletCache.Initialized = true;
-                }
-
-
-                // poll the wallet
-                if(_walletCache.Initialized)
-                {
                     await UpdateAddressBalances();
                     await UpdateAddressHeights();
                     await UpdateWalletHeight();
                     await UpdatePeerCount();
+
+                    _walletCache.Initialized = true;
                 }
+
                 
                 await Task.Delay(100);
             }
