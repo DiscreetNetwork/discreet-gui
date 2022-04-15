@@ -28,6 +28,7 @@ namespace Services.ZMQ.Handlers
 
         public override void Handle(string message)
         {
+            Debug.WriteLine("ZMQ.BlockRawHandler: Executing");
             Task[] tasks = new Task[] { UpdatePeerCount(), UpdateAddressBalances(), UpdateAddressHeights(), UpdateWalletHeight() };
             Task.WaitAll(tasks);
         }

@@ -15,8 +15,9 @@ using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 using WPF.Views.CreateWallet;
 using WPF.Views.Layouts;
+using WPF.Views.Start;
 
-namespace WPF.Views.Start
+namespace WPF.Views.CreateWallet
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class YourRecoveryPhraseViewModel : ViewModelBase

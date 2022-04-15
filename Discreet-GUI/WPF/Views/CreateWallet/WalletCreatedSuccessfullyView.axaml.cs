@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace WPF.Views.Start
+namespace WPF.Views.CreateWallet
 {
-    public partial class YourRecoveryPhraseView : UserControl
+    public partial class WalletCreatedSuccessfullyView : UserControl
     {
-        public YourRecoveryPhraseView()
+        public WalletCreatedSuccessfullyView()
         {
             InitializeComponent();
         }

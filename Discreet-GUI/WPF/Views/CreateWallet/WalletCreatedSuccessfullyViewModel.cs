@@ -14,7 +14,7 @@ using WPF.Views.Account;
 using WPF.Views.Layouts;
 using WPF.Views.Layouts.Account;
 
-namespace WPF.Views.Start
+namespace WPF.Views.CreateWallet
 {
     [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
     class WalletCreatedSuccessfullyViewModel : ViewModelBase
