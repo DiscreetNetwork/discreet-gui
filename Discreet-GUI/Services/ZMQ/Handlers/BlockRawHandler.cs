@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Services.ZMQ.Handlers
 {
+    /// <summary>
+    /// Whenever we receive a 'blockraw' message from the Daemon, we will fetch data for the wallet, to make sure the view is synced with the daemon
+    /// </summary>
     public class BlockRawHandler : MessageHandler
     {
         private readonly WalletService _walletService;
