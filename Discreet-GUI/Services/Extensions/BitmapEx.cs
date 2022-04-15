@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace WPF.ExtensionMethods
+namespace Services.Extensions
 {
     /// <summary>
     /// Bitmap class to extend static methods

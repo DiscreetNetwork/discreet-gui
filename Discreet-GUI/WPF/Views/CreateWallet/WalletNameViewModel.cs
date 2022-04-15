@@ -9,7 +9,7 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
-using WPF.Caches;
+using Services.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 using WPF.Views.Layouts;

@@ -1,12 +1,12 @@
 ﻿using Avalonia;
 using ReactiveUI;
+using Services.Caches;
 using Services.Daemon;
+using Services.Extensions;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
-using WPF.Caches;
-using WPF.ExtensionMethods;
 using WPF.Factories.Navigation;
 using WPF.Services;
 using WPF.ViewModels.Common;

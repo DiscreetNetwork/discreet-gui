@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WPF.Views.Start;
 
-namespace WPF.Caches
+namespace Services.Caches
 {
     /// <summary>
     /// A object to hold the neccesary data throughout the process of creating a new wallet

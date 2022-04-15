@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Text;
-using WPF.Caches;
+using Services.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 using WPF.Views.Account;

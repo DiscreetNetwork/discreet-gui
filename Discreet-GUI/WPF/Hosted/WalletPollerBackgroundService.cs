@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Common;
 using Services.Daemon.Models;
 using Services.Daemon.Responses;
 using Services.Daemon.Services;
+using Services.Extensions;
 using Services.Jazzicon;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -18,8 +20,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using WPF.Caches;
-using WPF.ExtensionMethods;
 using WPF.Services;
 
 namespace WPF.Hosted

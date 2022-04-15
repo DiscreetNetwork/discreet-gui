@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
-using WPF.Caches;
+using Services.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
 

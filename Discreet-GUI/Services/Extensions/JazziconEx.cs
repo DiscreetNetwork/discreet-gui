@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF.ExtensionMethods
+namespace Services.Extensions
 {
     public static class JazziconEx
     {
         public static Avalonia.Media.Imaging.Bitmap IdenticonToAvaloniaBitmap(int diameter, string content)
         {
-            var icon = new Jazzicon(diameter, content);
+            var icon = new Services.Jazzicon.Jazzicon(diameter, content);
 
             using var _ms = new System.IO.MemoryStream();
 

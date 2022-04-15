@@ -1,4 +1,5 @@
 ﻿using Services.Daemon.Responses;
+using Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,9 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPF.ExtensionMethods;
 
-namespace WPF.Caches
+namespace Services.Caches
 {
     /// <summary>
     /// Individual delegates being invoked, ensures that ViewModels that subscribe to specific Properties,
@@ -33,11 +33,6 @@ namespace WPF.Caches
         public string Label { get => _label; set { _label = value; LabelChanged?.Invoke(); } }
 
 
-        //public event Action TotalBalanceChanged;
-        //ulong _totalBalance;
-        //public ulong TotalBalance { get => _totalBalance; set { _totalBalance = value; TotalBalanceChanged?.Invoke(); } }
-
-
         public event Action LastSeenHeightChanged;
         long _lastSeenHeight;
         public long LastSeenHeight { get => _lastSeenHeight; set { _lastSeenHeight = value; LastSeenHeightChanged?.Invoke(); } }
@@ -46,9 +41,6 @@ namespace WPF.Caches
         public event Action SyncedChanged;
         bool _synced;
         public bool Synced { get => _synced; set { _synced = value; SyncedChanged?.Invoke(); } }
-
-
-        
 
 
         public event Action NumberOfConnectionsChanged;

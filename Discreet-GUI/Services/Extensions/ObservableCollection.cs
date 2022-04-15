@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF.ExtensionMethods
+namespace Services.Extensions
 {
     public class ObservableCollectionEx<T> : ObservableCollection<T> where T : INotifyPropertyChanged
     {

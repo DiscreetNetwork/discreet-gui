@@ -1,16 +1,15 @@
 ﻿using Avalonia.Input;
 using Avalonia.Interactivity;
+using Services.Caches;
 using Services.Daemon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Services;
 using WPF.ViewModels.Common;
-using static WPF.Caches.WalletCache;
 
 namespace WPF.Views.Account.Modals
 {
@@ -51,7 +50,7 @@ namespace WPF.Views.Account.Modals
                 _notificationService.Display("Successfully created new account");
             }
 
-            _walletCache.AddAccount(createdAddress.Name, createdAddress.Address, createdAddress.Balance, (AddressType)createdAddress.Type);
+            _walletCache.AddAccount(createdAddress.Name, createdAddress.Address, createdAddress.Balance, (WalletCache.AddressType)createdAddress.Type);
             Dismiss();
         }
 
