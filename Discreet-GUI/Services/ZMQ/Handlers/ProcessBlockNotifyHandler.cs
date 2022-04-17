@@ -12,16 +12,17 @@ using System.Threading.Tasks;
 namespace Services.ZMQ.Handlers
 {
     /// <summary>
-    /// Whenever we receive a 'blockraw' message from the Daemon, we will fetch data for the wallet, to make sure the view is synced with the daemon
+    /// This handler runs whenever the daemon published the 'processblocknotify' message
+    /// which happens if the processed block changed the internal state of the daemon
     /// </summary>
-    public class BlockRawHandler : MessageHandler
+    public class ProcessBlockNotifyHandler : MessageHandler
     {
         private readonly WalletService _walletService;
         private readonly AccountService _accountService;
         private readonly WalletCache _walletCache;
         private readonly StatusService _statusService;
 
-        public BlockRawHandler(WalletService walletService, AccountService accountService, WalletCache walletCache, StatusService statusService)
+        public ProcessBlockNotifyHandler(WalletService walletService, AccountService accountService, WalletCache walletCache, StatusService statusService)
         {
             _walletService = walletService;
             _accountService = accountService;
@@ -31,12 +32,13 @@ namespace Services.ZMQ.Handlers
 
         public override async Task Handle(string message)
         {
-            Debug.WriteLine("ZMQ.BlockRawHandler: Executing async");
+            Debug.WriteLine("ZMQ.UpdateHandler: Executing async");
             await UpdatePeerCount();
             await UpdateAddressBalances();
             await UpdateAddressHeights();
             await UpdateWalletHeight();
         }
+
 
         public async Task UpdatePeerCount()
         {
@@ -95,7 +97,5 @@ namespace Services.ZMQ.Handlers
             if (_walletCache.LastSeenHeight != walletState.Height) _walletCache.LastSeenHeight = walletState.Height;
             if (_walletCache.Synced != walletState.Synced) _walletCache.Synced = walletState.Synced;
         }
-
-        
     }
 }
