@@ -67,7 +67,7 @@
 				
 				<Button
 					HotKey="ENTER" Background="#D35683"
-					Grid.Row="3" Classes="btn btn-pink" Classes.loading="{Binding IsLoading}" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
+					Grid.Row="3" Classes="btn btn-pink spinner" Classes.loading="{Binding IsLoading}" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
 					Width="200" Height="45" FontWeight="300" 
 					HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 
