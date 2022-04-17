@@ -10,7 +10,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0" VerticalAlignment="Top" Background="#8C52C0">
+    <Grid Grid.Row="0" VerticalAlignment="Top" Background="#09090A">
       <Button Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Background="Transparent" BorderBrush="{x:Null}" Width="50" Height="50" Margin="0 0 100 0" Command="{Binding MinimizeWindowHandler}">
         <Image Width="15" Source="/Assets/Buttons/minimize-bright-white.png"/>
       </Button>

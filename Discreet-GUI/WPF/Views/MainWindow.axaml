@@ -15,6 +15,7 @@
 		Background="Transparent">
 
 	<Grid Background="#1C1C1D">
+		<Button IsVisible="False" Command="{Binding DisplayDebugProcess}" HotKey="Ctrl+D"/>
 		
 		<ContentControl ZIndex="200" Margin="0 75 25 0" HorizontalAlignment="Right" Content="{Binding NotificationContainerViewModel}"/>
 

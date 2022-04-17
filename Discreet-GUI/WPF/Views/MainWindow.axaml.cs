@@ -1,8 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 
 namespace WPF.Views
@@ -28,6 +31,18 @@ namespace WPF.Views
         private void MouseDownHandler(object sender, PointerPressedEventArgs e)
         {
             var pos = e.GetCurrentPoint(this);
+
+            // Check if this is the MenuItem we are clicking
+            if (pos.Pointer.Captured.InteractiveParent is Border c)
+            {
+                if (c.Classes.Contains("icon"))
+                {
+                    MenuItem mi = c.Parent as MenuItem;
+                    var ctx = mi.ContextMenu;
+                    ctx.Open();
+                    return;
+                }
+            }
 
             // A fix to ensure the window wont begin drag, if you click on a ComboBoxItem
             if (pos.Pointer.Captured.InteractiveParent is Avalonia.Controls.ComboBoxItem ||

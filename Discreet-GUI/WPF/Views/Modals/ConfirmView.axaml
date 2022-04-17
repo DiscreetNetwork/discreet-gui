@@ -36,13 +36,13 @@
 
 				<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
 					<Label Foreground="White" FontWeight="200">You are about to send</Label>
-					<Label Foreground="White" FontWeight="Bold" Content="{Binding Amount}"/>
+					<Label Foreground="#D35683" FontWeight="Bold" Content="{Binding Amount}"/>
 					<Label Foreground="White" FontWeight="200">DIST, this is an irreversible transaction.</Label>
 				</StackPanel>
 
 				<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" VerticalAlignment="Center">
 					<Label Foreground="White" FontWeight="200">The transaction will be sent to</Label>
-					<Label Foreground="White" FontWeight="Bold" Content="{Binding ReceiverAddress}"/>
+					<Label Foreground="#D35683" FontWeight="Bold" Content="{Binding ReceiverAddress}"/>
 					<Label Foreground="White" FontWeight="200">if confirmed.</Label>
 				</StackPanel>
 
@@ -66,11 +66,15 @@
 				</Button>
 				
 				<Button
-					HotKey="ENTER"
-					Grid.Row="3" Classes="btn btn-pink" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
+					HotKey="ENTER" Background="#D35683"
+					Grid.Row="3" Classes="btn btn-pink" Classes.loading="{Binding IsLoading}" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
 					Width="200" Height="45" FontWeight="300" 
 					HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-					Confirm
+
+					<Grid>
+						<Label Foreground="White" VerticalAlignment="Center">Confirm</Label>
+						<Image Source="/Assets/Icons/spinner-2.png" Width="25"/>
+					</Grid>
 				</Button>
 			</Grid>
 		</Border>

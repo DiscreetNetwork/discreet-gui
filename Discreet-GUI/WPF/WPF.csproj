@@ -9,62 +9,12 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Assets\Buttons\back-arrow-white.png" />
-    <None Remove="Assets\Buttons\back-logo-placeholder.png" />
-    <None Remove="Assets\Buttons\back-logo-white.png" />
-    <None Remove="Assets\Buttons\checkmark-white.png" />
-    <None Remove="Assets\Buttons\close-bright-white.png" />
-    <None Remove="Assets\Buttons\close-white.png" />
-    <None Remove="Assets\Buttons\copy_wallet_default.png" />
-    <None Remove="Assets\Buttons\copy_wallet_hover.png" />
-    <None Remove="Assets\Buttons\documents-white.png" />
-    <None Remove="Assets\Buttons\eye-closed-gray.png" />
-    <None Remove="Assets\Buttons\eye-open-white.png" />
-    <None Remove="Assets\Buttons\maximize-bright-white.png" />
-    <None Remove="Assets\Buttons\maximize-white.png" />
-    <None Remove="Assets\Buttons\minimize-bright-white.png" />
-    <None Remove="Assets\Buttons\minimize-white.png" />
-    <None Remove="Assets\Buttons\purple-home.png" />
-    <None Remove="Assets\discreet-logo-purple.png" />
-    <None Remove="Assets\Icons\account-1.png" />
-    <None Remove="Assets\Icons\account-2.png" />
-    <None Remove="Assets\Icons\account-home.png" />
-    <None Remove="Assets\Icons\account-receive.png" />
-    <None Remove="Assets\Icons\account-send.png" />
-    <None Remove="Assets\Icons\account-transactions.png" />
-    <None Remove="Assets\Icons\arrow-right-gray.png" />
-    <None Remove="Assets\Icons\folder1.png" />
-    <None Remove="Assets\Icons\gray-ellipse.png" />
-    <None Remove="Assets\Icons\grey-circle.png" />
-    <None Remove="Assets\Icons\notification-alert.png" />
-    <None Remove="Assets\Icons\notifications-bell.png" />
-    <None Remove="Assets\Icons\pink-checkmark.png" />
-    <None Remove="Assets\Icons\receive-icon.png" />
-    <None Remove="Assets\Icons\send-icon.png" />
-    <None Remove="Assets\Icons\settings-icon.png" />
-    <None Remove="Assets\Icons\unsynced-wallet.png" />
-    <None Remove="Assets\Icons\wifi-white.png" />
-    <None Remove="Assets\Images\Group.png" />
-    <None Remove="Assets\Images\process-dots-1-4.png" />
-    <None Remove="Assets\Images\process-dots-2-4.png" />
-    <None Remove="Assets\Images\process-dots-3-4.png" />
-    <None Remove="Assets\Images\process-dots-4-4.png" />
-    <None Remove="Assets\Images\shield-platform.png" />
-    <None Remove="Assets\mining.png" />
-    <None Remove="Assets\pink-ellipse.png" />
-    <None Remove="Assets\privacy.png" />
-    <None Remove="Assets\process-dots-1-3.png" />
-    <None Remove="Assets\process-dots-2-3.png" />
-    <None Remove="Assets\process-dots-3-3.png" />
-    <None Remove="Assets\speed.png" />
-    <None Remove="Assets\test.png" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.13" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Packaging.Targets" Version="0.1.220">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -75,14 +25,28 @@
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Update="Assets\Buttons\back-arrow-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\Account\Modals\CreateNewAccountView.axaml.cs">
+      <DependentUpon>CreateNewAccountView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\Modals\AccountDetailsView.axaml.cs">
+      <DependentUpon>AccountDetailsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DebugUtility\MainDebugWindowView.axaml.cs">
+      <DependentUpon>MainDebugWindowView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Layouts\DarkTitleBarLayoutWithBackButtonView.axaml.cs">
       <DependentUpon>DarkTitleBarLayoutWithBackButtonView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Layouts\PurpleTitleBarLayoutView.axaml.cs">
       <DependentUpon>PurpleTitleBarLayoutView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Modals\PasswordView.axaml.cs">
-      <DependentUpon>PasswordView.axaml</DependentUpon>
+    <Compile Update="Views\Modals\SelectWalletView.axaml.cs">
+      <DependentUpon>SelectWalletView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Start\ExistingWalletChoicesView.axaml.cs">
       <DependentUpon>ExistingWalletChoicesView.axaml</DependentUpon>

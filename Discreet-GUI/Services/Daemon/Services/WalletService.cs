@@ -99,6 +99,23 @@ namespace Services.Daemon
             }
         }
 
+
+        /// <summary>
+        /// Retrieves a wallet based on the provided label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns>A <see cref="Wallet"/> on sucess; <see langword="null"/> if the call failed.</returns>
+        public async Task<Wallet> GetWallet(string label)
+        {
+            var wallets = await GetWallets();
+            if (wallets is null) return null;
+
+            var walletToFind = wallets.Where(w => w.Label.Equals(label)).FirstOrDefault();
+            if (walletToFind is null) return null;
+
+            return walletToFind;
+        }
+
         /// <summary>
         /// Retrieves all wallets from the Daemon's WalletDB.
         /// </summary>
@@ -120,12 +137,34 @@ namespace Services.Daemon
         }
 
         /// <summary>
+        /// Retrieves all wallet statuses from the Daemon, including unloaded wallets.
+        /// </summary>
+        /// <returns>A <see cref='List{T}'/> of <see cref='WalletStatusData'/> containing wallet status data on success; <see langword='null'/> if the call fails.</returns>
+        public async Task<List<WalletStatusData>> GetWalletStatuses()
+        {
+            var req = new DaemonRequest("get_wallet_statuses");
+
+            var resp = await _rpcServer.Request(req);
+
+            try
+            {
+                var data = JsonSerializer.Deserialize<List<WalletStatusRV>>((JsonElement)resp.Result);
+
+                return data.Select(x => new WalletStatusData { Label = x.Label, Status = (WalletStatus)x.Status }).ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Loads a wallet from the Daemon's WalletDB with the specified parameters.
         /// </summary>
         /// <param name="label">The label of the wallet to load.</param>
         /// <param name="passphrase">The passphrase of the wallet to load.</param>
         /// <returns>The loaded <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<Wallet> LoadWallet(string label, string passphrase)
+        public async Task<bool> LoadWallet(string label, string passphrase)
         {
             var loadWalletRequest = new LoadWalletRequest
             {
@@ -139,11 +178,11 @@ namespace Services.Daemon
 
             try
             {
-                return JsonSerializer.Deserialize<Wallet>((JsonElement)resp.Result);
+                return resp.IsOK();
             }
             catch
             {
-                return null;
+                return false;
             }
         }
 
@@ -257,6 +296,74 @@ namespace Services.Daemon
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Returns the transaction history for the specified account's wallet address.
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public async Task<List<TransactionHistoryElement>> GetTransactionHistory(string address)
+        {
+            var req = new DaemonRequest("get_transaction_history", address);
+
+            var resp = await _rpcServer.Request(req);
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<TransactionHistoryElement>>((JsonElement)resp.Result);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<Mnemonic> GetMnemonic()
+        {
+            var req = new DaemonRequest("get_mnemonic");
+
+            var resp = await _rpcServer.Request(req);
+
+            var result = JsonSerializer.Deserialize<GetMnemonicResponse>((JsonElement)resp.Result);
+
+            if (result.ErrMsg != null && result.ErrMsg != "")
+            {
+                System.Diagnostics.Debug.WriteLine("GetMnemonic : " + result.ErrMsg);
+            }
+
+            return new Mnemonic 
+            { 
+                Value = result.Mnemonic, 
+                Entropy = result.Entropy 
+            };
+        }
+
+        /// <summary>
+        /// State of the wallet
+        /// </summary>
+        /// <returns>Wallet height & synced status</returns>
+        public async Task<GetWalletHeightResponse> GetState(string label)
+        {
+            var req = new DaemonRequest("get_wallet_height", label);
+
+            var resp = await _rpcServer.Request(req);
+
+            if (resp != null && resp.Result != null)
+            {
+                if (resp.Result is JsonElement json)
+                {
+                    var getWalletHeightResponse = JsonSerializer.Deserialize<GetWalletHeightResponse>(json);
+
+                    if (getWalletHeightResponse.ErrMsg != null && getWalletHeightResponse.ErrMsg != "")
+                    {
+                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallet height : " + getWalletHeightResponse.ErrMsg);
+                    }
+
+                    return getWalletHeightResponse;
+                }
+            }
+
+            return null;
         }
     }
 }

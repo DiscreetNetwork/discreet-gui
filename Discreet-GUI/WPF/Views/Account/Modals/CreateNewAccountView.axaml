@@ -1,0 +1,113 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WPF.Views.Account.Modals.CreateNewAccountView">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/ApplicationStyles.axaml"/>
+	</UserControl.Styles>
+	
+	<Grid Background="Transparent">
+		<Grid.Transitions>
+			<Transitions>
+				<DoubleTransition Property="Opacity" Duration="0:0:0.001"/>
+			</Transitions>
+		</Grid.Transitions>
+
+		<Rectangle Fill="#181818" Opacity="0.95"/>
+
+		<Border
+			Background="#181818"
+			Width="385" Height="350"
+			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			BoxShadow="0 3 7 #ff0a0a0a">
+
+			<Grid Margin="30 20 30 20">
+				<Button Cursor="Hand" Width="40" HorizontalAlignment="Right" Command="{Binding Dismiss}" VerticalAlignment="Top">
+					<Image Source="/Assets/Icons/close-icon.png"/>
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Button.Styles>
+				</Button>
+
+				<Label VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="White" FontWeight="300">Create new account</Label>
+
+				<StackPanel Margin="0 70 0 0">
+					<Label Foreground="White" FontWeight="300">Name</Label>
+					<TextBox Classes="input" Margin="0 5 0 0" Width="320" Height="35" HorizontalAlignment="Left" Text="{Binding AccountName}"/>
+
+					<Label Foreground="White" Margin="0 10 0 0" FontWeight="300">Type</Label>
+					<ComboBox Classes="dropdown-dark" Margin="0 5 0 0" Width="320" Height="35" Items="{Binding AccountTypes}" SelectedIndex="{Binding SelectedAccountTypeIndex}">
+						<ComboBox.Resources>
+							<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+						</ComboBox.Resources>
+					</ComboBox>
+
+					<!-- Cancel / Create -->
+					<Grid Margin="0 60 0 0">
+						<Button Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" Command="{Binding Dismiss}">
+							Cancel
+							<Button.DataTemplates>
+								<DataTemplate>
+									<TextBlock TextDecorations="Underline" Text="Cancel" Foreground="Gray"/>
+								</DataTemplate>
+							</Button.DataTemplates>
+							<Button.Styles>
+								<Style Selector="Button">
+									<Setter Property="Background" Value="Transparent"/>
+								</Style>
+								<Style Selector="Button:pointerover /template/ ContentPresenter">
+									<Setter Property="Background" Value="Transparent"/>
+								</Style>
+							</Button.Styles>
+						</Button>
+
+						<Button
+							HotKey="ENTER"
+							Grid.Row="3" Classes="btn btn-outline-pink" Classes.loading="{Binding IsLoading}" Cursor="Hand" Command="{Binding Create}"
+							Width="150" Height="40" FontWeight="300"
+							HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+
+							<Grid>
+								<Label Foreground="White" VerticalAlignment="Center">Create</Label>
+								<Image Source="/Assets/Icons/spinner-2.png" Width="25"/>
+							</Grid>
+
+							<Button.Styles>
+								<Style Selector="Button.loading Label">
+									<Setter Property="IsVisible" Value="False"/>
+								</Style>
+
+								<Style Selector="Button Image">
+									<Setter Property="IsVisible" Value="False"/>
+								</Style>
+								<Style Selector="Button.loading Image">
+									<Setter Property="IsVisible" Value="True"/>
+									<Style.Animations>
+										<Animation Duration="0:0:0.800" RepeatCount="INFINITE">
+											<KeyFrame Cue="0%">
+												<Setter Property="RotateTransform.Angle" Value="0.0"/>
+											</KeyFrame>
+
+											<KeyFrame Cue="100%">
+												<Setter Property="RotateTransform.Angle" Value="360.0"/>
+											</KeyFrame>
+										</Animation>
+									</Style.Animations>
+								</Style>
+							</Button.Styles>
+						</Button>
+					</Grid>
+				</StackPanel>
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>

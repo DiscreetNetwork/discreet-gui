@@ -1,16 +1,24 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Services;
+using Services.ZMQ;
+using Services.ZMQ.Handlers.Common;
+using Services.ZMQ.Registries;
+using Services.ZMQ.Registries.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using WPF.Attributes;
-using WPF.Caches;
 using WPF.Factories.Navigation;
 using WPF.Factories.ViewModel;
 using WPF.Hosted;
@@ -18,22 +26,19 @@ using WPF.Services;
 using WPF.Stores;
 using WPF.Stores.Navigation;
 using WPF.ViewModels;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.CreateWallet;
-using WPF.ViewModels.Layouts;
-using WPF.ViewModels.Layouts.Account;
-using WPF.ViewModels.Modals;
-using WPF.ViewModels.Notifications;
-using WPF.ViewModels.Settings;
-using WPF.ViewModels.Start;
 using WPF.Views;
+using WPF.Views.Account.Modals;
+using WPF.Views.DebugUtility;
+using WPF.Views.Notifications;
+using WPF.Views.Start;
 
 namespace WPF
 {
     public class Startup
     {
         private static IHost _host;
+        private Subscriber _subscriber;
 
         public void Run (IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -45,12 +50,25 @@ namespace WPF
                 RegisterStores(services);
                 RegisterCaches(services);
 
+                // ZMQ Dependencies
+                var handlers = typeof(ServiceProviderMessageHandlerRegistry).Assembly.GetTypes().Where(t => t.BaseType == typeof(MessageHandler));
+                foreach (var handler in handlers)
+                {
+                    services.AddScoped(handler);
+                }
+                services.AddSingleton<IMessageHandlerRegistry, ServiceProviderMessageHandlerRegistry>();
+                services.AddScoped<Subscriber>();
+
+                services.AddHttpClient();
+
                 services.AddSingleton<NotificationContainerViewModel>();
-                services.AddSingleton<RPCServer>();
+                services.AddScoped<RPCServer>();
                 services.AddSingleton<NotificationService>();
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
-                services.AddSingleton<WalletService>();
+                services.AddScoped<WalletService>();
+                services.AddScoped<StatusService>();
+                services.AddScoped<AccountService>();
 
 
                 // Startup
@@ -59,17 +77,82 @@ namespace WPF
                 {
                     DataContext = s.GetRequiredService<MainWindowViewModel>()
                 });
+            })
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                var walletConfigPath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? Environment.GetEnvironmentVariable("HOME") : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+                walletConfigPath = Path.Combine($"{walletConfigPath}", "discreet/wallet-config");
+                if (!Directory.Exists(walletConfigPath))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(walletConfigPath);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder: \n{e.Message}");
+                    }
+                }
+                if (!File.Exists(Path.Combine(walletConfigPath, "appsettings.json")))
+                {
+                    try
+                    {
+                        using var fs = File.Create(Path.Combine(walletConfigPath, "appsettings.json"));
+                        using var sw = new StreamWriter(fs);
+                        sw.Write($"{{\n  \"DaemonSettings\": {{\n    \"UseActivator\": true,\n    \"RedirectOutput\": true,\n    \"ExecutableName\": \"Discreet\",\n    \"ExecutablePath\": \"path to Discreet.exe\"\n  }}\n}}");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet appsettings.json file: \n{e.Message}");
+                    }
+                }
+
+                config.AddJsonFile(Path.Combine(walletConfigPath, "appsettings.json"));
+#if DEBUG
+                if (!Directory.Exists(walletConfigPath))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(walletConfigPath);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder: \n{e.Message}");
+                    }
+                }
+                if (!File.Exists(Path.Combine(walletConfigPath, "debugsettings.json")))
+                {
+                    try
+                    {
+                        using var fs = File.Create(Path.Combine(walletConfigPath, "debugsettings.json"));
+                        using var sw = new StreamWriter(fs);
+                        sw.Write($"{{\n  \"FaucetRemoteNode\": \"http://ip:port/\"\n}}");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default debugsettings.json file: \n{e.Message}");
+                    }
+                }
+                config.AddJsonFile(Path.Combine(walletConfigPath, "debugsettings.json"));
+#endif
             }).Build();
 
             _ = _host.RunAsync();
 
             using IServiceScope serviceScope = _host.Services.CreateScope();
 
-            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<PasswordViewModel>().Navigate();
-
+            // ZMQ
+            _subscriber = serviceScope.ServiceProvider.GetRequiredService<Subscriber>();
+            _ = Task.Factory.StartNew(_subscriber.Start);
 
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
+
+            //if(serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
+            //{
+            //    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+            //}
+
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
 
             desktop.MainWindow = mainWindow;

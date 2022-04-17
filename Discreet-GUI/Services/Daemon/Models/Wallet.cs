@@ -14,6 +14,7 @@ namespace Services.Daemon.Models
         public bool Encrypted { get; set; }
         public ulong Timestamp { get; set; }
         public string Version { get; set; }
+        public bool Locked { get; set; }
         public string Entropy { get; set; }
         public uint EntropyLen { get; set; }
         public ulong EntropyChecksum { get; set; }

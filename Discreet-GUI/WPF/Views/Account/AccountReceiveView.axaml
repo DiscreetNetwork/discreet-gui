@@ -2,10 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:vm="using:WPF.ViewModels.Account"
+			 xmlns:c="using:WPF.ValueConverters"
+			 xmlns:vm="using:WPF.Views.Account"
              mc:Ignorable="d" Design.Width="720" Design.Height="1100"
              x:Class="WPF.Views.Account.AccountReceiveView">
 
+	<UserControl.Resources>
+		<c:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
+	</UserControl.Resources>
+	
 	<Design.DataContext>
 		<vm:AccountReceiveViewModel/>
 	</Design.DataContext>
@@ -34,18 +39,18 @@
 		</Grid.ColumnDefinitions>
 
 		<Label Grid.Row="0" Grid.Column="0" FontSize="30" Foreground="#8C52C0">Receive</Label>
-		<Label Grid.Row="1" Grid.Column="0" Foreground="#dddddd" FontSize="36">8127.14 DIS available</Label>
+		<Label Grid.Row="1" Grid.Column="0" Foreground="#dddddd" FontSize="36">8127.14 DIST available</Label>
 
 		<Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Width="150" Margin="0 0 25 0" HorizontalAlignment="Right" Source="{Binding QrCode}"/>
 	</Grid>
 
 	<!-- ACCOUNT LABEL-->
-	<Label Grid.Row="1" Margin="0 30 0 10" FontSize="20" Foreground="white">Accounts</Label>
+	<Label Grid.Row="1" Margin="0 30 0 10" FontSize="20" FontWeight="200" Foreground="white">Accounts</Label>
 
 
 	<!-- ITEM -->
 	<ScrollViewer Grid.Row="2" Height="300" Margin="0 0 25 0">
-		<ItemsControl Items="{Binding MockedItems}" >
+		<ItemsControl Items="{Binding Accounts}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<Border Padding="15,15,15,15" BorderThickness="0 0 0 1" BorderBrush="#4F4F4F">
@@ -56,15 +61,13 @@
 								<ColumnDefinition/>
 							</Grid.ColumnDefinitions>
 
-							<Image Grid.Column="0" HorizontalAlignment="Left"/>
+							<Image Grid.Column="0" Height="45" Margin="5 0 0 0" Source="{Binding Identicon}" HorizontalAlignment="Left"/>
 
 							<StackPanel Grid.Column="1">
-								<Label Foreground="#D95A86" Content="{Binding AccountName}"></Label>
-								<Label Foreground="LightGray" Content="{Binding AccountAddress}"></Label>
-								<Label Foreground="#DDDDDD" Content="{Binding AccountBalance}"></Label>
+								<Label Foreground="#D95A86" Content="{Binding Name}"></Label>
+								<Label Margin="0 3 0 0" Foreground="LightGray" Content="{Binding Address, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"></Label>
+								<Label Margin="0 3 0 0" Foreground="#DDDDDD" Content="{Binding Balance}"></Label>
 							</StackPanel>
-
-							<Button Classes="btn btn-gray" Grid.Column="2" Width="80" Height="35" Margin="0 0 25 0" HorizontalAlignment="Right">COPY</Button>
 						</Grid>
 					</Border>
 				</DataTemplate>
@@ -75,13 +78,6 @@
 				</Style>
 				<Style Selector="Border:pointerover">
 					<Setter Property="Background" Value="#2D2D2E"/>
-				</Style>
-				<Style Selector="Image">
-					<Setter Property="Width" Value="50"/>
-					<Setter Property="Source" Value="/Assets/Icons/gray-ellipse.png"/>
-				</Style>
-				<Style Selector="Border:pointerover Image">
-					<Setter Property="Source" Value="/Assets/Icons/pink-ellipse.png"/>
 				</Style>
 			</ItemsControl.Styles>
 		</ItemsControl>

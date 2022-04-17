@@ -13,10 +13,10 @@
 	<ItemsControl Items="{Binding Notifications}">
 		<ItemsControl.ItemTemplate>
 			<DataTemplate>
-				<Border Padding="5" Margin="0 5 0 0" Width="250" Background="#1C1C1C" BorderBrush="DarkGreen" BorderThickness="2" >
+				<Border Padding="5 8 5 8" CornerRadius="6" Margin="0 5 0 0" Width="250" Background="#1C1C1C" BorderBrush="Gray" BorderThickness="1" BoxShadow="0 3 7 #ff0a0a0a">
 					<Grid>
 						<TextBlock TextWrapping="Wrap" Width="180" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontWeight="300" FontSize="14" Text="{Binding Text}"/>
-						<Button Width="35" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding DismissCommand}">
+						<Button Width="30" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding DismissCommand}">
 							<Image Source="/Assets/Buttons/close-bright-white.png"/>
 
 							<Button.Styles>

@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Common;
 using Services.Daemon.Models;
 using Services.Daemon.Responses;
+using Services.Daemon.Services;
+using Services.Extensions;
 using Services.Jazzicon;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -11,12 +14,12 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using WPF.Caches;
 using WPF.Services;
 
 namespace WPF.Hosted
@@ -24,14 +27,18 @@ namespace WPF.Hosted
     public class WalletPollerBackgroundService : BackgroundService
     {
         private readonly WalletCache _walletCache;
-        private readonly RPCServer _rpcServer;
+        private readonly WalletService _walletService;
         private readonly NotificationService _notificationService;
+        private readonly StatusService _statusService;
+        private readonly AccountService _accountService;
 
-        public WalletPollerBackgroundService(WalletCache walletCache, RPCServer rpcServer, NotificationService notificationService)
+        public WalletPollerBackgroundService(WalletCache walletCache, WalletService walletService, NotificationService notificationService, StatusService statusService, AccountService accountService)
         {
             _walletCache = walletCache;
-            _rpcServer = rpcServer;
+            _walletService = walletService;
             _notificationService = notificationService;
+            _statusService = statusService;
+            _accountService = accountService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -47,215 +54,99 @@ namespace WPF.Hosted
                 // first get the wallet
                 if (!_walletCache.Initialized)
                 {
-                    var resp = await _rpcServer.Request(new DaemonRequest("get_wallets_from_db"));
+                    var walletToFind = await _walletService.GetWallet(_walletCache.Label);
+                    if (walletToFind == null) throw new Exception("WalletPollerBackgroundService: Could not find the selected wallet");
 
-                    if (resp != null && resp.Result != null)
+                    _walletCache.LastSeenHeight = walletToFind.LastSeenHeight;
+                    _walletCache.Synced = walletToFind.Synced;
+
+                    walletToFind.Addresses.ForEach(a =>
                     {
-                        if (resp.Result is JsonElement json)
+                        var accnt = new WalletCache.WalletAddress
                         {
-                            List<Wallet> wallets;
+                            Name = a.Name,
+                            Address = a.Address,
+                            Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
+                            Balance = a.Balance,
+                            Synced = a.Synced,
+                            Syncer = a.Syncer,
+                            UTXOs = new ObservableCollection<int>(a.UTXOs)
+                        };
 
-                            // try to decode the result as a list of Wallets (defined in CreateWalletResponse.cs)
-                            try
-                            {
-                                wallets = JsonSerializer.Deserialize<List<Wallet>>(json);
-                            }
-                            catch (Exception)
-                            {
-                                try
-                                {
-                                    // first check if the call to the daemon returned an RPC error
-                                    DaemonErrorResult result = JsonSerializer.Deserialize<DaemonErrorResult>(json);
+                        var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
+                        accnt.Identicon = icon;
 
-                                    System.Diagnostics.Debug.WriteLine("WalletManager getting wallets : " + result.ErrMsg);
-                                }
-                                catch (Exception ex2)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("WalletManager getting wallets : " + ex2.Message);
-                                }
+                        _walletCache.Accounts.Add(accnt);
+                    });
 
-                                continue;
-                            }
-
-                            if (wallets.Count == 0)
-                            {
-                                System.Diagnostics.Debug.WriteLine("WalletManager getting wallets, count was zero");
-                                continue;
-                            }
-
-                            var wallet = wallets.Where(x => x.Label == _walletCache.Label).FirstOrDefault();
-
-                            if (wallet == null)
-                            {
-                                System.Diagnostics.Debug.WriteLine("WalletManager getting wallets, none with specified label");
-                                continue;
-                            }
-
-                            _walletCache.Label = wallet.Label;
-                            _walletCache.LastSeenHeight = wallet.LastSeenHeight;
-                            _walletCache.Synced = wallet.Synced;
-
-
-                            wallet.Addresses.ForEach(a =>
-                            {
-                                var accnt = new WalletCache.WalletAddress
-                                {
-                                    Name = a.Name,
-                                    Address = a.Address,
-                                    Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
-                                    Balance = a.Balance,
-                                    Synced = a.Synced,
-                                    Syncer = a.Syncer,
-                                    UTXOs = new ObservableCollection<int>(a.UTXOs)
-                                };
-
-                                var icon = new Jazzicon(160, accnt.Address);
-
-                                using (var _ms = new System.IO.MemoryStream())
-                                {
-                                    var encoder = icon.Identicon.GetConfiguration().ImageFormatsManager.FindEncoder(PngFormat.Instance);
-                                    icon.Identicon.Save(_ms, encoder);
-
-                                    _ms.Seek(0, System.IO.SeekOrigin.Begin);
-
-                                    accnt.Identicon = new Avalonia.Media.Imaging.Bitmap(_ms);
-                                }
-
-                                _walletCache.Accounts.Add(accnt);
-                            });
-
-                            wallet.Addresses.ForEach(a => System.Diagnostics.Debug.WriteLine($"address is \"{a.Address}\""));
-
-                            _walletCache.Initialized = true;
-                        }
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallets, result was null");
-                    }
-                }
-
-
-                // poll the wallet
-                if(_walletCache.Initialized)
-                {
                     await UpdateAddressBalances();
                     await UpdateAddressHeights();
                     await UpdateWalletHeight();
-                }
-                
+                    await UpdatePeerCount();
 
+                    _walletCache.Initialized = true;
+                }
+
+                
                 await Task.Delay(100);
             }
         }
 
 
+        public async Task UpdatePeerCount()
+        {
+            var numberOfConnections = await _statusService.GetNumConnections();
+            if (numberOfConnections == -1) return;
 
+            var previous = _walletCache.NumberOfConnections;
+            if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections;
+        }
 
+        
         public async Task UpdateAddressBalances()
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var resp = await _rpcServer.Request(new DaemonRequest("get_balance", address.Address));
-
-                if (resp != null && resp.Result != null)
+                var fetchedBalance = await _accountService.GetBalance(address.Address);
+                if(fetchedBalance == null)
                 {
-                    if (resp.Result is JsonElement json)
-                    {
-                        if (json.ValueKind == JsonValueKind.Number)
-                        {
-                            // the request was good
-                            var balance = json.GetUInt64();
-
-                            if (address.Balance != balance)
-                            {
-                                if(address.Balance < balance)
-                                {
-                                    _notificationService.Display("You received some DIS!");
-                                }
-                                else
-                                {
-                                    _notificationService.Display("You successfully sent some DIS!");
-                                }
-
-                                address.Balance = balance;
-                            }
-                        }
-                        else
-                        {
-                            // error type
-                            var err = JsonSerializer.Deserialize<DaemonErrorResult>(json);
-
-                            System.Diagnostics.Debug.WriteLine("WalletManager getting balance : " + err.ErrMsg);
-                        }
-                    }
+                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch balance for account: {address.Address}");
+                    continue;
                 }
-            }
 
-            //var totalBalance = _walletCache.Accounts.Select(x => x.Balance).Aggregate((a, b) => a + b);
-            //if (_walletCache.TotalBalance != totalBalance) _walletCache.TotalBalance = totalBalance;
+                if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
+            }
         }
+
+
         public async Task UpdateAddressHeights()
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var resp = await _rpcServer.Request(new DaemonRequest("get_address_height", address.Address));
-
-                if (resp != null && resp.Result != null)
+                var addressState = await _accountService.GetState(address.Address);
+                if(addressState is null)
                 {
-                    if (resp.Result is JsonElement json)
-                    {
-                        var getAddressHeightResponse = JsonSerializer.Deserialize<GetAddressHeightResponse>(json);
-
-                        if (getAddressHeightResponse.ErrMsg != null && getAddressHeightResponse.ErrMsg != "")
-                        {
-                            System.Diagnostics.Debug.WriteLine("WalletManager getting address height : " + getAddressHeightResponse.ErrMsg);
-                        }
-
-                        if (address.Synced != getAddressHeightResponse.Synced)
-                        {
-                            address.Synced = getAddressHeightResponse.Synced;
-                        }
-
-                        if (address.Syncer != getAddressHeightResponse.Syncer)
-                        {
-                            address.Syncer = getAddressHeightResponse.Syncer;
-                        }
-
-                        if (address.Height != getAddressHeightResponse.Height)
-                        {
-                            address.Height = getAddressHeightResponse.Height;
-                        }
-                    }
+                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for account: {address.Address}");
+                    continue;
                 }
+
+                if (address.Height != addressState.Height) address.Height = addressState.Height;
+                if (address.Syncer != addressState.Syncer) address.Syncer = addressState.Syncer;
+                if (address.Synced != addressState.Synced) address.Synced = addressState.Synced;
             }
         }
+
         public async Task UpdateWalletHeight()
         {
-            var resp = await _rpcServer.Request(new DaemonRequest("get_wallet_height", _walletCache.Label));
-
-            if (resp != null && resp.Result != null)
+            var walletState = await _walletService.GetState(_walletCache.Label);
+            if(walletState is null)
             {
-                if (resp.Result is JsonElement json)
-                {
-                    var getWalletHeightResponse = JsonSerializer.Deserialize<GetWalletHeightResponse>(json);
-
-                    if (getWalletHeightResponse.ErrMsg != null && getWalletHeightResponse.ErrMsg != "")
-                    {
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallet height : " + getWalletHeightResponse.ErrMsg);
-                    }
-
-                    if (_walletCache.Synced != getWalletHeightResponse.Synced)
-                    {
-                        _walletCache.Synced = getWalletHeightResponse.Synced;
-                    }
-
-                    if (_walletCache.LastSeenHeight != getWalletHeightResponse.Height)
-                    {
-                        _walletCache.LastSeenHeight = getWalletHeightResponse.Height;
-                    }
-                }
+                Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for wallet: {_walletCache.Label}");
+                return;
             }
+
+            if (_walletCache.LastSeenHeight != walletState.Height) _walletCache.LastSeenHeight = walletState.Height;
+            if (_walletCache.Synced != walletState.Synced) _walletCache.Synced = walletState.Synced;
         }
     }
 }

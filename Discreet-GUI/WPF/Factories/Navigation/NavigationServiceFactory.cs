@@ -8,12 +8,10 @@ using WPF.Services.Navigation;
 using WPF.Services.Navigation.Common;
 using WPF.Stores;
 using WPF.Stores.Navigation;
-using WPF.ViewModels.Account;
 using WPF.ViewModels.Common;
-using WPF.ViewModels.CreateWallet;
-using WPF.ViewModels.Layouts.Account;
-using WPF.ViewModels.Settings;
-using WPF.ViewModels.Start;
+using WPF.Views.Account;
+using WPF.Views.Layouts.Account;
+using WPF.Views.Settings;
 
 namespace WPF.Factories.Navigation
 {
@@ -69,6 +67,7 @@ namespace WPF.Factories.Navigation
             if (typeof(TViewModel) == typeof(AccountSendViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(AccountReceiveViewModel))                  return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(AccountTransactionsViewModel))             return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
+            if (typeof(TViewModel) == typeof(SubmitIssueViewModel))                     return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
             if (typeof(TViewModel) == typeof(SettingsViewModel))                        return new AccountNavigationService(_accountNavigationStore, _layoutViewModelFactory.Create<TViewModel>);
 
             throw new InvalidOperationException();
