@@ -41,7 +41,7 @@
 
     <Button Grid.Row="3" Classes="hand" Margin="0 0 500 10" Width="100" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="Transparent" BorderBrush="{x:Null}" Command="{Binding NavigateBackCommand}">
 		<StackPanel Orientation="Horizontal">
-			<Image Height="30" Source="/Assets/Buttons/back-arrow-white.png"/>
+			<Image Height="30" Source="/Assets/Buttons/back-logo-white.png"/>
 			<Label Margin="10 0 0 0" Foreground="White" FontWeight="300" FontSize="16" VerticalAlignment="Center">Back</Label>
 		</StackPanel>
     </Button>
