@@ -8,6 +8,6 @@ namespace Services.ZMQ.Handlers.Common
 {
     public abstract class MessageHandler
     {
-        public abstract void Handle(string message);
+        public abstract Task Handle(string message);
     }
 }

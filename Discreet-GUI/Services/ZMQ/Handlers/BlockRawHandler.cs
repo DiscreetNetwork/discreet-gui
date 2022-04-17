@@ -29,14 +29,14 @@ namespace Services.ZMQ.Handlers
             _statusService = statusService;
         }
 
-        public override void Handle(string message)
+        public override async Task Handle(string message)
         {
-            Debug.WriteLine("ZMQ.BlockRawHandler: Executing");
-            Task[] tasks = new Task[] { UpdatePeerCount(), UpdateAddressBalances(), UpdateAddressHeights(), UpdateWalletHeight() };
-            Task.WaitAll(tasks);
+            Debug.WriteLine("ZMQ.BlockRawHandler: Executing async");
+            await UpdatePeerCount();
+            await UpdateAddressBalances();
+            await UpdateAddressHeights();
+            await UpdateWalletHeight();
         }
-
-
 
         public async Task UpdatePeerCount()
         {
@@ -58,6 +58,8 @@ namespace Services.ZMQ.Handlers
                     Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch balance for account: {address.Address}");
                     continue;
                 }
+
+                Debug.WriteLine($"ZMQ.BlockRawHandler: Fetched balance for {address}\n - {fetchedBalance}");
 
                 if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
             }
@@ -93,5 +95,7 @@ namespace Services.ZMQ.Handlers
             if (_walletCache.LastSeenHeight != walletState.Height) _walletCache.LastSeenHeight = walletState.Height;
             if (_walletCache.Synced != walletState.Synced) _walletCache.Synced = walletState.Synced;
         }
+
+        
     }
 }
