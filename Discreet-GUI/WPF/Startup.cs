@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Services;
+using Services.Testnet;
 using Services.ZMQ;
 using Services.ZMQ.Handlers.Common;
 using Services.ZMQ.Registries;
@@ -69,6 +70,7 @@ namespace WPF
                 services.AddScoped<WalletService>();
                 services.AddScoped<StatusService>();
                 services.AddScoped<AccountService>();
+                services.AddScoped<IssueService>();
 
 
                 // Startup

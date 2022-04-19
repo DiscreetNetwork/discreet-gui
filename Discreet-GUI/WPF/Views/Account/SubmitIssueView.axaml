@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:c="using:WPF.ValueConverters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
              x:Class="WPF.Views.Account.SubmitIssueView">
 
@@ -9,6 +10,10 @@
 		<StyleInclude Source="/ApplicationStyles.axaml"/>
 	</UserControl.Styles>
 
+	<UserControl.Resources>
+		<c:IssueSeverityConverter x:Key="IssueSeverityConverter"/>
+	</UserControl.Resources>
+	
 	<Border Background="#1C1C1D">
 		<Grid Margin="0 0 25 25">
 			<Grid.RowDefinitions>
@@ -20,7 +25,7 @@
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="200"/>
-				<RowDefinition Height="*"/>
+				<RowDefinition Height="120"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 		
@@ -40,6 +45,7 @@
 					 AcceptsTab="True"
 				     HorizontalAlignment="Left"
 					 Width="300"
+					 Text="{Binding IssueSummary}"
 					 Foreground="#dddddd"/>
 
 			<Label  Grid.Row="4" 
@@ -50,6 +56,11 @@
 				<ComboBox.Resources>
 					<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
 				</ComboBox.Resources>
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<Label Content="{Binding Converter={StaticResource IssueSeverityConverter}}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
 			</ComboBox>
 
 			<Label Grid.Row="6" 
@@ -60,13 +71,26 @@
 					 AcceptsReturn="True"
 					 AcceptsTab="True"
 					 Classes="input"
+					 Text="{Binding IssueDescription}"
 					 Height="200"
 					 Foreground="#dddddd"/>
 
+			<Grid Grid.Row="8">
+				<Label HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#DDDDDD" Margin="0 0 0 75">Attachment</Label>
+				<TextBox HorizontalAlignment="Left" Classes="input content-left" Text="{Binding AttachmentPath}" Height="40" Width="300" Padding="10 0 91 0"/>
+				<Button HorizontalAlignment="Left" Classes="btn btn-gray hand" Margin="220 5 5 5" Width="75" Height="28" Padding="5 4 5 5" Background="#3E3E3E" Foreground="White" BorderBrush="#FF3E3E3E" Command="{Binding OpenFolderDialogCommand}">Browse</Button>
+			</Grid>
+
 			<Button Grid.Row="9" 
-					Classes="btn btn-pink hand"
+					Classes="btn btn-pink hand spinner" IsEnabled="{Binding !IsLoading}" Classes.loading="{Binding IsLoading}"
 					Height="50" Width="300" FontSize="16"
-					VerticalAlignment="Bottom" HorizontalAlignment="Right">Submit</Button>
+					VerticalAlignment="Bottom" HorizontalAlignment="Right"
+					Command="{Binding SubmitIssue}">
+				<Grid>
+					<Label Foreground="White" VerticalAlignment="Center">Submit</Label>
+					<Image Source="/Assets/Icons/spinner-2.png" Width="25"/>
+				</Grid>
+			</Button>
 		</Grid>
 	</Border>
 </UserControl>
