@@ -18,7 +18,7 @@ namespace Services.Testnet
 
         public IssueService(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("http://localhost:5556/");
+            httpClient.BaseAddress = new Uri("https://issues.discreet.net/");
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("multipart/form-data"));
             _httpClient = httpClient;
         }
