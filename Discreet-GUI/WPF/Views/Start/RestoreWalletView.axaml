@@ -43,17 +43,22 @@
       </Grid.RowDefinitions>
 
       <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="200" Margin="0 0 0 5">Wallet name</Label>
-      <TextBox Classes="input" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="300" Text="My Old Wallet" Margin="0 0 10 0" Padding="10 5 6 6" VerticalContentAlignment="Center" Foreground="White" Background="Transparent" BorderBrush="#FFD55182"/>
+      <TextBox Classes="input" Text="{Binding WalletName}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="300" Watermark="My Old Wallet" Margin="0 0 10 0" Padding="10 5 6 6" VerticalContentAlignment="Center" Foreground="White" Background="Transparent" BorderBrush="#FFD55182"/>
 
       <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Foreground="White" FontWeight="200" Margin="0 0 0 5">Wallet location</Label>
       <TextBox Classes="input" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" FontWeight="300" Text="{Binding SelectedFilePath}"  Padding="10 5 91 6"  VerticalContentAlignment="Center" Foreground="White"  Background="Transparent" BorderBrush="#FF646464" ></TextBox>
 
       <Button Classes="btn btn-gray hand" Margin="0 5 5 5" Width="75" Height="30" Padding="5 4 5 5" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" Background="#3E3E3E" Foreground="White" BorderBrush="#FF3E3E3E" Command="{Binding OpenFileDialogCommand}">Browse</Button>
 
-      <RadioButton IsChecked="True" FontWeight="200" Margin="0 30 20 0" Grid.Row="2" Grid.Column="0" Foreground="White" Content="Restore from seed" />
-      <RadioButton Margin="0 30 0 0" Grid.Row="2" FontWeight="200" Grid.Column="1" Content="Restore from keys" />
+      <RadioButton IsChecked="{Binding FromMnemonicSeed}" FontWeight="200" Margin="0 30 20 0" Grid.Row="2" Grid.Column="0" Foreground="White" Content="Restore from seed" />
+      <RadioButton IsChecked="{Binding FromKeys}" Margin="0 30 0 0" Grid.Row="2" FontWeight="200" Grid.Column="1" Content="Restore from keys" />
 
-      <TextBox Classes="input" Margin="0 20 0 0" TextWrapping="Wrap" Height="100" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Watermark="Enter your 12 word mnemonic seed" Background="{x:Null}" Padding="10 10 10 10" BorderBrush="#FF646464"/>
+      <TextBox Classes="input" IsVisible="{Binding FromMnemonicSeed}" Margin="0 20 0 0" TextWrapping="Wrap" Height="100" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding MnemonicPhrase}" Watermark="Enter your 12 word mnemonic seed" Background="{x:Null}" Padding="10 10 10 10" BorderBrush="#FF646464"/>
+      <StackPanel Grid.Row="3" IsVisible="{Binding FromKeys}" Margin="0 20 0 0" Grid.Column="0" Grid.ColumnSpan="4">
+		  <TextBox Classes="input" Height="40" Watermark="Account address" VerticalContentAlignment="Center"/>
+		  <TextBox Classes="input" Margin="0 10 0 0" Height="40" Watermark="View key" VerticalContentAlignment="Center"/>
+		  <TextBox Classes="input" Margin="0 10 0 0" Height="40" Watermark="Spend key" VerticalContentAlignment="Center"/>
+	  </StackPanel>
     </Grid>
 
 	<Button Grid.Row="3" Classes="btn-outline-pink hand" Width="300" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" Margin="25 0 0 25" 
