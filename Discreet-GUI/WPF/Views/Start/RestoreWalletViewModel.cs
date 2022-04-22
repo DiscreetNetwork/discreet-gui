@@ -1,6 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using Services.Caches;
+using Services.Daemon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using WPF.Factories.Navigation;
+using WPF.Services;
 using WPF.ViewModels.Common;
 using WPF.Views.Account;
 using WPF.Views.Layouts;
@@ -19,6 +22,9 @@ namespace WPF.Views.Start
     class RestoreWalletViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly WalletService _walletService;
+        private readonly WalletCache _walletCache;
+        private readonly NotificationService _notificationService;
 
         public string WalletName { get; set; }
 
@@ -34,13 +40,24 @@ namespace WPF.Views.Start
 
         public string MnemonicPhrase { get; set; }
 
-        public RestoreWalletViewModel(NavigationServiceFactory navigationServiceFactory)
+        public RestoreWalletViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService, WalletCache walletCache, NotificationService notificationService)
         {
             _navigationServiceFactory = navigationServiceFactory;
+            _walletService = walletService;
+            _walletCache = walletCache;
+            _notificationService = notificationService;
         }
 
-        void NextCommand()
+        async Task NextCommand()
         {
+            var wallet = await _walletService.RecoverWallet(WalletName, MnemonicPhrase, "b");
+            if(wallet is null)
+            {
+                _notificationService.Display("Failed to recover the wallet");
+                return;
+            }
+
+            _walletCache.Label = wallet.Label;
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
         }
