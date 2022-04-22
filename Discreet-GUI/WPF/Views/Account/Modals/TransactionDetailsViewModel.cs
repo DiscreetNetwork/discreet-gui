@@ -60,7 +60,7 @@ namespace WPF.Views.Account.Modals
             IsSendTransaction = Transaction.SentAmount != 0;
             OnPropertyChanged(nameof(IsSendTransaction));
 
-            Amount = IsSendTransaction ? Transaction.SentAmount.ToString() : Transaction.ReceivedAmount.ToString();
+            Amount = $"{(IsSendTransaction ? Transaction.SentAmount.ToString() : Transaction.ReceivedAmount.ToString())} DIST";
             OnPropertyChanged(nameof(Amount));
 
             SentOrReceived = IsSendTransaction ? "(Sent)" : "(Received)";
