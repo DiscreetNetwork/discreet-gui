@@ -21,23 +21,27 @@ namespace WPF.Views.Account.Modals
         private readonly TransactionDetailsCache _transactionDetailsCache;
         private readonly WalletService _walletService;
         private readonly NotificationService _notificationService;
-        private readonly WalletCache _walletCache;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         private TransactionHistoryElement _transaction;
         public TransactionHistoryElement Transaction { get => _transaction; set { _transaction = value; 
                 OnPropertyChanged(nameof(Transaction));
                 OnPropertyChanged(nameof(Amount));
-        } }
+                OnPropertyChanged(nameof(SentOrReceived));
+            } }
 
-        public string Amount => $"{(Transaction != null ? (Transaction.SentAmount != 0 ? Transaction.SentAmount : Transaction.ReceivedAmount) : "")} DIST";
+        public bool IsSendTransaction { get; set; }
+        public string Amount { get; set; }
+        public string SentOrReceived { get; set; }
+        public string Receiver { get; set; }
+        public string Date { get; set; }
+        public string TransactionId { get; set; }
 
-        public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, WalletService walletService, NotificationService notificationService, WalletCache walletCache, NavigationServiceFactory navigationServiceFactory)
+        public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, WalletService walletService, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
             _transactionDetailsCache = transactionDetailsCache;
             _walletService = walletService;
             _notificationService = notificationService;
-            _walletCache = walletCache;
             _navigationServiceFactory = navigationServiceFactory;
 
             RxApp.MainThreadScheduler.Schedule(OnActivated);
@@ -45,13 +49,31 @@ namespace WPF.Views.Account.Modals
 
         async void OnActivated()
         {
-            Transaction = await _walletService.GetTransaction(_walletCache.Label, _transactionDetailsCache.TransactionId);
+            Transaction = await _walletService.GetTransaction(_transactionDetailsCache.Address, _transactionDetailsCache.TransactionId);
             if(Transaction is null)
             {
                 _notificationService.Display("Failed to fetch the transaction");
                 Dismiss();
                 return;
             }
+
+            IsSendTransaction = Transaction.SentAmount != 0;
+            OnPropertyChanged(nameof(IsSendTransaction));
+
+            Amount = IsSendTransaction ? Transaction.SentAmount.ToString() : Transaction.ReceivedAmount.ToString();
+            OnPropertyChanged(nameof(Amount));
+
+            SentOrReceived = IsSendTransaction ? "(Sent)" : "(Received)";
+            OnPropertyChanged(SentOrReceived);
+
+            Receiver = Transaction.Outputs.Any() ? Transaction.Outputs.Where(o => o.Address != _transactionDetailsCache.Address).FirstOrDefault()?.Address : "";
+            OnPropertyChanged(nameof(Receiver));
+
+            Date = new DateTime(Transaction.Timestamp).ToUniversalTime().ToString("dd-MM-yyyy HH:mm:ss");
+            OnPropertyChanged(nameof(Date));
+
+            TransactionId = Transaction.TxID;
+            OnPropertyChanged(nameof(TransactionId));
         }
 
         void Dismiss() => _navigationServiceFactory.CreateModalNavigationService().Navigate();

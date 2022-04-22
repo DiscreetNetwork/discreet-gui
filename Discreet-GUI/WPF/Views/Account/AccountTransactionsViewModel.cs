@@ -51,9 +51,10 @@ namespace WPF.Views.Account
             Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
         }
 
-        void DisplayTransactionDetails(string transactionId)
+        void DisplayTransactionDetails(AccountTransaction accountTransaction)
         {
-            _transactionDetailsCache.TransactionId = transactionId;
+            _transactionDetailsCache.TransactionId = accountTransaction.TransactionId;
+            _transactionDetailsCache.Address = accountTransaction.ReceivingAccount;
             _navigationServiceFactory.CreateModalNavigationService<Modals.TransactionDetailsViewModel>().Navigate();
         }
 

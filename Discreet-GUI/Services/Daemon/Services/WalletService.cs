@@ -330,20 +330,13 @@ namespace Services.Daemon
         /// <param name="walletLabel"></param>
         /// <param name="transactionId"></param>
         /// <returns></returns>
-        public async Task<TransactionHistoryElement> GetTransaction(string walletLabel, string transactionId)
+        public async Task<TransactionHistoryElement> GetTransaction(string address, string transactionId)
         {
-            var wallet = await GetWallet(walletLabel);
+            var transactions = await GetTransactionHistory(address);
 
-            if (wallet is null) return null;
+            if (transactions is null) return null;
 
-            foreach (var account in wallet.Addresses)
-            {
-                var transactions = await GetTransactionHistory(account.Address);
-                var transactionToFind = transactions.Find(t => t.TxID == transactionId);
-                if (transactionToFind != null) return transactionToFind;
-            }
-
-            return null;
+            return transactions.Where(t => t.TxID == transactionId).FirstOrDefault();
         }
 
         public async Task<Mnemonic> GetMnemonic()

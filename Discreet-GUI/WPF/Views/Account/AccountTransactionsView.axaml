@@ -50,7 +50,7 @@
 			<ItemsControl Items="{Binding Transactions}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Button Padding="0 15 0 15" Cursor="Hand" BorderThickness="0 0 0 1" Margin="0 0 0 5" Command="{Binding $parent[ItemsControl].DataContext.DisplayTransactionDetails}" CommandParameter="{Binding TransactionId}">
+						<Button Padding="0 15 0 15" Cursor="Hand" BorderThickness="0 0 0 1" Margin="0 0 0 5" Command="{Binding $parent[ItemsControl].DataContext.DisplayTransactionDetails}" CommandParameter="{Binding}">
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="100"/>

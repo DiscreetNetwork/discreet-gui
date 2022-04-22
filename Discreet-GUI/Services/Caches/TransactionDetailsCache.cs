@@ -8,6 +8,7 @@ namespace Services.Caches
 {
     public class TransactionDetailsCache
     {
+        public string Address { get; set; }
         public string TransactionId { get; set; }
     }
 }
