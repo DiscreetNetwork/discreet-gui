@@ -324,6 +324,28 @@ namespace Services.Daemon
             }
         }
 
+        /// <summary>
+        /// Searches the wallet for a specific transaction
+        /// </summary>
+        /// <param name="walletLabel"></param>
+        /// <param name="transactionId"></param>
+        /// <returns></returns>
+        public async Task<TransactionHistoryElement> GetTransaction(string walletLabel, string transactionId)
+        {
+            var wallet = await GetWallet(walletLabel);
+
+            if (wallet is null) return null;
+
+            foreach (var account in wallet.Addresses)
+            {
+                var transactions = await GetTransactionHistory(account.Address);
+                var transactionToFind = transactions.Find(t => t.TxID == transactionId);
+                if (transactionToFind != null) return transactionToFind;
+            }
+
+            return null;
+        }
+
         public async Task<Mnemonic> GetMnemonic()
         {
             var req = new DaemonRequest("get_mnemonic");

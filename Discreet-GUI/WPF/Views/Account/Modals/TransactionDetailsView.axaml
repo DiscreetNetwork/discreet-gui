@@ -15,7 +15,7 @@
 
 		<Border
 			Background="#181818"
-			Width="500" Height="250"
+			Width="500" Height="300"
 			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			BoxShadow="0 3 7 #ff0a0a0a">
@@ -33,8 +33,50 @@
 							</Style>
 						</Button.Styles>
 					</Button>
-
 					<Label VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="White" FontWeight="300" Margin="15 15 0 0">Transaction details</Label>
+
+					<ScrollViewer Margin="15 60 0 0">
+						<StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<Label Foreground="White" Content="{Binding Amount}"/>
+								<Label Foreground="Gray">(Sent)</Label>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+								<Label Foreground="White">Receiver: </Label>
+								<Label Foreground="Gray" Margin="10 0 0 0">12cas739a8cas0da</Label>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+								<Label Foreground="White">Date: </Label>
+								<Label Foreground="Gray" Margin="35 0 0 0">05-04-2022 14:30:10</Label>
+							</StackPanel>
+
+							<Border BorderBrush="Gray" Margin="3 0 0 10" Padding="0 0 0 5" BorderThickness="0 0 0 1">
+								<Label Foreground="Gray" Margin="-3 30 0 0">Extended transaction data</Label>
+							</Border>
+
+							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+								<Label Foreground="White">Transaction ID: </Label>
+								<Label Foreground="Gray" Margin="20 0 0 0">kashd73asdjwfajpo9031wdj</Label>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+								<Label Foreground="White">Fee: </Label>
+								<Label Foreground="Gray" Margin="90 0 0 0">0.02 DIST</Label>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+								<Label Foreground="White">Confirmations: </Label>
+								<Label Foreground="Gray" Margin="20 0 0 0">3004</Label>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+								<Label Foreground="White">Transaction key: </Label>
+								<Label Foreground="Gray" Margin="10 0 0 0">Click to reveal</Label>
+							</StackPanel>
+						</StackPanel>
+					</ScrollViewer>	
 				</Grid>
 			</Grid>
 		</Border>

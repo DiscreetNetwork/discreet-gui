@@ -16,6 +16,7 @@ namespace WPF.Views.Account
     public class AccountTransactionsViewModel : ViewModelBase
     {
         private readonly WalletCache _walletCache;
+        private readonly TransactionDetailsCache _transactionDetailsCache;
         private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
@@ -24,9 +25,10 @@ namespace WPF.Views.Account
 
         public AccountTransactionsViewModel() { }
 
-        public AccountTransactionsViewModel(WalletCache walletCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
+        public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
+            _transactionDetailsCache = transactionDetailsCache;
             _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
 
@@ -51,6 +53,7 @@ namespace WPF.Views.Account
 
         void DisplayTransactionDetails(string transactionId)
         {
+            _transactionDetailsCache.TransactionId = transactionId;
             _navigationServiceFactory.CreateModalNavigationService<Modals.TransactionDetailsViewModel>().Navigate();
         }
 
