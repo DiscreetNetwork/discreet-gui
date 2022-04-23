@@ -275,7 +275,6 @@ namespace Services.Daemon
             }
         }
 
-        // TODO: Redesign / adjust elements on the 'RestoreWalletView' to accomidate the required passphrase 
         public async Task<Wallet> RecoverWallet(string newLabel, string mnemonic, string passphrase)
         {
             return await CreateWallet(newLabel, mnemonic, "b");
