@@ -24,7 +24,7 @@
 		
 		<Label Grid.Row="0" Foreground="#8C52C0" Margin="15 0 0 0" FontSize="30">Transactions</Label>
 
-		<Border Grid.Row="1" Grid.Column="0" BorderThickness="0 0 0 1" Padding="20 0 20 5" Margin="0 30 50 30" BorderBrush="#8E8E8E">
+		<Border Grid.Row="1" Padding="0 0 20 5" Margin="20 30 50 10" BorderBrush="#8E8E8E">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="100"/>
@@ -39,56 +39,63 @@
 					<RowDefinition/>
 				</Grid.RowDefinitions>
 
-				<Label Grid.Row="0" Grid.Column="0" Foreground="LightGray" FontSize="18">Time</Label>
-				<Label Grid.Row="0" Grid.Column="1" Foreground="LightGray" FontSize="18">Date</Label>
-				<Label Grid.Row="0" Grid.Column="2" Foreground="LightGray" FontSize="18">Receiving account</Label>
-				<Label Grid.Row="0" Grid.Column="3" Foreground="LightGray" FontSize="18">Amount</Label>
+				<Label Grid.Row="0" Grid.Column="0" Foreground="White" FontSize="18">Time</Label>
+				<Label Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="18">Date</Label>
+				<Label Grid.Row="0" Grid.Column="2" Foreground="White" FontSize="18">Receiving account</Label>
+				<Label Grid.Row="0" Grid.Column="3" Foreground="White" FontSize="18">Amount</Label>
 			</Grid>
 		</Border>
 
-		<ScrollViewer Margin="20 0 70 20" Grid.Row="2">
+		<ScrollViewer Margin="0 0 70 20" Padding="0 0 20 0" Grid.Row="2">
 			<ItemsControl Items="{Binding Transactions}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Button Padding="0 15 0 15" Cursor="Hand" BorderThickness="0 0 0 1" Margin="0 0 0 5" Command="{Binding $parent[ItemsControl].DataContext.DisplayTransactionDetails}" CommandParameter="{Binding}">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="100"/>
-									<ColumnDefinition Width="150"/>
-									<ColumnDefinition Width="410"/>
-									<ColumnDefinition Width="auto"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+							<Button Cursor="Hand" BorderThickness="0 0 0 0"
+								HorizontalAlignment="Stretch"
+								Command="{Binding $parent[ItemsControl].DataContext.DisplayTransactionDetails}"
+								CommandParameter="{Binding}">
 
-								<Label Grid.Row="0" Grid.Column="0" FontSize="18" Content="{Binding TimeFormatted}"/>
-								<Label Grid.Row="0" Grid.Column="1" FontSize="18" Content="{Binding DateFormatted}"/>
-								<Label Grid.Row="0" Grid.Column="2" FontSize="18" Content="{Binding ReceivingAccount, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
-								<Label Grid.Row="0" Grid.Column="3" FontSize="18" Content="{Binding Amount}"/>
-							</Grid>
+								<Border Classes="item" Padding="15 10">
+									<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="100"/>
+										<ColumnDefinition Width="150"/>
+										<ColumnDefinition Width="410"/>
+										<ColumnDefinition Width="auto"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition/>
+										<RowDefinition/>
+										<RowDefinition/>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
 
-							<Button.Styles>
-								<Style Selector="Button">
-									<Setter Property="Background" Value="Transparent"/>
-									<Setter Property="BorderBrush" Value="#414141"/>
-								</Style>
-								<Style Selector="Button:pointerover /template/ ContentPresenter">
-									<Setter Property="Background" Value="Transparent"/>
-									<Setter Property="BorderBrush" Value="#414141"/>
-								</Style>
+									<Label Grid.Row="0" Grid.Column="0" FontSize="18" Content="{Binding TimeFormatted}"/>
+									<Label Grid.Row="0" Grid.Column="1" FontSize="18" Content="{Binding DateFormatted}"/>
+									<Label Grid.Row="0" Grid.Column="2" FontSize="18" Content="{Binding ReceivingAccount, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
+									<Label Grid.Row="0" Grid.Column="3" FontSize="18" Content="{Binding Amount}"/>
+								</Grid>
 
-								<Style Selector="Label">
-									<Setter Property="Foreground" Value="LightGray"/>
-								</Style>
-								<Style Selector="Button:pointerover Label">
-									<Setter Property="Foreground" Value="#D35683"/>
-								</Style>
-							</Button.Styles>
-						</Button>
+								</Border>
+
+								<Button.Styles>
+									<Style Selector="Button">
+										<Setter Property="Background" Value="Transparent"/>
+										<Setter Property="BorderBrush" Value="#414141"/>
+									</Style>
+									<Style Selector="Button:pointerover /template/ ContentPresenter">
+										<Setter Property="Background" Value="Transparent"/>
+										<Setter Property="BorderBrush" Value="#414141"/>
+									</Style>
+
+									<Style Selector="Label">
+										<Setter Property="Foreground" Value="LightGray"/>
+									</Style>
+									<Style Selector="Button:pointerover Label">
+										<Setter Property="Foreground" Value="#D35683"/>
+									</Style>
+								</Button.Styles>
+							</Button>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
