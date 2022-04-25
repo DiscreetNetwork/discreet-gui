@@ -15,7 +15,7 @@
 
 		<Border
 			Background="#181818"
-			Width="500" Height="300"
+			Width="700" Height="340"
 			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			BoxShadow="0 3 7 #ff0a0a0a">
