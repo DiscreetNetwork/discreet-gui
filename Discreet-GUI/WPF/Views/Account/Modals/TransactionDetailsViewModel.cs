@@ -1,6 +1,7 @@
 ﻿using Avalonia.Input;
 using Avalonia.Interactivity;
 using ReactiveUI;
+using Services;
 using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Models;
@@ -60,7 +61,7 @@ namespace WPF.Views.Account.Modals
             IsSendTransaction = Transaction.SentAmount != 0;
             OnPropertyChanged(nameof(IsSendTransaction));
 
-            Amount = $"{(IsSendTransaction ? Transaction.SentAmount.ToString() : Transaction.ReceivedAmount.ToString())} DIST";
+            Amount = $"{(IsSendTransaction ? DISTConverter.ToStringFormat(DISTConverter.Divide(Transaction.SentAmount)) : DISTConverter.ToStringFormat(DISTConverter.Divide(Transaction.ReceivedAmount)))} DIST";
             OnPropertyChanged(nameof(Amount));
 
             SentOrReceived = IsSendTransaction ? "(Sent)" : "(Received)";
