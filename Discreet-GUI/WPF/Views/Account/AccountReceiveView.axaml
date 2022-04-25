@@ -9,6 +9,7 @@
 
 	<UserControl.Resources>
 		<c:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
+		<c:BalanceToDecimalStringConverter x:Key="BalanceToDecimalStringConverter"/>
 	</UserControl.Resources>
 	
 	<Design.DataContext>

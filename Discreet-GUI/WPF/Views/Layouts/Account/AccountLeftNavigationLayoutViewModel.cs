@@ -32,7 +32,7 @@ namespace WPF.Views.Layouts.Account
         public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false, false };
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
-        public string TotalBalance => DISTConverter.ToStringFormat(DISTConverter.Divide((ulong)Accounts.Sum(x => (long)x.Balance)));
+        public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public string WalletLabel => _walletCache.Label;
 
         public int NumberOfConnections => _walletCache.NumberOfConnections;

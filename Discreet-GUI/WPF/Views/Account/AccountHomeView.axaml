@@ -11,6 +11,7 @@
 		<converters:AddressTypeToPublicPrivateStringConverter x:Key="AddressTypeToPublicPrivateStringConverter"/>
 		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
 		<converters:NameToTruncatedStringConverter x:Key="NameToTruncatedStringConverter"/>
+		<converters:BalanceToDecimalStringConverter x:Key="BalanceToDecimalStringConverter"/>
 	</UserControl.Resources>
 	
 	<Design.DataContext>
@@ -35,7 +36,7 @@
 	  
         <Label Foreground="white" Padding="4 0 0 0" Margin="0 40 0 0" Grid.Row="1" FontSize="18" FontWeight="200" >Total Balance</Label>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
-			<Label FontSize="50" Foreground="white" Padding="4 0 5 0" VerticalContentAlignment="Bottom" Content="{Binding TotalBalance}"></Label>
+			<Label FontSize="34" Foreground="white" Padding="4 0 5 0" VerticalContentAlignment="Bottom" Content="{Binding TotalBalance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
             <Label FontSize="26" Foreground="white" VerticalContentAlignment="Bottom" FontWeight="200" >DIST</Label>
         </StackPanel>
         
@@ -87,7 +88,7 @@
 							  </Button>
 							  <Label Grid.Column="2" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="23" Width="60" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding Type, Converter={StaticResource AddressTypeToPublicPrivateStringConverter}}"/>
 							  <Label Grid.Column="3" FontSize="16" VerticalAlignment="Center" Foreground="#6F6F6F" FontWeight="300">Balance:</Label>
-							  <Label Grid.Column="4" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance}"></Label>
+							  <Label Grid.Column="4" FontSize="22" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
 							  <Button Grid.Column="5" Height="40" Cursor="Hand" Command="{Binding $parent[ItemsControl].DataContext.CopyAddress}" CommandParameter="{Binding Address}">
 								  <StackPanel Orientation="Horizontal">
 									  <Label FontSize="16" VerticalAlignment="Center" FontWeight="300" Content="{Binding Address, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>

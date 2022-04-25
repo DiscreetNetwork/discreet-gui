@@ -22,7 +22,7 @@ namespace WPF.Views.Account
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
-        /* Mock data
+        /*
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletCache.WalletAddress>()
         {
             new WalletCache.WalletAddress
@@ -44,7 +44,7 @@ namespace WPF.Views.Account
         };
         */
 
-        public string TotalBalance => DISTConverter.ToStringFormat(DISTConverter.Divide((ulong)Accounts.Sum(x => (long)x.Balance)));
+        public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
 
 
         public AccountHomeViewModel() 

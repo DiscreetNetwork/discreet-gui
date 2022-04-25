@@ -8,7 +8,8 @@
              x:Class="WPF.Views.Account.AccountTransactionsView">
 
 	<UserControl.Resources>
-		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>		
+		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
+		<converters:BalanceToDecimalStringConverter x:Key="BalanceToDecimalStringConverter"/>
 	</UserControl.Resources>
 	
 	<Design.DataContext>

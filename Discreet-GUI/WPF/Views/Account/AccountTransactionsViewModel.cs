@@ -10,6 +10,7 @@ using System.Text;
 using Services.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
+using Services;
 
 namespace WPF.Views.Account
 {
@@ -21,8 +22,8 @@ namespace WPF.Views.Account
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         private List<AccountTransaction> _transactions;
-        //List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
-
+        List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
+        /*
         List<AccountTransaction> Transactions { get; set; } = new List<AccountTransaction>()
         {
             new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-13"),
@@ -32,7 +33,7 @@ namespace WPF.Views.Account
             new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-133"),
             new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-13"),
         };
-
+        */
 
         public AccountTransactionsViewModel() { }
 
@@ -56,7 +57,7 @@ namespace WPF.Views.Account
 
                 if (transactions is null) continue;
 
-                txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, x.SentAmount == 0 ? $"+{x.ReceivedAmount}" : $"-{x.SentAmount}")));
+                txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, x.SentAmount == 0 ? $"+ {DISTConverter.ToStringFormat(DISTConverter.Divide(x.ReceivedAmount))}" : $"- {DISTConverter.ToStringFormat(DISTConverter.Divide(x.SentAmount))}")));
             }
 
             Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();

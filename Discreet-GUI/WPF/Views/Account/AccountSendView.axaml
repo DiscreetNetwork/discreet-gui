@@ -8,6 +8,7 @@
 
 	<UserControl.Resources>
 		<converters:StringNotEmptyToBooleanConverter x:Key="StringNotEmptyToBooleanConverter"/>
+		<converters:BalanceToDecimalStringConverter x:Key="BalanceToDecimalStringConverter"/>
 	</UserControl.Resources>
 	
   <UserControl.Styles>
@@ -34,7 +35,7 @@
 		<Label Grid.Row="0" FontSize="30" Foreground="#8C52C0">Send</Label>
 
 		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 20 0 0">
-			<Label FontSize="50" Foreground="white" Padding="4 0 5 0"  FontWeight="300" Content="{Binding SelectedAccount.Balance}"/>
+			<Label FontSize="36" Foreground="white" Padding="4 0 5 0"  FontWeight="300" Content="{Binding SelectedAccount.Balance, Converter={StaticResource BalanceToDecimalStringConverter}}"/>
 			<Label FontSize="24" Foreground="white" VerticalAlignment="Bottom" Margin="0 0 0 2" FontWeight="100" >DIST available</Label>
 		</StackPanel>
 
