@@ -22,9 +22,9 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		
-		<Label Grid.Row="0" Foreground="#8C52C0" Margin="15 0 0 0" FontSize="30">Transactions</Label>
+		<Label Grid.Row="0" Foreground="#8C52C0" Margin="0 0 0 0" FontSize="30">Transactions</Label>
 
-		<Border Grid.Row="1" Padding="0 0 20 5" Margin="20 30 50 10" BorderBrush="#8E8E8E">
+		<Border Grid.Row="1" Padding="0 0 20 5" Margin="5 30 50 10" BorderBrush="#8E8E8E">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="100"/>
@@ -55,7 +55,7 @@
 								Command="{Binding $parent[ItemsControl].DataContext.DisplayTransactionDetails}"
 								CommandParameter="{Binding}">
 
-								<Border Classes="item" Padding="15 10">
+								<Border Classes="item" Padding="0 10">
 									<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="100"/>

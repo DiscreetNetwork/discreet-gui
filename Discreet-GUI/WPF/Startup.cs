@@ -101,7 +101,7 @@ namespace WPF
                     {
                         using var fs = File.Create(Path.Combine(walletConfigPath, "appsettings.json"));
                         using var sw = new StreamWriter(fs);
-                        sw.Write($"{{\n  \"DaemonSettings\": {{\n    \"UseActivator\": true,\n    \"RedirectOutput\": true,\n    \"ExecutableName\": \"Discreet\",\n    \"ExecutablePath\": \"path to Discreet.exe\"\n  }}\n}}");
+                        sw.Write($"{{\n  \"DaemonSettings\": {{\n    \"UseActivator\": true,\n    \"RedirectOutput\": true,\n    \"ExecutableName\": \"Discreet\",\n    \"ExecutablePath\": \"path to Discreet.exe\"\n  }},\n\n  \"ZMQSettings\": {{\n    \"SubscriberPort\": 26833\n  }}\n}}");
                     }
                     catch (Exception e)
                     {
