@@ -31,7 +31,8 @@ namespace WPF.Views.Account
                 Name = "taStealth",
                 Balance = 350259,
                 Type = WalletCache.AddressType.STEALTH,
-                Synced = true
+                Synced = true,
+                Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, "1AxastPBd7LTHkt")
             },
             new WalletCache.WalletAddress
             {
@@ -39,7 +40,8 @@ namespace WPF.Views.Account
                 Name = "taStealth",
                 Balance = 350259,
                 Type = WalletCache.AddressType.TRANSPARENT,
-                Synced = false
+                Synced = false,
+                Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, "1AxastPBd7LTHkt")
             }
         };
         */
