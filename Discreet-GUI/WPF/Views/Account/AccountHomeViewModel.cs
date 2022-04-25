@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using ReactiveUI;
+using Services;
 using Services.Caches;
 using Services.Daemon;
 using Services.Extensions;
@@ -43,7 +44,7 @@ namespace WPF.Views.Account
         };
         */
 
-        public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
+        public string TotalBalance => DISTConverter.ToStringFormat(DISTConverter.Divide((ulong)Accounts.Sum(x => (long)x.Balance)));
 
 
         public AccountHomeViewModel() 
