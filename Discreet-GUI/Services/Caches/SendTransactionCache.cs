@@ -9,7 +9,7 @@ namespace Services.Caches
     public class SendTransactionCache
     {
         public string Receiver { get; set; }
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Sender { get; set; }
     }
 }

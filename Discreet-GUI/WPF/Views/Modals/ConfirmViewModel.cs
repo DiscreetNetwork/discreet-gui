@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Services.Caches;
 using WPF.Factories.Navigation;
 using WPF.ViewModels.Common;
+using Services;
 
 namespace WPF.Views.Modals
 {
@@ -21,7 +22,7 @@ namespace WPF.Views.Modals
         private readonly SendTransactionCache _sendTransactionCache;
 
         public string ReceiverAddress => $"{_sendTransactionCache.Receiver.Substring(0, 6)}...{_sendTransactionCache.Receiver.Substring(_sendTransactionCache.Receiver.Length - 6, 6)}";
-        public double Amount => _sendTransactionCache.Amount;
+        public decimal Amount => _sendTransactionCache.Amount;
 
          
         /// <summary>
@@ -48,7 +49,7 @@ namespace WPF.Views.Modals
 
             CreateTransactionParam p = new CreateTransactionParam
             {
-                Amount = (ulong)_sendTransactionCache.Amount,
+                Amount = DISTConverter.Multiply(_sendTransactionCache.Amount),
                 To = _sendTransactionCache.Receiver
             };
 

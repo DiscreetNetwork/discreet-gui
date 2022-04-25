@@ -8,6 +8,7 @@ using Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,11 +26,10 @@ namespace WPF.Views.Account
         private readonly SendTransactionCache _sendTransactionCache;
         private readonly WalletCache _walletCache;
 
-
         string _receiver;
         public string Receiver { get => _receiver; set { _receiver = value; ValidateReceiverInput(); } }
-        double _amount;
-        public double Amount { get => _amount; set { _amount = value; ValidateAmountInput(); } }
+        decimal _amount;
+        public decimal Amount { get => _amount; set { _amount = value; ValidateAmountInput(); } }
 
 
         // Validation error messages
