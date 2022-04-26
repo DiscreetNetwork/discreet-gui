@@ -10,6 +10,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using WPF.Factories.Navigation;
 using WPF.Services;
+using WPF.Stores;
 using WPF.ViewModels.Common;
 
 namespace WPF.Views.Account
@@ -17,6 +18,7 @@ namespace WPF.Views.Account
     public class AccountHomeViewModel : ViewModelBase
     {
         private readonly WalletCache _walletCache;
+        private readonly UserPreferrencesStore _userPreferrencesStore;
         private readonly NotificationService _notificationService;
         private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
@@ -47,15 +49,16 @@ namespace WPF.Views.Account
         */
 
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
-
+        public bool HideBalance => _userPreferrencesStore.HideBalance;
 
         public AccountHomeViewModel() 
         {
         }
 
-        public AccountHomeViewModel(WalletCache walletCache, NotificationService notificationService, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
+        public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
+            _userPreferrencesStore = userPreferrencesStore;
             _notificationService = notificationService;
             _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
@@ -71,6 +74,12 @@ namespace WPF.Views.Account
         {
             await Application.Current.Clipboard.SetTextAsync(parameter);
             _notificationService.Display("Copied address to clipboard");
+        }
+
+        void ToggleDisplayBalance()
+        {
+            _userPreferrencesStore.HideBalance = !_userPreferrencesStore.HideBalance;
+            OnPropertyChanged(nameof(HideBalance));
         }
 
         public void DisplayAccountDetails(string accountName)
