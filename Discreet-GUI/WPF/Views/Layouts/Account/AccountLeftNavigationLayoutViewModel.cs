@@ -14,6 +14,7 @@ using WPF.ViewModels.Common;
 using WPF.Views.Account;
 using WPF.Views.Settings;
 using Services;
+using WPF.Stores;
 
 namespace WPF.Views.Layouts.Account
 {
@@ -22,6 +23,8 @@ namespace WPF.Views.Layouts.Account
     {
         private readonly AccountNavigationStore _accountNavigationStore;
         private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly WalletCache _walletCache;
+        private readonly UserPreferrencesStore _userPreferrencesStore;
 
         public ViewModelBase CurrentViewModel => _accountNavigationStore.CurrentViewModel;
 
@@ -37,18 +40,20 @@ namespace WPF.Views.Layouts.Account
 
         public int NumberOfConnections => _walletCache.NumberOfConnections;
 
-        private readonly WalletCache _walletCache;
+        public bool HideBalance => _userPreferrencesStore.HideBalance;
 
-        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache)
+        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, UserPreferrencesStore userPreferrencesStore)
         {
             _walletCache = walletCache;
-
+            _userPreferrencesStore = userPreferrencesStore;
             Accounts.CollectionChanged += AccountsChanged;
             _walletCache.NumberOfConnectionsChanged += () => OnPropertyChanged(nameof(NumberOfConnections));
 
             _accountNavigationStore = accountNavigationStore;
             _navigationServiceFactory = navigationServiceFactory;
             accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
+
+            _userPreferrencesStore.HideBalanceChanged += () => OnPropertyChanged(nameof(HideBalance));
 
             NavigateAccountHomeCommand              = ReactiveCommand.Create(() => 
             { 
