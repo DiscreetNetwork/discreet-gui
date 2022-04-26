@@ -110,7 +110,8 @@
 								  </Button.Styles>
 							  </Button>
 							  <Label Grid.Column="2" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="23" Width="60" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding Type, Converter={StaticResource AddressTypeToPublicPrivateStringConverter}}"/>
-							  <Label Grid.Column="3" FontSize="18" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
+							  <Label Grid.Column="3" IsVisible="{Binding !$parent[ItemsControl].DataContext.HideBalance}" FontSize="18" VerticalAlignment="Center" Foreground="white" FontWeight="200" Content="{Binding Balance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
+							  <Label Grid.Column="3" FontSize="14" IsVisible="{Binding $parent[ItemsControl].DataContext.HideBalance}" VerticalAlignment="Center" Foreground="White">**********</Label>
 							  <Button Grid.Column="4" Height="40" Cursor="Hand" Command="{Binding $parent[ItemsControl].DataContext.CopyAddress}" CommandParameter="{Binding Address}">
 								  <StackPanel Orientation="Horizontal">
 									  <Label FontSize="16" VerticalAlignment="Center" FontWeight="300" Content="{Binding Address, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
