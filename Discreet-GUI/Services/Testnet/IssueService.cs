@@ -18,7 +18,7 @@ namespace Services.Testnet
 
         public IssueService(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("https://issues.discreet.net/");
+            httpClient.BaseAddress = new Uri("http://localhost:5556/");
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("multipart/form-data"));
             _httpClient = httpClient;
         }
@@ -30,15 +30,25 @@ namespace Services.Testnet
             formContent.Add(new StringContent(((int)severity).ToString()), "severity");
             formContent.Add(new StringContent(description), "description");
 
-            formContent.Add(new StringContent("file"));
-            FileInfo fi = new FileInfo(attachmentPath);
-            var fileContent = new ByteArrayContent(System.IO.File.ReadAllBytes(fi.FullName));
-            fileContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
+            if(!string.IsNullOrWhiteSpace(attachmentPath))
             {
-                Name = "file",
-                FileName = fi.Name
-            };
-            formContent.Add(fileContent);
+                try
+                {
+                    formContent.Add(new StringContent("file"));
+                    FileInfo fi = new FileInfo(attachmentPath);
+                    var fileContent = new ByteArrayContent(System.IO.File.ReadAllBytes(fi.FullName));
+                    fileContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "file",
+                        FileName = fi.Name
+                    };
+                    formContent.Add(fileContent);
+                }
+                catch (Exception)
+                {
+                    return new SubmitIssueResult($"Could not read selected file: {attachmentPath}");
+                }
+            }
 
             var response = await _httpClient.PostAsync("/issue", formContent);
             var responseContent = await response.Content.ReadAsStringAsync();
