@@ -28,10 +28,13 @@ jobs:
         cd Discreet-GUI/
         dotnet publish --configuration Release --runtime win-x64 --framework net6.0 --self-contained true -p:ReadyToRun=true
         
-    - name: Zip [WIN-X64]
+    - name: Install zip
       uses: montudor/action-zip@v1
-      with:
-        args: zip -qq -r win-x64.zip Discreet-GUI/WPF/bin/Release/net6.0/win-x64/publish
+        
+    - name: Zip [WIN-X64]
+      run: |
+        cd Discreet-GUI/WPF/bin/Release/net6.0/win-x64
+        zip -qq -r win-x64.zip publish
 
     - name: Create the Github Release
       uses: actions/create-release@v1
