@@ -89,6 +89,6 @@ namespace WPF.Views
 
             _debugView.Activate();
         }
-    }
 #endif
+    }
 }
