@@ -47,6 +47,12 @@ jobs:
         cd Discreet-GUI/WPF/bin/Release/net6.0/win-x64
         zip -qq -r win-x64.zip publish
 
+    - uses: dev-drprasad/delete-older-releases@v0.2.0
+      with:
+        keep_latest: 0
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
     - name: Create the Github Release
       uses: actions/create-release@v1
       id: create_release
