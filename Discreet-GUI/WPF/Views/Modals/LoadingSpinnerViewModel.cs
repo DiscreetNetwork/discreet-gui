@@ -38,13 +38,22 @@ namespace WPF.Views.Modals
         {
             while (true)
             {
-                var resp = await _statusService.GetHealth();
-
-                if (resp != null)
+                try
                 {
-                    PeerState = resp.PeerState;
-                    if (resp.PeerState.ToLower().Equals("normal")) break;
+                    var resp = await _statusService.GetHealth();
+
+                    if (resp != null && resp.PeerState != null)
+                    {
+                        PeerState = resp.PeerState;
+                        if (resp.PeerState.ToLower().Equals("normal")) break;
+                    }
                 }
+                catch (Exception e)
+                {
+                    await Task.Delay(500);
+                    continue;
+                }
+                
 
                 await Task.Delay(100);
             }
