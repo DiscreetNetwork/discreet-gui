@@ -2,9 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:converters="using:WPF.ValueConverters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
              x:Class="WPF.Views.Settings.SettingsView">
 
+	<UserControl.Resources>
+		<converters:NullReferenceToBooleanConverter x:Key="NullReferenceToBooleanConverter"/>
+	</UserControl.Resources>
+	
 	<UserControl.Styles>
 		<StyleInclude Source="/ApplicationStyles.axaml"/>
 
@@ -18,12 +23,17 @@
 		</Style>
 	</UserControl.Styles>
 
-	
-	
-	<Grid Background="#1C1C1D">
-		<StackPanel Margin="0 0 50 0">
-			<Label FontSize="30" Margin="0 0 0 30" Foreground="#8C52C0">Settings</Label>
 
+	<Grid Background="#1C1C1D">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		
+		<Label FontSize="30" Grid.Row="0" Margin="0 0 0 20" Foreground="#8C52C0">Settings</Label>
+
+		<!--OPTIONS-->
+		<StackPanel Grid.Row="1" Margin="0 0 0 0" IsVisible="{ Binding SelectedSettingsViewModel, Converter={ StaticResource NullReferenceToBooleanConverter }, ConverterParameter=IsNull }">
 			<Border BorderBrush="#414141" BorderThickness="0 0 0 1" Margin="0 0 0 0">
 				<Button Padding="0 30 0 20" FontSize="18" Cursor="Hand">Close this wallet</Button>
 			</Border>
@@ -40,9 +50,13 @@
 				<Button Padding="0 30 0 20" Cursor="Hand" Classes="btn-transparent" FontSize="18">Developer mode</Button>
 			</Border>
 			<Border BorderBrush="#414141" BorderThickness="0 0 0 1">
-				<Button Padding="0 30 0 20" Cursor="Hand" Classes="btn-transparent" FontSize="18">Log</Button>
+				<Button Padding="0 30 0 20" Cursor="Hand" Classes="btn-transparent" Command="{Binding DisplayLogWindow}" FontSize="18">Log</Button>
 			</Border>
 		</StackPanel>
+
+		<ContentControl Grid.Row="1" Content="{ Binding SelectedSettingsViewModel }"
+						IsVisible="{ Binding SelectedSettingsViewModel, Converter={StaticResource NullReferenceToBooleanConverter}, ConverterParameter=NotNull }"
+						Margin="0 0 50 0"/>
 	</Grid>
 
 </UserControl>

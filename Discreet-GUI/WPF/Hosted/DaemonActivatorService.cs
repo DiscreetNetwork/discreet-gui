@@ -18,12 +18,14 @@ namespace WPF.Hosted
         private readonly IConfiguration _configuration;
         private readonly NotificationService _notificationService;
         private readonly WalletCache _walletCache;
+        private readonly DaemonLogCache _daemonLogCache;
 
-        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache)
+        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache, DaemonLogCache daemonLogCache)
         {
             _configuration = configuration;
             _notificationService = notificationService;
             _walletCache = walletCache;
+            _daemonLogCache = daemonLogCache;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -83,11 +85,6 @@ namespace WPF.Hosted
                         p.StartInfo.RedirectStandardOutput = true;
                         p.OutputDataReceived += (s, e) =>
                         {
-                            if(e.Data != null && e.Data.Contains("Daemon startup complete"))
-                            {
-                                _walletCache.VisorStartupComplete = true;
-                            }
-
                             if(e.Data is null)
                             {
                                 if (outputBuilder.Length == 0) return;
@@ -97,6 +94,7 @@ namespace WPF.Hosted
                                 return;
                             }
 
+                            _daemonLogCache.Add(e.Data);
                             outputBuilder.AppendLine(e.Data);
                         };
 

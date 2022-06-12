@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:WPF.Views.Settings.Views"
+			 mc:Ignorable="d" d:DesignWidth="800"
+             x:Class="WPF.Views.Settings.Views.LogView">
+	<Design.DataContext>
+		<vm:LogViewModel/>
+	</Design.DataContext>
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Label Grid.Row="0" FontSize="20" Foreground="#dddddd">Logs</Label>
+
+		<Label Grid.Row="1" Foreground="#DDDDDD" Margin="0 20 0 0">Type</Label>
+		<ComboBox Classes="dropdown-dark" Grid.Row="2" Width="350" Height="40" Margin="0 5 0 0" Items="{Binding LogTypes}" SelectedIndex="{Binding SelectedLogTypeIndex}">
+			<ComboBox.Resources>
+				<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+			</ComboBox.Resources>
+		</ComboBox>
+
+		<Border Grid.Row="3" BorderBrush="Gray" Padding="10" CornerRadius="4" BorderThickness="1" Background="#ff181818" Margin="0 25 0 25">
+			<ScrollViewer>
+				<ItemsControl Items="{ Binding Logs }">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Foreground="#dddddd" Text="{Binding}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</Border>
+
+	</Grid>
+</UserControl>

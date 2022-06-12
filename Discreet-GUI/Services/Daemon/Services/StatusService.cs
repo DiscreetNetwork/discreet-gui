@@ -1,4 +1,5 @@
 ﻿using Services.Daemon.Common;
+using Services.Daemon.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,27 @@ namespace Services.Daemon.Services
             catch
             {
                 return -1;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the health data of the daemon
+        /// </summary>
+        /// <returns></returns>
+        public async Task<GetHealthResponse> GetHealth()
+        {
+            var req = new DaemonRequest("get_health");
+
+            var resp = await _rpcServer.Request(req);
+
+            try
+            {
+                return JsonSerializer.Deserialize<GetHealthResponse>((JsonElement)resp.Result);
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

@@ -15,8 +15,10 @@
 				<Grid.RowDefinitions>
 					<RowDefinition Height="130"/>
 					<RowDefinition Height="0"/>
+					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<Label Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DDDDDD" FontSize="20">Daemon Initializing</Label>
+				
 				<Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Assets/Icons/spinner-2.png" Height="45">
 					<Image.Styles>
 						<Style Selector="Image">
@@ -34,6 +36,8 @@
 						</Style>
 					</Image.Styles>
 				</Image>
+				
+				<Label Grid.Row="2" Margin="0 40 0 0" Content="{Binding PeerState}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DDDDDD"/>
 			</Grid>
 		</Border>
 	</Grid>
