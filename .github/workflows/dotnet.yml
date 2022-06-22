@@ -30,7 +30,7 @@ jobs:
         
     - name: Publish [LINUX-x64]
       run: |
-        cd ConsoleApp1/
+        cd Discreet-GUI/
         dotnet publish --configuration Release --runtime linux-x64 --framework net6.0 --self-contained true
         
     - name: Install zip
