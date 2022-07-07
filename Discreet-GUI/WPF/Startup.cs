@@ -3,6 +3,7 @@ using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReactiveUI;
 using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Services;
@@ -73,7 +74,6 @@ namespace WPF
                 services.AddScoped<StatusService>();
                 services.AddScoped<AccountService>();
                 services.AddScoped<IssueService>();
-
 
                 // Startup
                 services.AddSingleton<MainWindowViewModel>();

@@ -33,7 +33,6 @@ namespace WPF.Hosted
             bool useDaemonActivator = _configuration.GetValue<bool>("DaemonSettings:UseActivator");
             if (!useDaemonActivator) return;
 
-            
             if(Process.GetProcessesByName(_configuration.GetValue<string>("DaemonSettings:ExecutableName")).FirstOrDefault() != null)
             {
                 _walletCache.VisorStartupComplete = true;
