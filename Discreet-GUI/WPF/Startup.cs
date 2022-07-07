@@ -183,10 +183,10 @@ namespace WPF
             {
                 DaemonSettings = new
                 {
-                    UserActivator = true,
+                    UseActivator = true,
                     RedirectOutput = true,
                     ExecutableName = "Discreet",
-                    ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Discreet.exe" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES%")}\\Discreet Daemon\\Discreet.exe"
+                    ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Discreet.exe" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES(X86)%")}\\Discreet Daemon\\Discreet.exe"
                 },
 
                 ZMQSettings = new
