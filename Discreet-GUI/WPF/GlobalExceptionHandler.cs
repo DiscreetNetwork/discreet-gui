@@ -17,7 +17,7 @@ namespace WPF
     /// </summary>
     public class GlobalExceptionHandler
     {
-        public const string CRASHLOG_ENDPOINT = "https://issues.discreet.net/";
+        public const string CRASHLOG_ENDPOINT = "https://issues.discreet.net/crashdump";
 
         public static void UnhandledExceptionHandler(object s, UnhandledExceptionEventArgs e)
         {
