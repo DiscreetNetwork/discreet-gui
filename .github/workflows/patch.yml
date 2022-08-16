@@ -30,4 +30,4 @@ jobs:
       with:
         url: 'https://releases.discreet.net/versions/wallet/patch'
         method: 'POST'
-        customHeaders: '{ "x-wallet-version-key": "incorrect" }'
+        customHeaders: '{ "x-wallet-version-key": "Pm4pvkhFJgK3H986kqW0FM7KfRkXqQ" }'
