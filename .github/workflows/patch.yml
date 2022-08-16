@@ -1,0 +1,33 @@
+name: Patch pipeline
+
+on:
+  push:
+    branches: [ "patch/*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: | 
+        cd Discreet-GUI/
+        dotnet restore
+      
+    - name: Build
+      run: |
+        cd Discreet-GUI/
+        dotnet build --no-restore
+        
+    - name: Increment patch version
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://releases.discreet.net/versions/wallet/patch'
+        method: 'POST'
+        customHeaders: '{ "x-wallet-version-key": "incorrect" }'
