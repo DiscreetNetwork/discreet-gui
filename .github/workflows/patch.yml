@@ -2,7 +2,7 @@ name: Patch pipeline
 
 on:
   push:
-    branches: [ "patch/*" ]
+    branches: [ "master" ]
 
 jobs:
   build:
