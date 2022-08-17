@@ -2,7 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ masterr ]
+    branches: [ master ]
+
+concurrency: shared
 
 jobs:
   build:
