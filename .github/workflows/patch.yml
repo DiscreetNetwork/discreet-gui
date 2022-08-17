@@ -30,4 +30,4 @@ jobs:
       with:
         url: 'https://releases.discreet.net/versions/wallet/patch'
         method: 'POST'
-        customHeaders: '{ "x-wallet-version-key": ${{ secrets.WALLET_VERSION_KEY }} }'
+        customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}" }'
