@@ -2,7 +2,7 @@ name: Patch pipeline
 
 on:
   push:
-    branches: [ "masterr" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -30,4 +30,4 @@ jobs:
       with:
         url: 'https://releases.discreet.net/versions/wallet/patch'
         method: 'POST'
-        customHeaders: '{ "x-wallet-version-key": "Pm4pvkhFJgK3H986kqW0FM7KfRkXqQ" }'
+        customHeaders: '{ "x-wallet-version-key": ${{ secrets.WALLET_VERSION_KEY }} }'
