@@ -1,0 +1,35 @@
+name: Feature pipeline
+
+on:
+  push:
+    branches: [ "feature/*" ]
+
+concurrency: shared
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: | 
+        cd Discreet-GUI/
+        dotnet restore
+      
+    - name: Build
+      run: |
+        cd Discreet-GUI/
+        dotnet build --no-restore
+        
+    - name: Increment feature version
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://releases.discreet.net/versions/wallet/feature'
+        method: 'POST'
+        customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}" }'

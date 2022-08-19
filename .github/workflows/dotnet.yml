@@ -3,8 +3,8 @@ name: .NET
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+
+concurrency: shared
 
 jobs:
   build:
@@ -38,13 +38,13 @@ jobs:
 
     - name: Zip [WIN-X64]
       run: |
-        cd Discreet-GUI/WPF/bin/Release/net6.0/win-x64
-        zip -qq -r win-x64.zip publish
+        cd Discreet-GUI/WPF/bin/Release/net6.0/win-x64/publish
+        zip -qq -r ../win-x64.zip .
 
     - name: Tar bz2 [LINUX-x64]
       run: |
-        cd Discreet-GUI/WPF/bin/Release/net6.0/linux-x64
-        tar cfvj linux-x64.tar.bz2 publish
+        cd Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
+        tar cfvj ../linux-x64.tar.bz2 *
 
     - uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
