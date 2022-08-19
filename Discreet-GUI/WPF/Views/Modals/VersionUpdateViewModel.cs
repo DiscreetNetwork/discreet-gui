@@ -35,7 +35,8 @@ namespace WPF.Views.Modals
             ProcessStartInfo psi = new ProcessStartInfo()
             {
                 FileName = $"{Path.Combine(Directory.GetCurrentDirectory(), "Updater.exe")}",
-                Arguments = $"-p {Process.GetCurrentProcess().ProcessName} -k true --grepository DiscreetNetwork/discreet-gui+win-x64.zip"
+                Arguments = $"-p {Process.GetCurrentProcess().ProcessName} -k true --grepository DiscreetNetwork/discreet-gui+win-x64.zip",
+                UseShellExecute = true
             };
 
             Process.Start(psi);
