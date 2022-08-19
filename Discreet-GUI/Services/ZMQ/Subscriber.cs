@@ -31,7 +31,6 @@ namespace Services.ZMQ
 
             foreach (var topic in _messageHandlerRegistry.GetKeys())
             {
-                Console.WriteLine($"Subscriber: Subscribed to topic: {topic}");
                 _subscriberSocket.Subscribe(topic);
             }
 
