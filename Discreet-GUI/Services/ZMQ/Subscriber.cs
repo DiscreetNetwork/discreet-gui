@@ -27,7 +27,6 @@ namespace Services.ZMQ
         public void Start()
         {
             _subscriberSocket.Connect($"tcp://localhost:{_port}");
-            Debug.WriteLine($"ZMQ.Subscriber: Started and listening on port: {_port}");
 
             foreach (var topic in _messageHandlerRegistry.GetKeys())
             {

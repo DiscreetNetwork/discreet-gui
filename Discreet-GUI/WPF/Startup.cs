@@ -176,7 +176,6 @@ namespace WPF
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet configuration folder: \n{e.Message}");
                 }
             }
 
@@ -210,7 +209,6 @@ namespace WPF
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default wallet appsettings.json file: \n{e.Message}");
                 }
             }
 
@@ -237,7 +235,6 @@ namespace WPF
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"WPF.Startup.ConfigureAppConfiguration - Failed to create default debugsettings.json file: \n{e.Message}");
                 }
             }
 

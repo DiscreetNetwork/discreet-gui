@@ -36,7 +36,7 @@ namespace WPF.Views.Modals
             {
                 FileName = $"{Path.Combine(Directory.GetCurrentDirectory(), "Updater.exe")}",
                 Arguments = $"-p {Process.GetCurrentProcess().ProcessName} -k true --grepository DiscreetNetwork/discreet-gui+win-x64.zip",
-                UseShellExecute = true
+                UseShellExecute = true,
             };
 
             Process.Start(psi);

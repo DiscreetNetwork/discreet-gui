@@ -80,11 +80,9 @@ namespace WPF.Views.Modals
                     try
                     {
                         DaemonErrorResult errResult = JsonSerializer.Deserialize<DaemonErrorResult>(json);
-                        System.Diagnostics.Debug.WriteLine($"CreateTransactionResponse: {errResult.ErrMsg}");
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine($"CreateTransactionResponse: {e.Message}");
                     }
                 } 
             }

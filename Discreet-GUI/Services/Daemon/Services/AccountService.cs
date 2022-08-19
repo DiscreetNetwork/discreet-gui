@@ -38,8 +38,6 @@ namespace Services.Daemon.Services
                     {
                         // error type
                         var err = JsonSerializer.Deserialize<DaemonErrorResult>(json);
-
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting balance : " + err.ErrMsg);
                     }
                 }
             }
@@ -58,11 +56,6 @@ namespace Services.Daemon.Services
                 if (resp.Result is JsonElement json)
                 {
                     var getAddressHeightResponse = JsonSerializer.Deserialize<GetAddressHeightResponse>(json);
-
-                    if (getAddressHeightResponse.ErrMsg != null && getAddressHeightResponse.ErrMsg != "")
-                    {
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting address height : " + getAddressHeightResponse.ErrMsg);
-                    }
 
                     return getAddressHeightResponse;
                 }

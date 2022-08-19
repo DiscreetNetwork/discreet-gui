@@ -348,7 +348,6 @@ namespace Services.Daemon
 
             if (result.ErrMsg != null && result.ErrMsg != "")
             {
-                System.Diagnostics.Debug.WriteLine("GetMnemonic : " + result.ErrMsg);
             }
 
             return new Mnemonic 
@@ -376,7 +375,6 @@ namespace Services.Daemon
 
                     if (getWalletHeightResponse.ErrMsg != null && getWalletHeightResponse.ErrMsg != "")
                     {
-                        System.Diagnostics.Debug.WriteLine("WalletManager getting wallet height : " + getWalletHeightResponse.ErrMsg);
                     }
 
                     return getWalletHeightResponse;

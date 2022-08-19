@@ -32,7 +32,6 @@ namespace Services.ZMQ.Handlers
 
         public override async Task Handle(string message)
         {
-            Debug.WriteLine("ZMQ.UpdateHandler: Executing async");
             await UpdatePeerCount();
             await UpdateAddressBalances();
             await UpdateAddressHeights();
@@ -57,11 +56,9 @@ namespace Services.ZMQ.Handlers
                 var fetchedBalance = await _accountService.GetBalance(address.Address);
                 if (fetchedBalance == null)
                 {
-                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch balance for account: {address.Address}");
                     continue;
                 }
 
-                Debug.WriteLine($"ZMQ.BlockRawHandler: Fetched balance for {address}\n - {fetchedBalance}");
 
                 if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
             }
@@ -75,7 +72,6 @@ namespace Services.ZMQ.Handlers
                 var addressState = await _accountService.GetState(address.Address);
                 if (addressState is null)
                 {
-                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for account: {address.Address}");
                     continue;
                 }
 
@@ -90,7 +86,6 @@ namespace Services.ZMQ.Handlers
             var walletState = await _walletService.GetState(_walletCache.Label);
             if (walletState is null)
             {
-                Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for wallet: {_walletCache.Label}");
                 return;
             }
 

@@ -63,7 +63,6 @@ namespace WPF.Views.Modals
 
         public async void OnActivated()
         {
-            Debug.WriteLine("OnActivated");
             var wallets = await _walletService.GetWallets();
             if (wallets is null)
             {

@@ -110,7 +110,6 @@ namespace WPF.Hosted
                 var fetchedBalance = await _accountService.GetBalance(address.Address);
                 if(fetchedBalance == null)
                 {
-                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch balance for account: {address.Address}");
                     continue;
                 }
 
@@ -126,7 +125,6 @@ namespace WPF.Hosted
                 var addressState = await _accountService.GetState(address.Address);
                 if(addressState is null)
                 {
-                    Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for account: {address.Address}");
                     continue;
                 }
 
@@ -141,7 +139,6 @@ namespace WPF.Hosted
             var walletState = await _walletService.GetState(_walletCache.Label);
             if(walletState is null)
             {
-                Debug.WriteLine($"WalletPollerBackgroundService: Failed to fetch state for wallet: {_walletCache.Label}");
                 return;
             }
 
