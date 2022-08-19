@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +44,8 @@ namespace WPF.Views.Start
         /// Controls the carousel loop
         /// </summary>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        public string CurrentVersion { get => $"Version: {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}"; }
 
         public StartViewModel(NavigationServiceFactory navigationServiceFactory)
         {

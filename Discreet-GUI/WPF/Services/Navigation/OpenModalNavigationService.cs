@@ -20,7 +20,13 @@ namespace WPF.Services.Navigation
 
         public void Navigate()
         {
-            _modalNavigationStore.CurrentModalViewModel = _createViewModel();
+            var newViewModel = _createViewModel();
+            if(_modalNavigationStore.CurrentModalViewModel != null)
+            {
+                if (_modalNavigationStore.CurrentModalViewModel.GetType() == newViewModel.GetType()) return;
+            }
+
+            _modalNavigationStore.CurrentModalViewModel = newViewModel;
         }
     }
 }

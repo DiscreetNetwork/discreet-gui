@@ -29,6 +29,8 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
+		<Label Foreground="#dddddd" Margin="10 10 0 0" Content="{Binding CurrentVersion}"/>
+		
 		<Image Grid.Row="0" 
 			   Margin="0 30 0 0"
 			   Height="45" Width="100" 

@@ -70,6 +70,7 @@ namespace WPF
                 services.AddSingleton<NotificationService>();
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
+                services.AddHostedService<VersionBackgroundService>();
                 services.AddScoped<WalletService>();
                 services.AddScoped<StatusService>();
                 services.AddScoped<AccountService>();
@@ -97,7 +98,7 @@ namespace WPF
 
             if (serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
             {
-                serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+                //serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
             }
 
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
