@@ -39,7 +39,6 @@ jobs:
 
     - name: Tar bz2 [LINUX-x64]
       run: |
-        cd Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
         tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
 
     - uses: dev-drprasad/delete-older-releases@v0.2.0
