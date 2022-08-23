@@ -9,7 +9,7 @@ concurrency: shared
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -32,19 +32,14 @@ jobs:
       run: |
         cd Discreet-GUI/
         dotnet publish --configuration Release --runtime linux-x64 --framework net6.0 --self-contained true
-        
-    - name: Install zip
-      uses: montudor/action-zip@v1
 
     - name: Zip [WIN-X64]
       run: |
-        cd Discreet-GUI/WPF/bin/Release/net6.0/win-x64/publish
-        zip -qq -r ../win-x64.zip .
+        Compress-Archive -Path Discreet-GUI/WPF/bin/Release/net6.0/win-x64/publish/* -DestinationPath Discreet-GUI/WPF/bin/Release/net6.0/win-x64/win-x64.zip
 
     - name: Tar bz2 [LINUX-x64]
       run: |
-        cd Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
-        tar cfvj ../linux-x64.tar.bz2 *
+        tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
 
     - uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
@@ -80,6 +75,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.bz2
-        asset_name: linux-x64.tar.bz2
+        asset_path: Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz
+        asset_name: linux-x64.tar.gz
         asset_content_type: application/bzip2
