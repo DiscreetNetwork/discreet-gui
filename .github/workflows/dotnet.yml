@@ -12,6 +12,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    
+    - name: Unlock pending version increments
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://releases.discreet.net/versions/wallet/unlock'
+        method: 'POST'
+        customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}" }'
+    
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -23,15 +31,28 @@ jobs:
         cd Discreet-GUI/
         dotnet restore
 
+    - name: Fetch next version
+      id: versionResponse
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://releases.discreet.net/versions/wallet/build/started'
+        method: 'POST'
+        customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}" }'
+
+    - name: Prepare tag name
+      id: create_tag_name
+      run: |
+        echo ::set-output name=TAG_NAME::$( echo ${{ steps.versionResponse.outputs.response }} | tr -d '"')
+
     - name: Publish [WIN-x64]
       run: |
         cd Discreet-GUI/
-        dotnet publish --configuration Release --runtime win-x64 --framework net6.0 --self-contained true -p:ReadyToRun=true
+        dotnet publish --configuration Release --runtime win-x64 --framework net6.0 --self-contained true -p:ReadyToRun=true -p:Version=${{ steps.versionResponse.outputs.response }}
         
     - name: Publish [LINUX-x64]
       run: |
         cd Discreet-GUI/
-        dotnet publish --configuration Release --runtime linux-x64 --framework net6.0 --self-contained true
+        dotnet publish --configuration Release --runtime linux-x64 --framework net6.0 --self-contained true -p:Version=${{ steps.versionResponse.outputs.response }}
 
     - name: Zip [WIN-X64]
       run: |
@@ -41,20 +62,14 @@ jobs:
       run: |
         tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
 
-    - uses: dev-drprasad/delete-older-releases@v0.2.0
-      with:
-        keep_latest: 0
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-
     - name: Create the Github Release
       uses: actions/create-release@v1
       id: create_release
       with:
         draft: false
         prerelease: false
-        release_name: ${{ steps.version.outputs.version }}
-        tag_name: assets
+        release_name: ${{ steps.create_tag_name.outputs.TAG_NAME }}
+        tag_name: ${{ steps.create_tag_name.outputs.TAG_NAME }}
         body: CHANGELOG
       env:
         GITHUB_TOKEN: ${{ github.token }}
@@ -78,3 +93,10 @@ jobs:
         asset_path: Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz
         asset_name: linux-x64.tar.gz
         asset_content_type: application/bzip2
+
+    - name: Mark build as finished in the version API
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://releases.discreet.net/versions/wallet/build/finished'
+        method: 'POST'
+        customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}" }'
