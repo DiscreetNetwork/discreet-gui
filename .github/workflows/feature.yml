@@ -4,8 +4,6 @@ on:
   push:
     branches: [ "feature/*" ]
 
-concurrency: shared
-
 jobs:
   build:
     runs-on: ubuntu-latest
