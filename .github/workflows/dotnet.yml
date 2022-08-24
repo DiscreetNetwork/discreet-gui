@@ -68,8 +68,8 @@ jobs:
       with:
         draft: false
         prerelease: false
-        release_name: ${{ steps.create_tag_name.outputs.TAG_NAME }}
-        tag_name: ${{ steps.create_tag_name.outputs.TAG_NAME }}
+        release_name: v${{ steps.create_tag_name.outputs.TAG_NAME }}
+        tag_name: v${{ steps.create_tag_name.outputs.TAG_NAME }}
         body: CHANGELOG
       env:
         GITHUB_TOKEN: ${{ github.token }}
