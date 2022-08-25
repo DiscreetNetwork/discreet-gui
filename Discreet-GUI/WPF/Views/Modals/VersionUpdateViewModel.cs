@@ -32,10 +32,12 @@ namespace WPF.Views.Modals
 
         public void Update()
         {
+            string walletAsset = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "DiscreetNetwork/discreet-gui+linux-x64.tar.gz" : "DiscreetNetwork/discreet-gui+win-x64.zip";
+
             ProcessStartInfo psi = new ProcessStartInfo()
             {
                 FileName = $"{Path.Combine(Directory.GetCurrentDirectory(), "utility", "Updater.exe")}",
-                Arguments = $"-p \"{Path.Combine(Directory.GetCurrentDirectory(), Process.GetCurrentProcess().ProcessName)}\" -k true --grepository DiscreetNetwork/discreet-gui+win-x64.zip --output \"{Directory.GetCurrentDirectory()}\"",
+                Arguments = $"-p \"{Path.Combine(Directory.GetCurrentDirectory(), Process.GetCurrentProcess().ProcessName)}\" -k true --grepository {walletAsset} --output \"{Directory.GetCurrentDirectory()}\"",
                 UseShellExecute = true,
             };
 
