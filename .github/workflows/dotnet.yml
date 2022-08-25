@@ -60,7 +60,7 @@ jobs:
 
     - name: Tar bz2 [LINUX-x64]
       run: |
-        tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish
+        tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz -C Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish *
 
     - name: Create the Github Release
       uses: actions/create-release@v1
