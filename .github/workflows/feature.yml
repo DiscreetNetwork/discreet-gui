@@ -2,7 +2,7 @@ name: Feature pipeline
 
 on:
   push:
-    branches: [ "feature/*" ]
+    branches: [ "featureeeee/*" ]
 
 jobs:
   build:
