@@ -18,15 +18,17 @@
 
 			<Grid>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="110"/>
-					<RowDefinition Height="60"/>
+					<RowDefinition Height="90"/>
 					<RowDefinition Height="50"/>
+					<RowDefinition Height="40"/>
+					<RowDefinition Height="35"/>
 				</Grid.RowDefinitions>
 				<Label Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DDDDDD" FontSize="18">New update available</Label>
 
 				<Label Grid.Row="1" HorizontalAlignment="Center" FontSize="18" Foreground="#dddddd" Content="{Binding NewVersion}"/>
-				
-				<Button Grid.Row="2" Classes="hand" HorizontalAlignment="Left" Margin="50 0 0 0" Command="{Binding RemindMeLater}">
+				<Label Grid.Row="2" HorizontalAlignment="Center" FontSize="15" Foreground="#919191" Content="{Binding UpdateMessage}"/>
+
+				<Button Grid.Row="3" Classes="hand" HorizontalAlignment="Left" Margin="50 0 0 0" Command="{Binding RemindMeLater}">
 					Remind me later
 					<Button.DataTemplates>
 						<DataTemplate>
@@ -43,7 +45,7 @@
 					</Button.Styles>
 				</Button>
 
-				<Button Grid.Row="2" Classes="btn btn-pink hand" Height="40" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0 0 50 0" Command="{Binding Update}">Update now</Button>
+				<Button Grid.Row="3" Classes="btn btn-pink hand" Height="40" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0 0 50 0" Command="{Binding Update}" IsVisible="{Binding DisplayUpdateButton}">Update now</Button>
 
 			</Grid>
 		</Border>
