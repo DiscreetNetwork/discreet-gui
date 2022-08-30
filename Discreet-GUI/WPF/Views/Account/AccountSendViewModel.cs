@@ -100,7 +100,7 @@ namespace WPF.Views.Account
             AmountValidationMessage = string.Empty;
             return true;
         }
-
+        
         public void DisplayConfirm()
         {
             if (!ValidateReceiverInput() || !ValidateAmountInput()) return;
@@ -109,7 +109,14 @@ namespace WPF.Views.Account
             _sendTransactionCache.Receiver = Receiver;
             _sendTransactionCache.Sender = SenderAccounts[SelectedSenderAccountIndex].Address;
 
-            _navigationServiceFactory.CreateModalNavigationService<ConfirmViewModel>().Navigate();
+            if(SenderAccounts[_selectedSenderAccountIndex].Type == WalletCache.AddressType.TRANSPARENT)
+            {
+                _navigationServiceFactory.CreateModalNavigationService<TransparentTransactionWarningViewModel>().Navigate();
+            }
+            else
+            {
+                _navigationServiceFactory.CreateModalNavigationService<ConfirmViewModel>().Navigate();
+            }
         }
 
 
