@@ -3,22 +3,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="WPF.Views.Modals.ConfirmView">
-
+             x:Class="WPF.Views.Modals.TransparentTransactionWarningView">
+	
 	<UserControl.Styles>
 		<StyleInclude Source="/ApplicationStyles.axaml"/>
 	</UserControl.Styles>
-	
+
 	<Grid Background="Transparent">
 		<Grid.Transitions>
 			<Transitions>
 				<DoubleTransition Property="Opacity" Duration="0:0:0.001"/>
 			</Transitions>
 		</Grid.Transitions>
-		
+
 		<Rectangle Fill="#181818" Opacity="0.95"/>
 
-		<Border 
+		<Border
 			Background="#181818"
 			Width="550" Height="250"
 			BorderThickness="1" BorderBrush="#424243" CornerRadius="6"
@@ -26,29 +26,19 @@
 
 			<Grid Margin="30 20 30 20">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="65"/>
-					<RowDefinition Height="auto"/>
+					<RowDefinition/>
+					<RowDefinition/>
 					<RowDefinition/>
 					<RowDefinition/>
 				</Grid.RowDefinitions>
 
-				<Label Grid.Row="0" Margin="-3 0 0 0" VerticalAlignment="Top" FontSize="24" FontWeight="500" Foreground="White">Are you sure?</Label>
+				<Label Grid.Row="0" Margin="-3 0 0 0" VerticalAlignment="Top" FontSize="24" FontWeight="600" Foreground="#D03A44">Warning</Label>
 
-				<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-					<Label Foreground="White" FontWeight="200">You are about to send</Label>
-					<Label Foreground="#D35683" FontWeight="Bold" Content="{Binding Amount}"/>
-					<Label Foreground="White" FontWeight="200">DIST, this is an irreversible transaction.</Label>
-				</StackPanel>
+				<TextBlock Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" LineHeight="20"  Foreground="#dddddd">
+					This transaction can be traced by 3rd parties. Unless strictly necessary it is not recommended to send transparent transactions.
+				</TextBlock>
 
-				<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" VerticalAlignment="Center">
-					<Label Foreground="White" FontWeight="200">The transaction will be sent to</Label>
-					<Label Foreground="#D35683" FontWeight="Bold" Content="{Binding ReceiverAddress}"/>
-					<Label Foreground="White" FontWeight="200">if confirmed.</Label>
-				</StackPanel>
-
-
-
-				<Button Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" Command="{Binding CancelTransactionCommand}">
+				<Button Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" Command="{Binding Cancel}">
 					Cancel transaction
 					<Button.DataTemplates>
 						<DataTemplate>
@@ -64,15 +54,15 @@
 						</Style>
 					</Button.Styles>
 				</Button>
-				
+
 				<Button
 					HotKey="ENTER" Background="#D35683"
-					Grid.Row="3" Classes="btn btn-pink spinner" Classes.loading="{Binding IsLoading}" Cursor="Hand" Command="{Binding ConfirmTransactionCommand}"
-					Width="200" Height="45" FontWeight="300" 
+					Grid.Row="3" Classes="btn btn-pink spinner" Classes.loading="{Binding IsLoading}" Cursor="Hand" Command="{Binding Continue}"
+					Width="200" Height="45" FontWeight="300"
 					HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 
 					<Grid>
-						<Label Foreground="White" VerticalAlignment="Center">Confirm</Label>
+						<Label Foreground="White" VerticalAlignment="Center">Continue anyways</Label>
 						<Image Source="/Assets/Icons/spinner-2.png" Width="25"/>
 					</Grid>
 				</Button>
