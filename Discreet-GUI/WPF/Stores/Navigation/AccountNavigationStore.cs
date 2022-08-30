@@ -6,7 +6,7 @@ using WPF.ViewModels.Common;
 namespace WPF.Stores.Navigation
 {
     public class AccountNavigationStore
-    {
+    { 
         public event Action CurrentViewModelChanged;
         private ViewModelBase _currentViewModel;
         public ViewModelBase CurrentViewModel
