@@ -96,9 +96,13 @@ namespace WPF
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
 
+            // Set daemon initializing screen, if UseActivator is enabled
             if (serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
             {
-                //serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+                if(!serviceScope.ServiceProvider.GetRequiredService<DaemonCache>().DaemonStarted)
+                {
+                    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+                }
             }
 
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
