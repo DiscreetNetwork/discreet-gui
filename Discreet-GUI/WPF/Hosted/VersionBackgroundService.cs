@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Services.Caches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,14 @@ namespace WPF.Hosted
         private readonly HttpClient _httpClient;
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly VersionUpdateStore _versionUpdateStore;
+        private readonly DaemonCache _daemonCache;
 
-        public VersionBackgroundService(HttpClient httpClient, NavigationServiceFactory navigationServiceFactory, VersionUpdateStore versionUpdateStore)
+        public VersionBackgroundService(HttpClient httpClient, NavigationServiceFactory navigationServiceFactory, VersionUpdateStore versionUpdateStore, DaemonCache daemonCache)
         {
             _httpClient = httpClient;
             _navigationServiceFactory = navigationServiceFactory;
             _versionUpdateStore = versionUpdateStore;
+            _daemonCache = daemonCache;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -32,6 +35,8 @@ namespace WPF.Hosted
             {
                 await Task.Delay(1000 * 5);
 
+                if (!_daemonCache.DaemonStarted) continue;
+                continue;
                 var response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
 
                 var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;

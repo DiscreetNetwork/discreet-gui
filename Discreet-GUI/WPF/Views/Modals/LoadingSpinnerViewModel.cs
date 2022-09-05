@@ -16,6 +16,7 @@ namespace WPF.Views.Modals
 {
     public class LoadingSpinnerViewModel : ViewModelBase
     {
+        private readonly DaemonCache _daemonCache;
         private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly WalletCache _walletCache;
@@ -24,8 +25,9 @@ namespace WPF.Views.Modals
         private string _peerState = string.Empty;
         public string PeerState { get => _peerState; set { _peerState = value; OnPropertyChanged(nameof(PeerState)); } }
 
-        public LoadingSpinnerViewModel(WalletService walletService, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, StatusService statusService)
+        public LoadingSpinnerViewModel(DaemonCache daemonCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, StatusService statusService)
         {
+            _daemonCache = daemonCache;
             _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
             _walletCache = walletCache;
@@ -36,29 +38,16 @@ namespace WPF.Views.Modals
 
         public async void OnActivated()
         {
-            while (true)
+            if(!_daemonCache.DaemonStarted)
             {
-                try
+                _daemonCache.DaemonStartedChanged += () =>
                 {
-                    var resp = await _statusService.GetHealth();
-
-                    if (resp != null && resp.PeerState != null)
+                    if (_daemonCache.DaemonStarted)
                     {
-                        PeerState = resp.PeerState;
-                        if (resp.PeerState.ToLower().Equals("normal")) break;
+                        _navigationServiceFactory.CreateModalNavigationService().Navigate();
                     }
-                }
-                catch (Exception e)
-                {
-                    await Task.Delay(500);
-                    continue;
-                }
-                
-
-                await Task.Delay(100);
+                };
             }
-
-            _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
 
     }

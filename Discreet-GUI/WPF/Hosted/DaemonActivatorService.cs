@@ -19,13 +19,15 @@ namespace WPF.Hosted
         private readonly NotificationService _notificationService;
         private readonly WalletCache _walletCache;
         private readonly DaemonLogCache _daemonLogCache;
+        private readonly DaemonCache _daemonCache;
 
-        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache, DaemonLogCache daemonLogCache)
+        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache, DaemonLogCache daemonLogCache, DaemonCache daemonCache)
         {
             _configuration = configuration;
             _notificationService = notificationService;
             _walletCache = walletCache;
             _daemonLogCache = daemonLogCache;
+            _daemonCache = daemonCache;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -35,7 +37,7 @@ namespace WPF.Hosted
 
             if(Process.GetProcessesByName(_configuration.GetValue<string>("DaemonSettings:ExecutableName")).FirstOrDefault() != null)
             {
-                _walletCache.VisorStartupComplete = true;
+                _daemonCache.DaemonStarted = true;
                 return;
             }
 
