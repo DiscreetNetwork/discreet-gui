@@ -18,7 +18,7 @@ namespace WPF.Views.Modals
 
         public string NewVersion { get => _versionUpdateStore.NextVersion; }
         public bool DisplayUpdateButton { get => Environment.OSVersion.Platform != PlatformID.Unix && Environment.OSVersion.Platform != PlatformID.MacOSX; }
-        public string UpdateMessage { get => (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Please go download the latest release build" : "Make sure you're running the wallet as administrator"; }
+        public string UpdateMessage { get => (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Please go download the latest release build" : string.Empty; }
 
         public VersionUpdateViewModel(NavigationServiceFactory navigationServiceFactory, VersionUpdateStore versionUpdateStore)
         {
