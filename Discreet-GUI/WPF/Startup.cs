@@ -96,9 +96,13 @@ namespace WPF
             // Set the startup view
             serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
 
+            // Set daemon initializing screen, if UseActivator is enabled
             if (serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
             {
-                //serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+                if(!serviceScope.ServiceProvider.GetRequiredService<DaemonCache>().DaemonStarted)
+                {
+                    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+                }
             }
 
             MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
@@ -186,7 +190,7 @@ namespace WPF
                     UseActivator = true,
                     RedirectOutput = true,
                     ExecutableName = "Discreet",
-                    ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Discreet.exe" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES(X86)%")}\\Discreet Daemon\\Discreet.exe"
+                    ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Discreet.exe" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES%")}\\Discreet Daemon\\Discreet.exe"
                 },
 
                 ZMQSettings = new
