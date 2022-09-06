@@ -36,7 +36,6 @@ namespace WPF.Hosted
                 await Task.Delay(1000 * 5);
 
                 if (!_daemonCache.DaemonStarted) continue;
-                continue;
                 var response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
 
                 var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
