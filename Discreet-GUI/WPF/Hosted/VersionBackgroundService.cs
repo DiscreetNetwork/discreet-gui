@@ -37,6 +37,7 @@ namespace WPF.Hosted
 
                 if (!_daemonCache.DaemonStarted) continue;
                 var response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
+                if (!response.IsSuccessStatusCode) continue;
 
                 var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
                 string newVersion = await response.Content.ReadAsStringAsync();
