@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WPF.Factories.Navigation;
+using WPF.Services;
 using WPF.Stores;
 using WPF.Views.Modals;
 
@@ -20,13 +21,15 @@ namespace WPF.Hosted
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly VersionUpdateStore _versionUpdateStore;
         private readonly DaemonCache _daemonCache;
+        private readonly NotificationService _notificationService;
 
-        public VersionBackgroundService(HttpClient httpClient, NavigationServiceFactory navigationServiceFactory, VersionUpdateStore versionUpdateStore, DaemonCache daemonCache)
+        public VersionBackgroundService(HttpClient httpClient, NavigationServiceFactory navigationServiceFactory, VersionUpdateStore versionUpdateStore, DaemonCache daemonCache, NotificationService notificationService)
         {
             _httpClient = httpClient;
             _navigationServiceFactory = navigationServiceFactory;
             _versionUpdateStore = versionUpdateStore;
             _daemonCache = daemonCache;
+            _notificationService = notificationService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,7 +39,19 @@ namespace WPF.Hosted
                 await Task.Delay(1000 * 5);
 
                 if (!_daemonCache.DaemonStarted) continue;
-                var response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
+
+                HttpResponseMessage response = null;
+
+                try
+                {
+                    response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
+                }
+                catch (Exception)
+                {
+                    _notificationService.Display("Failed to check for update. Check your internet connection");
+                    continue;
+                }
+
                 if (!response.IsSuccessStatusCode) continue;
 
                 var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
