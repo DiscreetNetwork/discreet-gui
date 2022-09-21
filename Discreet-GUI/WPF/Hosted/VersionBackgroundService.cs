@@ -36,7 +36,18 @@ namespace WPF.Hosted
                 await Task.Delay(1000 * 5);
 
                 if (!_daemonCache.DaemonStarted) continue;
-                var response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
+
+                HttpResponseMessage response = null;
+
+                try
+                {
+                    response = await _httpClient.GetAsync("https://releases.discreet.net/versions/wallet");
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
                 if (!response.IsSuccessStatusCode) continue;
 
                 var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
