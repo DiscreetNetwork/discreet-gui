@@ -100,3 +100,10 @@ jobs:
         url: 'https://releases.discreet.net/versions/wallet/build/finished'
         method: 'POST'
         customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}" }'
+        
+    - name: Schedule new package builds
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://releases.discreet.net/build/wallet/release'
+        method: 'POST'
+        customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}", "x-syk": "${{ secrets.SYK }}" }'
