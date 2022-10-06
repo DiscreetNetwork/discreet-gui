@@ -58,7 +58,18 @@ namespace WPF.Hosted
                 string newVersion = await response.Content.ReadAsStringAsync();
                 newVersion = newVersion.Replace("\"", "");
 
-                if (newVersion.Equals($"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}")) continue;
+                string[] versionNumberStrings = newVersion.Split(".");
+                int major = int.Parse(versionNumberStrings[0]);
+                int minor = int.Parse(versionNumberStrings[1]);
+                int build = int.Parse(versionNumberStrings[2]);
+
+                bool foundNewVersion = false;
+                if (major > currentVersion.Major) foundNewVersion = true;
+                else if (minor > currentVersion.Minor) foundNewVersion = true;
+                if (build > currentVersion.Build) foundNewVersion = true;
+
+
+                if (!foundNewVersion) continue;
 
                 // New version, reset settings and display popup
                 if(!string.IsNullOrWhiteSpace(_versionUpdateStore.NextVersion) && !_versionUpdateStore.NextVersion.Equals(newVersion))
