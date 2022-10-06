@@ -27,6 +27,7 @@ jobs:
           echo "::set-output name=IS_FEATURE::$(echo false)"
        fi
       if: ${{ github.event.pull_request.merged == true }} 
+      shell: bash
     
     - uses: actions/checkout@v3
     - name: Setup .NET
