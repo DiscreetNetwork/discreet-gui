@@ -142,3 +142,26 @@ jobs:
         url: 'https://releases.discreet.net/build/wallet/preview'
         method: 'POST'
         customHeaders: '{ "x-wallet-version-key": "${{ secrets.WALLET_VERSION_KEY }}", "x-syk": "${{ secrets.SYK }}" }'
+        
+    
+    
+    - name: Edit version in csproj
+      run: sed -i 's/<Version>.*<\/Version>/<Version>${{ steps.create_tag_name.outputs.TAG_NAME }}<\/Version>/g' Discreet-GUI/WPF/WPF.csproj
+      shell: bash
+      if: ${{ github.event.pull_request.merged == true }}
+    
+    - name: Echo csproj
+      run: cat Discreet-GUI/WPF/WPF.csproj
+      shell: bash
+      if: ${{ github.event.pull_request.merged == true }}
+      
+    - name: Push it
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add Discreet-GUI/WPF/WPF.csproj
+        git commit -m "Edited version in WPF.csproj"
+        git fetch origin staging
+        git push origin HEAD:staging
+      shell: bash
+      if: ${{ github.event.pull_request.merged == true }}
