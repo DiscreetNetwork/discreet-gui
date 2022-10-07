@@ -36,6 +36,7 @@ namespace WPF.Views
             }
         }
         public ViewModelBase CurrentViewModel => _mainNavigationStore.CurrentViewModel;
+        public ViewModelBase DaemonStartupModalViewModel => _modalNavigationStore.DaemonStartupModalViewModel;
         public ViewModelBase CurrentModalViewModel => _modalNavigationStore.CurrentModalViewModel;
 
         public ViewModelBase NotificationContainerViewModel { get; set; }
@@ -51,6 +52,7 @@ namespace WPF.Views
 
             _modalNavigationStore = modalNavigationStore;
             _modalNavigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
+            _modalNavigationStore.DaemonStartupModalViewModelChanged += () => OnPropertyChanged(nameof(DaemonStartupModalViewModel));
 
             NotificationContainerViewModel = notificationContainerViewModel;
             _mainDebugWindowViewModel = mainDebugWindowViewModel;

@@ -72,5 +72,14 @@ namespace WPF.Factories.Navigation
 
             throw new InvalidOperationException();
         }
+
+        public void SetDaemonStartupModal()
+        {
+            _modalNavigationStore.DaemonStartupModalViewModel = _layoutViewModelFactory.Create<Views.Modals.LoadingSpinnerViewModel>();
+        }
+        public void CloseDaemonStartupModal()
+        {
+            _modalNavigationStore.DaemonStartupModalViewModel = null;
+        }
     }
 }

@@ -11,16 +11,15 @@ using WPF.ViewModels.Common;
 using Services.Daemon.Services;
 using ReactiveUI;
 using System.Reactive.Concurrency;
+using WPF.Views.Layouts;
 
 namespace WPF.Views.Modals
 {
+    [Layout(typeof(PurpleTitleBarLayoutViewModel))]
     public class LoadingSpinnerViewModel : ViewModelBase
     {
         private readonly DaemonCache _daemonCache;
-        private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
-        private readonly WalletCache _walletCache;
-        private readonly StatusService _statusService;
 
         private string _peerState = string.Empty;
         public string PeerState { get => _peerState; set { _peerState = value; OnPropertyChanged(nameof(PeerState)); } }
@@ -28,10 +27,7 @@ namespace WPF.Views.Modals
         public LoadingSpinnerViewModel(DaemonCache daemonCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, StatusService statusService)
         {
             _daemonCache = daemonCache;
-            _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
-            _walletCache = walletCache;
-            _statusService = statusService;
 
             RxApp.MainThreadScheduler.Schedule(OnActivated);
         }
@@ -44,7 +40,7 @@ namespace WPF.Views.Modals
                 {
                     if (_daemonCache.DaemonStarted)
                     {
-                        _navigationServiceFactory.CreateModalNavigationService().Navigate();
+                        _navigationServiceFactory.CloseDaemonStartupModal();
                     }
                 };
             }

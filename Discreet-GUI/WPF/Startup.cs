@@ -101,7 +101,7 @@ namespace WPF
             {
                 if(!serviceScope.ServiceProvider.GetRequiredService<DaemonCache>().DaemonStarted)
                 {
-                    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().CreateModalNavigationService<LoadingSpinnerViewModel>().Navigate();
+                    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().SetDaemonStartupModal();
                 }
             }
 

@@ -10,6 +10,19 @@ namespace WPF.Stores.Navigation
     /// </summary>
     public class ModalNavigationStore
     {
+        public event Action DaemonStartupModalViewModelChanged;
+        private ViewModelBase _daemonStartupModalViewModel;
+        public ViewModelBase DaemonStartupModalViewModel
+        {
+            get => _daemonStartupModalViewModel;
+            set { _daemonStartupModalViewModel = value; OnDaemonStartupModalViewModelChanged(); }
+        }
+        void OnDaemonStartupModalViewModelChanged()
+        {
+            DaemonStartupModalViewModelChanged?.Invoke();
+        }
+
+
         public event Action CurrentModalViewModelChanged;
         private ViewModelBase _currentModalViewModel;
         public ViewModelBase CurrentModalViewModel

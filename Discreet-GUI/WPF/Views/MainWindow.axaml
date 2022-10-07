@@ -19,6 +19,12 @@
 		
 		<ContentControl ZIndex="200" Margin="0 75 25 0" HorizontalAlignment="Right" Content="{Binding NotificationContainerViewModel}"/>
 
+		<TransitioningContentControl  ZIndex="110" Content="{Binding DaemonStartupModalViewModel}">
+			<TransitioningContentControl.PageTransition>
+				<CrossFade Duration="0:00:00.001"/>
+			</TransitioningContentControl.PageTransition>
+		</TransitioningContentControl>
+		
 		<TransitioningContentControl  ZIndex="100" Content="{Binding CurrentModalViewModel}">
 			<TransitioningContentControl.PageTransition>
 				<CrossFade Duration="0:00:00.001"/>
