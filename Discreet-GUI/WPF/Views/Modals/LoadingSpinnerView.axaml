@@ -17,7 +17,7 @@
 					<RowDefinition Height="0"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<Label Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DDDDDD" FontSize="20">Daemon Initializing</Label>
+				<Label Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DDDDDD" FontSize="20">Waiting for the daemon to start</Label>
 				
 				<Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Assets/Icons/spinner-2.png" Height="45">
 					<Image.Styles>

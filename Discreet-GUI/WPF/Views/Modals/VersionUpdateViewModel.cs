@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 using WPF.Factories.Navigation;
 using WPF.Stores;
 using WPF.ViewModels.Common;
+using WPF.Views.Layouts;
 
 namespace WPF.Views.Modals
 {
+    [Layout(typeof(PurpleTitleBarLayoutViewModel))]
     public class VersionUpdateViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;

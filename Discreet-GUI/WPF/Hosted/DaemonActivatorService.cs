@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WPF.Factories.Navigation;
 using WPF.Services;
 
 namespace WPF.Hosted
@@ -20,117 +21,137 @@ namespace WPF.Hosted
         private readonly WalletCache _walletCache;
         private readonly DaemonLogCache _daemonLogCache;
         private readonly DaemonCache _daemonCache;
+        private readonly NavigationServiceFactory _navigationServiceFactory;
 
-        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache, DaemonLogCache daemonLogCache, DaemonCache daemonCache)
+        private Process _daemonProcess = null;
+
+        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache, DaemonLogCache daemonLogCache, DaemonCache daemonCache, NavigationServiceFactory navigationServiceFactory)
         {
             _configuration = configuration;
             _notificationService = notificationService;
             _walletCache = walletCache;
             _daemonLogCache = daemonLogCache;
             _daemonCache = daemonCache;
+            _navigationServiceFactory = navigationServiceFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         { 
             bool useDaemonActivator = _configuration.GetValue<bool>("DaemonSettings:UseActivator");
-            if (!useDaemonActivator) return;
-
-            if(Process.GetProcessesByName(_configuration.GetValue<string>("DaemonSettings:ExecutableName")).FirstOrDefault() != null)
-            {
-                _daemonCache.DaemonStarted = true;
-                return;
-            }
-
             var executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
-            while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath))
+            var executableName = _configuration.GetValue<string>("DaemonSettings:ExecutableName");
+            var redirectOutput = _configuration.GetValue<bool>("DaemonSettings:RedirectOutput");
+
+            
+            while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath) && useDaemonActivator)
             {
                 _notificationService.Display("Could not find daemon executable.");
                 await Task.Delay(3000);
                 executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
             }
 
+            // Initial check to see if the Daemon was running before the wallet were launched
+            _daemonProcess = Process.GetProcessesByName(executableName).FirstOrDefault();
+            if(_daemonProcess is not null)
+            {
+                _daemonProcess.EnableRaisingEvents = true;
+                _daemonProcess.Exited += DaemonProcessExited;
+                _daemonCache.DaemonStarted = true;
+            }
+
             while (!stoppingToken.IsCancellationRequested)
             {
-                var daemonExecutableName = _configuration.GetValue<string>("DaemonSettings:ExecutableName");
-                var redirectOutput = _configuration.GetValue<bool>("DaemonSettings:RedirectOutput");
-                var processToStart = Process.GetProcessesByName(daemonExecutableName).FirstOrDefault();
+                if(this._daemonProcess is not null)
+                {
+                    await Task.Delay(3000);
+                    continue;
+                }
+
+                this._daemonProcess = Process.GetProcessesByName(executableName).FirstOrDefault();
+                if(this._daemonProcess is not null)
+                {
+                    this._daemonProcess.EnableRaisingEvents = true;
+                    this._daemonProcess.Exited += DaemonProcessExited;
+                    continue;
+                }
+
+                // At this point the daemon should be started by the wallet, if 'activator' is enabled
+                if(!useDaemonActivator)
+                {
+                    await Task.Delay(3000);
+                    continue;
+                }
 
                 StringBuilder outputBuilder = new StringBuilder();
                 StringBuilder errorBuilder = new StringBuilder();
+                
+                _daemonProcess = new Process();
+                _daemonProcess.StartInfo.FileName = executablePath;
+                _daemonProcess.StartInfo.UseShellExecute = false;
+                _daemonProcess.StartInfo.CreateNoWindow = redirectOutput;
 
-                if(processToStart is null)
+                if(redirectOutput)
                 {
-                    Process p = new Process();
-                    p.StartInfo.FileName = executablePath;
-                    p.StartInfo.UseShellExecute = false;
-
-                    p.StartInfo.CreateNoWindow = redirectOutput;
-
-                    if(redirectOutput)
+                    _daemonProcess.StartInfo.RedirectStandardError = true;
+                    _daemonProcess.ErrorDataReceived += (s, e) =>
                     {
-                        p.StartInfo.RedirectStandardError = true;
-                        p.ErrorDataReceived += (s, e) =>
+                        if (e.Data is null)
                         {
-                            if (e.Data is null)
-                            {
-                                if (errorBuilder.Length == 0) return;
+                            if (errorBuilder.Length == 0) return;
 
-                                _notificationService.Display(errorBuilder.ToString());
-                                errorBuilder.Clear();
-                                return;
-                            }
+                            _notificationService.Display(errorBuilder.ToString());
+                            errorBuilder.Clear();
+                            return;
+                        }
 
-                            errorBuilder.AppendLine(e.Data);
-                        };
+                        errorBuilder.AppendLine(e.Data);
+                    };
 
-                        p.StartInfo.RedirectStandardOutput = true;
-                        p.OutputDataReceived += (s, e) =>
+                    _daemonProcess.StartInfo.RedirectStandardOutput = true;
+                    _daemonProcess.OutputDataReceived += (s, e) =>
+                    {
+                        if(e.Data is null)
                         {
-                            if(e.Data is null)
-                            {
-                                if (outputBuilder.Length == 0) return;
+                            if (outputBuilder.Length == 0) return;
 
-                                _notificationService.Display(outputBuilder.ToString());
-                                outputBuilder.Clear();
-                                return;
-                            }
+                            _notificationService.Display(outputBuilder.ToString());
+                            outputBuilder.Clear();
+                            return;
+                        }
 
-                            _daemonLogCache.Add(e.Data);
-                            outputBuilder.AppendLine(e.Data);
-                        };
+                        _daemonLogCache.Add(e.Data);
+                        outputBuilder.AppendLine(e.Data);
+                    };
+                }
 
+                _daemonProcess.EnableRaisingEvents = true;
+                _daemonProcess.Exited += DaemonProcessExited;
 
-                        p.EnableRaisingEvents = true;
-                        p.Exited += (s, e) =>
-                        {
-                            _notificationService.Display("Daemon process exited");
-                        };
-                    }
-                    
+                try
+                {
+                    _daemonProcess.Start();
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
 
-                    try
-                    {
-                        p.Start();
-                    }
-                    catch (Exception e)
-                    {
-                        throw;
-                    }
-
-                    if(redirectOutput)
-                    {
-                        p.BeginErrorReadLine();
-                        p.BeginOutputReadLine();
-                    }
+                if(redirectOutput)
+                {
+                    _daemonProcess.BeginErrorReadLine();
+                    _daemonProcess.BeginOutputReadLine();
                 }
 
                 await Task.Delay(1000);
             }
         }
 
-        private void P_Exited(object sender, EventArgs e)
+        private void DaemonProcessExited(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            _notificationService.Display("Daemon process exited");
+            _daemonCache.DaemonStarted = false;
+            _navigationServiceFactory.SetDaemonStartupModal();
+            _daemonProcess = null;
         }
     }
 }
