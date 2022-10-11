@@ -70,11 +70,6 @@
 								<Label Foreground="#A0A0A0" FontWeight="300">Confirmations: </Label>
 								<Label Foreground="#A0A0A0" FontWeight="300" Margin="20 0 0 0">3004</Label>
 							</StackPanel>
-
-							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
-								<Label Foreground="#A0A0A0" FontWeight="300">Transaction key: </Label>
-								<Label Foreground="#A0A0A0" FontWeight="300" Margin="10 0 0 0">Click to reveal</Label>
-							</StackPanel>
 						</StackPanel>
 					</ScrollViewer>	
 				</Grid>
