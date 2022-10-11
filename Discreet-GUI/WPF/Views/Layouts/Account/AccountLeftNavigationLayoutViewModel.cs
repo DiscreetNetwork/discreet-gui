@@ -28,11 +28,7 @@ namespace WPF.Views.Layouts.Account
 
         public ViewModelBase CurrentViewModel => _accountNavigationStore.CurrentViewModel;
 
-        public ReactiveCommand<Unit, Unit> NavigateAccountHomeCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateAccountSendCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateAccountReceiveCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateAccountTransactionsCommand { get; set; }
-        public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false, false };
+        public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
@@ -54,40 +50,40 @@ namespace WPF.Views.Layouts.Account
             accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
 
             _userPreferrencesStore.HideBalanceChanged += () => OnPropertyChanged(nameof(HideBalance));
-
-            NavigateAccountHomeCommand              = ReactiveCommand.Create(() => 
-            { 
-                ResetButtonStates(); ButtonActiveStates[0] = true;
-                navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
-            });
-            NavigateAccountSendCommand              = ReactiveCommand.Create(() => 
-            { 
-                ResetButtonStates(); ButtonActiveStates[1] = true;
-                navigationServiceFactory.CreateAccountNavigation<AccountSendViewModel>().Navigate();
-            });
-            NavigateAccountReceiveCommand           = ReactiveCommand.Create(() => 
-            { 
-                ResetButtonStates(); ButtonActiveStates[2] = true;
-                navigationServiceFactory.CreateAccountNavigation<AccountReceiveViewModel>().Navigate();
-            });
-            NavigateAccountTransactionsCommand      = ReactiveCommand.Create(() => 
-            { 
-                ResetButtonStates(); ButtonActiveStates[3] = true;
-                navigationServiceFactory.CreateAccountNavigation<AccountTransactionsViewModel>().Navigate();
-            });
         }
 
+        void NavigateHomeCommand()
+        {
+            ResetButtonStates();
+            ButtonActiveStates[0] = true;
+            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
+        }
+
+        void NavigateSendCommand()
+        {
+            ResetButtonStates();
+            ButtonActiveStates[1] = true;
+            _navigationServiceFactory.CreateAccountNavigation<AccountSendViewModel>().Navigate();
+        }
+
+        void NavigateTransactionsCommand()
+        {
+            ResetButtonStates();
+            ButtonActiveStates[2] = true;
+            _navigationServiceFactory.CreateAccountNavigation<AccountTransactionsViewModel>().Navigate();
+        }
 
         void NavigateSubmitIssueCommand()
         {
             ResetButtonStates();
-            ButtonActiveStates[4] = true;
+            ButtonActiveStates[3] = true;
             _navigationServiceFactory.CreateAccountNavigation<SubmitIssueViewModel>().Navigate();
         }
 
         void NavigateAccountSettingsCommand() 
         {
-            ResetButtonStates(); ButtonActiveStates[5] = true;
+            ResetButtonStates(); 
+            ButtonActiveStates[4] = true;
             _navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
         }
 
