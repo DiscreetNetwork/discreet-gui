@@ -31,7 +31,6 @@ namespace WPF.Views.CreateWallet
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
         public string WalletName { get => _newWalletCache.WalletName; set { _newWalletCache.WalletName = value; ValidateCanContinue(); } }
-        public string WalletLocation { get => _newWalletCache.WalletLocation; set { _newWalletCache.WalletLocation = value; ValidateCanContinue(); } }
         public bool Bootstrap { get => _newWalletCache.Bootstrap; set => _newWalletCache.Bootstrap = value; }
 
 
@@ -55,12 +54,6 @@ namespace WPF.Views.CreateWallet
         public void ValidateCanContinue()
         {
             if(string.IsNullOrWhiteSpace(WalletName))
-            {
-                CanContinue = false;
-                return;
-            }
-
-            if(string.IsNullOrWhiteSpace(WalletLocation))
             {
                 CanContinue = false;
                 return;

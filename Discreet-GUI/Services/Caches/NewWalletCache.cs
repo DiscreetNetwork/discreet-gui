@@ -16,11 +16,6 @@ namespace Services.Caches
         public string WalletName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Where on disk to store the wallet
-        /// </summary>
-        public string WalletLocation { get; set; } = string.Empty;
-
-        /// <summary>
         /// The generated seedphrase that is associated with the new wallet
         /// </summary>
         public List<string> Mnemonic { get; set; } = null;
@@ -45,7 +40,6 @@ namespace Services.Caches
         public void Clear()
         {
             WalletName = string.Empty; 
-            WalletLocation = string.Empty;
             Mnemonic = null;
             Password = string.Empty;
             NetworkType = string.Empty;
