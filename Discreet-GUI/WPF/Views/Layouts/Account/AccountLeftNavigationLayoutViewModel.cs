@@ -15,6 +15,7 @@ using WPF.Views.Account;
 using WPF.Views.Settings;
 using Services;
 using WPF.Stores;
+using System.Reactive.Concurrency;
 
 namespace WPF.Views.Layouts.Account
 {
@@ -29,6 +30,8 @@ namespace WPF.Views.Layouts.Account
         public ViewModelBase CurrentViewModel => _accountNavigationStore.CurrentViewModel;
 
         public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
+
+        public Avalonia.Media.Imaging.Bitmap WalletIdenticon { get; set; }
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
@@ -50,6 +53,12 @@ namespace WPF.Views.Layouts.Account
             accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
 
             _userPreferrencesStore.HideBalanceChanged += () => OnPropertyChanged(nameof(HideBalance));
+
+            _walletCache.EntropyHashChanged += () =>
+            {
+                WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
+                OnPropertyChanged(nameof(WalletIdenticon));
+            };
         }
 
         void NavigateHomeCommand()

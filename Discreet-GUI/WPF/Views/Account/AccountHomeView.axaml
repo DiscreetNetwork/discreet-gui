@@ -32,7 +32,7 @@
 			<RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-	    <Label Foreground="#8C52C0" FontSize="30">Account Home</Label>
+	    <Label Foreground="#8C52C0" FontSize="30">Home</Label>
 	  
         <Label Foreground="white" Padding="4 0 0 0" Margin="0 40 0 0" Grid.Row="1" FontSize="18" FontWeight="200" >Total Balance</Label>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">

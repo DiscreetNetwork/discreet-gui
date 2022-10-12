@@ -70,7 +70,7 @@ namespace WPF.Views.Account.Modals
             Receiver = Transaction.Outputs.Any() ? Transaction.Outputs.Where(o => o.Address != _transactionDetailsCache.Address).FirstOrDefault()?.Address : "";
             OnPropertyChanged(nameof(Receiver));
 
-            Date = new DateTime(Transaction.Timestamp).ToUniversalTime().ToString("dd-MM-yyyy HH:mm:ss");
+            Date = new DateTime(Transaction.Timestamp).ToString("dd-MM-yyyy HH:mm:ss");
             OnPropertyChanged(nameof(Date));
 
             TransactionId = Transaction.TxID;
