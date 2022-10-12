@@ -57,6 +57,7 @@ namespace WPF.Hosted
                     var walletToFind = await _walletService.GetWallet(_walletCache.Label);
                     if (walletToFind == null) throw new Exception("WalletPollerBackgroundService: Could not find the selected wallet");
 
+                    _walletCache.EntropyHash = BitConverter.ToString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(walletToFind.Entropy)));
                     _walletCache.LastSeenHeight = walletToFind.LastSeenHeight;
                     _walletCache.Synced = walletToFind.Synced;
 

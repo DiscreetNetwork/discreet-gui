@@ -27,6 +27,9 @@ namespace Services.Caches
         public bool VisorStartupComplete { get => _visorStartupComplete; set { _visorStartupComplete = value; VisorStartupCompleteChanged?.Invoke(); } }
 
 
+        public event Action EntropyHashChanged;
+        private string _entropyHash;
+        public string EntropyHash { get => _entropyHash; set { _entropyHash = value; EntropyHashChanged?.Invoke(); } }
 
         public event Action LabelChanged;
         string _label;
