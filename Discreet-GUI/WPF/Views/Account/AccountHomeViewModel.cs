@@ -82,8 +82,9 @@ namespace WPF.Views.Account
             OnPropertyChanged(nameof(HideBalance));
         }
 
-        public void DisplayAccountDetails(string accountName)
+        public void DisplayAccountDetails(string accountId)
         {
+            _walletCache.SelectedAccount = accountId;
             _navigationServiceFactory.CreateModalNavigationService<Modals.AccountDetailsViewModel>().Navigate();
         }
 

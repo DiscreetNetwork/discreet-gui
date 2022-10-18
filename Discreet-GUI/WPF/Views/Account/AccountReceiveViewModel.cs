@@ -57,6 +57,8 @@ namespace WPF.Views.Account
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         public decimal TotalBalance => Accounts.Sum(x => (decimal)x.Balance);
 
+        public AccountReceiveViewModel() { }
+
         public AccountReceiveViewModel(WalletCache walletCache)
         {
             _walletCache = walletCache;

@@ -59,6 +59,14 @@ namespace Services.Caches
         }
 
 
+        /// <summary>
+        /// Invoked when the user clicks on one of the accounts
+        /// </summary>
+        public event Action SelectedAccountChanged;
+        private string _selectedAccount;
+        public string SelectedAccount { get => _selectedAccount; set { _selectedAccount = value; SelectedAccountChanged?.Invoke(); } }
+
+
         public void ClearCache()
         {
             Label = String.Empty;

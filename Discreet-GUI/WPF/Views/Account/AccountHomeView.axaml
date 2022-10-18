@@ -92,7 +92,7 @@
 							  </Grid.ColumnDefinitions>
 
 							  <Image Grid.Column="0" Height="45" Width="45" Margin="5 0 0 0" VerticalAlignment="Center" Source="{Binding Identicon}"/>
-							  <Button Grid.Column="1" Cursor="Hand" Margin="10 0 0 0" Padding="0" Command="{Binding $parent[ItemsControl].DataContext.DisplayAccountDetails}" CommandParameter="{Binding Name}">
+							  <Button Grid.Column="1" Cursor="Hand" Margin="10 0 0 0" Padding="0" Command="{Binding $parent[ItemsControl].DataContext.DisplayAccountDetails}" CommandParameter="{Binding Address}">
 								  <Label FontSize="16" FontWeight="200" VerticalAlignment="Center" Content="{Binding Name, Converter={StaticResource NameToTruncatedStringConverter}}"/>
 								  <Button.Styles>
 									  <Style Selector="Button">
