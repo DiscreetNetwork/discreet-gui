@@ -30,6 +30,11 @@ jobs:
       shell: bash
     
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: staging
+        token: ${{ secrets.GDAT }}
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
@@ -157,12 +162,10 @@ jobs:
       
     - name: Push csproj changes
       run: |
-        git config user.name ghdiscreet
-        git config user.email github@discreet.net
-        git remote set-url origin https://x-access-token:${{ secrets.GDAT }}@github.com/${{ github.repository }}
+        git config user.name github-actions
+        git config user.email github-actions@github.com
         git add Discreet-GUI/WPF/WPF.csproj
-        git commit -m "Edited version in WPF.csproj"
-        git fetch origin staging
-        git push origin HEAD:staging
+        git commit -m "🖉 Edited version in WPF.csproj"
+        git push
       shell: bash
       if: ${{ github.event.pull_request.merged == true }}
