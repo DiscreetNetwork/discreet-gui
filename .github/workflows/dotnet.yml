@@ -56,11 +56,11 @@ jobs:
 
     - name: Zip [WIN-X64]
       run: |
-        Compress-Archive -Path Discreet-GUI/WPF/bin/Release/net6.0/win-x64/publish/* -DestinationPath Discreet-GUI/WPF/bin/Release/net6.0/win-x64/win-x64.zip
+        Compress-Archive -Path Discreet-GUI/Discreet-GUI/bin/Release/net6.0/win-x64/publish/* -DestinationPath Discreet-GUI/Discreet-GUI/bin/Release/net6.0/win-x64/win-x64.zip
 
     - name: Tar bz2 [LINUX-x64]
       run: |
-        tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz -C Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish *
+        tar -czvf Discreet-GUI/Discreet-GUI/bin/Release/net6.0/linux-x64/linux-x64.tar.gz -C Discreet-GUI/Discreet-GUI/bin/Release/net6.0/linux-x64/publish *
 
     - name: Create the Github Release
       uses: actions/create-release@v1
@@ -80,7 +80,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: Discreet-GUI/WPF/bin/Release/net6.0/win-x64/win-x64.zip
+        asset_path: Discreet-GUI/Discreet-GUI/bin/Release/net6.0/win-x64/win-x64.zip
         asset_name: win-x64.zip
         asset_content_type: application/zip
         
@@ -90,7 +90,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz
+        asset_path: Discreet-GUI/Discreet-GUI/bin/Release/net6.0/linux-x64/linux-x64.tar.gz
         asset_name: linux-x64.tar.gz
         asset_content_type: application/bzip2
 
