@@ -101,12 +101,12 @@ jobs:
         
     - name: Zip [WIN-X64]
       run: |
-        Compress-Archive -Path Discreet-GUI/WPF/bin/Release/net6.0/win-x64/publish/* -DestinationPath Discreet-GUI/WPF/bin/Release/net6.0/win-x64/win-x64.zip
+        Compress-Archive -Path Discreet-GUI/Discreet-GUI/bin/Release/net6.0/win-x64/publish/* -DestinationPath Discreet-GUI/Discreet-GUI/bin/Release/net6.0/win-x64/win-x64.zip
       if: ${{ github.event.pull_request.merged == true }}
       
     - name: Tar bz2 [LINUX-x64]
       run: |
-        tar -czvf Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz -C Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/publish *
+        tar -czvf Discreet-GUI/Discreet-GUI/bin/Release/net6.0/linux-x64/linux-x64.tar.gz -C Discreet-GUI/Discreet-GUI/bin/Release/net6.0/linux-x64/publish *
       if: ${{ github.event.pull_request.merged == true }}
       
     - name: Create preview release
@@ -125,7 +125,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: Discreet-GUI/WPF/bin/Release/net6.0/win-x64/win-x64.zip
+        asset_path: Discreet-GUI/Discreet-GUI/bin/Release/net6.0/win-x64/win-x64.zip
         asset_name: win-x64.zip
         asset_content_type: application/zip
       if: ${{ github.event.pull_request.merged == true }}
@@ -136,7 +136,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: Discreet-GUI/WPF/bin/Release/net6.0/linux-x64/linux-x64.tar.gz
+        asset_path: Discreet-GUI/Discreet-GUI/bin/Release/net6.0/linux-x64/linux-x64.tar.gz
         asset_name: linux-x64.tar.bz2
         asset_content_type: application/bzip2
       if: ${{ github.event.pull_request.merged == true }}
@@ -151,12 +151,12 @@ jobs:
     
     
     - name: Edit version in csproj
-      run: sed -i 's/<Version>.*<\/Version>/<Version>${{ steps.create_tag_name.outputs.TAG_NAME }}<\/Version>/g' Discreet-GUI/WPF/WPF.csproj
+      run: sed -i 's/<Version>.*<\/Version>/<Version>${{ steps.create_tag_name.outputs.TAG_NAME }}<\/Version>/g' Discreet-GUI/Discreet-GUI/Discreet-GUI.csproj
       shell: bash
       if: ${{ github.event.pull_request.merged == true }}
     
     - name: Echo csproj
-      run: cat Discreet-GUI/WPF/WPF.csproj
+      run: cat Discreet-GUI/Discreet-GUI/Discreet-GUI.csproj
       shell: bash
       if: ${{ github.event.pull_request.merged == true }}
       
@@ -164,8 +164,8 @@ jobs:
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git add Discreet-GUI/WPF/WPF.csproj
-        git commit -m "🖉 Edited version in WPF.csproj"
+        git add Discreet-GUI/Discreet-GUI/Discreet-GUI.csproj
+        git commit -m "🖉 Edited version in Discreet-GUI.csproj"
         git push
       shell: bash
       if: ${{ github.event.pull_request.merged == true }}
