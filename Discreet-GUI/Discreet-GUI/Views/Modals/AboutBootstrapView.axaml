@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Discreet_GUI.Views.Modals.AboutBootstrapView">
+  <Grid Background="#292929">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0" Margin="0 50 0 0" HorizontalContentAlignment="Center" Foreground="White">About the *bootstrap* mode</Label>
+    <Label Grid.Row="1" Margin="0 50 0 0" HorizontalContentAlignment="Center" Foreground="#9A9A9A">Lorem ipsum</Label>
+    <Label Grid.Row="2" HorizontalContentAlignment="Center" Foreground="#9A9A9A">Lorem ipsum 2</Label>
+    
+    <Image Grid.Row="3" Width="40" Margin="0 50 400 0" HorizontalAlignment="Center" Source="/Assets/Icons/notification-alert.png"/>
+    <TextBlock Grid.Row="3" Margin="0 50 0 0" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Foreground="White" Width="289">Notification area if needed, importan concerns and compliance needed for raising anything</TextBlock>
+
+    <RadioButton Grid.Row="4" IsChecked="False" Margin="0 50 0 0" BorderThickness="0.5" HorizontalAlignment="Center"  Foreground="#9A9A9A" Background="Transparent">
+      <RadioButton.Content>
+        <TextBlock Text="I understand the privacy implications lorem ipsum dolores est situe cum" TextWrapping="Wrap" Width="270"/>
+      </RadioButton.Content>
+    </RadioButton>
+
+    <Button Grid.Row="5" Cursor="Hand" Width="300" Height="50" Margin="0 20 0 0" FontSize="17" Foreground="White" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="#646464" Background="Transparent" Command="{Binding ContinueCommand}">Continue</Button>
+
+  </Grid>
+</UserControl>
