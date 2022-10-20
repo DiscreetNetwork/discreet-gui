@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:Discreet_GUI.ViewModels.CreateWallet"
+             mc:Ignorable="d" 
+             x:Class="Discreet_GUI.Views.CreateWallet.VerifyRecoveryPhraseView"
+			 Design.Width="800" Design.Height="800">
+	
+	<Design.DataContext>
+		<vm:VerifyRecoveryPhraseViewModel/>
+	</Design.DataContext>
+	
+  <UserControl.Styles>
+    <StyleInclude Source="/ApplicationStyles.axaml"/>
+  </UserControl.Styles>
+  
+  <Grid Background="#282529">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+	  <RowDefinition Height="auto"/>
+	  <RowDefinition/>
+	</Grid.RowDefinitions>
+
+	<Image Grid.Row="0" Width="115" Margin="0 50 0 0" Source="/Assets/Images/process-dots-2-4.png"/>
+
+	<Label Grid.Row="1" Margin="0 50 0 0" FontSize="26" HorizontalContentAlignment="Center" Foreground="White" >Verify recovery phrase</Label>
+    <Label Grid.Row="2" Margin="0 10 0 0" FontSize="16" HorizontalContentAlignment="Center" Foreground="#9A9A9A" >Tap the words in the correct order</Label>
+
+	<ItemsControl Grid.Row="3" Margin="0 0 0 0" HorizontalAlignment="Center" Items="{Binding SelectedWords}" Width="450" VerticalAlignment="Center">
+		<ItemsControl.Styles>
+			<Style Selector="ContentPresenter">
+				<Setter Property="Background" Value="#2D2D2D"/>
+				<Setter Property="Margin" Value="5, 5"/>
+				<Setter Property="Padding" Value="8"/>
+				<Setter Property="CornerRadius" Value="6"/>
+			</Style>
+		</ItemsControl.Styles>
+		<ItemsControl.DataTemplates>
+			<DataTemplate>
+				<TextBlock Text="{Binding}" Foreground="#DDDDDD"/>
+			</DataTemplate>
+		</ItemsControl.DataTemplates>
+		<ItemsControl.ItemsPanel>
+			<ItemsPanelTemplate>
+				<WrapPanel />
+			</ItemsPanelTemplate>
+		</ItemsControl.ItemsPanel>
+	</ItemsControl>
+
+    <Separator Grid.Row="4" Height="1" Margin="0 25 0 10" Width="450" Background="#404040"/>
+
+	<ListBox Grid.Row="5" Background="Transparent" SelectionMode="Multiple, Toggle" Selection="{Binding Selection}" Width="450" Items="{Binding RandomizedMnemonic}" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<ListBox.Styles>
+			<Style Selector="ListBoxItem">
+				<Setter Property="CornerRadius" Value="6"/>
+				<Setter Property="Background" Value="#2D2D2D"/>
+				<Setter Property="Padding" Value="8"/>
+				<Setter Property="Margin" Value="5, 5"/>
+			</Style>
+		</ListBox.Styles>
+		<ListBox.DataTemplates>
+			<DataTemplate>
+				<TextBlock Foreground="#DDDDDD" Text="{Binding}" Cursor="Hand"/>
+			</DataTemplate>
+		</ListBox.DataTemplates>
+		<ListBox.ItemsPanel>
+			<ItemsPanelTemplate>
+				<WrapPanel />
+			</ItemsPanelTemplate>
+		</ListBox.ItemsPanel>
+	</ListBox>
+
+	<Button Grid.Row="6" Classes="btn-outline-pink hand" Width="300" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" Margin="25 0 0 25" Command="{Binding NavigateBackCommand}">Back</Button>
+    <Button Grid.Row="6" Classes="btn btn-pink content-center align-center hand" Width="300" Height="50" FontSize="20" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding NavigateNextCommand}" Content="{Binding ContinueButtonContent}"/>
+
+  </Grid>
+</UserControl>

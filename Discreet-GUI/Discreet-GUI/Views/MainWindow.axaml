@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:Discreet_GUI.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Discreet_GUI.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="WPF"
+        Height="720" Width="1280" MinHeight="720" MinWidth="1280"
+        WindowStartupLocation="CenterScreen" WindowState="{Binding CurrentWindowState, Mode=TwoWay}"
+        CanResize="True"
+		ExtendClientAreaToDecorationsHint="True"
+		ExtendClientAreaChromeHints="NoChrome"
+		Background="Transparent">
+
+	<Grid Background="#1C1C1D">
+		<Button IsVisible="False" Command="{Binding DisplayDebugProcess}" HotKey="Ctrl+D"/>
+		
+		<ContentControl ZIndex="200" Margin="0 75 25 0" HorizontalAlignment="Right" Content="{Binding NotificationContainerViewModel}"/>
+
+		<TransitioningContentControl  ZIndex="110" Content="{Binding DaemonStartupModalViewModel}">
+			<TransitioningContentControl.PageTransition>
+				<CrossFade Duration="0:00:00.001"/>
+			</TransitioningContentControl.PageTransition>
+		</TransitioningContentControl>
+		
+		<TransitioningContentControl  ZIndex="100" Content="{Binding CurrentModalViewModel}">
+			<TransitioningContentControl.PageTransition>
+				<CrossFade Duration="0:00:00.001"/>
+			</TransitioningContentControl.PageTransition>
+		</TransitioningContentControl>
+		
+		<TransitioningContentControl Content="{Binding CurrentViewModel}">
+			<TransitioningContentControl.PageTransition>
+				<CrossFade Duration="0:00:00.200"/>
+			</TransitioningContentControl.PageTransition>
+		</TransitioningContentControl>
+	</Grid>
+</Window>

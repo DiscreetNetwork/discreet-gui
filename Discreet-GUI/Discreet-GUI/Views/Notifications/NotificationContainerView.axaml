@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:Discreet_GUI.ViewModels.Notifications"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Discreet_GUI.Views.Notifications.NotificationContainerView">
+
+	<Design.DataContext>
+		<vm:NotificationContainerViewModel/>
+	</Design.DataContext>
+	
+	<ItemsControl Items="{Binding Notifications}">
+		<ItemsControl.ItemTemplate>
+			<DataTemplate>
+				<Border Padding="5 8 5 8" CornerRadius="6" Margin="0 5 0 0" Width="250" Background="#1C1C1C" BorderBrush="Gray" BorderThickness="1" BoxShadow="0 3 7 #ff0a0a0a">
+					<Grid>
+						<TextBlock TextWrapping="Wrap" Width="180" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontWeight="300" FontSize="14" Text="{Binding Text}"/>
+						<Button Width="30" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding DismissCommand}">
+							<Image Source="/Assets/Buttons/close-bright-white.png"/>
+
+							<Button.Styles>
+								<Style Selector="Button">
+									<Setter Property="Background" Value="Transparent"/>
+								</Style>
+							</Button.Styles>
+						</Button>
+					</Grid> 
+				</Border>
+			</DataTemplate>
+		</ItemsControl.ItemTemplate>
+	</ItemsControl>
+</UserControl>

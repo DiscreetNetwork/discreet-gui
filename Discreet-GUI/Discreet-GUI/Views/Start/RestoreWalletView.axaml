@@ -1,0 +1,132 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:c="using:Discreet_GUI.ValueConverters"
+             mc:Ignorable="d" Design.Height="800" Design.Width="1200"
+             x:Class="Discreet_GUI.Views.Start.RestoreWalletView">
+
+	<UserControl.Resources>
+		<c:PasswordStrengthToStringConverter x:Key="PasswordStrengthToStringConverter"/>
+		<c:PasswordStrengthToColorStringConverter x:Key="PasswordStrengthToColorStringConverter"/>
+		<c:PasswordStrengthToIntegerConverter x:Key="PasswordStrengthToIntegerConverter"/>
+	</UserControl.Resources>
+	
+	<UserControl.Styles>
+		<StyleInclude Source="/ApplicationStyles.axaml"/>
+
+		<Style Selector="RadioButton:checked Border">
+			<Setter Property="BorderBrush" Value="#dddddd"/>
+		</Style>
+		<Style Selector="RadioButton AccessText">
+			<Setter Property="Foreground" Value="#dddddd"/>
+		</Style>
+
+
+		<Style Selector="Image.EyesOpen">
+			<Setter Property="Source" Value="/Assets/Buttons/eye-open-white.png"/>
+		</Style>
+		<Style Selector="Image.EyesClosed">
+			<Setter Property="Source" Value="/Assets/Buttons/eye-closed-gray.png"/>
+		</Style>
+
+		<Style Selector="Button.TextBoxButton /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent"/>
+		</Style>
+	</UserControl.Styles>
+	
+  <Grid Background="#282529">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0" Margin="0 50 0 0" FontSize="26" Foreground="White" HorizontalContentAlignment="Center" >Restore wallet</Label>
+    <Label Grid.Row="1" Foreground="#9A9A9A" FontSize="16" HorizontalContentAlignment="Center" >Restore from keys or mnemonic seed.</Label>
+
+    <Grid Grid.Row="2" Margin="100 0 100 50" Width="800" VerticalAlignment="Center">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+
+      <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="200" Margin="0 0 0 5">Wallet name</Label>
+      <TextBox Classes="input" Text="{Binding WalletName}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="300" Watermark="My Old Wallet" Margin="0 0 10 0" Padding="10 5 6 6" VerticalContentAlignment="Center" Foreground="White" Background="Transparent" BorderBrush="#FFD55182"/>
+
+      <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Foreground="White" FontWeight="200" Margin="0 0 0 5">Wallet location</Label>
+      <TextBox Classes="input" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" FontWeight="300" Text="{Binding SelectedFilePath}"  Padding="10 5 91 6"  VerticalContentAlignment="Center" Foreground="White"  Background="Transparent" BorderBrush="#FF646464" ></TextBox>
+
+      <Button Classes="btn btn-gray hand" Margin="0 5 5 5" Width="75" Height="30" Padding="5 4 5 5" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" Background="#3E3E3E" Foreground="White" BorderBrush="#FF3E3E3E" Command="{Binding OpenFileDialogCommand}">Browse</Button>
+
+      <RadioButton IsChecked="{Binding FromMnemonicSeed}" FontWeight="200" Margin="0 30 20 0" Grid.Row="2" Grid.Column="0" Foreground="White" Content="Restore from seed" />
+      <RadioButton IsChecked="{Binding FromKeys}" Margin="0 30 0 0" Grid.Row="2" FontWeight="200" Grid.Column="1" Content="Restore from keys" />
+
+	  <StackPanel Margin="0 20 0 0" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" IsVisible="{Binding FromMnemonicSeed}">
+		  <TextBox Classes="input" TextWrapping="Wrap" Height="100" Text="{Binding MnemonicPhrase}" Watermark="Enter your 12 word mnemonic seed" Background="{x:Null}" Padding="10 10 10 10" BorderBrush="#FF646464"/>
+
+		  <Grid Grid.Row="3" Margin="0 20 0 20">
+			  <Grid.RowDefinitions>
+				  <RowDefinition Height="auto"/>
+				  <RowDefinition Height="auto"/>
+				  <RowDefinition Height="auto"/>
+				  <RowDefinition Height="auto"/>
+			  </Grid.RowDefinitions>
+			  <Grid.ColumnDefinitions>
+				  <ColumnDefinition Width="auto"/>
+				  <ColumnDefinition Width="auto"/>
+			  </Grid.ColumnDefinitions>
+
+			  <Label Grid.Row="0" Grid.Column="0" Foreground="#DDDDDD">Enter password</Label>
+			  <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="0 0 10 0">
+				  <TextBox Classes="input content-left" Text="{Binding SelectedPassword}" PasswordChar="{Binding EnterPasswordCharacter}" FontSize="{Binding EnterPasswordFontSize}" Width="395" Height="40" Padding="10 0 55 0" Margin="0 5 0 0"/>
+				  <Button Classes="TextBoxButton" Margin="-50 0 0 -4" Command="{Binding ToggleDisplayEnterPasswordCommand}" Cursor="Hand">
+					  <Image Width="20" Classes.EyesOpen="{Binding DisplayEnterPassword}" Classes.EyesClosed="{Binding !DisplayEnterPassword}"/>
+				  </Button>
+			  </StackPanel>
+
+			  <Label Grid.Row="0" Grid.Column="1" Foreground="#DDDDDD" Margin="0 0 0 0">Password confirm</Label>
+			  <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0 0 0 0">
+				  <TextBox Classes="input content-left" Text="{Binding SelectedPasswordConfirm}" Width="395" PasswordChar="{Binding ConfirmPasswordCharacter}" FontSize="{Binding ConfirmPasswordFontSize}" Padding="10 0 55 0" Margin="0 5 0 0" Height="40"/>
+				  <Button Classes="TextBoxButton" Margin="-50 0 0 -4" Command="{Binding ToggleDisplayConfirmPasswordCommand}" Cursor="Hand">
+					  <Image Width="20" Classes.EyesOpen="{Binding DisplayConfirmPassword}" Classes.EyesClosed="{Binding !DisplayConfirmPassword}"/>
+				  </Button>
+			  </StackPanel>
+		  </Grid>
+
+		  <Grid Grid.Row="4" HorizontalAlignment="Left">
+			  <StackPanel Orientation="Horizontal">
+				  <Label Foreground="#dddddd">Your password is </Label>
+				  <Label Foreground="#D95A86" FontWeight="600" Content="{Binding PasswordStrength, Converter={StaticResource PasswordStrengthToStringConverter}}"/>
+				  <Label Foreground="#dddddd">in security.</Label>
+			  </StackPanel>
+			  <ProgressBar Grid.Row="4" Width="350" Height="15"
+						   Foreground="{Binding PasswordStrength, Converter={StaticResource PasswordStrengthToColorStringConverter}}"
+						   Value="{Binding PasswordStrength, Converter={StaticResource PasswordStrengthToIntegerConverter}}"
+						   Margin="0 30 0 0">
+			  </ProgressBar>
+		  </Grid>
+	  </StackPanel>
+	  <StackPanel Grid.Row="3" IsVisible="{Binding FromKeys}" Margin="0 20 0 0" Grid.Column="0" Grid.ColumnSpan="4">
+		  <TextBox Classes="input" Height="40" Watermark="Account address" VerticalContentAlignment="Center"/>
+		  <TextBox Classes="input" Margin="0 10 0 0" Height="40" Watermark="View key" VerticalContentAlignment="Center"/>
+		  <TextBox Classes="input" Margin="0 10 0 0" Height="40" Watermark="Spend key" VerticalContentAlignment="Center"/>
+	  </StackPanel>
+    </Grid>
+
+	<Button Grid.Row="3" Classes="btn-outline-pink hand" Width="300" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" Margin="25 0 0 25" 
+			Command="{Binding BackCommand}">Back</Button>
+	<Button Grid.Row="3" Classes="btn btn-pink hand" Width="300" Height="50" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="17"
+			IsEnabled="{Binding CanContinue}" Command="{Binding NextCommand}">Recover wallet</Button>
+  </Grid>
+</UserControl>
