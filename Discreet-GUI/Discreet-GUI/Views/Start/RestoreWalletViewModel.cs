@@ -30,9 +30,6 @@ namespace Discreet_GUI.Views.Start
         private string _walletName;
         public string WalletName { get => _walletName; set { _walletName = value; ValidateInput(); } }
 
-        private string _selectedFilePath = string.Empty;
-        public string SelectedFilePath { get => _selectedFilePath; set { _selectedFilePath = value; OnPropertyChanged(nameof(SelectedFilePath)); } }
-
         // RadioButtons
         private bool _fromMnemonicSeed = true;
         public bool FromMnemonicSeed { get => _fromMnemonicSeed; set { _fromMnemonicSeed = value; OnPropertyChanged(nameof(FromMnemonicSeed)); } }
@@ -148,20 +145,6 @@ namespace Discreet_GUI.Views.Start
         void BackCommand()
         {
             _navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate();
-        }
-
-        async Task OpenFileDialogCommand()
-        {
-            var dialog = new OpenFolderDialog();
-
-            if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                var result = await dialog.ShowAsync(desktop.MainWindow);
-                if (result != null)
-                {
-                    SelectedFilePath = result;
-                }
-            }
         }
     }
 }
