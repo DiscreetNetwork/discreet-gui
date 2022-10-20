@@ -207,6 +207,12 @@
   <Style Selector="TextBox.input /template/ TextPresenter">
     <Setter Property="CaretBrush" Value="White"/>
   </Style>
+
+  <Styles>
+	<Style Selector="TextBox:pointerover /template/ TextBlock#PART_Watermark">
+		<Setter Property="Foreground" Value="#8B8B8B"/>
+	</Style>
+  </Styles>
   <!-- A default TextBox style -->
 
 	
