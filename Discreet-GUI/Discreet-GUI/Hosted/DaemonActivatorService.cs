@@ -48,33 +48,45 @@ namespace Discreet_GUI.Hosted
             {
                 string altPath = string.Empty;
 
-                if(Environment.OSVersion.Platform == PlatformID.Win32NT)
+                if(Environment.OSVersion.Platform == PlatformID.Win32NT) // Windows
                 {
-                    altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe");
+                    FileInfo defaultWindowsPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon", "Discreet.exe"));
+                    FileInfo windowsAltPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe"));
+                    FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe"));
 
-                    if (!File.Exists(altPath))
+                    if(defaultWindowsPath.Exists)
                     {
-                        altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe");
-                        if (File.Exists(altPath))
-                        {
-                            _notificationService.Display($"Using alternative daemon path: {altPath}");
-                        }
+                        altPath = defaultWindowsPath.FullName;
                     }
-                    else
+                    else if(windowsAltPath.Exists)
                     {
-                        _notificationService.Display($"Using alternative daemon path: {altPath}");
+                        altPath = windowsAltPath.FullName;
+                    }
+                    else if(windowsPreviewPath.Exists)
+                    {
+                        altPath = windowsPreviewPath.FullName;
                     }
                 }
                 else // Linux, MacOS
                 {
-                    altPath = "/usr/lib/discreet-preview/Discreet";
-                    if(File.Exists(altPath))
+                    FileInfo defaultLinuxPath = new FileInfo("/usr/lib/discreet/Discreet");
+                    FileInfo linuxPreviewPath = new FileInfo("/usr/lib/discreet-preview/Discreet");
+
+                    if(defaultLinuxPath.Exists)
                     {
-                        _notificationService.Display($"Using alternative daemon path: {altPath}");
+                        altPath = defaultLinuxPath.FullName;
+                    }
+                    else if(linuxPreviewPath.Exists)
+                    {
+                        altPath = linuxPreviewPath.FullName;
                     }
                 }
 
-                executablePath = altPath;
+                if(!string.IsNullOrWhiteSpace(altPath))
+                {
+                    _notificationService.Display($"Using alternative daemon path: {altPath}");
+                    executablePath = altPath;
+                }
             }
             
             while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath) && useDaemonActivator)
