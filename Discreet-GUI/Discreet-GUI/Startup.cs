@@ -190,7 +190,7 @@ namespace Discreet_GUI
                     UseActivator = true,
                     RedirectOutput = true,
                     ExecutableName = "Discreet",
-                    ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "Discreet.exe" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES%")}\\Discreet Daemon\\Discreet.exe"
+                    ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "/usr/lib/discreet/Discreet" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES%")}\\Discreet Daemon\\Discreet.exe"
                 },
 
                 ZMQSettings = new

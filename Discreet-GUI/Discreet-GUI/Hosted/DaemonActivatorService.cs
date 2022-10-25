@@ -42,10 +42,31 @@ namespace Discreet_GUI.Hosted
             var executableName = _configuration.GetValue<string>("DaemonSettings:ExecutableName");
             var redirectOutput = _configuration.GetValue<bool>("DaemonSettings:RedirectOutput");
 
+
+            // Check for other possible executable paths before starting
+            if(!File.Exists(executablePath) && useDaemonActivator && Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                string altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe");
+                
+                if(!File.Exists(altPath))
+                {
+                    altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe");
+                    if(File.Exists(altPath)) 
+                    {
+                        _notificationService.Display($"Using alternative daemon path: {altPath}");
+                    }
+                }
+                else
+                {
+                    _notificationService.Display($"Using alternative daemon path: {altPath}");
+                }
+
+                executablePath = altPath;
+            }
             
             while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath) && useDaemonActivator)
             {
-                _notificationService.Display("Could not find daemon executable.");
+                _notificationService.Display("Could not find the daemon executable. Please update your 'discreet\\wallet-config\\appsettings.json' file with a full path to the daemon");
                 await Task.Delay(3000);
                 executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
             }
