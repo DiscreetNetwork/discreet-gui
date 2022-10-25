@@ -27,6 +27,9 @@ namespace Services.Caches
         public bool VisorStartupComplete { get => _visorStartupComplete; set { _visorStartupComplete = value; VisorStartupCompleteChanged?.Invoke(); } }
 
 
+        public event Action EntropyHashChanged;
+        private string _entropyHash;
+        public string EntropyHash { get => _entropyHash; set { _entropyHash = value; EntropyHashChanged?.Invoke(); } }
 
         public event Action LabelChanged;
         string _label;
@@ -54,6 +57,14 @@ namespace Services.Caches
             Accounts.Add(new WalletAddress { Name = name, Address = address, Balance = balance, Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, address), Type = addressType });
 
         }
+
+
+        /// <summary>
+        /// Invoked when the user clicks on one of the accounts
+        /// </summary>
+        public event Action SelectedAccountChanged;
+        private string _selectedAccount;
+        public string SelectedAccount { get => _selectedAccount; set { _selectedAccount = value; SelectedAccountChanged?.Invoke(); } }
 
 
         public void ClearCache()

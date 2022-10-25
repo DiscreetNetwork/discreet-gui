@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:Discreet_GUI.Views.Modals"
+			 xmlns:converters="using:Discreet_GUI.ValueConverters"
+             mc:Ignorable="d"
+             x:Class="Discreet_GUI.Views.Modals.SelectWalletView">
+
+	<UserControl.Resources>
+		<converters:WalletStatusToUnlockedBooleanConverter x:Key="WalletStatusToUnlockedBooleanConverter"/>
+		<converters:WalletStatusToUnlockedStringConverter x:Key="WalletStatusToUnlockedStringConverter"/>
+	</UserControl.Resources>
+	
+	<Design.DataContext>
+		<vm:SelectWalletViewModel/>
+	</Design.DataContext>
+	
+	<UserControl.Styles>
+		<StyleInclude Source="/ApplicationStyles.axaml"/>
+
+		<Style Selector="Image.EyesOpen">
+			<Setter Property="Source" Value="/Assets/Buttons/eye-open-white.png"/>
+		</Style>
+		<Style Selector="Image.EyesClosed">
+			<Setter Property="Source" Value="/Assets/Buttons/eye-closed-gray.png"/>
+		</Style>
+
+		<Style Selector="Button.TextBoxButton /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent"/>
+		</Style>
+	</UserControl.Styles>
+
+	<Grid Background="#282529">
+		<Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+
+			<Label Grid.Row="0" Foreground="#DDDDDD" Margin="0 5 0 5">Select a wallet</Label>
+			<ComboBox Grid.Row="1" Classes="dropdown-dark" Width="350" Height="40" Items="{Binding LoadedWallets}" SelectedIndex="{Binding SelectedWalletIndex}">
+				<ComboBox.Resources>
+					<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
+				</ComboBox.Resources>
+				<ComboBox.DataTemplates>
+					<DataTemplate>
+						<TextBlock Text="{Binding Label}"/>
+					</DataTemplate>
+				</ComboBox.DataTemplates>
+			</ComboBox>
+
+			
+			<Label Grid.Row="2" IsVisible="{Binding SelectedWalletStatus.Status, Converter={StaticResource WalletStatusToUnlockedBooleanConverter}, ConverterParameter=Inverted}" Foreground="#DDDDDD" Margin="0 15 0 0">Enter password</Label>
+
+			<StackPanel Orientation="Horizontal" Grid.Row="3"
+						IsVisible="{Binding SelectedWalletStatus.Status, Converter={StaticResource WalletStatusToUnlockedBooleanConverter}, ConverterParameter=Inverted}">
+				<TextBox Classes="input content-left" Width="350" PasswordChar="{Binding PasswordCharacter}" Padding="10 0 55 0" Margin="0 5 0 0" Height="40" Text="{Binding EnteredPassword}" FontSize="{Binding PasswordFontSize}"/>
+				<Button Classes="TextBoxButton" Margin="-50 0 0 -4" Command="{Binding ToggleDisplayPasswordCommand}" Cursor="Hand">
+					<Image Width="20" Classes.EyesOpen="{Binding DisplayPassword}" Classes.EyesClosed="{Binding !DisplayPassword}"/>
+				</Button>
+			</StackPanel>
+
+			<Button Grid.Row="4" Classes="btn btn-gray" Cursor="Hand"
+					Width="95" Height="35" Margin="0 10 0 0" 
+					Content="{Binding SelectedWalletStatus.Status, Converter={StaticResource WalletStatusToUnlockedStringConverter}, ConverterParameter=Normal}"
+					Command="{Binding Continue}"/>
+		</Grid>
+	</Grid>
+
+</UserControl>
