@@ -46,19 +46,32 @@ namespace Discreet_GUI.Hosted
             // Check for other possible executable paths before starting
             if(!File.Exists(executablePath) && useDaemonActivator && Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                string altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe");
-                
-                if(!File.Exists(altPath))
+                string altPath = string.Empty;
+
+                if(Environment.OSVersion.Platform == PlatformID.Win32NT)
                 {
-                    altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe");
-                    if(File.Exists(altPath)) 
+                    altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe");
+
+                    if (!File.Exists(altPath))
+                    {
+                        altPath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe");
+                        if (File.Exists(altPath))
+                        {
+                            _notificationService.Display($"Using alternative daemon path: {altPath}");
+                        }
+                    }
+                    else
                     {
                         _notificationService.Display($"Using alternative daemon path: {altPath}");
                     }
                 }
-                else
+                else // Linux, MacOS
                 {
-                    _notificationService.Display($"Using alternative daemon path: {altPath}");
+                    altPath = "/usr/lib/discreet-preview/Discreet";
+                    if(File.Exists(altPath))
+                    {
+                        _notificationService.Display($"Using alternative daemon path: {altPath}");
+                    }
                 }
 
                 executablePath = altPath;
