@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
+using Discreet_GUI.Views.Modals;
 
 namespace Discreet_GUI.Hosted
 {
@@ -196,6 +197,7 @@ namespace Discreet_GUI.Hosted
         {
             _notificationService.Display("Daemon process exited");
             _daemonCache.DaemonStarted = false;
+            _navigationServiceFactory.Create<Views.Start.StartViewModel>().Navigate();
             _navigationServiceFactory.SetDaemonStartupModal();
             _daemonProcess = null;
         }
