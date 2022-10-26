@@ -56,7 +56,10 @@ namespace Discreet_GUI.Views.Start
             });
 
 
-            NavigateExistingWalletChoicesViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate);
+            NavigateExistingWalletChoicesViewCommand = ReactiveCommand.Create(() =>
+            {
+                navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate();
+            });
 
             _ = InitializeCarousel(_cancellationTokenSource.Token);
         }
