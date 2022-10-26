@@ -44,9 +44,6 @@
 						</Style>
 					</Button.Styles>
 				</Button>
-
-				<Button Grid.Row="3" Classes="btn btn-pink hand" Height="40" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0 0 50 0" Command="{Binding Update}" IsVisible="{Binding DisplayUpdateButton}" Content="{Binding ButtonText}"/>
-
 			</Grid>
 		</Border>
 	</Grid>
