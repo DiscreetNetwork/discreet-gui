@@ -53,7 +53,7 @@ namespace Discreet_GUI.Hosted
                 {
                     FileInfo defaultWindowsPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon", "Discreet.exe"));
                     FileInfo windowsAltPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe"));
-                    FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe"));
+                    FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet.exe"));
 
                     if(defaultWindowsPath.Exists)
                     {
