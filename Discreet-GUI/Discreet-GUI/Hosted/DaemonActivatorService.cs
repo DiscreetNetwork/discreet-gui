@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
+using Discreet_GUI.Views.Modals;
 
 namespace Discreet_GUI.Hosted
 {
@@ -52,7 +53,7 @@ namespace Discreet_GUI.Hosted
                 {
                     FileInfo defaultWindowsPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon", "Discreet.exe"));
                     FileInfo windowsAltPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe"));
-                    FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet Daemon", "Discreet.exe"));
+                    FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet.exe"));
 
                     if(defaultWindowsPath.Exists)
                     {
@@ -196,6 +197,7 @@ namespace Discreet_GUI.Hosted
         {
             _notificationService.Display("Daemon process exited");
             _daemonCache.DaemonStarted = false;
+            _navigationServiceFactory.Create<Views.Start.StartViewModel>().Navigate();
             _navigationServiceFactory.SetDaemonStartupModal();
             _daemonProcess = null;
         }

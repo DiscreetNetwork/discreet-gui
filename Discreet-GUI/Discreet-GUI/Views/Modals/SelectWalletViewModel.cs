@@ -116,6 +116,7 @@ namespace Discreet_GUI.Views.Modals
                 }
             }
 
+            _walletCache.ClearCache();
             _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();

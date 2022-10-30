@@ -5,7 +5,7 @@
         xmlns:local="using:Discreet_GUI.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Discreet_GUI.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/discreet-logo.ico"
         Title="WPF"
         Height="720" Width="1280" MinHeight="720" MinWidth="1280"
         WindowStartupLocation="CenterScreen" WindowState="{Binding CurrentWindowState, Mode=TwoWay}"

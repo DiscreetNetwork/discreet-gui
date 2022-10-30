@@ -25,7 +25,7 @@ namespace Discreet_GUI.Views.CreateWallet
         private readonly WalletService _walletService;
         private readonly NotificationService _notificationService;
 
-        public ObservableCollection<string> NetworkTypes { get; set; } = new ObservableCollection<string> { "Mainnet", "Testnet" };
+        public ObservableCollection<string> NetworkTypes { get; set; } = new ObservableCollection<string> { "Testnet" };
         public int SelectedNetworkTypeIndex { get; set; }
 
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
