@@ -54,11 +54,19 @@ namespace Discreet_GUI.Views.Layouts.Account
 
             _userPreferrencesStore.HideBalanceChanged += () => OnPropertyChanged(nameof(HideBalance));
 
-            _walletCache.EntropyHashChanged += () =>
+            if(!string.IsNullOrWhiteSpace(_walletCache.EntropyHash))
             {
                 WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
                 OnPropertyChanged(nameof(WalletIdenticon));
-            };
+            }
+            else
+            {
+                _walletCache.EntropyHashChanged += () =>
+                {
+                    WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
+                    OnPropertyChanged(nameof(WalletIdenticon));
+                };
+            }
         }
 
         void NavigateHomeCommand()
