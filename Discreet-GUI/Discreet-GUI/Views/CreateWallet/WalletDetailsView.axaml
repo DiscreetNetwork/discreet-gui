@@ -45,7 +45,7 @@
 				</ComboBox.Resources>
 			</ComboBox>
 			
-			<CheckBox Grid.Row="4" Cursor="Hand" Margin="0 15 0 0" Content="Bootstrap" IsChecked="{Binding Bootstrap}">
+			<CheckBox Grid.Row="4" Cursor="Hand" Margin="0 15 0 0" Content="Bootstrap" IsChecked="True" IsEnabled="False">
 				<CheckBox.Styles>
 					<Style Selector="Border">
 						<Setter Property="BorderBrush" Value="Gray"/>
