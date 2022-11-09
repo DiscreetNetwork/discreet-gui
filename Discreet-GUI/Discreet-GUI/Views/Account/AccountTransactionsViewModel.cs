@@ -23,18 +23,6 @@ namespace Discreet_GUI.Views.Account
 
         private List<AccountTransaction> _transactions;
         List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
-        /*
-        List<AccountTransaction> Transactions { get; set; } = new List<AccountTransaction>()
-        {
-            new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-13"),
-            new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-132"),
-            new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-1"),
-            new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-13"),
-            new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-133"),
-            new AccountTransaction("9218dhasdad21h", 1650748070, "90xad89d21d12", "-13"),
-        };
-        */
-
         public AccountTransactionsViewModel() { }
 
         public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
@@ -57,7 +45,7 @@ namespace Discreet_GUI.Views.Account
 
                 if (transactions is null) continue;
 
-                txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, x.SentAmount == 0 ? $"+ {DISTConverter.ToStringFormat(DISTConverter.Divide(x.ReceivedAmount))}" : $"- {DISTConverter.ToStringFormat(DISTConverter.Divide(x.SentAmount))}")));
+                txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, account.Name, x.SentAmount == 0 ? $"+ {DISTConverter.ToStringFormat(DISTConverter.Divide(x.ReceivedAmount))}" : $"- {DISTConverter.ToStringFormat(DISTConverter.Divide(x.SentAmount))}")));
             }
 
             Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
@@ -66,7 +54,7 @@ namespace Discreet_GUI.Views.Account
         void DisplayTransactionDetails(AccountTransaction accountTransaction)
         {
             _transactionDetailsCache.TransactionId = accountTransaction.TransactionId;
-            _transactionDetailsCache.Address = accountTransaction.ReceivingAccount;
+            _transactionDetailsCache.Address = accountTransaction.AccountHash;
             _navigationServiceFactory.CreateModalNavigationService<Modals.TransactionDetailsViewModel>().Navigate();
         }
 
@@ -77,7 +65,8 @@ namespace Discreet_GUI.Views.Account
             public DateTime TransactionDate { get; set; }
             public string TimeFormatted => TransactionDate.TimeOfDay.ToString("hh':'mm");
             public string DateFormatted => TransactionDate.ToString("dd/MM/yyyy");
-            public string ReceivingAccount { get; set; }
+            public string AccountHash { get; set; }
+            public string AccountName { get; set; }
 
             /// <summary>
             /// This is a string, so we can append a "-" sign to it to display if the amount were received or sent
@@ -85,11 +74,12 @@ namespace Discreet_GUI.Views.Account
             public string Amount { get; set; }
 
 
-            public AccountTransaction(string transactionId, long unix, string receiver, string amount)
+            public AccountTransaction(string transactionId, long unix, string accountHash, string accountName, string amount)
             {
                 TransactionId = transactionId;
                 TransactionDate = new DateTime(unix);
-                ReceivingAccount = receiver;
+                AccountHash = accountHash;
+                AccountName = accountName;
                 Amount = amount;
             }
         }
