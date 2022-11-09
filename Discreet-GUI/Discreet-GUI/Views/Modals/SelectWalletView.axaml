@@ -70,7 +70,8 @@
 			<Button Grid.Row="4" Classes="btn btn-gray" Cursor="Hand"
 					Width="95" Height="35" Margin="0 10 0 0" 
 					Content="{Binding SelectedWalletStatus.Status, Converter={StaticResource WalletStatusToUnlockedStringConverter}, ConverterParameter=Normal}"
-					Command="{Binding Continue}"/>
+					Command="{Binding Continue}"
+					HotKey="ENTER"/>
 		</Grid>
 	</Grid>
 
