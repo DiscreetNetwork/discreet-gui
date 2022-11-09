@@ -70,8 +70,8 @@
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
 
-    <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,1,0,0" BorderBrush="#4C4C4C" Background="{x:Null}"/>
-    <Border Grid.Column="0" BorderBrush="#4C4C4C" BorderThickness="0,0,1,0" Background="{x:Null}" />
+    <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,1,0,0" BorderBrush="#252527" Background="{x:Null}"/>
+    <Border Grid.Column="0" BorderBrush="#252527" BorderThickness="0,0,1,0" Background="{x:Null}" />
 
     <Grid Grid.Column="0">
       <Grid.RowDefinitions>
@@ -110,7 +110,7 @@
           <RowDefinition/>
         </Grid.RowDefinitions>
 
-		<Border Grid.Row="0" BorderThickness="0 1 0 1" BorderBrush="#4D4D4D">
+		<Border Grid.Row="0" BorderThickness="0 1 0 1" BorderBrush="#252527">
 			<Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateHomeCommand}">
 				<StackPanel Classes="NavButton">
 					<Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}" Source="/Assets/Icons/account-home.png"/>
@@ -120,7 +120,7 @@
 			</Button>
 		</Border>
 
-		<Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
+		<Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#252527">
 		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateSendCommand}">
                 <StackPanel Classes="NavButton">
                     <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Source="/Assets/Icons/account-send.png"/>
@@ -130,7 +130,7 @@
             </Button>
 		</Border>
 
-		<Border Grid.Row="2" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
+		<Border Grid.Row="2" BorderThickness="0 0 0 1" BorderBrush="#252527">
 		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="3" Command="{Binding NavigateTransactionsCommand}">
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Source="/Assets/Icons/account-transactions.png"/>
@@ -140,7 +140,7 @@
             </Button>
 		</Border>
 
-		<Border Grid.Row="3" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
+		<Border Grid.Row="3" BorderThickness="0 0 0 1" BorderBrush="#252527">
 			<Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateSubmitIssueCommand}">
 				<StackPanel Classes="NavButton">
 					<Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Source="/Assets/Buttons/report-issue-testnet.png"/>
@@ -151,7 +151,7 @@
 			</Button>
 		</Border>
 		  
-		<Border Grid.Row="4" BorderThickness="0 0 0 1" BorderBrush="#4D4D4D">
+		<Border Grid.Row="4" BorderThickness="0 0 0 1" BorderBrush="#252527">
 		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
               <StackPanel Classes="NavButton">
                 <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Source="/Assets/Icons/settings-icon.png"/>
