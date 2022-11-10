@@ -17,6 +17,7 @@ using Discreet_GUI.ViewModels.Common;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Avalonia;
 
 namespace Discreet_GUI.Views.Account.Modals
 {
@@ -78,6 +79,12 @@ namespace Discreet_GUI.Views.Account.Modals
 
             TransactionId = Transaction.TxID;
             OnPropertyChanged(nameof(TransactionId));
+        }
+
+        async Task CopyTransactionHash()
+        {
+            await Application.Current.Clipboard.SetTextAsync(TransactionId);
+            _notificationService.Display("Copied transaction hash to clipboard");
         }
 
         void DisplayTransactionInExplorer()
