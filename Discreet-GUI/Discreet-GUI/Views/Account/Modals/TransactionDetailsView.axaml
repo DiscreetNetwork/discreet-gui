@@ -58,7 +58,18 @@
 
 							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
 								<Label Foreground="#A0A0A0" FontWeight="300">Transaction ID: </Label>
-								<Label Foreground="#A0A0A0" FontWeight="300" Margin="20 0 0 0" Content="{Binding TransactionId}"/>
+								<Button Padding="0" Cursor="Hand" FontWeight="300" Margin="20 0 0 0" Content="{Binding TransactionId}" Command="{Binding DisplayTransactionInExplorer}">
+									<Button.Styles>
+										<Style Selector="Button">
+											<Setter Property="Background" Value="Transparent"/>
+											<Setter Property="Foreground" Value="White"/>
+										</Style>
+										<Style Selector="Button:pointerover /template/ ContentPresenter">
+											<Setter Property="Background" Value="Transparent"/>
+											<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
+										</Style>
+									</Button.Styles>
+								</Button>
 							</StackPanel>
 
 							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">

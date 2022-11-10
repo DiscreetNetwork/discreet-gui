@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.ViewModels.Common;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Discreet_GUI.Views.Account.Modals
 {
@@ -75,6 +78,50 @@ namespace Discreet_GUI.Views.Account.Modals
 
             TransactionId = Transaction.TxID;
             OnPropertyChanged(nameof(TransactionId));
+        }
+
+        void DisplayTransactionInExplorer()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // If no associated application/json MimeType is found xdg-open opens retrun error
+                // but it tries to open it anyway using the console editor (nano, vim, other..)
+                ShellExec($"xdg-open https://explorer.discreet.tools/transaction/details/{TransactionId}", waitForExit: false);
+            }
+            else
+            {
+                using Process process = Process.Start(new ProcessStartInfo
+                {
+                    FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? $"https://explorer.discreet.tools/transaction/details/{TransactionId}" : "open",
+                    Arguments = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? $"https://explorer.discreet.tools/transaction/details/{TransactionId}" : "",
+                    CreateNoWindow = true,
+                    UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                });
+            }
+        }
+
+        private static void ShellExec(string cmd, bool waitForExit = true)
+        {
+            var escapedArgs = Regex.Replace(cmd, "(?=[`~!#&*()|;'<>])", "\\")
+                .Replace("\"", "\\\\\\\"");
+
+            using (var process = Process.Start(
+                new ProcessStartInfo
+                {
+                    FileName = "/bin/sh",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            ))
+            {
+                if (waitForExit)
+                {
+                    process.WaitForExit();
+                }
+            }
         }
 
         void Dismiss() => _navigationServiceFactory.CreateModalNavigationService().Navigate();
