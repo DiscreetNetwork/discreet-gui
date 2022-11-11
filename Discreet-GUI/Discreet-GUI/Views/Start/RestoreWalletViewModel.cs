@@ -1,13 +1,5 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using ReactiveUI;
-using Services.Caches;
+﻿using Services.Caches;
 using Services.Daemon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Text;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;

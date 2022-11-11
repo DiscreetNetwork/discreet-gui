@@ -1,15 +1,9 @@
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.Configuration;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
-using System.Text;
 using Discreet_GUI.Attributes;
 using Discreet_GUI.Stores;
 using Discreet_GUI.Stores.Navigation;

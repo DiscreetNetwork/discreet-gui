@@ -1,15 +1,11 @@
-﻿using Avalonia.Input;
-using Avalonia.Interactivity;
-using ReactiveUI;
+﻿using ReactiveUI;
 using Services;
 using Services.Caches;
 using Services.Daemon;
 using Services.Daemon.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
-using System.Text;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;

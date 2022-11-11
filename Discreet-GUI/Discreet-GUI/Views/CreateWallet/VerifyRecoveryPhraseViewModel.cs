@@ -1,19 +1,13 @@
 ﻿using Avalonia.Controls.Selection;
 using ReactiveUI;
-using Services.Daemon;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Services;
 using Discreet_GUI.ViewModels.Common;
-using Discreet_GUI.Views.CreateWallet;
 using Discreet_GUI.Views.Layouts;
 
 namespace Discreet_GUI.Views.CreateWallet

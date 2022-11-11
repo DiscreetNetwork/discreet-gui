@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Discreet_GUI.Attributes;
-using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Factories.ViewModel;
-using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
 

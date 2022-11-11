@@ -1,16 +1,7 @@
-﻿using Avalonia.Controls;
-using Avalonia.Threading;
-using QRCoder;
-using Services.Caches;
+﻿using Services.Caches;
 using Services.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Discreet_GUI.ViewModels.Common;
 
 namespace Discreet_GUI.Views.Account

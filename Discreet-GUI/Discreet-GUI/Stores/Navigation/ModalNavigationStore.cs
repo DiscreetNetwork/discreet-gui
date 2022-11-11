@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Discreet_GUI.ViewModels.Common;
 
 namespace Discreet_GUI.Stores.Navigation

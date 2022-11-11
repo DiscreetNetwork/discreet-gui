@@ -1,13 +1,8 @@
 ﻿using ReactiveUI;
 using Services.Daemon;
 using Services.Daemon.Models;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;

@@ -1,12 +1,8 @@
 ﻿using Avalonia;
-using ReactiveUI;
-using Services;
 using Services.Caches;
 using Services.Daemon;
 using Services.Extensions;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;

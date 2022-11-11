@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System;
 using Discreet_GUI.Factories.ViewModel;
 using Discreet_GUI.Services.Navigation;
 using Discreet_GUI.Services.Navigation.Common;

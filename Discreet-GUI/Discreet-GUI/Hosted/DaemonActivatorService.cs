@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Services.Caches;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
-using Discreet_GUI.Views.Modals;
 
 namespace Discreet_GUI.Hosted
 {

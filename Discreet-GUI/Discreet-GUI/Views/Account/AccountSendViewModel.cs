@@ -1,21 +1,8 @@
-﻿using Avalonia.Controls.Notifications;
-using ReactiveUI;
-using Services.Caches;
-using Services.Daemon;
-using Services.Daemon.Common;
-using Services.Daemon.Requests;
+﻿using Services.Caches;
 using Services.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Services;
 using Discreet_GUI.ViewModels.Common;
-using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Modals;
 
 namespace Discreet_GUI.Views.Account

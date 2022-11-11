@@ -1,16 +1,10 @@
-﻿using Avalonia.Controls.Notifications;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Services;
-using Discreet_GUI.Services.Navigation.Common;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.CreateWallet;
 using Discreet_GUI.Views.Layouts;
