@@ -8,6 +8,10 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.CreateWallet;
 using Discreet_GUI.Views.Layouts;
+using Services.Daemon;
+using System.Reactive.Concurrency;
+using System.Linq;
+using Discreet_GUI.Views.Modals;
 
 namespace Discreet_GUI.Views.Start
 {
@@ -38,11 +42,16 @@ namespace Discreet_GUI.Views.Start
         /// Controls the carousel loop
         /// </summary>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly WalletService _walletService;
 
         public string CurrentVersion { get => $"Version: {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}"; }
 
-        public StartViewModel(NavigationServiceFactory navigationServiceFactory)
+        public StartViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService)
         {
+            _navigationServiceFactory = navigationServiceFactory;
+            _walletService = walletService;
+
             NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
             {
                 _cancellationTokenSource.Cancel();
@@ -56,6 +65,7 @@ namespace Discreet_GUI.Views.Start
             });
 
             _ = InitializeCarousel(_cancellationTokenSource.Token);
+            RxApp.MainThreadScheduler.Schedule(async () => await ScanForExistingWallets());
         }
 
 
@@ -84,6 +94,12 @@ namespace Discreet_GUI.Views.Start
                     Steps[0] = true;
                 }
             }
+        }
+
+        async Task ScanForExistingWallets()
+        {
+            var wallets = await _walletService.GetWallets();
+            if(wallets.Any()) _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
 
         void ResetSteps()
