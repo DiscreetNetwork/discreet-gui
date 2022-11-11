@@ -73,7 +73,7 @@ namespace Discreet_GUI.Views.Account
         public async Task CopyAddress(string parameter)
         {
             await Application.Current.Clipboard.SetTextAsync(parameter);
-            _notificationService.Display("Copied address to clipboard");
+            _notificationService.DisplayInformation("Copied address to clipboard");
         }
 
         void ToggleDisplayBalance()

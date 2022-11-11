@@ -66,7 +66,7 @@ namespace Discreet_GUI.Views.Modals
             var wallets = await _walletService.GetWallets();
             if (wallets is null)
             {
-                _notificationService.Display("Failed to load wallets");
+                _notificationService.DisplayInformation("Failed to load wallets");
             }
             else
             {
@@ -76,7 +76,7 @@ namespace Discreet_GUI.Views.Modals
             var statuses = await _walletService.GetWalletStatuses();
             if (statuses is null)
             {
-                _notificationService.Display("Failed to load wallet statuses");
+                _notificationService.DisplayInformation("Failed to load wallet statuses");
             }
             else
             {
@@ -102,7 +102,7 @@ namespace Discreet_GUI.Views.Modals
                 var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
                 if (!success)
                 {
-                    _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
+                    _notificationService.DisplayInformation("Failed to load wallet, the passphrase might be wrong");
                     return;
                 }
             }
@@ -111,7 +111,7 @@ namespace Discreet_GUI.Views.Modals
                 var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
                 if (!unlocked)
                 {
-                    _notificationService.Display("Wrong passphrase");
+                    _notificationService.DisplayInformation("Wrong passphrase");
                     return;
                 }
             }
@@ -128,7 +128,7 @@ namespace Discreet_GUI.Views.Modals
             var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
             if(!unlocked)
             {
-                _notificationService.Display("Wrong passphrase");
+                _notificationService.DisplayInformation("Wrong passphrase");
                 return;
             }
 
@@ -140,7 +140,7 @@ namespace Discreet_GUI.Views.Modals
             var locked = await _walletService.LockWallet(LoadedWallets[SelectedWalletIndex].Label);
             if (!locked)
             {
-                _notificationService.Display("Failed to lock the wallet");
+                _notificationService.DisplayInformation("Failed to lock the wallet");
                 return;
             }
 
@@ -152,11 +152,11 @@ namespace Discreet_GUI.Views.Modals
             var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
             if (!success)
             {
-                _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
+                _notificationService.DisplayInformation("Failed to load wallet, the passphrase might be wrong");
                 return;
             }
 
-            _notificationService.Display("Loaded wallet");
+            _notificationService.DisplayInformation("Loaded wallet");
             _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
 

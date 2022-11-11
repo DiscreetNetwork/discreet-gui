@@ -53,10 +53,12 @@ namespace Discreet_GUI.Stores
         public event Action<NotificationBody> OnDismissed;
 
         public string Text { get; set; }
+        public string Color { get; set; }
 
-        public NotificationBody(string text)
+        public NotificationBody(string text, string color)
         {
             Text = text;
+            Color = color;
         }
 
         public async Task StartDelayedDismiss()

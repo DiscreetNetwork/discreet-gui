@@ -69,7 +69,7 @@ namespace Discreet_GUI.Views.CreateWallet
 
             if (await _walletService.CreateWallet(_newWalletCache.WalletName, _newWalletCache.Mnemonic.Select(x => x).Aggregate((x, y) => x + " " + y), _newWalletCache.Password) == null)
             {
-                _notificationService.Display("Failed to create wallet");
+                _notificationService.DisplayInformation("Failed to create wallet");
                 return;
             }
 

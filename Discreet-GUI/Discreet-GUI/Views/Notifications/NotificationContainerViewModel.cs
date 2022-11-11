@@ -25,15 +25,5 @@ namespace Discreet_GUI.Views.Notifications
         {
             _notificationStore = notificationStore;
         }
-
-        public void AddNotification(NotificationViewModelBase nvm)
-        {
-            nvm.NotificationDismissed += OnNotificationDismissed;
-        }
-
-        void OnNotificationDismissed(string notificationId)
-        {
-            
-        }
     }
 }

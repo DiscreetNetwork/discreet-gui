@@ -18,9 +18,19 @@ namespace Discreet_GUI.Services
             _notificationStore = notificationStore;
         }
 
-        public void Display(string content)
+        public void DisplayInformation(string content)
         {
-            _notificationStore.Add(new NotificationBody(content));
+            _notificationStore.Add(new NotificationBody(text: content, color: "#007BC2"));
+        }
+
+        public void DisplaySuccess(string content)
+        {
+            _notificationStore.Add(new NotificationBody(text: content, color: "#21A67A"));
+        }
+
+        public void DisplayError(string content)
+        {
+            _notificationStore.Add(new NotificationBody(text: content, color: "#f02e2e"));
         }
     }
 }

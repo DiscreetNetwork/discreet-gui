@@ -38,7 +38,7 @@ namespace Discreet_GUI.Views.Account
         {
             IsLoading = true;
             var submitResult = await _issueService.SubmitIssue(IssueSummary, (IssueSeverity)SelectedSeverityIndex, IssueDescription, AttachmentPath);
-            _notificationService.Display(submitResult.Message);
+            _notificationService.DisplayInformation(submitResult.Message);
             IsLoading = false;
         }
 

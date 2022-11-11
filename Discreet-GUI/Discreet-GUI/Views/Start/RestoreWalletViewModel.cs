@@ -133,7 +133,7 @@ namespace Discreet_GUI.Views.Start
             var wallet = await _walletService.RecoverWallet(WalletName, MnemonicPhrase, SelectedPassword);
             if(wallet is null)
             {
-                _notificationService.Display("Failed to recover the wallet");
+                _notificationService.DisplayInformation("Failed to recover the wallet");
                 return;
             }
 

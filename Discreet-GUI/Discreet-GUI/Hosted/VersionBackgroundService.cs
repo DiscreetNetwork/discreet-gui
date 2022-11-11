@@ -48,7 +48,7 @@ namespace Discreet_GUI.Hosted
                 }
                 catch (Exception)
                 {
-                    _notificationService.Display("Failed to check for update. Check your internet connection");
+                    _notificationService.DisplayInformation("Failed to check for update. Check your internet connection");
                     continue;
                 }
 

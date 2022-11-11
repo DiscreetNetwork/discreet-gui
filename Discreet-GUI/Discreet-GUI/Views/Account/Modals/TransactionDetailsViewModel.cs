@@ -57,7 +57,7 @@ namespace Discreet_GUI.Views.Account.Modals
             Transaction = await _walletService.GetTransaction(_transactionDetailsCache.Address, _transactionDetailsCache.TransactionId);
             if(Transaction is null)
             {
-                _notificationService.Display("Failed to fetch the transaction");
+                _notificationService.DisplayInformation("Failed to fetch the transaction");
                 Dismiss();
                 return;
             }
@@ -84,7 +84,7 @@ namespace Discreet_GUI.Views.Account.Modals
         async Task CopyTransactionHash()
         {
             await Application.Current.Clipboard.SetTextAsync(TransactionId);
-            _notificationService.Display("Copied transaction hash to clipboard");
+            _notificationService.DisplayInformation("Copied transaction hash to clipboard");
         }
 
         void DisplayTransactionInExplorer()

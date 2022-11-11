@@ -43,11 +43,11 @@ namespace Discreet_GUI.Views.Account.Modals
             var createdAddress = await _walletService.CreateAddress(label, AccountName, stealth);
             if(createdAddress is null)
             {
-                _notificationService.Display("Failed to create account");
+                _notificationService.DisplayInformation("Failed to create account");
             }
             else
             {
-                _notificationService.Display("Successfully created new account");
+                _notificationService.DisplayInformation("Successfully created new account");
             }
 
             _walletCache.AddAccount(createdAddress.Name, createdAddress.Address, createdAddress.Balance, (WalletCache.AddressType)createdAddress.Type);

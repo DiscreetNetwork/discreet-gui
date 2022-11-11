@@ -3,29 +3,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:Discreet_GUI.ViewModels.Notifications"
+			 xmlns:cv="using:Discreet_GUI.ValueConverters"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Discreet_GUI.Views.Notifications.NotificationContainerView">
 
 	<Design.DataContext>
 		<vm:NotificationContainerViewModel/>
 	</Design.DataContext>
+
+	<UserControl.Resources>
+		<cv:HexStringToNotificationBoxShadowConverter x:Key="HexStringToNotificationBoxShadowConverter"/>
+	</UserControl.Resources>
 	
-	<ItemsControl Items="{Binding Notifications}">
+	<ItemsControl Items="{Binding Notifications}" Padding="5">
 		<ItemsControl.ItemTemplate>
 			<DataTemplate>
-				<Border Padding="5 8 5 8" CornerRadius="6" Margin="0 5 0 0" Width="250" Background="#1C1C1C" BorderBrush="Gray" BorderThickness="1" BoxShadow="0 3 7 #ff0a0a0a">
+				<Border Margin="0 0 0 15" Width="300" Background="Transparent" Height="50" CornerRadius="5"  BorderBrush="#323234" BoxShadow="{Binding Color, Converter={StaticResource HexStringToNotificationBoxShadowConverter}}">
 					<Grid>
-						<TextBlock TextWrapping="Wrap" Width="180" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontWeight="300" FontSize="14" Text="{Binding Text}"/>
-						<Button Width="30" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding DismissCommand}">
-							<Image Source="/Assets/Buttons/close-bright-white.png"/>
+						<Border Margin="5 0 0 0" Background="{Binding Color}" Height="38" Width="4" CornerRadius="12" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+						<TextBlock Margin="20 0 35 1" FontWeight="Regular" Foreground="#ffffff" Text="{Binding Text}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+						<Button Margin="0 0 5 0" Cursor="Hand" FontWeight="Bold" Foreground="#ffffff" Content="X" VerticalAlignment="Center" HorizontalAlignment="Right" Command="{Binding DismissCommand}"/>
+					</Grid>
 
-							<Button.Styles>
-								<Style Selector="Button">
-									<Setter Property="Background" Value="Transparent"/>
-								</Style>
-							</Button.Styles>
-						</Button>
-					</Grid> 
+					<Border.Styles>
+						<Style Selector="Border > Grid > Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Border > Grid > Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Border.Styles>
 				</Border>
 			</DataTemplate>
 		</ItemsControl.ItemTemplate>

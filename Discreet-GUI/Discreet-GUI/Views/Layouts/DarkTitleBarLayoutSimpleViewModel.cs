@@ -41,7 +41,7 @@ namespace Discreet_GUI.Views.Layouts
         {
             if(!await _walletService.LockWallet(_walletCache.Label))
             {
-                _notificationService.Display("Failed to lock the wallet");
+                _notificationService.DisplayInformation("Failed to lock the wallet");
                 return;
             }
 

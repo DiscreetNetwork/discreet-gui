@@ -85,14 +85,14 @@ namespace Discreet_GUI.Hosted
 
                 if(!string.IsNullOrWhiteSpace(altPath))
                 {
-                    _notificationService.Display($"Using alternative daemon path: {altPath}");
+                    _notificationService.DisplayInformation($"Using alternative daemon path: {altPath}");
                     executablePath = altPath;
                 }
             }
             
             while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath) && useDaemonActivator)
             {
-                _notificationService.Display("Could not find the daemon executable. Please update your 'discreet\\wallet-config\\appsettings.json' file with a full path to the daemon");
+                _notificationService.DisplayInformation("Could not find the daemon executable. Please update your 'discreet\\wallet-config\\appsettings.json' file with a full path to the daemon");
                 await Task.Delay(3000);
                 executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
             }
@@ -146,7 +146,7 @@ namespace Discreet_GUI.Hosted
                         {
                             if (errorBuilder.Length == 0) return;
 
-                            _notificationService.Display(errorBuilder.ToString());
+                            _notificationService.DisplayInformation(errorBuilder.ToString());
                             errorBuilder.Clear();
                             return;
                         }
@@ -161,7 +161,7 @@ namespace Discreet_GUI.Hosted
                         {
                             if (outputBuilder.Length == 0) return;
 
-                            _notificationService.Display(outputBuilder.ToString());
+                            _notificationService.DisplayInformation(outputBuilder.ToString());
                             outputBuilder.Clear();
                             return;
                         }
@@ -195,7 +195,7 @@ namespace Discreet_GUI.Hosted
 
         private void DaemonProcessExited(object sender, EventArgs e)
         {
-            _notificationService.Display("Daemon process exited");
+            _notificationService.DisplayInformation("Daemon process exited");
             _daemonCache.DaemonStarted = false;
             _navigationServiceFactory.Create<Views.Start.StartViewModel>().Navigate();
             _navigationServiceFactory.SetDaemonStartupModal();
