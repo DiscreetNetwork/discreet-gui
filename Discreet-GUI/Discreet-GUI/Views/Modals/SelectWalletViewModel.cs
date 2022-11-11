@@ -11,6 +11,7 @@ using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Account;
 using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Layouts.Account;
+using Discreet_GUI.Views.Start;
 
 namespace Discreet_GUI.Views.Modals
 {
@@ -117,6 +118,10 @@ namespace Discreet_GUI.Views.Modals
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }
 
+        void Cancel()
+        {
+            _navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate();
+        }
 
         async Task UnlockWallet()
         {
