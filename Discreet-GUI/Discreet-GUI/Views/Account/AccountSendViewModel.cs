@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Modals;
+using Services;
 
 namespace Discreet_GUI.Views.Account
 {
@@ -78,7 +79,7 @@ namespace Discreet_GUI.Views.Account
                 return false;
             }
 
-            if(Amount > SelectedAccount.Balance)
+            if(DISTConverter.Multiply(Amount) > SelectedAccount.Balance)
             {
                 AmountValidationMessage = "Not enough DIST in the selected account";
                 return false;
