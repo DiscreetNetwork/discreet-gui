@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Caches;
 using Services.Daemon;
-using Services.Daemon.Services;
 using Services.Testnet;
 using Services.ZMQ;
 using Services.ZMQ.Handlers.Common;
@@ -26,6 +25,10 @@ using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views;
 using Discreet_GUI.Views.Notifications;
 using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
+using Services.Daemon.Status;
+using Services.Daemon.Transaction;
+using Services.Daemon.SeedRecovery;
 
 namespace Discreet_GUI
 {
@@ -61,9 +64,10 @@ namespace Discreet_GUI
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
                 services.AddHostedService<VersionBackgroundService>();
-                services.AddScoped<WalletService>();
-                services.AddScoped<StatusService>();
-                services.AddScoped<AccountService>();
+                services.AddScoped<DaemonWalletService>();
+                services.AddScoped<DaemonTransactionService>();
+                services.AddScoped<DaemonStatusService>();
+                services.AddScoped<DaemonSeedRecoveryService>();
                 services.AddScoped<IssueService>();
 
                 // Startup

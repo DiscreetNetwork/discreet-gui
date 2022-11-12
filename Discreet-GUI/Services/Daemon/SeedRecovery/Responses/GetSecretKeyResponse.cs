@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Responses
+namespace Services.Daemon.SeedRecovery.Responses
 {
-    public class AddressRecoveryResponse
+    public class GetSecretKeyResponse
     {
         public string Spend { get; set; }
         public string View { get; set; }

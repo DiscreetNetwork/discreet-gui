@@ -1,8 +1,6 @@
 ﻿using ReactiveUI;
 using Services;
 using Services.Caches;
-using Services.Daemon;
-using Services.Daemon.Models;
 using System;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -14,13 +12,15 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Avalonia;
+using Services.Daemon.Wallet;
+using Services.Daemon.Wallet.Models;
 
 namespace Discreet_GUI.Views.Account.Modals
 {
     public class TransactionDetailsViewModel : ViewModelBase
     {
         private readonly TransactionDetailsCache _transactionDetailsCache;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
@@ -38,7 +38,7 @@ namespace Discreet_GUI.Views.Account.Modals
         public string Date { get; set; }
         public string TransactionId { get; set; }
 
-        public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, WalletService walletService, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
+        public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
             _transactionDetailsCache = transactionDetailsCache;
             _walletService = walletService;
@@ -53,7 +53,7 @@ namespace Discreet_GUI.Views.Account.Modals
             Transaction = await _walletService.GetTransaction(_transactionDetailsCache.Address, _transactionDetailsCache.TransactionId);
             if(Transaction is null)
             {
-                _notificationService.DisplayInformation("Failed to fetch the transaction");
+                _notificationService.DisplayError("An error occured while trying to fetch the transaction.");
                 Dismiss();
                 return;
             }

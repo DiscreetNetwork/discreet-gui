@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Services.Caches;
-using Services.Daemon;
 using Services.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +7,7 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.Account
 {
@@ -16,33 +16,10 @@ namespace Discreet_GUI.Views.Account
         private readonly WalletCache _walletCache;
         private readonly UserPreferrencesStore _userPreferrencesStore;
         private readonly NotificationService _notificationService;
-        private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
-        /*
-        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletCache.WalletAddress>()
-        {
-            new WalletCache.WalletAddress
-            {
-                Address = "1AxastPBd7LTHktMoMJvrAfG1h5cEtrT83SdGqzcW3NqRgJA3TzqFAr4wbgXPLBSuA9xhTPy44B84EYHFkrGSNwBLoSbAJh",
-                Name = "taStealth",
-                Balance = 350259,
-                Type = WalletCache.AddressType.STEALTH,
-                Synced = true,
-                Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, "1AxastPBd7LTHkt")
-            },
-            new WalletCache.WalletAddress
-            {
-                Address = "1AxastPBd7LTHktMoMJvrAfG1h5cEtrT83SdGqzcW3NqRgJA3TzqFAr4wbgXPLBSuA9xhTPy44B84EYHFkrGSNwBLoSbAJh",
-                Name = "taStealth",
-                Balance = 350259,
-                Type = WalletCache.AddressType.TRANSPARENT,
-                Synced = false,
-                Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, "1AxastPBd7LTHkt")
-            }
-        };
-        */
+        
 
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public bool HideBalance => _userPreferrencesStore.HideBalance;
@@ -51,12 +28,11 @@ namespace Discreet_GUI.Views.Account
         {
         }
 
-        public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
+        public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
             _userPreferrencesStore = userPreferrencesStore;
             _notificationService = notificationService;
-            _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
             Accounts.CollectionChanged += AccountsChanged;
         }

@@ -1,24 +1,23 @@
 ﻿using Services.Daemon.Common;
-using Services.Daemon.Models;
-using Services.Daemon.Requests;
-using Services.Daemon.Responses;
+using Services.Daemon.Wallet.Models;
+using Services.Daemon.Wallet.Requests;
+using Services.Daemon.Wallet.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Services.Daemon
+namespace Services.Daemon.Wallet
 {
     /// <summary>
     /// Used to interact with the Wallet API in the Daemon.
     /// </summary>
-    public class WalletService
+    public class DaemonWalletService
     {
         private RPCServer _rpcServer;
 
-        public WalletService(RPCServer rpcServer)
+        public DaemonWalletService(RPCServer rpcServer)
         {
             _rpcServer = rpcServer;
         }
@@ -30,9 +29,9 @@ namespace Services.Daemon
         /// <param name="mnemonic">The mnemonic/seed phrase to use as the wallet entropy.</param>
         /// <param name="passphrase">The passphrase to encrypt the wallet with.</param>
         /// <returns>A <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<Wallet> CreateWallet(string label, string mnemonic, string passphrase)
+        public async Task<Models.Wallet> CreateWallet(string label, string mnemonic, string passphrase)
         {
-            var createWalletRequest = new CreateWalletRequest
+            var createWalletRequest = new Requests.CreateWalletRequest
             {
                 Label = label,
                 Mnemonic = mnemonic,
@@ -51,61 +50,34 @@ namespace Services.Daemon
         /// </summary>
         /// <param name="params">The <see cref='CreateWalletRequest'/> to use when creating the wallet in the Daemon.</param>
         /// <returns>A <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<Wallet> CreateWallet(CreateWalletRequest @params)
+        public async Task<Models.Wallet> CreateWallet(Requests.CreateWalletRequest @params)
         {
             var req = new DaemonRequest("create_wallet", @params);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if(resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {
-                return JsonSerializer.Deserialize<Wallet>((JsonElement)resp.Result);
+                return JsonSerializer.Deserialize<Models.Wallet>((JsonElement)resp.Result);
             }
             catch
             {
                 return null;
             }
         }
-
-        public Wallet CreateWalletSync(string label, string mnemonic, string passphrase)
-        {
-            var createWalletRequest = new CreateWalletRequest
-            {
-                Label = label,
-                Mnemonic = mnemonic,
-                Passphrase = passphrase,
-                StealthAddressNames = new List<string>(new string[] { "Stealth" }),
-                TransparentAddressNames = new List<string>(new string[] { "Transparent" }),
-                Save = true,
-                ScanForBalance = true
-            };
-
-            return CreateWalletSync(createWalletRequest);
-        }
-
-        public Wallet CreateWalletSync(CreateWalletRequest @params)
-        {
-            var req = new DaemonRequest("create_wallet", @params);
-
-            var resp = _rpcServer.RequestUnsafe(req);
-
-            try
-            {
-                return JsonSerializer.Deserialize<Wallet>((JsonElement)resp.Result);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
 
         /// <summary>
         /// Retrieves a wallet based on the provided label
         /// </summary>
         /// <param name="label"></param>
         /// <returns>A <see cref="Wallet"/> on sucess; <see langword="null"/> if the call failed.</returns>
-        public async Task<Wallet> GetWallet(string label)
+        public async Task<Models.Wallet> GetWallet(string label)
         {
             var wallets = await GetWallets();
             if (wallets is null) return null;
@@ -120,15 +92,21 @@ namespace Services.Daemon
         /// Retrieves all wallets from the Daemon's WalletDB.
         /// </summary>
         /// <returns>A <see cref='List{T}'/> of <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<List<Wallet>> GetWallets()
+        public async Task<List<Models.Wallet>> GetWallets()
         {
             var req = new DaemonRequest("get_wallets_from_db");
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {
-                return JsonSerializer.Deserialize<List<Wallet>>((JsonElement)resp.Result);
+                return JsonSerializer.Deserialize<List<Models.Wallet>>((JsonElement)resp.Result);
             }
             catch
             {
@@ -140,17 +118,22 @@ namespace Services.Daemon
         /// Retrieves all wallet statuses from the Daemon, including unloaded wallets.
         /// </summary>
         /// <returns>A <see cref='List{T}'/> of <see cref='WalletStatusData'/> containing wallet status data on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<List<WalletStatusData>> GetWalletStatuses()
+        public async Task<List<Models.WalletStatusData>> GetWalletStatuses()
         {
             var req = new DaemonRequest("get_wallet_statuses");
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {
-                var data = JsonSerializer.Deserialize<List<WalletStatusRV>>((JsonElement)resp.Result);
-
-                return data.Select(x => new WalletStatusData { Label = x.Label, Status = (WalletStatus)x.Status }).ToList();
+                var data = JsonSerializer.Deserialize<List<Models.WalletStatusRV>>((JsonElement)resp.Result);
+                return data.Select(x => new Models.WalletStatusData { Label = x.Label, Status = (Models.WalletStatus)x.Status }).ToList();
             }
             catch
             {
@@ -166,7 +149,7 @@ namespace Services.Daemon
         /// <returns>The loaded <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
         public async Task<bool> LoadWallet(string label, string passphrase)
         {
-            var loadWalletRequest = new LoadWalletRequest
+            var loadWalletRequest = new Requests.LoadWalletRequest
             {
                 Label = label,
                 Passphrase = passphrase
@@ -175,15 +158,14 @@ namespace Services.Daemon
             var req = new DaemonRequest("load_wallet", loadWalletRequest);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return false;
 
-            try
-            {
-                return resp.IsOK();
-            }
-            catch
+            if (resp.ContainsError(out var error))
             {
                 return false;
             }
+
+            return true;
         }
 
         /// <summary>
@@ -196,8 +178,14 @@ namespace Services.Daemon
             var req = new DaemonRequest("lock_wallet", label);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return false;
 
-            return resp.IsOK();
+            if (resp.ContainsError(out var error))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -208,7 +196,7 @@ namespace Services.Daemon
         /// <returns><see langword='true'/> on success; <see langword='false'/> otherwise.</returns>
         public async Task<bool> UnlockWallet(string label, string passphrase)
         {
-            var unlockWalletRequest = new UnlockWalletRequest
+            var unlockWalletRequest = new Requests.UnlockWalletRequest
             {
                 Label = label,
                 Passphrase = passphrase
@@ -217,8 +205,14 @@ namespace Services.Daemon
             var req = new DaemonRequest("unlock_wallet", unlockWalletRequest);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return false;
 
-            return resp.IsOK();
+            if (resp.ContainsError(out var error))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -228,7 +222,7 @@ namespace Services.Daemon
         /// <param name="name">The name of the address to create.</param>
         /// <param name="stealth">Whether or not the address to create is private.</param>
         /// <returns>The newly created <see cref='WalletAddress'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<WalletAddress> CreateAddress(string label, string name, bool stealth)
+        public async Task<Models.WalletAddress> CreateAddress(string label, string name, bool stealth)
         {
             var createAddressRequest = new CreateAddressRequest
             {
@@ -242,10 +236,16 @@ namespace Services.Daemon
             var req = new DaemonRequest("create_address", createAddressRequest);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {
-                return JsonSerializer.Deserialize<WalletAddress>((JsonElement)resp.Result);
+                return JsonSerializer.Deserialize<Models.WalletAddress>((JsonElement)resp.Result);
             }
             catch
             {
@@ -253,55 +253,14 @@ namespace Services.Daemon
             }
         }
 
-        /// <summary>
-        /// Interacts with the Seed Recovery API to recover the mnemonic and seed of the specified wallet.
-        /// </summary>
-        /// <param name="label">Label of the wallet in the Daemon to get the mnemonic and seed for.</param>
-        /// <param name="passphrase">Password to the wallet in the Daemon.</param>
-        /// <returns>A <see cref='WalletRecoveryResponse'/> containing the mnemonic and seed to the wallet, on success; <see langword='null'/> otherwise.</returns>
-        public async Task<WalletRecoveryResponse> RecoverWallet(string label, string passphrase)
-        {
-            var req = new DaemonRequest("get_wallet_seed", label, passphrase);
+        
 
-            var resp = await _rpcServer.Request(req);
-
-            try
-            {
-                return JsonSerializer.Deserialize<WalletRecoveryResponse>((JsonElement)resp.Result);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public async Task<Wallet> RecoverWallet(string newLabel, string mnemonic, string passphrase)
+        public async Task<Models.Wallet> RecoverWallet(string newLabel, string mnemonic, string passphrase)
         {
             return await CreateWallet(newLabel, mnemonic, "b");
         } 
 
-        /// <summary>
-        /// Interacts with the Seed Recovery API to recover the secret key(s) of the specified wallet's address.
-        /// </summary>
-        /// <param name="label">Label of the wallet in the Daemon the address is in.</param>
-        /// <param name="passphrase">Password to the wallet in the Daemon.</param>
-        /// <param name="address">Address for the wallet in the Daemon to recover the secret key(s) for.</param>
-        /// <returns>A <see cref='AddressRecoveryResponse'/> containing the mnemonic and hex seed of the secret key(s) to the wallet address, on success; <see langword='null'/> otherwise.</returns>
-        public async Task<AddressRecoveryResponse> RecoverAddress(string label, string passphrase, string address)
-        {
-            var req = new DaemonRequest("get_secret_key", label, passphrase, address);
-
-            var resp = await _rpcServer.Request(req);
-
-            try
-            {
-                return JsonSerializer.Deserialize<AddressRecoveryResponse>((JsonElement)resp.Result);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        
 
         /// <summary>
         /// Returns the transaction history for the specified account's wallet address.
@@ -312,6 +271,12 @@ namespace Services.Daemon
             var req = new DaemonRequest("get_transaction_history", address);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {
@@ -343,45 +308,97 @@ namespace Services.Daemon
             var req = new DaemonRequest("get_mnemonic");
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
 
-            var result = JsonSerializer.Deserialize<GetMnemonicResponse>((JsonElement)resp.Result);
-
-            if (result.ErrMsg != null && result.ErrMsg != "")
+            if (resp.ContainsError(out var error))
             {
+                return null;
             }
 
-            return new Mnemonic 
-            { 
-                Value = result.Mnemonic, 
-                Entropy = result.Entropy 
-            };
+            try
+            {
+                var result = JsonSerializer.Deserialize<GetMnemonicResponse>((JsonElement)resp.Result);
+
+                return new Mnemonic
+                {
+                    Value = result.Mnemonic,
+                    Entropy = result.Entropy
+                };
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
         /// State of the wallet
         /// </summary>
         /// <returns>Wallet height & synced status</returns>
-        public async Task<GetWalletHeightResponse> GetState(string label)
+        public async Task<GetWalletHeightResponse> GetWalletHeight(string label)
         {
             var req = new DaemonRequest("get_wallet_height", label);
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
 
-            if (resp != null && resp.Result != null)
+            if (resp.ContainsError(out var error))
             {
-                if (resp.Result is JsonElement json)
-                {
-                    var getWalletHeightResponse = JsonSerializer.Deserialize<GetWalletHeightResponse>(json);
-
-                    if (getWalletHeightResponse.ErrMsg != null && getWalletHeightResponse.ErrMsg != "")
-                    {
-                    }
-
-                    return getWalletHeightResponse;
-                }
+                return null;
             }
 
-            return null;
+            try
+            {
+                return JsonSerializer.Deserialize<GetWalletHeightResponse>((JsonElement)resp.Result);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<GetAddressHeightResponse> GetAddressHeight(string accountAddress)
+        {
+            var req = new DaemonRequest("get_address_height", accountAddress);
+
+            var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<GetAddressHeightResponse>((JsonElement)resp.Result);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<ulong?> GetBalance(string accountAddress)
+        {
+            var req = new DaemonRequest("get_balance", accountAddress);
+
+            var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<ulong>((JsonElement)resp.Result);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

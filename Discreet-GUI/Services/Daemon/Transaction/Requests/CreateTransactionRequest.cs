@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Requests
+namespace Services.Daemon.Transaction.Requests
 {
     public class CreateTransactionParam
     {

@@ -21,25 +21,20 @@ namespace Services.Daemon.Common
 
         public static DaemonResponse Deserialize(string respText) => JsonSerializer.Deserialize<DaemonResponse>(respText, new JsonSerializerOptions());
 
-        public bool IsOK()
+        public bool ContainsError(out DaemonErrorResponse daemonErrorResponse)
         {
             try
             {
-                return (Result != null && Result.GetType() == typeof(JsonElement) &&
-                    ((JsonElement)Result).ValueKind == JsonValueKind.String &&
-                    ((JsonElement)Result).GetString() == "OK");
+                JsonElement element = (JsonElement)Result;
+                DaemonErrorResponse error = JsonSerializer.Deserialize<DaemonErrorResponse>(element);
+                daemonErrorResponse = error;
+                return error.ErrID == -1;
             }
-            catch
+            catch (JsonException)
             {
+                daemonErrorResponse = null;
                 return false;
             }
         }
-    }
-
-    public class DaemonErrorResult
-    {
-        public int ErrID { get; set; }
-        public string ErrMsg { get; set; }
-        public object Result { get; set; }
     }
 }

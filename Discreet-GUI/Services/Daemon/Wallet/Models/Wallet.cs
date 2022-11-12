@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
-using Services.Daemon.Common;
-using Services.Daemon.Requests;
+﻿using System.Collections.Generic;
 
-namespace Services.Daemon.Models
+namespace Services.Daemon.Wallet.Models
 {
     public class Wallet
     {

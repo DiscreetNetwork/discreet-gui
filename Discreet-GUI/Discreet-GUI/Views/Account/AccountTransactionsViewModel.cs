@@ -1,16 +1,13 @@
 ﻿using ReactiveUI;
-using Services.Daemon;
-using Services.Daemon.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Concurrency;
-using System.Text;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Services;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.Account
 {
@@ -18,14 +15,14 @@ namespace Discreet_GUI.Views.Account
     {
         private readonly WalletCache _walletCache;
         private readonly TransactionDetailsCache _transactionDetailsCache;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         private List<AccountTransaction> _transactions;
         List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
         public AccountTransactionsViewModel() { }
 
-        public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
+        public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
             _transactionDetailsCache = transactionDetailsCache;

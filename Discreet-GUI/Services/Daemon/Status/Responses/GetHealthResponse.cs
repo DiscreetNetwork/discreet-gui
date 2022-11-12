@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Responses
+namespace Services.Daemon.Status.Responses
 {
     public class GetHealthResponse
     {

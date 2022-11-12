@@ -1,22 +1,19 @@
 ﻿using Services.Daemon.Common;
-using Services.Daemon.Responses;
+using Services.Daemon.Status.Responses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Services
+namespace Services.Daemon.Status
 {
     /// <summary>
     /// Used to interact with the Status API in the Daemon.
     /// </summary>
-    public class StatusService
+    public class DaemonStatusService
     {
         private RPCServer _rpcServer;
 
-        public StatusService(RPCServer rpcServer)
+        public DaemonStatusService(RPCServer rpcServer)
         {
             _rpcServer = rpcServer;
         }
@@ -25,11 +22,17 @@ namespace Services.Daemon.Services
         /// Gets the number of peers connected to the Daemon.
         /// </summary>
         /// <returns>The number of connections the Daemon has, or -1 if the call fails.</returns>
-        public async Task<int> GetNumConnections()
+        public async Task<int?> GetNumConnections()
         {
             var req = new DaemonRequest("get_num_connections");
             
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if(resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {
@@ -37,7 +40,7 @@ namespace Services.Daemon.Services
             }
             catch
             {
-                return -1;
+                return null;
             }
         }
 
@@ -51,6 +54,12 @@ namespace Services.Daemon.Services
             var req = new DaemonRequest("get_health");
 
             var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
 
             try
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Models
+namespace Services.Daemon.Wallet.Models
 {
     public class TransactionHistoryElement
     {

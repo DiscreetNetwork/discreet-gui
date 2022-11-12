@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Models
+namespace Services.Daemon.SeedRecovery.Requests
 {
-    public class TransactionHistoryOutput
+    public class GetSecretKeyRequest
     {
+        public string Label { get; set; }
+        public string Passphrase { get; set; }
         public string Address { get; set; }
-        public ulong Amount { get; set; }
     }
 }

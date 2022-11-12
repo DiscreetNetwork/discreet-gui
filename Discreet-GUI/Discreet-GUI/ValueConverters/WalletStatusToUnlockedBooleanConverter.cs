@@ -1,5 +1,5 @@
 ﻿using Avalonia.Data.Converters;
-using Services.Daemon.Models;
+using Services.Daemon.Wallet.Models;
 using System;
 using System.Globalization;
 

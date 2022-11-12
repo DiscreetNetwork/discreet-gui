@@ -90,7 +90,7 @@ namespace Discreet_GUI.Hosted
             
             while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath) && useDaemonActivator)
             {
-                _notificationService.DisplayInformation("Could not find the daemon executable. Please update your 'discreet\\wallet-config\\appsettings.json' file with a full path to the daemon");
+                _notificationService.DisplayError("Could not find the daemon executable. Please update your 'discreet\\wallet-config\\appsettings.json' file with a full path to the daemon");
                 await Task.Delay(3000);
                 executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
             }
@@ -144,7 +144,7 @@ namespace Discreet_GUI.Hosted
                         {
                             if (errorBuilder.Length == 0) return;
 
-                            _notificationService.DisplayInformation(errorBuilder.ToString());
+                            _notificationService.DisplayError("An error occured in the daemon, please check your logs.");
                             errorBuilder.Clear();
                             return;
                         }
@@ -193,7 +193,7 @@ namespace Discreet_GUI.Hosted
 
         private void DaemonProcessExited(object sender, EventArgs e)
         {
-            _notificationService.DisplayInformation("Daemon process exited");
+            _notificationService.DisplayInformation("The daemon process has been closed.");
             _daemonCache.DaemonStarted = false;
             _navigationServiceFactory.Create<Views.Start.StartViewModel>().Navigate();
             _navigationServiceFactory.SetDaemonStartupModal();

@@ -8,10 +8,11 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.CreateWallet;
 using Discreet_GUI.Views.Layouts;
-using Services.Daemon;
 using System.Reactive.Concurrency;
 using System.Linq;
 using Discreet_GUI.Views.Modals;
+using Services.Daemon.Wallet;
+using Discreet_GUI.Services;
 
 namespace Discreet_GUI.Views.Start
 {
@@ -43,15 +44,16 @@ namespace Discreet_GUI.Views.Start
         /// </summary>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly NavigationServiceFactory _navigationServiceFactory;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
+        private readonly NotificationService _notificationService;
 
         public string CurrentVersion { get => $"Version: {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}"; }
 
-        public StartViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService)
+        public StartViewModel(NavigationServiceFactory navigationServiceFactory, DaemonWalletService walletService, NotificationService notificationService)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _walletService = walletService;
-
+            _notificationService = notificationService;
             NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
             {
                 _cancellationTokenSource.Cancel();
@@ -99,6 +101,12 @@ namespace Discreet_GUI.Views.Start
         async Task ScanForExistingWallets()
         {
             var wallets = await _walletService.GetWallets();
+            if (wallets is null)
+            {
+                _notificationService.DisplayError("Sorry something went wrong while scanning for wallets.");
+                return;
+            }
+
             if(wallets.Any()) _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
         }
 

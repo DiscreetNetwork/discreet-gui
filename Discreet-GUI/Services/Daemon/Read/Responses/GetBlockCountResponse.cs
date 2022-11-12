@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Services.Daemon.Responses
+namespace Services.Daemon.Read.Responses
 {
     public class GetBlockCountResponse
     {

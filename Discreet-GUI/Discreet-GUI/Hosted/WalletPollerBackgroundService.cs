@@ -1,32 +1,27 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Services.Caches;
-using Services.Daemon;
-using Services.Daemon.Services;
 using Services.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Discreet_GUI.Services;
+using Services.Daemon.Wallet;
+using Services.Daemon.Status;
 
 namespace Discreet_GUI.Hosted
 {
     public class WalletPollerBackgroundService : BackgroundService
     {
         private readonly WalletCache _walletCache;
-        private readonly WalletService _walletService;
-        private readonly NotificationService _notificationService;
-        private readonly StatusService _statusService;
-        private readonly AccountService _accountService;
+        private readonly DaemonWalletService _walletService;
+        private readonly DaemonStatusService _statusService;
 
-        public WalletPollerBackgroundService(WalletCache walletCache, WalletService walletService, NotificationService notificationService, StatusService statusService, AccountService accountService)
+        public WalletPollerBackgroundService(WalletCache walletCache, DaemonWalletService walletService, DaemonStatusService statusService)
         {
             _walletCache = walletCache;
             _walletService = walletService;
-            _notificationService = notificationService;
             _statusService = statusService;
-            _accountService = accountService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -85,10 +80,10 @@ namespace Discreet_GUI.Hosted
         public async Task UpdatePeerCount()
         {
             var numberOfConnections = await _statusService.GetNumConnections();
-            if (numberOfConnections == -1) return;
+            if (numberOfConnections is null) return;
 
             var previous = _walletCache.NumberOfConnections;
-            if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections;
+            if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections.Value;
         }
 
         
@@ -96,7 +91,7 @@ namespace Discreet_GUI.Hosted
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var fetchedBalance = await _accountService.GetBalance(address.Address);
+                var fetchedBalance = await _walletService.GetBalance(address.Address);
                 if(fetchedBalance == null)
                 {
                     continue;
@@ -111,7 +106,7 @@ namespace Discreet_GUI.Hosted
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var addressState = await _accountService.GetState(address.Address);
+                var addressState = await _walletService.GetAddressHeight(address.Address);
                 if(addressState is null)
                 {
                     continue;
@@ -125,7 +120,7 @@ namespace Discreet_GUI.Hosted
 
         public async Task UpdateWalletHeight()
         {
-            var walletState = await _walletService.GetState(_walletCache.Label);
+            var walletState = await _walletService.GetWalletHeight(_walletCache.Label);
             if(walletState is null)
             {
                 return;

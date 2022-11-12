@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Daemon.Responses
+namespace Services.Daemon.SeedRecovery.Responses
 {
-    public class WalletRecoveryResponse
+    public class GetWalletSeedResponse
     {
         public string Seed { get; set; }
         public string Mnemonic { get; set; }
