@@ -51,6 +51,7 @@ namespace Discreet_GUI.Views.CreateWallet
                 if(mnemonic is null)
                 {
                     IsLoading = false;
+                    ValidateCanContinue();
                     _notificationService.DisplayError("An error occured while trying to generate the mnemonic.");
                     return;
                 }
@@ -59,6 +60,7 @@ namespace Discreet_GUI.Views.CreateWallet
             }
 
             IsLoading = false;
+            ValidateCanContinue();
         }
 
         public void ValidateCanContinue()
