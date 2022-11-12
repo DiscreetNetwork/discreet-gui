@@ -2,9 +2,6 @@ using Avalonia;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 //using DesktopNotifications.Avalonia;
 

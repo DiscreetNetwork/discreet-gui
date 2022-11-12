@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Services.Caches;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
@@ -48,7 +45,7 @@ namespace Discreet_GUI.Hosted
                 }
                 catch (Exception)
                 {
-                    _notificationService.Display("Failed to check for update. Check your internet connection");
+                    _notificationService.DisplayError("An error occured while trying to check for updates.");
                     continue;
                 }
 

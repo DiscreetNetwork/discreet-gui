@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discreet_GUI.ViewModels.Common;
 using Services.Testnet;
@@ -38,7 +37,7 @@ namespace Discreet_GUI.Views.Account
         {
             IsLoading = true;
             var submitResult = await _issueService.SubmitIssue(IssueSummary, (IssueSeverity)SelectedSeverityIndex, IssueDescription, AttachmentPath);
-            _notificationService.Display(submitResult.Message);
+            _notificationService.DisplayInformation(submitResult.Message);
             IsLoading = false;
         }
 

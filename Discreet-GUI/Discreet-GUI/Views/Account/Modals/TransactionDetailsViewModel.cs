@@ -1,26 +1,26 @@
-﻿using Avalonia.Input;
-using Avalonia.Interactivity;
-using ReactiveUI;
+﻿using ReactiveUI;
 using Services;
 using Services.Caches;
-using Services.Daemon;
-using Services.Daemon.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
-using System.Text;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.ViewModels.Common;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using Avalonia;
+using Services.Daemon.Wallet;
+using Services.Daemon.Wallet.Models;
 
 namespace Discreet_GUI.Views.Account.Modals
 {
     public class TransactionDetailsViewModel : ViewModelBase
     {
         private readonly TransactionDetailsCache _transactionDetailsCache;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
@@ -38,7 +38,7 @@ namespace Discreet_GUI.Views.Account.Modals
         public string Date { get; set; }
         public string TransactionId { get; set; }
 
-        public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, WalletService walletService, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
+        public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
             _transactionDetailsCache = transactionDetailsCache;
             _walletService = walletService;
@@ -53,7 +53,7 @@ namespace Discreet_GUI.Views.Account.Modals
             Transaction = await _walletService.GetTransaction(_transactionDetailsCache.Address, _transactionDetailsCache.TransactionId);
             if(Transaction is null)
             {
-                _notificationService.Display("Failed to fetch the transaction");
+                _notificationService.DisplayError("An error occured while trying to fetch the transaction.");
                 Dismiss();
                 return;
             }
@@ -75,6 +75,56 @@ namespace Discreet_GUI.Views.Account.Modals
 
             TransactionId = Transaction.TxID;
             OnPropertyChanged(nameof(TransactionId));
+        }
+
+        async Task CopyTransactionHash()
+        {
+            await Application.Current.Clipboard.SetTextAsync(TransactionId);
+            _notificationService.DisplayInformation("Copied transaction hash to clipboard");
+        }
+
+        void DisplayTransactionInExplorer()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // If no associated application/json MimeType is found xdg-open opens retrun error
+                // but it tries to open it anyway using the console editor (nano, vim, other..)
+                ShellExec($"xdg-open https://explorer.discreet.tools/transaction/details/{TransactionId}", waitForExit: false);
+            }
+            else
+            {
+                using Process process = Process.Start(new ProcessStartInfo
+                {
+                    FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? $"https://explorer.discreet.tools/transaction/details/{TransactionId}" : "open",
+                    Arguments = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? $"https://explorer.discreet.tools/transaction/details/{TransactionId}" : "",
+                    CreateNoWindow = true,
+                    UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                });
+            }
+        }
+
+        private static void ShellExec(string cmd, bool waitForExit = true)
+        {
+            var escapedArgs = Regex.Replace(cmd, "(?=[`~!#&*()|;'<>])", "\\")
+                .Replace("\"", "\\\\\\\"");
+
+            using (var process = Process.Start(
+                new ProcessStartInfo
+                {
+                    FileName = "/bin/sh",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            ))
+            {
+                if (waitForExit)
+                {
+                    process.WaitForExit();
+                }
+            }
         }
 
         void Dismiss() => _navigationServiceFactory.CreateModalNavigationService().Navigate();

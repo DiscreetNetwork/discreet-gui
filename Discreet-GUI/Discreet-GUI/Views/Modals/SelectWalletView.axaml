@@ -70,7 +70,29 @@
 			<Button Grid.Row="4" Classes="btn btn-gray" Cursor="Hand"
 					Width="95" Height="35" Margin="0 10 0 0" 
 					Content="{Binding SelectedWalletStatus.Status, Converter={StaticResource WalletStatusToUnlockedStringConverter}, ConverterParameter=Normal}"
-					Command="{Binding Continue}"/>
+					Command="{Binding Continue}"
+					HotKey="ENTER"/>
+
+			<Button Grid.Row="4" Cursor="Hand"
+					Width="95" Height="35" Margin="100 10 0 0"
+					VerticalContentAlignment="Center"
+					HorizontalContentAlignment="Center"
+					CornerRadius="6"
+					Content="Cancel"
+					Command="{Binding Cancel}">
+				<Button.Styles>
+					<Style Selector="Button">
+						<Setter Property="Background" Value="Transparent"/>
+						<Setter Property="Foreground" Value="#DDDDDD"/>
+						<Setter Property="BorderBrush" Value="#ff3e3e3e"/>
+					</Style>
+					<Style Selector="Button:pointerover /template/ ContentPresenter">
+						<Setter Property="Background" Value="Transparent"/>
+						<Setter Property="TextBlock.Foreground" Value="White"/>
+						<Setter Property="BorderBrush" Value="#4d4d4d"/>
+					</Style>
+				</Button.Styles>
+			</Button>
 		</Grid>
 	</Grid>
 

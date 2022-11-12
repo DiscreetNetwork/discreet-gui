@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
 
 namespace Discreet_GUI.Factories.ViewModel

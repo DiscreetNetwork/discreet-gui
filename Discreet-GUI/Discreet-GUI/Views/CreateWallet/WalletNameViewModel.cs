@@ -1,19 +1,13 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using ReactiveUI;
-using Services.Daemon;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.CreateWallet
 {
@@ -21,7 +15,7 @@ namespace Discreet_GUI.Views.CreateWallet
     class WalletNameViewModel : ViewModelBase
     {
         private readonly NewWalletCache _newWalletCache;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
 
         public ReactiveCommand<Unit, Unit> NavigateYourRecoveryPhraseViewCommand { get; set; }
         public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
@@ -35,7 +29,7 @@ namespace Discreet_GUI.Views.CreateWallet
         private bool _isLoading;
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
-        public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletService walletService)
+        public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, DaemonWalletService walletService)
         {
             _newWalletCache = newWalletCache;
             _walletService = walletService;

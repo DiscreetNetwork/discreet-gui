@@ -1,11 +1,5 @@
-﻿using DynamicData.Binding;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive;
-using System.Text;
 using Services.Caches;
 using Services.Extensions;
 using Discreet_GUI.Factories.Navigation;
@@ -13,9 +7,7 @@ using Discreet_GUI.Stores.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Account;
 using Discreet_GUI.Views.Settings;
-using Services;
 using Discreet_GUI.Stores;
-using System.Reactive.Concurrency;
 
 namespace Discreet_GUI.Views.Layouts.Account
 {

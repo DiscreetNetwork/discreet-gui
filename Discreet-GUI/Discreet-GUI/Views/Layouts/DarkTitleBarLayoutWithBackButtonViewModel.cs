@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Services.Navigation.Common;
+﻿using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Start;

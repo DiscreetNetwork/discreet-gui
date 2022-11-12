@@ -3,8 +3,6 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace Discreet_GUI.Controls

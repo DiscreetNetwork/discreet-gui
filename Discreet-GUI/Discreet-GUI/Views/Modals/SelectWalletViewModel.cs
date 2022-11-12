@@ -1,13 +1,6 @@
 ﻿using ReactiveUI;
-using Services.Daemon;
-using Services.Daemon.Models;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
@@ -16,6 +9,9 @@ using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Account;
 using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Layouts.Account;
+using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
+using Services.Daemon.Wallet.Models;
 
 namespace Discreet_GUI.Views.Modals
 {
@@ -23,7 +19,7 @@ namespace Discreet_GUI.Views.Modals
     public class SelectWalletViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly WalletCache _walletCache;
 
@@ -51,7 +47,7 @@ namespace Discreet_GUI.Views.Modals
 
         public SelectWalletViewModel() { }
 
-        public SelectWalletViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService, NotificationService notificationService, WalletCache walletCache)
+        public SelectWalletViewModel(NavigationServiceFactory navigationServiceFactory, DaemonWalletService walletService, NotificationService notificationService, WalletCache walletCache)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _walletService = walletService;
@@ -66,7 +62,7 @@ namespace Discreet_GUI.Views.Modals
             var wallets = await _walletService.GetWallets();
             if (wallets is null)
             {
-                _notificationService.Display("Failed to load wallets");
+                _notificationService.DisplayError("Failed to load wallets.");
             }
             else
             {
@@ -76,7 +72,7 @@ namespace Discreet_GUI.Views.Modals
             var statuses = await _walletService.GetWalletStatuses();
             if (statuses is null)
             {
-                _notificationService.Display("Failed to load wallet statuses");
+                _notificationService.DisplayError("Failed to load wallet statuses.");
             }
             else
             {
@@ -102,7 +98,7 @@ namespace Discreet_GUI.Views.Modals
                 var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
                 if (!success)
                 {
-                    _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
+                    _notificationService.DisplayError("Failed to load wallet, the passphrase might be wrong.");
                     return;
                 }
             }
@@ -111,7 +107,7 @@ namespace Discreet_GUI.Views.Modals
                 var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
                 if (!unlocked)
                 {
-                    _notificationService.Display("Wrong passphrase");
+                    _notificationService.DisplayError("Incorrect passphrase were provided.");
                     return;
                 }
             }
@@ -122,49 +118,9 @@ namespace Discreet_GUI.Views.Modals
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }
 
-
-        async Task UnlockWallet()
+        void Cancel()
         {
-            var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
-            if(!unlocked)
-            {
-                _notificationService.Display("Wrong passphrase");
-                return;
-            }
-
-            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
-        }
-
-        async Task LockWallet()
-        {
-            var locked = await _walletService.LockWallet(LoadedWallets[SelectedWalletIndex].Label);
-            if (!locked)
-            {
-                _notificationService.Display("Failed to lock the wallet");
-                return;
-            }
-
-            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
-        }
-
-        async Task LoadWallet()
-        {
-            var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
-            if (!success)
-            {
-                _notificationService.Display("Failed to load wallet, the passphrase might be wrong");
-                return;
-            }
-
-            _notificationService.Display("Loaded wallet");
-            _navigationServiceFactory.Create<SelectWalletViewModel>().Navigate();
-        }
-
-        void JustNavigate()
-        {
-            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
-            _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
-            _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
+            _navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate();
         }
     }
 }

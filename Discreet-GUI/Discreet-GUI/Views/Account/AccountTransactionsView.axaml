@@ -8,7 +8,7 @@
              x:Class="Discreet_GUI.Views.Account.AccountTransactionsView">
 
 	<UserControl.Resources>
-		<converters:FullAddressToTruncatedAddressConverter x:Key="FullAddressToTruncatedAddressConverter"/>
+		<converters:NameToTruncatedStringConverter x:Key="NameToTruncatedStringConverter"/>
 		<converters:BalanceToDecimalStringConverter x:Key="BalanceToDecimalStringConverter"/>
 	</UserControl.Resources>
 	
@@ -42,13 +42,18 @@
 
 				<Label Grid.Row="0" Grid.Column="0" Foreground="White" FontSize="18">Time</Label>
 				<Label Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="18">Date</Label>
-				<Label Grid.Row="0" Grid.Column="2" Foreground="White" FontSize="18">Receiving account</Label>
+				<Label Grid.Row="0" Grid.Column="2" Foreground="White" FontSize="18">Account</Label>
 				<Label Grid.Row="0" Grid.Column="3" Foreground="White" FontSize="18">Amount</Label>
 			</Grid>
 		</Border>
 
 		<ScrollViewer Margin="0 0 70 20" Padding="0 0 20 0" Grid.Row="2">
 			<ItemsControl Items="{Binding Transactions}">
+				<ItemsControl.Styles>
+					<Style Selector="ContentPresenter:nth-child(2n+2) > Button">
+						<Setter Property="Background" Value="Transparent"/>
+					</Style>
+				</ItemsControl.Styles>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 							<Button Cursor="Hand" BorderThickness="0 0 0 0"
@@ -73,7 +78,7 @@
 
 									<Label Grid.Row="0" Grid.Column="0" FontSize="18" Content="{Binding TimeFormatted}"/>
 									<Label Grid.Row="0" Grid.Column="1" FontSize="18" Content="{Binding DateFormatted}"/>
-									<Label Grid.Row="0" Grid.Column="2" FontSize="18" Content="{Binding ReceivingAccount, Converter={StaticResource FullAddressToTruncatedAddressConverter}}"/>
+									<Label Grid.Row="0" Grid.Column="2" FontSize="18" Content="{Binding AccountName, Converter={StaticResource NameToTruncatedStringConverter}}"/>
 									<Label Grid.Row="0" Grid.Column="3" FontSize="18" Content="{Binding Amount}"/>
 								</Grid>
 
@@ -81,11 +86,7 @@
 
 								<Button.Styles>
 									<Style Selector="Button">
-										<Setter Property="Background" Value="Transparent"/>
-										<Setter Property="BorderBrush" Value="#414141"/>
-									</Style>
-									<Style Selector="Button:pointerover /template/ ContentPresenter">
-										<Setter Property="Background" Value="Transparent"/>
+										<Setter Property="Background" Value="#212122"/>
 										<Setter Property="BorderBrush" Value="#414141"/>
 									</Style>
 

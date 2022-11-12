@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Stores;
-using Discreet_GUI.ViewModels.Common;
+﻿using Discreet_GUI.Stores;
 
 namespace Discreet_GUI.Services
 {
@@ -18,9 +11,19 @@ namespace Discreet_GUI.Services
             _notificationStore = notificationStore;
         }
 
-        public void Display(string content)
+        public void DisplayInformation(string content)
         {
-            _notificationStore.Add(new NotificationBody(content));
+            _notificationStore.Add(new NotificationBody(text: content, color: "#007BC2"));
+        }
+
+        public void DisplaySuccess(string content)
+        {
+            _notificationStore.Add(new NotificationBody(text: content, color: "#21A67A"));
+        }
+
+        public void DisplayError(string content)
+        {
+            _notificationStore.Add(new NotificationBody(text: content, color: "#f02e2e"));
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using ReactiveUI;
-using Services.Testnet;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Text;

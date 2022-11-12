@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
-using Discreet_GUI.ViewModels.Common;
 
 namespace Discreet_GUI.Stores
 {
@@ -53,10 +50,12 @@ namespace Discreet_GUI.Stores
         public event Action<NotificationBody> OnDismissed;
 
         public string Text { get; set; }
+        public string Color { get; set; }
 
-        public NotificationBody(string text)
+        public NotificationBody(string text, string color)
         {
             Text = text;
+            Color = color;
         }
 
         public async Task StartDelayedDismiss()

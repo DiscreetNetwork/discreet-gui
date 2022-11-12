@@ -1,25 +1,18 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ReactiveUI;
 using Services.Caches;
 using Services.Daemon;
-using Services.Daemon.Services;
 using Services.Testnet;
 using Services.ZMQ;
 using Services.ZMQ.Handlers.Common;
 using Services.ZMQ.Registries;
 using Services.ZMQ.Registries.Common;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Attributes;
 using Discreet_GUI.Factories.Navigation;
@@ -28,14 +21,14 @@ using Discreet_GUI.Hosted;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.Stores.Navigation;
-using Discreet_GUI.ViewModels;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views;
-using Discreet_GUI.Views.Account.Modals;
-using Discreet_GUI.Views.DebugUtility;
-using Discreet_GUI.Views.Modals;
 using Discreet_GUI.Views.Notifications;
 using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
+using Services.Daemon.Status;
+using Services.Daemon.Transaction;
+using Services.Daemon.SeedRecovery;
 
 namespace Discreet_GUI
 {
@@ -71,9 +64,10 @@ namespace Discreet_GUI
                 services.AddHostedService<DaemonActivatorService>();
                 services.AddHostedService<WalletPollerBackgroundService>();
                 services.AddHostedService<VersionBackgroundService>();
-                services.AddScoped<WalletService>();
-                services.AddScoped<StatusService>();
-                services.AddScoped<AccountService>();
+                services.AddScoped<DaemonWalletService>();
+                services.AddScoped<DaemonTransactionService>();
+                services.AddScoped<DaemonStatusService>();
+                services.AddScoped<DaemonSeedRecoveryService>();
                 services.AddScoped<IssueService>();
 
                 // Startup
