@@ -68,7 +68,7 @@
       <RadioButton IsChecked="{Binding FromKeys}" Margin="0 30 0 0" Grid.Row="2" FontWeight="200" Grid.Column="1" Content="Restore from keys" />
 
 	  <StackPanel Margin="0 20 0 0" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" IsVisible="{Binding FromMnemonicSeed}">
-		  <TextBox Classes="input" TextWrapping="Wrap" Height="100" Text="{Binding MnemonicPhrase}" Watermark="Enter your 12 word mnemonic seed" Background="{x:Null}" Padding="10 10 10 10" BorderBrush="#FF646464"/>
+		  <TextBox Classes="input" TextWrapping="Wrap" Height="100" Text="{Binding MnemonicPhrase}" Watermark="Enter your 24 word mnemonic seed" Background="{x:Null}" Padding="10 10 10 10" BorderBrush="#FF646464"/>
 
 		  <Grid Grid.Row="3" Margin="0 20 0 20">
 			  <Grid.RowDefinitions>

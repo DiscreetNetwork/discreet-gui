@@ -257,7 +257,7 @@ namespace Services.Daemon.Wallet
 
         public async Task<Models.Wallet> RecoverWallet(string newLabel, string mnemonic, string passphrase)
         {
-            return await CreateWallet(newLabel, mnemonic, "b");
+            return await CreateWallet(newLabel, mnemonic, passphrase);
         } 
 
         
