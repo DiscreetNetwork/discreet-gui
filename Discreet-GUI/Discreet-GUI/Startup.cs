@@ -30,6 +30,7 @@ using Services.Daemon.Status;
 using Services.Daemon.Transaction;
 using Services.Daemon.SeedRecovery;
 using Services.Daemon.Read;
+using Discreet_GUI.Caches;
 
 namespace Discreet_GUI
 {
@@ -148,6 +149,11 @@ namespace Discreet_GUI
 
         public void RegisterCaches(IServiceCollection services)
         {
+            typeof(SubmitIssueCache).Assembly.GetTypes().Where(t => t.Name.Contains("Cache") && (t.Namespace == typeof(SubmitIssueCache).Namespace)).ToList().ForEach(t =>
+            {
+                services.AddSingleton(t);
+            });
+
             typeof(NewWalletCache).Assembly.GetTypes().Where(t => t.Name.Contains("Cache") && (t.Namespace == typeof(NewWalletCache).Namespace)).ToList().ForEach(t =>
             {
                 services.AddSingleton(t);
