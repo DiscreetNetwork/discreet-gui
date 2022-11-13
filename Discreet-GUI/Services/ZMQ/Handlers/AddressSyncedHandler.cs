@@ -17,12 +17,13 @@ namespace Services.ZMQ.Handlers
             _walletCache = walletCache;
         }
 
-        public override async Task Handle(string address)
+        public override Task Handle(string address)
         {
             var accountToUpdate = _walletCache.Accounts.Where(a => a.Address.Equals(address)).FirstOrDefault();
-            if (accountToUpdate is null || accountToUpdate.Synced == true) return;
+            if (accountToUpdate is null || accountToUpdate.Synced == true) return Task.CompletedTask;
 
             accountToUpdate.Synced = true;
+            return Task.CompletedTask;
         }
     }
 }

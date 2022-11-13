@@ -172,7 +172,7 @@ namespace Discreet_GUI
                 {
                     Directory.CreateDirectory(walletConfigPath);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -205,7 +205,7 @@ namespace Discreet_GUI
                         WriteIndented = true,
                     }));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -231,7 +231,7 @@ namespace Discreet_GUI
                         WriteIndented = true,
                     }));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }

@@ -52,7 +52,7 @@ namespace Discreet_GUI.Views.CreateWallet
             RxApp.MainThreadScheduler.Schedule(OnActivated);
         }
 
-        async void OnActivated()
+        void OnActivated()
         {
             GeneratedMnemonic = new ObservableCollection<string>(_newWalletCache.Mnemonic);
             OnPropertyChanged(nameof(GeneratedMnemonic));
