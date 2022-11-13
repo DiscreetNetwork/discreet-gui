@@ -27,7 +27,7 @@
 		
 		<TransitioningContentControl  ZIndex="100" Content="{Binding CurrentModalViewModel}">
 			<TransitioningContentControl.PageTransition>
-				<CrossFade Duration="0:00:00.001"/>
+				<CrossFade Duration="0:00:00.100"/>
 			</TransitioningContentControl.PageTransition>
 		</TransitioningContentControl>
 		
