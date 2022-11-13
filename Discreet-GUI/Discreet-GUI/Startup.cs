@@ -29,6 +29,7 @@ using Services.Daemon.Wallet;
 using Services.Daemon.Status;
 using Services.Daemon.Transaction;
 using Services.Daemon.SeedRecovery;
+using Services.Daemon.Read;
 
 namespace Discreet_GUI
 {
@@ -68,6 +69,7 @@ namespace Discreet_GUI
                 services.AddScoped<DaemonTransactionService>();
                 services.AddScoped<DaemonStatusService>();
                 services.AddScoped<DaemonSeedRecoveryService>();
+                services.AddScoped<DaemonReadService>();
                 services.AddScoped<IssueService>();
 
                 // Startup

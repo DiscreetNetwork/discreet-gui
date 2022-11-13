@@ -5,6 +5,9 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Modals;
 using Services;
+using Services.Daemon.Read;
+using System.Threading.Tasks;
+using Services.Daemon.Read.Requests;
 
 namespace Discreet_GUI.Views.Account
 {
@@ -12,10 +15,11 @@ namespace Discreet_GUI.Views.Account
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly SendTransactionCache _sendTransactionCache;
+        private readonly DaemonReadService _daemonReadService;
         private readonly WalletCache _walletCache;
 
         string _receiver;
-        public string Receiver { get => _receiver; set { _receiver = value; ValidateReceiverInput(); } }
+        public string Receiver { get => _receiver; set { _receiver = value; _ = ValidateReceiverInput(); } }
         decimal _amount;
         public decimal Amount { get => _amount; set { _amount = value; ValidateAmountInput(); } }
 
@@ -52,18 +56,25 @@ namespace Discreet_GUI.Views.Account
             }
         }
 
-        public AccountSendViewModel(WalletCache walletCache, NavigationServiceFactory navigationServiceFactory, SendTransactionCache sendTransactionCache)
+        public AccountSendViewModel(WalletCache walletCache, NavigationServiceFactory navigationServiceFactory, SendTransactionCache sendTransactionCache, DaemonReadService daemonReadService)
         {
             _walletCache = walletCache;
             _navigationServiceFactory = navigationServiceFactory;
             _sendTransactionCache = sendTransactionCache;
+            _daemonReadService = daemonReadService;
         }
 
-        bool ValidateReceiverInput()
+        async Task<bool> ValidateReceiverInput()
         {
             if (string.IsNullOrWhiteSpace(Receiver))
             {
                 ReceiverValidationMessage = "Receiver address cannot be empty";
+                return false;
+            }
+
+            if(!await _daemonReadService.VerifyAddress(new VerifyAddressRequest(Receiver)))
+            {
+                ReceiverValidationMessage = "Receiver address is not a valid stealth or transparent address";
                 return false;
             }
 
@@ -89,9 +100,9 @@ namespace Discreet_GUI.Views.Account
             return true;
         }
         
-        public void DisplayConfirm()
+        public async Task DisplayConfirm()
         {
-            if (!ValidateReceiverInput() || !ValidateAmountInput()) return;
+            if (!await ValidateReceiverInput() || !ValidateAmountInput()) return;
 
             _sendTransactionCache.Amount = Amount;
             _sendTransactionCache.Receiver = Receiver;
