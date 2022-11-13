@@ -46,7 +46,8 @@
 				     HorizontalAlignment="Left"
 					 Width="300"
 					 Text="{Binding IssueSummary}"
-					 Foreground="#dddddd"/>
+					 Foreground="#dddddd"
+					 TextWrapping="Wrap"/>
 
 			<Label  Grid.Row="4" 
 					Margin="0 10 0 5"
@@ -73,7 +74,8 @@
 					 Classes="input"
 					 Text="{Binding IssueDescription}"
 					 Height="200"
-					 Foreground="#dddddd"/>
+					 Foreground="#dddddd"
+					 TextWrapping="Wrap"/>
 
 			<Grid Grid.Row="8">
 				<Label HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#DDDDDD" Margin="0 0 0 75">Attachment</Label>
