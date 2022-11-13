@@ -176,7 +176,7 @@ namespace Discreet_GUI.Hosted
                 {
                     _daemonProcess.Start();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw;
                 }

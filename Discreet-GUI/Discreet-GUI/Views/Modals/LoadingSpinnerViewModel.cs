@@ -25,7 +25,7 @@ namespace Discreet_GUI.Views.Modals
             RxApp.MainThreadScheduler.Schedule(OnActivated);
         }
 
-        public async void OnActivated()
+        void OnActivated()
         {
             if(!_daemonCache.DaemonStarted)
             {

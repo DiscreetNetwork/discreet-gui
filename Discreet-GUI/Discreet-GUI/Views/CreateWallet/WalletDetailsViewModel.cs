@@ -63,8 +63,24 @@ namespace Discreet_GUI.Views.CreateWallet
         {
             IsLoading = true;
 
+            var wallets = await _walletService.GetWallets();
+            if (wallets is null)
+            {
+                _notificationService.DisplayError("An error occured while trying to fetch existing wallets.");
+                IsLoading = false;
+                return;
+            }
+
+            if (wallets.Any(w => w.Label == _newWalletCache.WalletName))
+            {
+                _notificationService.DisplayError("A wallet with the specified label already exist.");
+                IsLoading = false;
+                return;
+            }
+
             if (await _walletService.CreateWallet(_newWalletCache.WalletName, _newWalletCache.Mnemonic.Select(x => x).Aggregate((x, y) => x + " " + y), _newWalletCache.Password) == null)
             {
+                IsLoading = false;
                 _notificationService.DisplayError("An error occured while trying to create the wallet.");
                 return;
             }

@@ -59,6 +59,10 @@ namespace Discreet_GUI.Views.Modals
             {
                 _notificationService.DisplayError("An error occured while trying to send the transaction.");
             }
+            else
+            {
+                _notificationService.DisplaySuccess("The transaction has been send successfully!");
+            }
 
             _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }

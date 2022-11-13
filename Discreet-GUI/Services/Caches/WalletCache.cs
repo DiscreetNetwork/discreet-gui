@@ -64,11 +64,13 @@ namespace Services.Caches
 
         public void ClearCache()
         {
-            Label = String.Empty;
             Initialized = false;
-            Accounts = new ObservableCollectionEx<WalletAddress>();
+            EntropyHash = string.Empty;
+            Label = string.Empty;
             LastSeenHeight = 0;
             Synced = false;
+            NumberOfConnections = 0;
+            Accounts = new ObservableCollectionEx<WalletAddress>();
         }
 
 

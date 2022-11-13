@@ -29,6 +29,8 @@ using Services.Daemon.Wallet;
 using Services.Daemon.Status;
 using Services.Daemon.Transaction;
 using Services.Daemon.SeedRecovery;
+using Services.Daemon.Read;
+using Discreet_GUI.Caches;
 
 namespace Discreet_GUI
 {
@@ -68,6 +70,7 @@ namespace Discreet_GUI
                 services.AddScoped<DaemonTransactionService>();
                 services.AddScoped<DaemonStatusService>();
                 services.AddScoped<DaemonSeedRecoveryService>();
+                services.AddScoped<DaemonReadService>();
                 services.AddScoped<IssueService>();
 
                 // Startup
@@ -146,6 +149,11 @@ namespace Discreet_GUI
 
         public void RegisterCaches(IServiceCollection services)
         {
+            typeof(SubmitIssueCache).Assembly.GetTypes().Where(t => t.Name.Contains("Cache") && (t.Namespace == typeof(SubmitIssueCache).Namespace)).ToList().ForEach(t =>
+            {
+                services.AddSingleton(t);
+            });
+
             typeof(NewWalletCache).Assembly.GetTypes().Where(t => t.Name.Contains("Cache") && (t.Namespace == typeof(NewWalletCache).Namespace)).ToList().ForEach(t =>
             {
                 services.AddSingleton(t);
@@ -172,7 +180,7 @@ namespace Discreet_GUI
                 {
                     Directory.CreateDirectory(walletConfigPath);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -205,7 +213,7 @@ namespace Discreet_GUI
                         WriteIndented = true,
                     }));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -231,7 +239,7 @@ namespace Discreet_GUI
                         WriteIndented = true,
                     }));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }

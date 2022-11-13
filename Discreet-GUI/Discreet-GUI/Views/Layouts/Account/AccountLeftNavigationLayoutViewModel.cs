@@ -23,7 +23,8 @@ namespace Discreet_GUI.Views.Layouts.Account
 
         public ObservableCollection<bool> ButtonActiveStates { get; set; } = new ObservableCollection<bool>() { true, false, false, false, false };
 
-        public Avalonia.Media.Imaging.Bitmap WalletIdenticon { get; set; }
+        private Avalonia.Media.Imaging.Bitmap _walletIdenticon;
+        public Avalonia.Media.Imaging.Bitmap WalletIdenticon { get => _walletIdenticon; set { _walletIdenticon = value; OnPropertyChanged(nameof(WalletIdenticon)); } }
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
@@ -49,16 +50,11 @@ namespace Discreet_GUI.Views.Layouts.Account
             if(!string.IsNullOrWhiteSpace(_walletCache.EntropyHash))
             {
                 WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
-                OnPropertyChanged(nameof(WalletIdenticon));
             }
-            else
+            _walletCache.EntropyHashChanged += () =>
             {
-                _walletCache.EntropyHashChanged += () =>
-                {
-                    WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
-                    OnPropertyChanged(nameof(WalletIdenticon));
-                };
-            }
+                WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
+            };
         }
 
         void NavigateHomeCommand()

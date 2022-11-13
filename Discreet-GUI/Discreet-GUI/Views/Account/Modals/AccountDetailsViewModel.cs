@@ -34,11 +34,6 @@ namespace Discreet_GUI.Views.Account.Modals
             WalletAddress = _walletCache.Accounts.Where(a => a.Address == _walletCache.SelectedAccount).FirstOrDefault();
         }
 
-        async Task CopyQrCode()
-        {
-            
-        }
-
         void Dismiss() => _navigationServiceFactory.CreateModalNavigationService().Navigate();
     }
 }
