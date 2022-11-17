@@ -31,7 +31,7 @@ namespace Discreet_GUI.Views.Layouts.Account
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public string WalletLabel => _walletCache.Label;
 
-        private string _daemonSyncLabel = string.Empty;
+        private string _daemonSyncLabel = "Daemon is synchronised";
         public string DaemonSyncLabel { get => _daemonSyncLabel; set { _daemonSyncLabel = value; OnPropertyChanged(nameof(DaemonSyncLabel)); } }
 
         public float SyncPercentage => _daemonCache.SyncPercentage;
@@ -48,7 +48,6 @@ namespace Discreet_GUI.Views.Layouts.Account
             Accounts.CollectionChanged += AccountsChanged;
 
             _daemonCache.SyncPercentageChanged += UpdateSyncingStatus;
-            UpdateSyncingStatus();
             _walletCache.NumberOfConnectionsChanged += () => OnPropertyChanged(nameof(NumberOfConnections));
 
 
