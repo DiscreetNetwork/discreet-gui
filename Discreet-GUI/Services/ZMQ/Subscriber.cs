@@ -38,7 +38,7 @@ namespace Services.ZMQ
                 var topicBytes = _subscriberSocket.ReceiveFrameBytes();
                 var messageBytes = _subscriberSocket.ReceiveFrameBytes();
 
-                Task.Factory.StartNew(async () => await _messageHandlerRegistry.GetHandler(Encoding.UTF8.GetString(topicBytes)).Handle(Encoding.UTF8.GetString(messageBytes)));
+                Task.Factory.StartNew(async () => await _messageHandlerRegistry.GetHandler(Encoding.UTF8.GetString(topicBytes)).Handle(messageBytes));
             }
         }
     }

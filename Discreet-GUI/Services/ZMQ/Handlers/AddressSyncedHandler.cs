@@ -17,8 +17,9 @@ namespace Services.ZMQ.Handlers
             _walletCache = walletCache;
         }
 
-        public override Task Handle(string address)
+        public override Task Handle(byte[] bytes)
         {
+            string address = Encoding.UTF8.GetString(bytes);
             var accountToUpdate = _walletCache.Accounts.Where(a => a.Address.Equals(address)).FirstOrDefault();
             if (accountToUpdate is null || accountToUpdate.Synced == true) return Task.CompletedTask;
 

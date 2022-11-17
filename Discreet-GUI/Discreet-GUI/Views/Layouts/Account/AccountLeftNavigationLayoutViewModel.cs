@@ -17,6 +17,7 @@ namespace Discreet_GUI.Views.Layouts.Account
         private readonly AccountNavigationStore _accountNavigationStore;
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly WalletCache _walletCache;
+        private readonly DaemonCache _daemonCache;
         private readonly UserPreferrencesStore _userPreferrencesStore;
 
         public ViewModelBase CurrentViewModel => _accountNavigationStore.CurrentViewModel;
@@ -30,16 +31,26 @@ namespace Discreet_GUI.Views.Layouts.Account
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public string WalletLabel => _walletCache.Label;
 
+        private string _daemonSyncLabel = string.Empty;
+        public string DaemonSyncLabel { get => _daemonSyncLabel; set { _daemonSyncLabel = value; OnPropertyChanged(nameof(DaemonSyncLabel)); } }
+
+        public float SyncPercentage => _daemonCache.SyncPercentage;
+
         public int NumberOfConnections => _walletCache.NumberOfConnections;
 
         public bool HideBalance => _userPreferrencesStore.HideBalance;
 
-        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, UserPreferrencesStore userPreferrencesStore)
+        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, DaemonCache daemonCache, UserPreferrencesStore userPreferrencesStore)
         {
             _walletCache = walletCache;
+            _daemonCache = daemonCache;
             _userPreferrencesStore = userPreferrencesStore;
             Accounts.CollectionChanged += AccountsChanged;
+
+            _daemonCache.SyncPercentageChanged += UpdateSyncingStatus;
+            UpdateSyncingStatus();
             _walletCache.NumberOfConnectionsChanged += () => OnPropertyChanged(nameof(NumberOfConnections));
+
 
             _accountNavigationStore = accountNavigationStore;
             _navigationServiceFactory = navigationServiceFactory;
@@ -55,6 +66,24 @@ namespace Discreet_GUI.Views.Layouts.Account
             {
                 WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
             };
+        }
+
+        void UpdateSyncingStatus()
+        {
+            OnPropertyChanged(nameof(SyncPercentage));
+
+            if(SyncPercentage <= 0.25f)
+            {
+                DaemonSyncLabel = $"Fetching block headers: {_daemonCache.SyncFrom} -> {_daemonCache.SyncTo}";
+            }
+            else if(SyncPercentage <= 0.99)
+            {
+                DaemonSyncLabel = $"Syncing blocks: {_daemonCache.SyncFrom} -> {_daemonCache.SyncTo}";
+            }
+            else if(SyncPercentage == 1f)
+            {
+                DaemonSyncLabel = "Daemon is synchronized";
+            }
         }
 
         void NavigateHomeCommand()

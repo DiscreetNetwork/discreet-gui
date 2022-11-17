@@ -23,7 +23,7 @@ namespace Services.ZMQ.Handlers
             _statusService = statusService;
         }
 
-        public override async Task Handle(string message)
+        public override async Task Handle(byte[] bytes)
         {
             await UpdatePeerCount();
             await UpdateAddressBalances();
