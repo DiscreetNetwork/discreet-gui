@@ -71,16 +71,16 @@
 	  <ScrollViewer Grid.Row="4" Margin="0 10 25 30">
 		  <ItemsControl Items="{Binding Accounts}">
 			  <ItemsControl.Styles>
-				  <Style Selector="ContentPresenter:nth-child(1) > Border">
-					  <Setter Property="BorderThickness" Value="0 1 0 1"/>
-				  </Style>
 				  <Style Selector="ContentPresenter > Border">
-					  <Setter Property="BorderThickness" Value="0 0 0 1"/>
+					  <Setter Property="Background" Value="#212122"/>
+				  </Style>
+				  <Style Selector="ContentPresenter:nth-child(2n+2) > Border">
+					  <Setter Property="Background" Value="Transparent"/>
 				  </Style>
 			  </ItemsControl.Styles>
 			  <ItemsControl.ItemTemplate>
 				  <DataTemplate>
-					  <Border Margin="0 0 0 0" Padding="0 12 0 12" BorderBrush="#252527">
+					  <Border Margin="0 0 0 0" Padding="6 12 0 12" BorderBrush="#252527" CornerRadius="6">
 						  <Grid>
 							  <Grid.ColumnDefinitions>
 								  <!-- Image -->
