@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:c="using:Discreet_GUI.ValueConverters"
+			 xmlns:bh="clr-namespace:Discreet_GUI.Utility"
              mc:Ignorable="d"
              x:Class="Discreet_GUI.Views.Layouts.Account.AccountLeftNavigationLayoutView"
              d:DesignHeight="720" d:DesignWidth="1280">
@@ -167,8 +168,8 @@
       <StackPanel Grid.Row="2" Margin="15 0 15 20" VerticalAlignment="Bottom">
 		  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Wallet is synchronised</Label>
 		  <ProgressBar Margin="0 3 0 10" Background="#858585" Height="10" CornerRadius="5" Value="100" Foreground="#D95A86"/>
-		  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Daemon is synchronized</Label>
-		  <ProgressBar Margin="0 3 0 16" Background="#858585" Height="10" CornerRadius="5" Value="50" Foreground="#D95A86"/>
+		  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding DaemonSyncLabel}"/>
+		  <ProgressBar Margin="0 3 0 16" Background="#858585" Height="10" CornerRadius="5" Minimum="0" Maximum="1" bh:ProgressBarBehaviour.Value="{Binding SyncPercentage}" Foreground="#D95A86"/>
 		  <StackPanel Orientation="Horizontal">
 			  <Image Source="/Assets/Icons/wifi-white.png" Width="20" Margin="0 0 10 0"/>
 			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Connected to </Label>

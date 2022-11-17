@@ -17,8 +17,9 @@ namespace Services.ZMQ.Handlers
             _daemonCache = daemonCache;
         }
 
-        public override Task Handle(string message)
+        public override Task Handle(byte[] bytes)
         {
+            string message = Encoding.UTF8.GetString(bytes);
             if (!message.Equals("ready")) return Task.CompletedTask;
             _daemonCache.DaemonStarted = true;
 
