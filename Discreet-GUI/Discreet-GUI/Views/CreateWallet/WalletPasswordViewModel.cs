@@ -11,8 +11,8 @@ namespace Discreet_GUI.Views.CreateWallet
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
     public class WalletPasswordViewModel : ViewModelBase
     {
-        ReactiveCommand<Unit, Unit> NavigateWalletDetailsViewCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
+        private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly NewWalletCache _newWalletCache;
 
         public string EnterPasswordFontSize { get => DisplayEnterPassword ? "14" : "10"; }
 
@@ -21,7 +21,6 @@ namespace Discreet_GUI.Views.CreateWallet
 
         private bool _displayEnterPassword = false;
         public bool DisplayEnterPassword { get => _displayEnterPassword; set { _displayEnterPassword = value; OnPropertyChanged(nameof(DisplayEnterPassword)); OnPropertyChanged(nameof(EnterPasswordFontSize)); } }
-        ReactiveCommand<Unit, Unit> ToggleDisplayEnterPasswordCommand { get; set; }
 
 
         public string ConfirmPasswordFontSize { get => DisplayConfirmPassword ? "14" : "10"; }
@@ -29,16 +28,12 @@ namespace Discreet_GUI.Views.CreateWallet
         private string _confirmPasswordCharacter = "●";
         public string ConfirmPasswordCharacter { get => _confirmPasswordCharacter; set { _confirmPasswordCharacter = value; OnPropertyChanged(nameof(ConfirmPasswordCharacter)); } }
 
+
         private bool _displayConfirmPassword = false;
-
         public bool DisplayConfirmPassword { get => _displayConfirmPassword; set { _displayConfirmPassword = value; OnPropertyChanged(nameof(DisplayConfirmPassword)); OnPropertyChanged(nameof(ConfirmPasswordFontSize)); } }
-        ReactiveCommand<Unit, Unit> ToggleDisplayConfirmPasswordCommand { get; set; }
 
-
-        private readonly NewWalletCache _newWalletCache;
-
+        
         public string SelectedPassword { get => _newWalletCache.Password; set { _newWalletCache.Password = value; PasswordStrength = PasswordStrengthIndicator.CalculatePasswordStrength(value); ValidateCanContinue(); } }
-
         private string _selectedPasswordConfirm = string.Empty;
         public string SelectedPasswordConfirm { get => _selectedPasswordConfirm; set { _selectedPasswordConfirm = value; ValidateCanContinue(); } }
 
@@ -53,27 +48,10 @@ namespace Discreet_GUI.Views.CreateWallet
         private bool _canContinue = false;
         public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
 
-        public WalletPasswordViewModel() { }
-
         public WalletPasswordViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
         {
-            NavigateWalletDetailsViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletDetailsViewModel>().Navigate);
-            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
-
-            ToggleDisplayEnterPasswordCommand = ReactiveCommand.Create(() =>
-            {
-                DisplayEnterPassword = !DisplayEnterPassword;
-                EnterPasswordCharacter = DisplayEnterPassword ? string.Empty : "●";
-            });
-
-            ToggleDisplayConfirmPasswordCommand = ReactiveCommand.Create(() =>
-            {
-                DisplayConfirmPassword = !DisplayConfirmPassword;
-                ConfirmPasswordCharacter = DisplayConfirmPassword ? string.Empty : "●";
-            });
-            
+            _navigationServiceFactory = navigationServiceFactory;
             _newWalletCache = newWalletCache;
-
             PasswordStrength = PasswordStrengthIndicator.CalculatePasswordStrength(SelectedPassword);
             ValidateCanContinue();
         }
@@ -99,6 +77,28 @@ namespace Discreet_GUI.Views.CreateWallet
             }
 
             CanContinue = true;
+        }
+
+        void NavigateWalletDetailsViewCommand()
+        {
+            _navigationServiceFactory.Create<WalletDetailsViewModel>().Navigate();
+        }
+
+        void NavigateBackCommand()
+        {
+            _navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate();
+        }
+
+        void ToggleDisplayEnterPasswordCommand()
+        {
+            DisplayEnterPassword = !DisplayEnterPassword;
+            EnterPasswordCharacter = DisplayEnterPassword ? string.Empty : "●";
+        }
+
+        void ToggleDisplayConfirmPasswordCommand()
+        {
+            DisplayConfirmPassword = !DisplayConfirmPassword;
+            ConfirmPasswordCharacter = DisplayConfirmPassword ? string.Empty : "●";
         }
     }
 }

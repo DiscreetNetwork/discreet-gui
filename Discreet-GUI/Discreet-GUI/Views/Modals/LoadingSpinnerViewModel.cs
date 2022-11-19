@@ -5,14 +5,17 @@ using ReactiveUI;
 using System.Reactive.Concurrency;
 using Discreet_GUI.Views.Layouts;
 using Services.Daemon.Status;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Modals
 {
     [Layout(typeof(PurpleTitleBarLayoutViewModel))]
-    public class LoadingSpinnerViewModel : ViewModelBase
+    public class LoadingSpinnerViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly DaemonCache _daemonCache;
         private readonly NavigationServiceFactory _navigationServiceFactory;
+
+        public ViewModelActivator Activator { get; set; }
 
         private string _peerState = string.Empty;
         public string PeerState { get => _peerState; set { _peerState = value; OnPropertyChanged(nameof(PeerState)); } }
@@ -22,22 +25,24 @@ namespace Discreet_GUI.Views.Modals
             _daemonCache = daemonCache;
             _navigationServiceFactory = navigationServiceFactory;
 
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                if (!_daemonCache.DaemonStarted)
+                {
+                    _daemonCache.DaemonStartedChanged += DaemonStateChangedHandler;
+                }
+
+                Disposable.Create(() => _daemonCache.DaemonStartedChanged -= DaemonStateChangedHandler).DisposeWith(d);
+            });
         }
 
-        void OnActivated()
+        void DaemonStateChangedHandler()
         {
-            if(!_daemonCache.DaemonStarted)
+            if (_daemonCache.DaemonStarted)
             {
-                _daemonCache.DaemonStartedChanged += () =>
-                {
-                    if (_daemonCache.DaemonStarted)
-                    {
-                        _navigationServiceFactory.CloseDaemonStartupModal();
-                    }
-                };
+                _navigationServiceFactory.CloseDaemonStartupModal();
             }
         }
-
     }
 }

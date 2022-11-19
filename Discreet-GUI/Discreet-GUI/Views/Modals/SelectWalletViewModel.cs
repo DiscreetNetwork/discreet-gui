@@ -12,11 +12,12 @@ using Discreet_GUI.Views.Layouts.Account;
 using Discreet_GUI.Views.Start;
 using Services.Daemon.Wallet;
 using Services.Daemon.Wallet.Models;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Modals
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
-    public class SelectWalletViewModel : ViewModelBase
+    public class SelectWalletViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly DaemonWalletService _walletService;
@@ -45,6 +46,8 @@ namespace Discreet_GUI.Views.Modals
         private int _selectedWalletIndex;
         public int SelectedWalletIndex { get => _selectedWalletIndex; set { _selectedWalletIndex = value; OnPropertyChanged(nameof(SelectedWallet)); OnPropertyChanged(nameof(SelectedWalletStatus));  } }
 
+        public ViewModelActivator Activator { get; set; }
+
         public SelectWalletViewModel() { }
 
         public SelectWalletViewModel(NavigationServiceFactory navigationServiceFactory, DaemonWalletService walletService, NotificationService notificationService, WalletCache walletCache)
@@ -54,7 +57,12 @@ namespace Discreet_GUI.Views.Modals
             _notificationService = notificationService;
             _walletCache = walletCache;
 
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                OnActivated();
+                Disposable.Create(() => { }).DisposeWith(d);
+            });
         }
 
         public async void OnActivated()

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Discreet_GUI.ViewModels.Common;
+using Splat;
 
 namespace Discreet_GUI.Factories.ViewModel
 {
@@ -12,22 +13,15 @@ namespace Discreet_GUI.Factories.ViewModel
     /// </summary>
     public class LayoutViewModelFactory
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public LayoutViewModelFactory(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
         public ViewModelBase Create<TViewModel>() where TViewModel : ViewModelBase
         {
             LayoutAttribute layoutAttribute = typeof(TViewModel).GetCustomAttribute<LayoutAttribute>();
 
-            if (layoutAttribute is null) return _serviceProvider.GetRequiredService<TViewModel>();
+            if (layoutAttribute is null) return Locator.Current.GetRequiredService<TViewModel>();
 
             layoutAttribute.Layouts = layoutAttribute.Layouts.Reverse().ToArray();
 
-            ViewModelBase targetViewModel = _serviceProvider.GetRequiredService<TViewModel>();
+            ViewModelBase targetViewModel = Locator.Current.GetRequiredService<TViewModel>();
             for (int i = 0; i < layoutAttribute.Layouts.Length; i++)
             {
                 Type layoutType = layoutAttribute.Layouts[i];
@@ -41,7 +35,7 @@ namespace Discreet_GUI.Factories.ViewModel
                         parameters.Add(targetViewModel);
                         continue;
                     }
-                    object parameter = _serviceProvider.GetRequiredService(pi.ParameterType);
+                    object parameter = Locator.Current.GetRequiredService(pi.ParameterType);
                     parameters.Add(parameter);
                 }
 
@@ -53,7 +47,7 @@ namespace Discreet_GUI.Factories.ViewModel
 
         public ViewModelBase CreateNotification<TNotificationViewModel>(string text) where TNotificationViewModel : NotificationViewModelBase 
         {
-            var vm = _serviceProvider.GetRequiredService<TNotificationViewModel>();
+            var vm = Locator.Current.GetRequiredService<TNotificationViewModel>();
             vm.Text = text;
             return vm;
         }

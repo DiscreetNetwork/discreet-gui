@@ -10,11 +10,12 @@ using Discreet_GUI.Views.Start;
 using Services.Daemon.Wallet;
 using System.Threading.Tasks;
 using Discreet_GUI.Services;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.CreateWallet
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
-    class WalletNameViewModel : ViewModelBase
+    public class WalletNameViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly NewWalletCache _newWalletCache;
@@ -30,6 +31,8 @@ namespace Discreet_GUI.Views.CreateWallet
         private bool _isLoading = true;
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
+
+        public ViewModelActivator Activator { get; set; }
         public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, DaemonWalletService walletService, NotificationService notificationService)
         {
             _navigationServiceFactory = navigationServiceFactory;
@@ -37,7 +40,13 @@ namespace Discreet_GUI.Views.CreateWallet
             _walletService = walletService;
             _notificationService = notificationService;
             ValidateCanContinue();
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                OnActivated();
+                Disposable.Create(() => { }).DisposeWith(d);
+            });
         }
 
 

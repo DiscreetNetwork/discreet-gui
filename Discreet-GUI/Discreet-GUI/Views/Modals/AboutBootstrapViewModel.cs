@@ -9,11 +9,16 @@ namespace Discreet_GUI.Views.Modals
     [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
     class AboutBootstrapViewModel : ViewModelBase
     {
-        ReactiveCommand<Unit, Unit> ContinueCommand { get; set; }
+        private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public AboutBootstrapViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            ContinueCommand = ReactiveCommand.Create(navigationServiceFactory.CreateModalNavigationService().Navigate);
+            _navigationServiceFactory = navigationServiceFactory;
+        }
+
+        public void ContinueCommand()
+        {
+            _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
     }
 }
