@@ -9,6 +9,7 @@ using Discreet_GUI.ViewModels.Common;
 using Services;
 using Services.Daemon.Wallet;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 
 namespace Discreet_GUI.Views.Account
 {
@@ -20,7 +21,10 @@ namespace Discreet_GUI.Views.Account
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         private List<AccountTransaction> _transactions;
-        List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
+
+
+        private List<AccountTransaction> _paginatedTransactions;
+        List<AccountTransaction> PaginatedTransactions { get => _paginatedTransactions; set { _paginatedTransactions = value; OnPropertyChanged(nameof(PaginatedTransactions)); } }
 
         public ViewModelActivator Activator { get; set; }
         public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NavigationServiceFactory navigationServiceFactory)
@@ -31,15 +35,16 @@ namespace Discreet_GUI.Views.Account
             _navigationServiceFactory = navigationServiceFactory;
 
             Activator = new ViewModelActivator();
-            this.WhenActivated(d =>
+            this.WhenActivated(async (d) =>
             {
-                OnActivated();
+                await OnActivated();
                 Disposable.Create(() => { }).DisposeWith(d);
             });
         }
 
-        public async void OnActivated()
+        public async Task OnActivated()
         {
+            await Task.Delay(100);
             var accounts = _walletCache.Accounts.ToList();
             var txs = new List<AccountTransaction>();
             foreach (var account in accounts)
@@ -51,7 +56,9 @@ namespace Discreet_GUI.Views.Account
                 txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, account.Name, x.SentAmount == 0 ? $"+ {DISTConverter.ToStringFormat(DISTConverter.Divide(x.ReceivedAmount))}" : $"- {DISTConverter.ToStringFormat(DISTConverter.Divide(x.SentAmount))}")));
             }
 
-            Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
+            _transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
+
+            PaginatedTransactions = _transactions.Take(10).ToList();
         }
 
         void DisplayTransactionDetails(AccountTransaction accountTransaction)
