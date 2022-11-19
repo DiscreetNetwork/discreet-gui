@@ -7,11 +7,12 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
-using Services.Daemon.Wallet;
+using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Account
 {
-    public class AccountHomeViewModel : ViewModelBase
+    public class AccountHomeViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly WalletCache _walletCache;
         private readonly UserPreferrencesStore _userPreferrencesStore;
@@ -24,9 +25,7 @@ namespace Discreet_GUI.Views.Account
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public bool HideBalance => _userPreferrencesStore.HideBalance;
 
-        public AccountHomeViewModel() 
-        {
-        }
+        public ViewModelActivator Activator { get; set; }
 
         public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
@@ -35,6 +34,15 @@ namespace Discreet_GUI.Views.Account
             _notificationService = notificationService;
             _navigationServiceFactory = navigationServiceFactory;
             Accounts.CollectionChanged += AccountsChanged;
+
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                Disposable.Create(() =>
+                {
+                    Accounts.CollectionChanged -= AccountsChanged;
+                }).DisposeWith(d);
+            });
         }
 
         private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

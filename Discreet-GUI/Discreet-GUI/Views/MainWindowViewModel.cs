@@ -66,7 +66,10 @@ namespace Discreet_GUI.Views
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }
-        private void OnCurrentViewModelChanged() { OnPropertyChanged(nameof(CurrentViewModel)); }
+        private void OnCurrentViewModelChanged() 
+        { 
+            OnPropertyChanged(nameof(CurrentViewModel)); 
+        }
         private void OnCurrentModalViewModelChanged() { OnPropertyChanged(nameof(CurrentModalViewModel)); }
 
 

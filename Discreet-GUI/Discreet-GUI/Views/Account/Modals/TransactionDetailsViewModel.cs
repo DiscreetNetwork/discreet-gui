@@ -14,10 +14,11 @@ using System.Text.RegularExpressions;
 using Avalonia;
 using Services.Daemon.Wallet;
 using Services.Daemon.Wallet.Models;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Account.Modals
 {
-    public class TransactionDetailsViewModel : ViewModelBase
+    public class TransactionDetailsViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly TransactionDetailsCache _transactionDetailsCache;
         private readonly DaemonWalletService _walletService;
@@ -38,6 +39,7 @@ namespace Discreet_GUI.Views.Account.Modals
         public string Date { get; set; }
         public string TransactionId { get; set; }
 
+        public ViewModelActivator Activator { get; set; }
         public TransactionDetailsViewModel(TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
             _transactionDetailsCache = transactionDetailsCache;
@@ -45,7 +47,12 @@ namespace Discreet_GUI.Views.Account.Modals
             _notificationService = notificationService;
             _navigationServiceFactory = navigationServiceFactory;
 
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                OnActivated();
+                Disposable.Create(() => { }).DisposeWith(d);
+            });
         }
 
         async void OnActivated()

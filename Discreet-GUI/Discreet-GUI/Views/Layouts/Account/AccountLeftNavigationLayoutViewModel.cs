@@ -8,11 +8,13 @@ using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Account;
 using Discreet_GUI.Views.Settings;
 using Discreet_GUI.Stores;
+using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Layouts.Account
 {
     [Layout(typeof(DarkTitleBarLayoutSimpleViewModel))]
-    class AccountLeftNavigationLayoutViewModel : ViewModelBase
+    public class AccountLeftNavigationLayoutViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly AccountNavigationStore _accountNavigationStore;
         private readonly NavigationServiceFactory _navigationServiceFactory;
@@ -40,31 +42,47 @@ namespace Discreet_GUI.Views.Layouts.Account
 
         public bool HideBalance => _userPreferrencesStore.HideBalance;
 
+        public ViewModelActivator Activator { get; set; }
         public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, DaemonCache daemonCache, UserPreferrencesStore userPreferrencesStore)
         {
             _walletCache = walletCache;
             _daemonCache = daemonCache;
             _userPreferrencesStore = userPreferrencesStore;
-            Accounts.CollectionChanged += AccountsChanged;
+            Accounts.CollectionChanged += AccountsChangedHandler;
 
             _daemonCache.SyncPercentageChanged += UpdateSyncingStatus;
-            _walletCache.NumberOfConnectionsChanged += () => OnPropertyChanged(nameof(NumberOfConnections));
+            _walletCache.NumberOfConnectionsChanged += NumberOfConnectionsChangedHandler;
 
 
             _accountNavigationStore = accountNavigationStore;
             _navigationServiceFactory = navigationServiceFactory;
-            accountNavigationStore.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
+            accountNavigationStore.CurrentViewModelChanged += CurrentAccountViewModelChangedHandler;
 
-            _userPreferrencesStore.HideBalanceChanged += () => OnPropertyChanged(nameof(HideBalance));
+            _userPreferrencesStore.HideBalanceChanged += HideBalanceChangedHandler;
 
-            if(!string.IsNullOrWhiteSpace(_walletCache.EntropyHash))
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
             {
-                WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
-            }
-            _walletCache.EntropyHashChanged += () =>
-            {
-                WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
-            };
+                if (!string.IsNullOrWhiteSpace(_walletCache.EntropyHash))
+                {
+                    WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
+                }
+                _walletCache.EntropyHashChanged += () =>
+                {
+                    WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
+                };
+
+                Disposable.Create(() =>
+                {
+                    Accounts.CollectionChanged -= AccountsChangedHandler;
+                    daemonCache.SyncPercentageChanged -= UpdateSyncingStatus;
+                    walletCache.NumberOfConnectionsChanged -= NumberOfConnectionsChangedHandler;
+                    accountNavigationStore.CurrentViewModelChanged -= CurrentAccountViewModelChangedHandler;
+                    userPreferrencesStore.HideBalanceChanged -= HideBalanceChangedHandler;
+                }).DisposeWith(d);
+            });
+
+            
         }
 
         void UpdateSyncingStatus()
@@ -120,9 +138,21 @@ namespace Discreet_GUI.Views.Layouts.Account
             _navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
         }
 
-        private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void AccountsChangedHandler(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(TotalBalance));
+        }
+        private void NumberOfConnectionsChangedHandler()
+        {
+            OnPropertyChanged(nameof(NumberOfConnections));
+        }
+        private void CurrentAccountViewModelChangedHandler()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
+        }
+        private void HideBalanceChangedHandler()
+        {
+            OnPropertyChanged(nameof(HideBalance));
         }
 
         void ResetButtonStates()

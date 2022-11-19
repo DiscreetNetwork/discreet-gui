@@ -24,8 +24,6 @@ namespace Discreet_GUI.Views.CreateWallet
         public ObservableCollection<string> NetworkTypes { get; set; } = new ObservableCollection<string> { "Testnet" };
         public int SelectedNetworkTypeIndex { get; set; }
 
-        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
-
         public string WalletName { get => _newWalletCache.WalletName; set { _newWalletCache.WalletName = value; ValidateCanContinue(); } }
         public bool Bootstrap { get => _newWalletCache.Bootstrap; set => _newWalletCache.Bootstrap = value; }
 
@@ -38,7 +36,6 @@ namespace Discreet_GUI.Views.CreateWallet
 
         public WalletDetailsViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletCache walletCache, DaemonWalletService walletService, NotificationService notificationService)
         {
-            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate);
             _navigationServiceFactory = navigationServiceFactory;
             _newWalletCache = newWalletCache;
             _walletCache = walletCache;
@@ -89,6 +86,11 @@ namespace Discreet_GUI.Views.CreateWallet
             _newWalletCache.Clear();
 
             _navigationServiceFactory.Create<WalletCreatedSuccessfullyViewModel>().Navigate();
+        }
+
+        void NavigateBackCommand()
+        {
+            _navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate();
         }
     }
 }

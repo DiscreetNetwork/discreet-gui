@@ -8,10 +8,11 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Services;
 using Services.Daemon.Wallet;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Account
 {
-    public class AccountTransactionsViewModel : ViewModelBase
+    public class AccountTransactionsViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly WalletCache _walletCache;
         private readonly TransactionDetailsCache _transactionDetailsCache;
@@ -20,8 +21,8 @@ namespace Discreet_GUI.Views.Account
 
         private List<AccountTransaction> _transactions;
         List<AccountTransaction> Transactions { get => _transactions; set { _transactions = value; OnPropertyChanged(nameof(Transactions)); } }
-        public AccountTransactionsViewModel() { }
 
+        public ViewModelActivator Activator { get; set; }
         public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
@@ -29,7 +30,12 @@ namespace Discreet_GUI.Views.Account
             _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
 
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                OnActivated();
+                Disposable.Create(() => { }).DisposeWith(d);
+            });
         }
 
         public async void OnActivated()
