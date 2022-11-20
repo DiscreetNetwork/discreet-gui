@@ -11,6 +11,12 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Buttons\Pagination\arrow-left.png" />
+    <None Remove="Assets\Buttons\Pagination\arrow-right.png" />
+    <None Remove="Assets\Buttons\Pagination\double-arrow-left.png" />
+    <None Remove="Assets\Buttons\Pagination\double-arrow-right.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.13" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />

@@ -22,6 +22,7 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="50"/>
 		</Grid.RowDefinitions>
 		
 		<Label Grid.Row="0" Foreground="#8C52C0" Margin="0 0 0 0" FontSize="30">Transactions</Label>
@@ -124,5 +125,29 @@
 			</ItemsControl>
 		</ScrollViewer>
 
+		<StackPanel Grid.Row="3" Margin="0 0 70 20" Orientation="Horizontal">
+			<StackPanel.Styles>
+				<Style Selector="StackPanel > Button">
+					<Setter Property="Background" Value="Transparent"/>
+				</Style>
+				<Style Selector="StackPanel > Button:disabled /template/ ContentPresenter">
+					<Setter Property="Background" Value="Transparent"/>
+					<Setter Property="Opacity" Value="0.5"/>
+				</Style>
+			</StackPanel.Styles>
+			<Button Cursor="Hand" IsEnabled="{Binding PreviousEnabled}" Command="{Binding SkipPrevious}">
+				<Image Height="15" Source="/Assets/Buttons/Pagination/double-arrow-left.png"/>
+			</Button>
+			<Button Cursor="Hand" IsEnabled="{Binding PreviousEnabled}" Command="{Binding Previous}">
+				<Image Height="15" Source="/Assets/Buttons/Pagination/arrow-left.png"/>
+			</Button>
+			<Button Cursor="Hand" IsEnabled="{Binding NextEnabled}" Command="{Binding Next}">
+				<Image Height="15" Source="/Assets/Buttons/Pagination/arrow-right.png"/>
+			</Button>
+			<Button Cursor="Hand" IsEnabled="{Binding NextEnabled}" Command="{Binding SkipNext}">
+				<Image Height="15" Source="/Assets/Buttons/Pagination/double-arrow-right.png"/>
+			</Button>
+			<Label Content="{Binding PaginationStatusText}" VerticalContentAlignment="Center" Foreground="#DDDDDD"/>
+		</StackPanel>
 	</Grid>
 </UserControl>

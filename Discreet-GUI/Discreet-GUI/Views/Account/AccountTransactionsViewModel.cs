@@ -20,11 +20,24 @@ namespace Discreet_GUI.Views.Account
         private readonly DaemonWalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
-        private List<AccountTransaction> _transactions;
+        private List<AccountTransaction> Transactions { get; set; }
 
 
         private List<AccountTransaction> _paginatedTransactions;
-        List<AccountTransaction> PaginatedTransactions { get => _paginatedTransactions; set { _paginatedTransactions = value; OnPropertyChanged(nameof(PaginatedTransactions)); } }
+        public List<AccountTransaction> PaginatedTransactions { get => _paginatedTransactions; set { _paginatedTransactions = value; OnPropertyChanged(nameof(PaginatedTransactions)); } }
+
+        private int _page = 0;
+        private int Page { get => _page; set { _page = value; OnPropertyChanged(nameof(Page)); PaginationChanged(); } }
+
+        private int PageSize { get; set; } = 8;
+
+        public string PaginationStatusText { get 
+        {
+            if (Transactions is null || !Transactions.Any()) return "0-0";
+            int from = (Page * PageSize) + 1;
+            int to = ((Page + 1) * PageSize) > Transactions.Count ? Transactions.Count : (Page + 1) * PageSize;
+            return $"{from} - {to}";
+        } }
 
         public ViewModelActivator Activator { get; set; }
         public AccountTransactionsViewModel(WalletCache walletCache, TransactionDetailsCache transactionDetailsCache, DaemonWalletService walletService, NavigationServiceFactory navigationServiceFactory)
@@ -35,11 +48,14 @@ namespace Discreet_GUI.Views.Account
             _navigationServiceFactory = navigationServiceFactory;
 
             Activator = new ViewModelActivator();
+
             this.WhenActivated(async (d) =>
             {
                 await OnActivated();
                 Disposable.Create(() => { }).DisposeWith(d);
             });
+
+            
         }
 
         public async Task OnActivated()
@@ -53,12 +69,17 @@ namespace Discreet_GUI.Views.Account
 
                 if (transactions is null) continue;
 
-                txs.AddRange(transactions.Select(x => new AccountTransaction(x.TxID, x.Timestamp, account.Address, account.Name, x.SentAmount == 0 ? $"+ {DISTConverter.ToStringFormat(DISTConverter.Divide(x.ReceivedAmount))}" : $"- {DISTConverter.ToStringFormat(DISTConverter.Divide(x.SentAmount))}")));
+                txs.AddRange(transactions.Select(x =>
+                {
+                    var amountDivded = DISTConverter.Divide(x.ReceivedAmount);
+                    string amountString = amountDivded is null ? "NaN" : DISTConverter.ToStringFormat(amountDivded.Value);
+                    return new AccountTransaction(x.TxID, x.Timestamp, account.Address, account.Name, x.SentAmount == 0 ? $"+ {amountString}" : $"- {amountString}");
+                }));
             }
 
-            _transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
+            Transactions = txs.OrderByDescending(x => x.TransactionDate).ToList();
 
-            PaginatedTransactions = _transactions.Take(10).ToList();
+            PaginationChanged();
         }
 
         void DisplayTransactionDetails(AccountTransaction accountTransaction)
@@ -69,7 +90,67 @@ namespace Discreet_GUI.Views.Account
         }
 
 
-        class AccountTransaction
+        #region PAGINATION
+        void PaginationChanged()
+        {
+            PaginatedTransactions = Transactions.Skip(Page * PageSize).Take(PageSize).ToList();
+
+            if(Page > 0)
+            {
+                PreviousEnabled = true;
+            }
+            else
+            {
+                PreviousEnabled = false;
+            }
+
+            if(Page < (int)Math.Ceiling((decimal)Transactions.Count / PageSize) - 1)
+            {
+                NextEnabled = true;
+            }
+            else
+            {
+                NextEnabled = false;
+            }
+
+            OnPropertyChanged(nameof(PaginationStatusText));
+        }
+
+        
+        private bool _previousEnabled;
+        public bool PreviousEnabled { get => _previousEnabled; set { _previousEnabled = value; OnPropertyChanged(nameof(PreviousEnabled)); } }
+        void SkipPrevious()
+        {
+            Page = 0;
+        }
+        void Previous()
+        {
+            if(Page > 0)
+            {
+                Page--;
+            }
+        }
+        private bool _nextEnabled;
+        public bool NextEnabled { get => _nextEnabled; set { _nextEnabled = value; OnPropertyChanged(nameof(NextEnabled)); } }
+        void Next()
+        {
+            if(Page < (int)Math.Ceiling((decimal)Transactions.Count / PageSize) - 1)
+            {
+                Page++;
+            }
+        }
+        void SkipNext()
+        {
+            if (Page < (int)Math.Ceiling((decimal)Transactions.Count / PageSize) - 1)
+            {
+                Page = (int)Math.Ceiling((decimal)Transactions.Count / PageSize) - 1;
+            }
+        }
+        #endregion
+
+
+
+        public class AccountTransaction
         {
             public string TransactionId { get; set; }
             public DateTime TransactionDate { get; set; }

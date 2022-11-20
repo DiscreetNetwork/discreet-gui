@@ -11,7 +11,9 @@ namespace Discreet_GUI.ValueConverters
         {
             ulong val = (ulong)value;
 
-            return DISTConverter.ToStringFormat(DISTConverter.Divide(val));
+            decimal? balanceDivided = DISTConverter.Divide(val);
+
+            return balanceDivided is null ? "NaN" : DISTConverter.ToStringFormat(balanceDivided.Value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
