@@ -53,6 +53,7 @@ namespace Discreet_GUI.Views.Account
                 if (value < 0) return;
                 else _selectedSenderAccountIndex = value; 
                 OnPropertyChanged(nameof(SelectedAccount));
+                ValidateAmountInput();
             }
         }
 
@@ -90,7 +91,14 @@ namespace Discreet_GUI.Views.Account
                 return false;
             }
 
-            if(DISTConverter.Multiply(Amount) > SelectedAccount.Balance)
+            ulong? amountMultiplied = DISTConverter.Multiply(Amount);
+            if(amountMultiplied is null)
+            {
+                AmountValidationMessage = "NaN";
+                return false;
+            }
+
+            if (amountMultiplied.Value > SelectedAccount.Balance)
             {
                 AmountValidationMessage = "Not enough DIST in the selected account";
                 return false;

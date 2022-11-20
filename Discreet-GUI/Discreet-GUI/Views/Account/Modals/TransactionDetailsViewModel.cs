@@ -68,7 +68,9 @@ namespace Discreet_GUI.Views.Account.Modals
             IsSendTransaction = Transaction.SentAmount != 0;
             OnPropertyChanged(nameof(IsSendTransaction));
 
-            Amount = $"{(IsSendTransaction ? DISTConverter.ToStringFormat(DISTConverter.Divide(Transaction.SentAmount)) : DISTConverter.ToStringFormat(DISTConverter.Divide(Transaction.ReceivedAmount)))} DIST";
+            var amountDivided = IsSendTransaction ? DISTConverter.Divide(Transaction.SentAmount) : DISTConverter.Divide(Transaction.ReceivedAmount);
+            var amountString = amountDivided is null ? "NaN" : $"{DISTConverter.ToStringFormat(amountDivided.Value)} DIST";
+            Amount = amountString;
             OnPropertyChanged(nameof(Amount));
 
             SentOrReceived = IsSendTransaction ? "(Sent)" : "(Received)";

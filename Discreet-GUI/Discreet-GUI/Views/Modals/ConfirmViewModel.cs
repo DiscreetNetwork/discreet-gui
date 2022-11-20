@@ -49,11 +49,19 @@ namespace Discreet_GUI.Views.Modals
         {
             IsLoading = true;
 
+            var amountMultiplied = DISTConverter.Multiply(_sendTransactionCache.Amount);
+            if(amountMultiplied is null)
+            {
+                _notificationService.DisplayError("An error occured. The amount entered could not be parsed");
+                _navigationServiceFactory.CreateModalNavigationService().Navigate();
+                return;
+            }
+
             var createdTransaction = await _daemonTransactionService.CreateTransaction(
                 _sendTransactionCache.Sender,
                 _sendTransactionCache.Receiver,
-                DISTConverter.Multiply(_sendTransactionCache.Amount
-            ));
+                amountMultiplied.Value
+            );
 
             if(createdTransaction is null)
             {

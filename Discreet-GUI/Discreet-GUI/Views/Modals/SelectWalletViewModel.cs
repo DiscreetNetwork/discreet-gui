@@ -58,15 +58,16 @@ namespace Discreet_GUI.Views.Modals
             _walletCache = walletCache;
 
             Activator = new ViewModelActivator();
-            this.WhenActivated(d =>
+            this.WhenActivated(async (d) =>
             {
-                OnActivated();
+                await OnActivated();
                 Disposable.Create(() => { }).DisposeWith(d);
             });
         }
 
-        public async void OnActivated()
+        public async Task OnActivated()
         {
+            await Task.Delay(250);
             var wallets = await _walletService.GetWallets();
             if (wallets is null)
             {
