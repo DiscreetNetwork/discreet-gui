@@ -10,6 +10,12 @@ using Discreet_GUI.Views.Settings;
 using Discreet_GUI.Stores;
 using ReactiveUI;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
+using Services.Daemon.Wallet;
+using Discreet_GUI.Services;
+using System;
+using System.Text;
+using Services.Daemon.Status;
 
 namespace Discreet_GUI.Views.Layouts.Account
 {
@@ -17,7 +23,10 @@ namespace Discreet_GUI.Views.Layouts.Account
     public class AccountLeftNavigationLayoutViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly AccountNavigationStore _accountNavigationStore;
+        private readonly NotificationService _notificationService;
+        private readonly DaemonStatusService _daemonStatusService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
+        private readonly DaemonWalletService _walletService;
         private readonly WalletCache _walletCache;
         private readonly DaemonCache _daemonCache;
         private readonly UserPreferrencesStore _userPreferrencesStore;
@@ -42,35 +51,40 @@ namespace Discreet_GUI.Views.Layouts.Account
 
         public bool HideBalance => _userPreferrencesStore.HideBalance;
 
-        public ViewModelActivator Activator { get; set; }
-        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NavigationServiceFactory navigationServiceFactory, WalletCache walletCache, DaemonCache daemonCache, UserPreferrencesStore userPreferrencesStore)
-        {
-            _walletCache = walletCache;
-            _daemonCache = daemonCache;
-            _userPreferrencesStore = userPreferrencesStore;
-            Accounts.CollectionChanged += AccountsChangedHandler;
+        public bool WalletLoaded { get; set; }
 
-            _daemonCache.SyncPercentageChanged += UpdateSyncingStatus;
+        public ViewModelActivator Activator { get; set; }
+        public AccountLeftNavigationLayoutViewModel(AccountNavigationStore accountNavigationStore, NotificationService notificationService, DaemonStatusService daemonStatusService, NavigationServiceFactory navigationServiceFactory, DaemonWalletService walletService, WalletCache walletCache, DaemonCache daemonCache, UserPreferrencesStore userPreferrencesStore)
+        {
+            _notificationService = notificationService;
+            _daemonStatusService = daemonStatusService;
+            _navigationServiceFactory = navigationServiceFactory;
+            _walletService = walletService;
+
+            _walletCache = walletCache;
             _walletCache.NumberOfConnectionsChanged += NumberOfConnectionsChangedHandler;
 
+            _daemonCache = daemonCache;
+            _daemonCache.SyncPercentageChanged += UpdateSyncingStatus;
 
-            _accountNavigationStore = accountNavigationStore;
-            _navigationServiceFactory = navigationServiceFactory;
-            accountNavigationStore.CurrentViewModelChanged += CurrentAccountViewModelChangedHandler;
-
+            _userPreferrencesStore = userPreferrencesStore;
             _userPreferrencesStore.HideBalanceChanged += HideBalanceChangedHandler;
 
+            Accounts.CollectionChanged += AccountsChangedHandler;
+
+            _accountNavigationStore = accountNavigationStore;
+            accountNavigationStore.CurrentViewModelChanged += CurrentAccountViewModelChangedHandler;
+
             Activator = new ViewModelActivator();
-            this.WhenActivated(d =>
+            this.WhenActivated(async (d) =>
             {
+                await Task.Delay(100);
+                await LoadWalletData();
+
                 if (!string.IsNullOrWhiteSpace(_walletCache.EntropyHash))
                 {
                     WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
                 }
-                _walletCache.EntropyHashChanged += () =>
-                {
-                    WalletIdenticon = JazziconEx.IdenticonToAvaloniaBitmap(160, _walletCache.EntropyHash);
-                };
 
                 Disposable.Create(() =>
                 {
@@ -83,6 +97,95 @@ namespace Discreet_GUI.Views.Layouts.Account
             });
 
             
+        }
+
+        async Task LoadWalletData()
+        {
+            var walletToFind = await _walletService.GetWallet(_walletCache.Label);
+            if (walletToFind == null)
+            {
+                _notificationService.DisplayError("Could not find the selected wallet, please return to the main menu and try again.");
+                return;
+            }
+
+            _walletCache.EntropyHash = BitConverter.ToString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(walletToFind.Entropy)));
+            _walletCache.LastSeenHeight = walletToFind.LastSeenHeight;
+            _walletCache.Synced = walletToFind.Synced;
+
+            walletToFind.Addresses.ForEach(a =>
+            {
+                var accnt = new WalletCache.WalletAddress
+                {
+                    Name = a.Name,
+                    Address = a.Address,
+                    Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
+                    Balance = a.Balance,
+                    Synced = a.Synced,
+                    Syncer = a.Syncer,
+                    UTXOs = new ObservableCollection<int>(a.UTXOs)
+                };
+
+                var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
+                accnt.Identicon = icon;
+
+                _walletCache.Accounts.Add(accnt);
+            });
+
+            Task t1 = Task.Run(async () =>
+            {
+                var numberOfConnections = await _daemonStatusService.GetNumConnections();
+                if (numberOfConnections is null) return;
+
+                var previous = _walletCache.NumberOfConnections;
+                if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections.Value;
+            });
+
+            Task t2 = Task.Run(async () =>
+            {
+                foreach (var address in _walletCache.Accounts)
+                {
+                    var fetchedBalance = await _walletService.GetBalance(address.Address);
+                    if (fetchedBalance == null)
+                    {
+                        continue;
+                    }
+
+                    if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
+                }
+            });
+
+            Task t3 = Task.Run(async () =>
+            {
+                foreach (var address in _walletCache.Accounts)
+                {
+                    var addressState = await _walletService.GetAddressHeight(address.Address);
+                    if (addressState is null)
+                    {
+                        continue;
+                    }
+
+                    if (address.Height != addressState.Height) address.Height = addressState.Height;
+                    if (address.Syncer != addressState.Syncer) address.Syncer = addressState.Syncer;
+                    if (address.Synced != addressState.Synced) address.Synced = addressState.Synced;
+                }
+            });
+
+            Task t4 = Task.Run(async () =>
+            {
+                var walletState = await _walletService.GetWalletHeight(_walletCache.Label);
+                if (walletState is null)
+                {
+                    return;
+                }
+
+                if (_walletCache.LastSeenHeight != walletState.Height) _walletCache.LastSeenHeight = walletState.Height;
+                if (_walletCache.Synced != walletState.Synced) _walletCache.Synced = walletState.Synced;
+            });
+
+            await Task.WhenAll(t1, t2, t3, t4);
+
+            WalletLoaded = true;
+            OnPropertyChanged(nameof(WalletLoaded));
         }
 
         void UpdateSyncingStatus()

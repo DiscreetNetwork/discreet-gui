@@ -64,141 +64,164 @@
 		<Setter Property="Source" Value="/Assets/Icons/arrow-right-gray.png"/>
 	</Style>
   </UserControl.Styles>
-  
+
   <Grid Background="#1C1C1D">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="320"/>
-      <ColumnDefinition/>
-    </Grid.ColumnDefinitions>
-
-    <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,1,0,0" BorderBrush="#252527" Background="{x:Null}"/>
-    <Border Grid.Column="0" BorderBrush="#252527" BorderThickness="0,0,1,0" Background="{x:Null}" />
-
-    <Grid Grid.Column="0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="auto"/>
-        <RowDefinition Height="auto"/>
-        <RowDefinition/>
-      </Grid.RowDefinitions>
-
-
-      <!-- Account overview -->
-      <Grid Grid.Row="0">
-        <Grid.RowDefinitions>
-          <RowDefinition/>
-          <RowDefinition/>
-		  <RowDefinition/>
-		</Grid.RowDefinitions>
-
-		  <Image Grid.Row="0" Grid.RowSpan="3" Source="/Assets/Images/account-layout-top-logo.png" Width="150" Margin="0 10 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+	  <Grid IsVisible="{Binding !WalletLoaded}" VerticalAlignment="Center" HorizontalAlignment="Center">
+		  <Image Source="/Assets/Icons/spinner-2.png" Height="45"
+			   Classes.visible="{Binding !WalletLoaded}">
 			  <Image.Styles>
-				  <Style Selector="Image">
-					  <Setter Property="RenderTransform">
-						  <Setter.Value>
-							  <TransformGroup>
-								  <RotateTransform Angle="-13"/>
-							  </TransformGroup>
-						  </Setter.Value>
-					  </Setter>
+				  <Style Selector="Image.visible">
+					  <Style.Animations>
+						  <Animation Duration="0:0:0.800" RepeatCount="INFINITE">
+							  <KeyFrame Cue="0%">
+								  <Setter Property="RotateTransform.Angle" Value="0.0"/>
+							  </KeyFrame>
+
+							  <KeyFrame Cue="100%">
+								  <Setter Property="RotateTransform.Angle" Value="360.0"/>
+							  </KeyFrame>
+						  </Animation>
+					  </Style.Animations>
 				  </Style>
 			  </Image.Styles>
 		  </Image>
-        <Image Grid.Row="0" Margin="0 20 0 10" Height="45" Width="45" Source="{Binding WalletIdenticon}"/>
-		<Label Grid.Row="1" HorizontalAlignment="Center" Foreground="White" FontSize="18" FontWeight="200" Content="{Binding WalletLabel}"/>
-		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
-			<Label IsVisible="{Binding !HideBalance}" FontSize="24" Foreground="white" Padding="0 0 0 0" Content="{Binding TotalBalance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
-			<Label IsVisible="{Binding HideBalance}" Foreground="White" FontSize="20" VerticalAlignment="Bottom">**********</Label>
-			<Label FontSize="24" Foreground="white" VerticalContentAlignment="Center" FontWeight="200" Padding="10 0 0 0">DIST</Label>
-		</StackPanel>
-      </Grid>
+	  </Grid>
+	  
+	  <Grid IsVisible="{Binding WalletLoaded}">
+		  <Grid.ColumnDefinitions>
+			  <ColumnDefinition Width="320"/>
+			  <ColumnDefinition/>
+		  </Grid.ColumnDefinitions>
 
-      <!-- Navigation menu -->
-      <Grid Grid.Row="1" Margin="0 30 0 0">
-		<Grid.RowDefinitions>
-          <RowDefinition/>
-          <RowDefinition/>
-          <RowDefinition/>
-          <RowDefinition/>
-          <RowDefinition/>
-          <RowDefinition/>
-          <RowDefinition/>
-        </Grid.RowDefinitions>
+		  <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,1,0,0" BorderBrush="#252527" Background="{x:Null}"/>
+		  <Border Grid.Column="0" BorderBrush="#252527" BorderThickness="0,0,1,0" Background="{x:Null}" />
 
-		<Border Grid.Row="0" BorderThickness="0 1 0 1" BorderBrush="#252527">
-			<Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateHomeCommand}">
-				<StackPanel Classes="NavButton">
-					<Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}" Source="/Assets/Icons/account-home.png"/>
-					<Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E">Home</Label>
-                    <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[0]}" Height="15" Margin="140 0 0 0"/>
-				</StackPanel>
-			</Button>
-		</Border>
+		  <Grid Grid.Column="0">
+			  <Grid.RowDefinitions>
+				  <RowDefinition Height="auto"/>
+				  <RowDefinition Height="auto"/>
+				  <RowDefinition/>
+			  </Grid.RowDefinitions>
 
-		<Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#252527">
-		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateSendCommand}">
-                <StackPanel Classes="NavButton">
-                    <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Source="/Assets/Icons/account-send.png"/>
-                    <Label Classes="NavButton">Send</Label>
-					<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[1]}" Height="15" Margin="145 0 0 0"/>
-                </StackPanel>
-            </Button>
-		</Border>
 
-		<Border Grid.Row="2" BorderThickness="0 0 0 1" BorderBrush="#252527">
-		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="3" Command="{Binding NavigateTransactionsCommand}">
-              <StackPanel Classes="NavButton">
-                <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Source="/Assets/Icons/account-transactions.png"/>
-                <Label Classes="NavButton">Transactions</Label>
-				<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[2]}" Height="15" Margin="80 0 0 0"/>
+			  <!-- Account overview -->
+			  <Grid Grid.Row="0">
+				  <Grid.RowDefinitions>
+					  <RowDefinition/>
+					  <RowDefinition/>
+					  <RowDefinition/>
+				  </Grid.RowDefinitions>
+
+				  <Image Grid.Row="0" Grid.RowSpan="3" Source="/Assets/Images/account-layout-top-logo.png" Width="150" Margin="0 10 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+					  <Image.Styles>
+						  <Style Selector="Image">
+							  <Setter Property="RenderTransform">
+								  <Setter.Value>
+									  <TransformGroup>
+										  <RotateTransform Angle="-13"/>
+									  </TransformGroup>
+								  </Setter.Value>
+							  </Setter>
+						  </Style>
+					  </Image.Styles>
+				  </Image>
+				  <Image Grid.Row="0" Margin="0 20 0 10" Height="45" Width="45" Source="{Binding WalletIdenticon}"/>
+				  <Label Grid.Row="1" HorizontalAlignment="Center" Foreground="White" FontSize="18" FontWeight="200" Content="{Binding WalletLabel}"/>
+				  <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
+					  <Label IsVisible="{Binding !HideBalance}" FontSize="24" Foreground="white" Padding="0 0 0 0" Content="{Binding TotalBalance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
+					  <Label IsVisible="{Binding HideBalance}" Foreground="White" FontSize="20" VerticalAlignment="Bottom">**********</Label>
+					  <Label FontSize="24" Foreground="white" VerticalContentAlignment="Center" FontWeight="200" Padding="10 0 0 0">DIST</Label>
+				  </StackPanel>
+			  </Grid>
+
+			  <!-- Navigation menu -->
+			  <Grid Grid.Row="1" Margin="0 30 0 0">
+				  <Grid.RowDefinitions>
+					  <RowDefinition/>
+					  <RowDefinition/>
+					  <RowDefinition/>
+					  <RowDefinition/>
+					  <RowDefinition/>
+					  <RowDefinition/>
+					  <RowDefinition/>
+				  </Grid.RowDefinitions>
+
+				  <Border Grid.Row="0" BorderThickness="0 1 0 1" BorderBrush="#252527">
+					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateHomeCommand}">
+						  <StackPanel Classes="NavButton">
+							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}" Source="/Assets/Icons/account-home.png"/>
+							  <Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E">Home</Label>
+							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[0]}" Height="15" Margin="140 0 0 0"/>
+						  </StackPanel>
+					  </Button>
+				  </Border>
+
+				  <Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#252527">
+					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateSendCommand}">
+						  <StackPanel Classes="NavButton">
+							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Source="/Assets/Icons/account-send.png"/>
+							  <Label Classes="NavButton">Send</Label>
+							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[1]}" Height="15" Margin="145 0 0 0"/>
+						  </StackPanel>
+					  </Button>
+				  </Border>
+
+				  <Border Grid.Row="2" BorderThickness="0 0 0 1" BorderBrush="#252527">
+					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="3" Command="{Binding NavigateTransactionsCommand}">
+						  <StackPanel Classes="NavButton">
+							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Source="/Assets/Icons/account-transactions.png"/>
+							  <Label Classes="NavButton">Transactions</Label>
+							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[2]}" Height="15" Margin="80 0 0 0"/>
+						  </StackPanel>
+					  </Button>
+				  </Border>
+
+				  <Border Grid.Row="3" BorderThickness="0 0 0 1" BorderBrush="#252527">
+					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateSubmitIssueCommand}">
+						  <StackPanel Classes="NavButton">
+							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Source="/Assets/Buttons/report-issue-testnet.png"/>
+							  <Label Classes="NavButton">Submit issue</Label>
+							  <Label Margin="10 0 0 0" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="18" Width="50" FontSize="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="Alpha"/>
+							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[3]}" Height="15" Margin="20 0 0 0"/>
+						  </StackPanel>
+					  </Button>
+				  </Border>
+
+				  <Border Grid.Row="4" BorderThickness="0 0 0 1" BorderBrush="#252527">
+					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
+						  <StackPanel Classes="NavButton">
+							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Source="/Assets/Icons/settings-icon.png"/>
+							  <Label Classes="NavButton">Settings</Label>
+							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[4]}" Height="15" Margin="120 0 0 0"/>
+						  </StackPanel>
+					  </Button>
+				  </Border>
+
+			  </Grid>
+
+			  <!-- Wallet status area -->
+			  <StackPanel Grid.Row="2" Margin="15 0 15 20" VerticalAlignment="Bottom">
+				  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding DaemonSyncLabel}"/>
+				  <ProgressBar Margin="0 3 0 16" Background="#858585" Height="10" CornerRadius="5" Minimum="0" Maximum="1" bh:ProgressBarBehaviour.Value="{Binding SyncPercentage}" Foreground="#D95A86"/>
+				  <StackPanel Orientation="Horizontal">
+					  <Image Source="/Assets/Icons/wifi-white.png" Width="20" Margin="0 0 10 0"/>
+					  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Connected to </Label>
+					  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding NumberOfConnections}"/>
+					  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB"> peers</Label>
+				  </StackPanel>
 			  </StackPanel>
-            </Button>
-		</Border>
 
-		<Border Grid.Row="3" BorderThickness="0 0 0 1" BorderBrush="#252527">
-			<Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateSubmitIssueCommand}">
-				<StackPanel Classes="NavButton">
-					<Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Source="/Assets/Buttons/report-issue-testnet.png"/>
-					<Label Classes="NavButton">Submit issue</Label>
-					<Label Margin="10 0 0 0" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="18" Width="50" FontSize="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="Alpha"/>
-					<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[3]}" Height="15" Margin="20 0 0 0"/>
-				</StackPanel>
-			</Button>
-		</Border>
-		  
-		<Border Grid.Row="4" BorderThickness="0 0 0 1" BorderBrush="#252527">
-		    <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
-              <StackPanel Classes="NavButton">
-                <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Source="/Assets/Icons/settings-icon.png"/>
-                <Label Classes="NavButton">Settings</Label>
-				<Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[4]}" Height="15" Margin="120 0 0 0"/>
-			  </StackPanel>
-            </Button>
-		</Border>
+		  </Grid>
 
-	</Grid>
+		  <TransitioningContentControl
+			  Grid.Column="1"
+			  Margin="60 40 0 0"
+			  Content="{Binding CurrentViewModel}">
+			  <TransitioningContentControl.PageTransition>
+				  <CrossFade Duration="0:00:00.100"/>
+			  </TransitioningContentControl.PageTransition>
+		  </TransitioningContentControl>
 
-	  <!-- Wallet status area -->
-      <StackPanel Grid.Row="2" Margin="15 0 15 20" VerticalAlignment="Bottom">
-		  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding DaemonSyncLabel}"/>
-		  <ProgressBar Margin="0 3 0 16" Background="#858585" Height="10" CornerRadius="5" Minimum="0" Maximum="1" bh:ProgressBarBehaviour.Value="{Binding SyncPercentage}" Foreground="#D95A86"/>
-		  <StackPanel Orientation="Horizontal">
-			  <Image Source="/Assets/Icons/wifi-white.png" Width="20" Margin="0 0 10 0"/>
-			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Connected to </Label>
-			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding NumberOfConnections}"/>
-			  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB"> peers</Label>
-		  </StackPanel>
-	  </StackPanel>
-		
-	</Grid>
-
-	<TransitioningContentControl
-		Grid.Column="1"
-		Margin="60 40 0 0"
-		Content="{Binding CurrentViewModel}">
-		<TransitioningContentControl.PageTransition>
-			<CrossFade Duration="0:00:00.100"/>
-		</TransitioningContentControl.PageTransition>
-	</TransitioningContentControl>
-    
+	  </Grid>
   </Grid>
 </UserControl>
