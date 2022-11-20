@@ -113,7 +113,6 @@ namespace Discreet_GUI
             services.AddScoped<RPCServer>();
             services.AddSingleton<NotificationService>();
             services.AddHostedService<DaemonActivatorService>();
-            services.AddHostedService<WalletPollerBackgroundService>();
             services.AddHostedService<VersionBackgroundService>();
             services.AddScoped<DaemonWalletService>();
             services.AddScoped<DaemonTransactionService>();
