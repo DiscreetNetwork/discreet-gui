@@ -71,7 +71,7 @@ namespace Discreet_GUI.Views.Account
 
                 txs.AddRange(transactions.Select(x =>
                 {
-                    var amountDivded = DISTConverter.Divide(x.ReceivedAmount);
+                    var amountDivded = DISTConverter.Divide(x.SentAmount == 0 ? x.ReceivedAmount : x.SentAmount);
                     string amountString = amountDivded is null ? "NaN" : DISTConverter.ToStringFormat(amountDivded.Value);
                     return new AccountTransaction(x.TxID, x.Timestamp, account.Address, account.Name, x.SentAmount == 0 ? $"+ {amountString}" : $"- {amountString}");
                 }));

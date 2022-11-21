@@ -3,7 +3,6 @@ using Services;
 using Services.Caches;
 using System;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
@@ -25,16 +24,12 @@ namespace Discreet_GUI.Views.Account.Modals
         private readonly NotificationService _notificationService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
-        private TransactionHistoryElement _transaction;
-        public TransactionHistoryElement Transaction { get => _transaction; set { _transaction = value; 
-                OnPropertyChanged(nameof(Transaction));
-                OnPropertyChanged(nameof(Amount));
-                OnPropertyChanged(nameof(SentOrReceived));
-            } }
-
         public bool IsSendTransaction { get; set; }
         public string Amount { get; set; }
-        public string SentOrReceived { get; set; }
+
+        private string _sentOrReceived = string.Empty;
+        public string SentOrReceived { get => _sentOrReceived; set { _sentOrReceived = value; OnPropertyChanged(nameof(SentOrReceived)); } }
+
         public string Receiver { get; set; }
         public string Date { get; set; }
         public string TransactionId { get; set; }
@@ -48,41 +43,40 @@ namespace Discreet_GUI.Views.Account.Modals
             _navigationServiceFactory = navigationServiceFactory;
 
             Activator = new ViewModelActivator();
-            this.WhenActivated(d =>
+            this.WhenActivated(async (d) =>
             {
-                OnActivated();
+                await OnActivated();
                 Disposable.Create(() => { }).DisposeWith(d);
             });
         }
 
-        async void OnActivated()
+        async Task OnActivated()
         {
-            Transaction = await _walletService.GetTransaction(_transactionDetailsCache.Address, _transactionDetailsCache.TransactionId);
-            if(Transaction is null)
+            var transaction = await _walletService.GetTransaction(_transactionDetailsCache.Address, _transactionDetailsCache.TransactionId);
+            if(transaction is null)
             {
                 _notificationService.DisplayError("An error occured while trying to fetch the transaction.");
                 Dismiss();
                 return;
             }
 
-            IsSendTransaction = Transaction.SentAmount != 0;
+            IsSendTransaction = transaction.SentAmount != 0;
             OnPropertyChanged(nameof(IsSendTransaction));
 
-            var amountDivided = IsSendTransaction ? DISTConverter.Divide(Transaction.SentAmount) : DISTConverter.Divide(Transaction.ReceivedAmount);
+            var amountDivided = IsSendTransaction ? DISTConverter.Divide(transaction.SentAmount) : DISTConverter.Divide(transaction.ReceivedAmount);
             var amountString = amountDivided is null ? "NaN" : $"{DISTConverter.ToStringFormat(amountDivided.Value)} DIST";
             Amount = amountString;
             OnPropertyChanged(nameof(Amount));
 
-            SentOrReceived = IsSendTransaction ? "(Sent)" : "(Received)";
-            OnPropertyChanged(SentOrReceived);
+            SentOrReceived = IsSendTransaction ? "[ sent ]" : "[ received ]";
 
-            Receiver = Transaction.Outputs.Any() ? Transaction.Outputs.Where(o => o.Address != _transactionDetailsCache.Address).FirstOrDefault()?.Address : "";
+            Receiver = transaction.Outputs.Any() ? transaction.Outputs.Where(o => o.Address != _transactionDetailsCache.Address).FirstOrDefault()?.Address : "";
             OnPropertyChanged(nameof(Receiver));
 
-            Date = new DateTime(Transaction.Timestamp).ToString("dd-MM-yyyy HH:mm:ss");
+            Date = new DateTime(transaction.Timestamp).ToString("dd-MM-yyyy HH:mm:ss");
             OnPropertyChanged(nameof(Date));
 
-            TransactionId = Transaction.TxID;
+            TransactionId = transaction.TxID;
             OnPropertyChanged(nameof(TransactionId));
         }
 
