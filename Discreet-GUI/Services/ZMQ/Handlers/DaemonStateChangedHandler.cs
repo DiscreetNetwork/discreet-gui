@@ -17,10 +17,13 @@ namespace Services.ZMQ.Handlers
             _daemonCache = daemonCache;
         }
 
-        public override async Task Handle(string message)
+        public override Task Handle(byte[] bytes)
         {
-            if (!message.Equals("ready")) return;
+            string message = Encoding.UTF8.GetString(bytes);
+            if (!message.Equals("ready")) return Task.CompletedTask;
             _daemonCache.DaemonStarted = true;
+
+            return Task.CompletedTask;
         }
     }
 }

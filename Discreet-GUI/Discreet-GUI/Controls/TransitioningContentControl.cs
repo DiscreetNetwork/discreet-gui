@@ -3,35 +3,33 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace Discreet_GUI.Controls
 {
     public class TransitioningContentControl : ContentControl
     {
-        private CancellationTokenSource? _lastTransitionCts;
-        private object? _currentContent;
+        private CancellationTokenSource _lastTransitionCts;
+        private object _currentContent;
 
         /// <summary>
         /// Defines the <see cref="PageTransition"/> property.
         /// </summary>
-        public static readonly StyledProperty<IPageTransition?> PageTransitionProperty =
-            AvaloniaProperty.Register<TransitioningContentControl, IPageTransition?>(nameof(PageTransition),
+        public static readonly StyledProperty<IPageTransition> PageTransitionProperty =
+            AvaloniaProperty.Register<TransitioningContentControl, IPageTransition>(nameof(PageTransition),
                 new CrossFade(TimeSpan.FromSeconds(0.200)));
 
         /// <summary>
         /// Defines the <see cref="CurrentContent"/> property.
         /// </summary>
-        public static readonly DirectProperty<TransitioningContentControl, object?> CurrentContentProperty =
-            AvaloniaProperty.RegisterDirect<TransitioningContentControl, object?>(nameof(CurrentContent),
+        public static readonly DirectProperty<TransitioningContentControl, object> CurrentContentProperty =
+            AvaloniaProperty.RegisterDirect<TransitioningContentControl, object>(nameof(CurrentContent),
                 o => o.CurrentContent);
 
         /// <summary>
         /// Gets or sets the animation played when content appears and disappears.
         /// </summary>
-        public IPageTransition? PageTransition
+        public IPageTransition PageTransition
         {
             get => GetValue(PageTransitionProperty);
             set => SetValue(PageTransitionProperty, value);
@@ -40,7 +38,7 @@ namespace Discreet_GUI.Controls
         /// <summary>
         /// Gets the content currently displayed on the screen.
         /// </summary>
-        public object? CurrentContent
+        public object CurrentContent
         {
             get => _currentContent;
             private set => SetAndRaise(CurrentContentProperty, ref _currentContent, value);
@@ -57,7 +55,7 @@ namespace Discreet_GUI.Controls
         {
             base.OnDetachedFromVisualTree(e);
 
-            _lastTransitionCts?.Cancel();
+            _lastTransitionCts.Cancel();
         }
 
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
@@ -74,14 +72,14 @@ namespace Discreet_GUI.Controls
         /// Updates the content with transitions.
         /// </summary>
         /// <param name="content">New content to set.</param>
-        private async void UpdateContentWithTransition(object? content)
+        private async void UpdateContentWithTransition(object content)
         {
             if (VisualRoot is null)
             {
                 return;
             }
 
-            _lastTransitionCts?.Cancel();
+            _lastTransitionCts.Cancel();
             _lastTransitionCts = new CancellationTokenSource();
 
             if (PageTransition != null)

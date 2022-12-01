@@ -1,30 +1,26 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using ReactiveUI;
-using Services.Daemon;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
+using System.Threading.Tasks;
+using Discreet_GUI.Services;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.CreateWallet
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
-    class WalletNameViewModel : ViewModelBase
+    public class WalletNameViewModel : ViewModelBase, IActivatableViewModel
     {
+        private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly NewWalletCache _newWalletCache;
-        private readonly WalletService _walletService;
-
-        public ReactiveCommand<Unit, Unit> NavigateYourRecoveryPhraseViewCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
+        private readonly DaemonWalletService _walletService;
+        private readonly NotificationService _notificationService;
 
         public string WalletName { get => _newWalletCache.WalletName; set { _newWalletCache.WalletName = value; ValidateCanContinue(); } }
 
@@ -32,18 +28,25 @@ namespace Discreet_GUI.Views.CreateWallet
         private bool _canContinue = false;
         public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
 
-        private bool _isLoading;
+        private bool _isLoading = true;
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
-        public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletService walletService)
+
+        public ViewModelActivator Activator { get; set; }
+        public WalletNameViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, DaemonWalletService walletService, NotificationService notificationService)
         {
+            _navigationServiceFactory = navigationServiceFactory;
             _newWalletCache = newWalletCache;
             _walletService = walletService;
-            NavigateYourRecoveryPhraseViewCommand = ReactiveCommand.Create(navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate);
-            NavigateBackCommand                     = ReactiveCommand.Create(navigationServiceFactory.Create<StartViewModel>().Navigate);
-
+            _notificationService = notificationService;
             ValidateCanContinue();
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                OnActivated();
+                Disposable.Create(() => { }).DisposeWith(d);
+            });
         }
 
 
@@ -54,10 +57,19 @@ namespace Discreet_GUI.Views.CreateWallet
             if (_newWalletCache.Mnemonic is null)
             {
                 var mnemonic = await _walletService.GetMnemonic();
+                if(mnemonic is null)
+                {
+                    IsLoading = false;
+                    ValidateCanContinue();
+                    _notificationService.DisplayError("An error occured while trying to generate the mnemonic.");
+                    return;
+                }
+
                 _newWalletCache.Mnemonic = mnemonic.Value.Split(' ').Select(x => x).ToList();
             }
 
             IsLoading = false;
+            ValidateCanContinue();
         }
 
         public void ValidateCanContinue()
@@ -75,6 +87,35 @@ namespace Discreet_GUI.Views.CreateWallet
             }
 
             CanContinue = true;
+        }
+
+
+        async Task NavigateYourRecoveryPhraseViewCommand()
+        {
+            IsLoading = true;
+
+            var wallets = await _walletService.GetWallets();
+            if(wallets is null)
+            {
+                _notificationService.DisplayError("An error occured while trying to fetch existing wallets.");
+                IsLoading = false;
+                return;
+            }
+
+            if(wallets.Any(w => w.Label == WalletName))
+            {
+                _notificationService.DisplayError("A wallet with the specified label already exist.");
+                IsLoading = false;
+                return;
+            }
+
+            IsLoading = false;
+            _navigationServiceFactory.Create<YourRecoveryPhraseViewModel>().Navigate();
+        }
+
+        void NavigateBackCommand()
+        {
+            _navigationServiceFactory.Create<StartViewModel>().Navigate();
         }
     }
 }

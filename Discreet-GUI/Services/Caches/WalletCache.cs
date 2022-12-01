@@ -1,12 +1,7 @@
-﻿using Services.Daemon.Responses;
-using Services.Extensions;
+﻿using Services.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Caches
 {
@@ -69,11 +64,13 @@ namespace Services.Caches
 
         public void ClearCache()
         {
-            Label = String.Empty;
             Initialized = false;
-            Accounts = new ObservableCollectionEx<WalletAddress>();
+            EntropyHash = string.Empty;
+            Label = string.Empty;
             LastSeenHeight = 0;
             Synced = false;
+            NumberOfConnections = 0;
+            Accounts = new ObservableCollectionEx<WalletAddress>();
         }
 
 

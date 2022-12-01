@@ -1,21 +1,13 @@
 ﻿using Services.Daemon.Common;
-using Services.Daemon.Responses;
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Threading;
-using System.IO;
 
 namespace Services.Daemon
 {
     public class RPCServer
     {
         private readonly HttpClient _httpClient;
-        private SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public RPCServer(HttpClient httpClient)
         {
@@ -30,46 +22,28 @@ namespace Services.Daemon
         /// <returns></returns>
         public async Task<DaemonResponse> Request(DaemonRequest req)
         {
-            await _semaphore.WaitAsync();
-
-            var httpResponse = await _httpClient.PostAsync("/", new StringContent(req.Serialize()));
-            var responseText = await httpResponse.Content.ReadAsStringAsync(); 
-
-            if(string.IsNullOrWhiteSpace(responseText))
+            try
             {
-                _semaphore.Release();
+                var httpResponse = await _httpClient.PostAsync("/", new StringContent(req.Serialize()));
+                var responseText = await httpResponse.Content.ReadAsStringAsync(); 
 
+                if(string.IsNullOrWhiteSpace(responseText))
+                {
+                    return null;
+                }
+
+                var resp = DaemonResponse.Deserialize(responseText);
+
+                return resp;
+            }
+            catch(HttpRequestException)
+            {
                 return null;
             }
-
-            var resp = DaemonResponse.Deserialize(responseText);
-
-            _semaphore.Release();
-
-            return resp;
-        }
-
-        /// <summary>
-        /// Sends a synchronous request. Only use if requests are known to be done in order.
-        /// </summary>
-        /// <param name="req"></param>
-        /// <returns></returns>
-        public DaemonResponse RequestUnsafe(DaemonRequest req)
-        {
-            var response = _httpClient.Send(new HttpRequestMessage
+            catch (Exception)
             {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri("/", UriKind.Relative),
-                Content = new StringContent(req.Serialize())
-            });
-
-            using var sr = new StreamReader(response.Content.ReadAsStream());
-
-            var responseText = sr.ReadToEnd();
-
-            var resp = DaemonResponse.Deserialize(responseText);
-
-            return resp;
+                throw;
+            }
         }
     }
 }

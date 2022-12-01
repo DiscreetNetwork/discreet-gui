@@ -1,22 +1,17 @@
-﻿using Avalonia.Input;
-using Avalonia.Interactivity;
-using Services.Caches;
-using Services.Daemon;
-using System;
+﻿using Services.Caches;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.ViewModels.Common;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.Account.Modals
 {
     public class CreateNewAccountViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly NotificationService _notificationService;
         private readonly WalletCache _walletCache;
 
@@ -25,7 +20,7 @@ namespace Discreet_GUI.Views.Account.Modals
         public int SelectedAccountTypeIndex { get; set; }
 
 
-        public CreateNewAccountViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService, NotificationService notificationService, WalletCache walletCache)
+        public CreateNewAccountViewModel(NavigationServiceFactory navigationServiceFactory, DaemonWalletService walletService, NotificationService notificationService, WalletCache walletCache)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _walletService = walletService;
@@ -43,11 +38,11 @@ namespace Discreet_GUI.Views.Account.Modals
             var createdAddress = await _walletService.CreateAddress(label, AccountName, stealth);
             if(createdAddress is null)
             {
-                _notificationService.Display("Failed to create account");
+                _notificationService.DisplayError("An error occured while trying to create the account.");
             }
             else
             {
-                _notificationService.Display("Successfully created new account");
+                _notificationService.DisplaySuccess("Successfully created the new account.");
             }
 
             _walletCache.AddAccount(createdAddress.Name, createdAddress.Address, createdAddress.Balance, (WalletCache.AddressType)createdAddress.Type);

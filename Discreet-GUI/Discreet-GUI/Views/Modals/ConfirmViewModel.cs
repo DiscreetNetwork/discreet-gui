@@ -1,25 +1,26 @@
 ﻿using Services.Daemon;
 using Services.Daemon.Common;
-using Services.Daemon.Requests;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Services;
+using Services.Daemon.Wallet.Requests;
+using Services.Daemon.Transaction;
+using Discreet_GUI.Services;
 
 namespace Discreet_GUI.Views.Modals
 {
     public class ConfirmViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
-        private readonly RPCServer _rpcServer;
+        private readonly DaemonTransactionService _daemonTransactionService;
         private readonly SendTransactionCache _sendTransactionCache;
+        private readonly NotificationService _notificationService;
 
         public string ReceiverAddress => $"{_sendTransactionCache.Receiver.Substring(0, 6)}...{_sendTransactionCache.Receiver.Substring(_sendTransactionCache.Receiver.Length - 6, 6)}";
         public decimal Amount => _sendTransactionCache.Amount;
@@ -31,11 +32,12 @@ namespace Discreet_GUI.Views.Modals
         private bool _isLoading;
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
-        public ConfirmViewModel(NavigationServiceFactory navigationServiceFactory, RPCServer rpcServer, SendTransactionCache sendTransactionCache)
+        public ConfirmViewModel(NavigationServiceFactory navigationServiceFactory, DaemonTransactionService daemonTransactionService, SendTransactionCache sendTransactionCache, NotificationService notificationService)
         {
             _navigationServiceFactory = navigationServiceFactory;
-            _rpcServer = rpcServer;
+            _daemonTransactionService = daemonTransactionService;
             _sendTransactionCache = sendTransactionCache;
+            _notificationService = notificationService;
         }
 
         public void CancelTransactionCommand()
@@ -47,44 +49,27 @@ namespace Discreet_GUI.Views.Modals
         {
             IsLoading = true;
 
-            CreateTransactionParam p = new CreateTransactionParam
+            var amountMultiplied = DISTConverter.Multiply(_sendTransactionCache.Amount);
+            if(amountMultiplied is null)
             {
-                Amount = DISTConverter.Multiply(_sendTransactionCache.Amount),
-                To = _sendTransactionCache.Receiver
-            };
-
-            CreateTransactionRequest req = new CreateTransactionRequest
-            {
-                Address = _sendTransactionCache.Sender,
-                Params = new List<CreateTransactionParam>(new CreateTransactionParam[] { p }),
-                Raw = false,
-                Relay = true
-            };
-
-
-            DaemonResponse resp = null;
-            try
-            {
-                resp = await _rpcServer.Request(new DaemonRequest("create_transaction", req));
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
+                _notificationService.DisplayError("An error occured. The amount entered could not be parsed");
                 _navigationServiceFactory.CreateModalNavigationService().Navigate();
+                return;
             }
 
-            if (resp != null && resp.Result != null)
+            var createdTransaction = await _daemonTransactionService.CreateTransaction(
+                _sendTransactionCache.Sender,
+                _sendTransactionCache.Receiver,
+                amountMultiplied.Value
+            );
+
+            if(createdTransaction is null)
             {
-                if (resp.Result is JsonElement json) 
-                {
-                    try
-                    {
-                        DaemonErrorResult errResult = JsonSerializer.Deserialize<DaemonErrorResult>(json);
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                } 
+                _notificationService.DisplayError("An error occured while trying to send the transaction.");
+            }
+            else
+            {
+                _notificationService.DisplaySuccess("The transaction has been send successfully!");
             }
 
             _navigationServiceFactory.CreateModalNavigationService().Navigate();

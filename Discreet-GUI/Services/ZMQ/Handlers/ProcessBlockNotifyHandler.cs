@@ -1,12 +1,7 @@
 ﻿using Services.Caches;
-using Services.Daemon;
-using Services.Daemon.Services;
+using Services.Daemon.Status;
+using Services.Daemon.Wallet;
 using Services.ZMQ.Handlers.Common;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services.ZMQ.Handlers
@@ -17,20 +12,18 @@ namespace Services.ZMQ.Handlers
     /// </summary>
     public class ProcessBlockNotifyHandler : MessageHandler
     {
-        private readonly WalletService _walletService;
-        private readonly AccountService _accountService;
+        private readonly DaemonWalletService _walletService;
         private readonly WalletCache _walletCache;
-        private readonly StatusService _statusService;
+        private readonly DaemonStatusService _statusService;
 
-        public ProcessBlockNotifyHandler(WalletService walletService, AccountService accountService, WalletCache walletCache, StatusService statusService)
+        public ProcessBlockNotifyHandler(DaemonWalletService walletService, WalletCache walletCache, DaemonStatusService statusService)
         {
             _walletService = walletService;
-            _accountService = accountService;
             _walletCache = walletCache;
             _statusService = statusService;
         }
 
-        public override async Task Handle(string message)
+        public override async Task Handle(byte[] bytes)
         {
             await UpdatePeerCount();
             await UpdateAddressBalances();
@@ -42,10 +35,10 @@ namespace Services.ZMQ.Handlers
         public async Task UpdatePeerCount()
         {
             var numberOfConnections = await _statusService.GetNumConnections();
-            if (numberOfConnections == -1) return;
+            if (numberOfConnections is null) return;
 
             var previous = _walletCache.NumberOfConnections;
-            if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections;
+            if (numberOfConnections != previous) _walletCache.NumberOfConnections = numberOfConnections.Value;
         }
 
 
@@ -53,7 +46,7 @@ namespace Services.ZMQ.Handlers
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var fetchedBalance = await _accountService.GetBalance(address.Address);
+                var fetchedBalance = await _walletService.GetBalance(address.Address);
                 if (fetchedBalance == null)
                 {
                     continue;
@@ -69,7 +62,7 @@ namespace Services.ZMQ.Handlers
         {
             foreach (var address in _walletCache.Accounts)
             {
-                var addressState = await _accountService.GetState(address.Address);
+                var addressState = await _walletService.GetAddressHeight(address.Address);
                 if (addressState is null)
                 {
                     continue;
@@ -83,7 +76,7 @@ namespace Services.ZMQ.Handlers
 
         public async Task UpdateWalletHeight()
         {
-            var walletState = await _walletService.GetState(_walletCache.Label);
+            var walletState = await _walletService.GetWalletHeight(_walletCache.Label);
             if (walletState is null)
             {
                 return;

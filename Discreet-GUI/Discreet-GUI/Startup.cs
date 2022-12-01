@@ -1,25 +1,18 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ReactiveUI;
 using Services.Caches;
 using Services.Daemon;
-using Services.Daemon.Services;
 using Services.Testnet;
 using Services.ZMQ;
 using Services.ZMQ.Handlers.Common;
 using Services.ZMQ.Registries;
 using Services.ZMQ.Registries.Common;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Attributes;
 using Discreet_GUI.Factories.Navigation;
@@ -28,14 +21,19 @@ using Discreet_GUI.Hosted;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.Stores.Navigation;
-using Discreet_GUI.ViewModels;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views;
-using Discreet_GUI.Views.Account.Modals;
-using Discreet_GUI.Views.DebugUtility;
-using Discreet_GUI.Views.Modals;
 using Discreet_GUI.Views.Notifications;
 using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
+using Services.Daemon.Status;
+using Services.Daemon.Transaction;
+using Services.Daemon.SeedRecovery;
+using Services.Daemon.Read;
+using Discreet_GUI.Caches;
+using Splat.Microsoft.Extensions.DependencyInjection;
+using Splat;
+using ReactiveUI;
 
 namespace Discreet_GUI
 {
@@ -48,114 +46,45 @@ namespace Discreet_GUI
         {
             _host = new HostBuilder().ConfigureServices((hostContext, services) =>
             {
-                RegisterViewModels(services);
-                RegisterNotificationViewModels(services);
-                RegisterFactories(services);
-                RegisterStores(services);
-                RegisterCaches(services);
+                services.UseMicrosoftDependencyResolver();
+                var resolver = Locator.CurrentMutable;
+                resolver.InitializeSplat();
+                resolver.InitializeReactiveUI();
 
-                // ZMQ Dependencies
-                var handlers = typeof(ServiceProviderMessageHandlerRegistry).Assembly.GetTypes().Where(t => t.BaseType == typeof(MessageHandler));
-                foreach (var handler in handlers)
-                {
-                    services.AddScoped(handler);
-                }
-                services.AddSingleton<IMessageHandlerRegistry, ServiceProviderMessageHandlerRegistry>();
-                services.AddScoped<Subscriber>();
+                DependencyBootstrapper.Register(services);
 
                 services.AddHttpClient();
 
-                services.AddSingleton<NotificationContainerViewModel>();
-                services.AddScoped<RPCServer>();
-                services.AddSingleton<NotificationService>();
-                services.AddHostedService<DaemonActivatorService>();
-                services.AddHostedService<WalletPollerBackgroundService>();
-                services.AddHostedService<VersionBackgroundService>();
-                services.AddScoped<WalletService>();
-                services.AddScoped<StatusService>();
-                services.AddScoped<AccountService>();
-                services.AddScoped<IssueService>();
-
                 // Startup
                 services.AddSingleton<MainWindowViewModel>();
-                services.AddSingleton(s => new MainWindow()
-                {
-                    DataContext = s.GetRequiredService<MainWindowViewModel>()
-                });
             })
             .ConfigureAppConfiguration((context, config) => BuildConfigurationFile(context, config)).Build();
 
             _ = _host.RunAsync();
+            _host.Services.UseMicrosoftDependencyResolver();
 
-            using IServiceScope serviceScope = _host.Services.CreateScope();
 
             // ZMQ
-            _subscriber = serviceScope.ServiceProvider.GetRequiredService<Subscriber>();
+            _subscriber = Locator.Current.GetRequiredService<Subscriber>();
             _ = Task.Factory.StartNew(_subscriber.Start);
 
             // Set the startup view
-            serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
+            Locator.Current.GetRequiredService<NavigationServiceFactory>().Create<StartViewModel>().Navigate();
 
             // Set daemon initializing screen, if UseActivator is enabled
-            if (serviceScope.ServiceProvider.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
+            if (Locator.Current.GetRequiredService<IConfiguration>().GetValue<bool>("DaemonSettings:UseActivator"))
             {
-                if(!serviceScope.ServiceProvider.GetRequiredService<DaemonCache>().DaemonStarted)
+                if(!Locator.Current.GetRequiredService<DaemonCache>().DaemonStarted)
                 {
-                    serviceScope.ServiceProvider.GetRequiredService<NavigationServiceFactory>().SetDaemonStartupModal();
+                    Locator.Current.GetRequiredService<NavigationServiceFactory>().SetDaemonStartupModal();
                 }
             }
 
-            MainWindow mainWindow = serviceScope.ServiceProvider.GetRequiredService<MainWindow>();
+            MainWindow mainWindow = new MainWindow();
+            MainWindowViewModel mainWindowViewModel = Locator.Current.GetRequiredService<MainWindowViewModel>();
+            mainWindow.DataContext = mainWindowViewModel;
 
             desktop.MainWindow = mainWindow;
-        }
-
-
-        /// <summary>
-        /// Assembly scan for all types with a baseType of 'ViewModelBase' and register them in the container 
-        /// This will ignore any types with the class attribute 'AssemblyScanIgnore'
-        /// </summary>
-        /// <param name="services"></param>
-        public void RegisterViewModels(IServiceCollection services)
-        {
-            var vms = typeof(Startup).Assembly.GetTypes().Where(t => t.BaseType == typeof(ViewModelBase) && !t.CustomAttributes.Any(t => t.AttributeType == typeof(AssemblyScanIgnoreAttribute)));
-            
-            foreach (Type viewModel in vms)
-            {
-                services.AddTransient(viewModel);
-            }
-        }
-
-        public void RegisterNotificationViewModels(IServiceCollection services)
-        {
-            var vms = typeof(Startup).Assembly.GetTypes().Where(t => t.BaseType == typeof(NotificationViewModelBase) && !t.CustomAttributes.Any(t => t.AttributeType == typeof(AssemblyScanIgnoreAttribute)));
-
-            foreach (Type viewModel in vms)
-            {
-                services.AddTransient(viewModel);
-            }
-        }
-
-        public void RegisterFactories(IServiceCollection services)
-        {
-            services.AddScoped<NavigationServiceFactory>();
-            services.AddScoped(s => new LayoutViewModelFactory(_host.Services));
-        }
-
-        public void RegisterStores(IServiceCollection services)
-        {
-            typeof(WindowSettingsStore).Assembly.GetTypes().Where(t => t.Name.Contains("Store") && (t.Namespace == typeof(WindowSettingsStore).Namespace || t.Namespace == typeof(MainNavigationStore).Namespace)).ToList().ForEach(t =>
-            {
-                services.AddSingleton(t);
-            });
-        }
-
-        public void RegisterCaches(IServiceCollection services)
-        {
-            typeof(NewWalletCache).Assembly.GetTypes().Where(t => t.Name.Contains("Cache") && (t.Namespace == typeof(NewWalletCache).Namespace)).ToList().ForEach(t =>
-            {
-                services.AddSingleton(t);
-            });
         }
 
 
@@ -178,7 +107,7 @@ namespace Discreet_GUI
                 {
                     Directory.CreateDirectory(walletConfigPath);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -211,7 +140,7 @@ namespace Discreet_GUI
                         WriteIndented = true,
                     }));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -237,7 +166,7 @@ namespace Discreet_GUI
                         WriteIndented = true,
                     }));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }

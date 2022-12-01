@@ -1,13 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using ReactiveUI;
-using Services.Caches;
-using Services.Daemon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Text;
+﻿using Services.Caches;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
@@ -16,6 +7,7 @@ using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Account;
 using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Layouts.Account;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.Start
 {
@@ -23,7 +15,7 @@ namespace Discreet_GUI.Views.Start
     class RestoreWalletViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly WalletCache _walletCache;
         private readonly NotificationService _notificationService;
 
@@ -74,7 +66,7 @@ namespace Discreet_GUI.Views.Start
         private bool _canContinue = false;
         public bool CanContinue { get => _canContinue; set { _canContinue = value; OnPropertyChanged(nameof(CanContinue)); } }
 
-        public RestoreWalletViewModel(NavigationServiceFactory navigationServiceFactory, WalletService walletService, WalletCache walletCache, NotificationService notificationService)
+        public RestoreWalletViewModel(NavigationServiceFactory navigationServiceFactory, DaemonWalletService walletService, WalletCache walletCache, NotificationService notificationService)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _walletService = walletService;
@@ -133,7 +125,7 @@ namespace Discreet_GUI.Views.Start
             var wallet = await _walletService.RecoverWallet(WalletName, MnemonicPhrase, SelectedPassword);
             if(wallet is null)
             {
-                _notificationService.Display("Failed to recover the wallet");
+                _notificationService.DisplayError("Failed to recover the wallet.");
                 return;
             }
 

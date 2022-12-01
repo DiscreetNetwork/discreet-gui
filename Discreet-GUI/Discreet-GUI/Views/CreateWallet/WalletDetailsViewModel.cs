@@ -1,18 +1,14 @@
 ﻿using ReactiveUI;
-using Services.Daemon;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
-using System.Text;
 using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Layouts;
-using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.CreateWallet
 {
@@ -22,13 +18,11 @@ namespace Discreet_GUI.Views.CreateWallet
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly NewWalletCache _newWalletCache;
         private readonly WalletCache _walletCache;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
         private readonly NotificationService _notificationService;
 
         public ObservableCollection<string> NetworkTypes { get; set; } = new ObservableCollection<string> { "Testnet" };
         public int SelectedNetworkTypeIndex { get; set; }
-
-        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
 
         public string WalletName { get => _newWalletCache.WalletName; set { _newWalletCache.WalletName = value; ValidateCanContinue(); } }
         public bool Bootstrap { get => _newWalletCache.Bootstrap; set => _newWalletCache.Bootstrap = value; }
@@ -40,9 +34,8 @@ namespace Discreet_GUI.Views.CreateWallet
         private bool _isLoading;
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
-        public WalletDetailsViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletCache walletCache, WalletService walletService, NotificationService notificationService)
+        public WalletDetailsViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletCache walletCache, DaemonWalletService walletService, NotificationService notificationService)
         {
-            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate);
             _navigationServiceFactory = navigationServiceFactory;
             _newWalletCache = newWalletCache;
             _walletCache = walletCache;
@@ -67,9 +60,25 @@ namespace Discreet_GUI.Views.CreateWallet
         {
             IsLoading = true;
 
+            var wallets = await _walletService.GetWallets();
+            if (wallets is null)
+            {
+                _notificationService.DisplayError("An error occured while trying to fetch existing wallets.");
+                IsLoading = false;
+                return;
+            }
+
+            if (wallets.Any(w => w.Label == _newWalletCache.WalletName))
+            {
+                _notificationService.DisplayError("A wallet with the specified label already exist.");
+                IsLoading = false;
+                return;
+            }
+
             if (await _walletService.CreateWallet(_newWalletCache.WalletName, _newWalletCache.Mnemonic.Select(x => x).Aggregate((x, y) => x + " " + y), _newWalletCache.Password) == null)
             {
-                _notificationService.Display("Failed to create wallet");
+                IsLoading = false;
+                _notificationService.DisplayError("An error occured while trying to create the wallet.");
                 return;
             }
 
@@ -77,6 +86,11 @@ namespace Discreet_GUI.Views.CreateWallet
             _newWalletCache.Clear();
 
             _navigationServiceFactory.Create<WalletCreatedSuccessfullyViewModel>().Navigate();
+        }
+
+        void NavigateBackCommand()
+        {
+            _navigationServiceFactory.Create<WalletPasswordViewModel>().Navigate();
         }
     }
 }

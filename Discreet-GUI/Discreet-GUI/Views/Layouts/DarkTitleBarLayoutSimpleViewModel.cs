@@ -1,10 +1,4 @@
-﻿using ReactiveUI;
-using Services.Daemon;
-using System;
-using System.Collections.Generic;
-using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
@@ -12,6 +6,7 @@ using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Modals;
 using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
 
 namespace Discreet_GUI.Views.Layouts
 {
@@ -20,9 +15,9 @@ namespace Discreet_GUI.Views.Layouts
         private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly NotificationService _notificationService;
         private readonly WalletCache _walletCache;
-        private readonly WalletService _walletService;
+        private readonly DaemonWalletService _walletService;
 
-        public DarkTitleBarLayoutSimpleViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore, NavigationServiceFactory navigationServiceFactory, NotificationService notificationService, WalletCache walletCache, WalletService walletService) : base(contentViewModel, windowSettingsStore)
+        public DarkTitleBarLayoutSimpleViewModel(ViewModelBase contentViewModel, WindowSettingsStore windowSettingsStore, NavigationServiceFactory navigationServiceFactory, NotificationService notificationService, WalletCache walletCache, DaemonWalletService walletService) : base(contentViewModel, windowSettingsStore)
         {
             _navigationServiceFactory = navigationServiceFactory;
             _notificationService = notificationService;
@@ -41,7 +36,7 @@ namespace Discreet_GUI.Views.Layouts
         {
             if(!await _walletService.LockWallet(_walletCache.Label))
             {
-                _notificationService.Display("Failed to lock the wallet");
+                _notificationService.DisplayError("An error occured while trying to lock the wallet.");
                 return;
             }
 

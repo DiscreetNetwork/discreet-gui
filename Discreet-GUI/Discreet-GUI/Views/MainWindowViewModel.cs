@@ -1,15 +1,9 @@
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.Configuration;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
-using System.Text;
 using Discreet_GUI.Attributes;
 using Discreet_GUI.Stores;
 using Discreet_GUI.Stores.Navigation;
@@ -72,7 +66,10 @@ namespace Discreet_GUI.Views
         }
 
         private void OnCurrentWindowStateChanged() { OnPropertyChanged(nameof(CurrentWindowState)); }
-        private void OnCurrentViewModelChanged() { OnPropertyChanged(nameof(CurrentViewModel)); }
+        private void OnCurrentViewModelChanged() 
+        { 
+            OnPropertyChanged(nameof(CurrentViewModel)); 
+        }
         private void OnCurrentModalViewModelChanged() { OnPropertyChanged(nameof(CurrentModalViewModel)); }
 
 

@@ -1,26 +1,21 @@
 ﻿using Avalonia;
-using Avalonia.Controls.Selection;
 using ReactiveUI;
-using Services.Daemon;
-using Services.Daemon.Responses;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Text;
 using Services.Caches;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
-using Discreet_GUI.Views.CreateWallet;
 using Discreet_GUI.Views.Layouts;
-using Discreet_GUI.Views.Start;
+using Services.Daemon.Wallet;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.CreateWallet
 {
     [Layout(typeof(DarkTitleBarLayoutWithBackButtonViewModel))]
-    public class YourRecoveryPhraseViewModel : ViewModelBase
+    public class YourRecoveryPhraseViewModel : ViewModelBase, IActivatableViewModel
     {
         public ObservableCollection<string> GeneratedMnemonic { get; set; } = new ObservableCollection<string>();
 
@@ -28,40 +23,41 @@ namespace Discreet_GUI.Views.CreateWallet
         public bool PassphraseCopied { get => _passphraseCopied; set { _passphraseCopied = value; if (value) { PassphraseCopyContent = "Passphrase copied"; } else { PassphraseCopyContent = "Copy Passphrase"; } OnPropertyChanged(nameof(PassphraseCopied)); } }
 
         private string _passphraseCopyContent = "Copy Passphrase";
+        private readonly NavigationServiceFactory _navigationServiceFactory;
         private readonly NewWalletCache _newWalletCache;
-        private readonly WalletService _walletService;
 
         public string PassphraseCopyContent { get => _passphraseCopyContent; set { _passphraseCopyContent = value; OnPropertyChanged(nameof(PassphraseCopyContent)); } }
 
 
-        ReactiveCommand<Unit, Unit> NavigateNextCommand { get; set; }
-        ReactiveCommand<Unit, Unit> CopyPassphraseCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateBackCommand { get; set; }
-
-
-        public YourRecoveryPhraseViewModel() { }
-
-        public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache, WalletService walletService)
+        public ViewModelActivator Activator { get; set; }
+        public YourRecoveryPhraseViewModel(NavigationServiceFactory navigationServiceFactory, NewWalletCache newWalletCache)
         {
-            NavigateNextCommand = ReactiveCommand.Create(navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate);
-            NavigateBackCommand = ReactiveCommand.Create(navigationServiceFactory.Create<WalletNameViewModel>().Navigate);
-
-            CopyPassphraseCommand = ReactiveCommand.Create(() =>
-            {
-                PassphraseCopied = !PassphraseCopied;
-                Application.Current.Clipboard.SetTextAsync(String.Join(" ", GeneratedMnemonic.Select(x => x)));
-            });
-
+            _navigationServiceFactory = navigationServiceFactory;
             _newWalletCache = newWalletCache;
-            _walletService = walletService;
 
-            RxApp.MainThreadScheduler.Schedule(OnActivated);
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                GeneratedMnemonic = new ObservableCollection<string>(_newWalletCache.Mnemonic);
+                OnPropertyChanged(nameof(GeneratedMnemonic));
+                Disposable.Create(() => { }).DisposeWith(d);
+            });
         }
 
-        async void OnActivated()
+        void NavigateNextCommand()
         {
-            GeneratedMnemonic = new ObservableCollection<string>(_newWalletCache.Mnemonic);
-            OnPropertyChanged(nameof(GeneratedMnemonic));
+            _navigationServiceFactory.Create<VerifyRecoveryPhraseViewModel>().Navigate();
+        }
+
+        void NavigateBackCommand()
+        {
+            _navigationServiceFactory.Create<WalletNameViewModel>().Navigate();
+        }
+
+        void CopyPassphraseCommand()
+        {
+            PassphraseCopied = !PassphraseCopied;
+            Application.Current.Clipboard.SetTextAsync(string.Join(" ", GeneratedMnemonic.Select(x => x)));
         }
     }
 }

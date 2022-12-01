@@ -1,68 +1,48 @@
 ﻿using Avalonia;
-using ReactiveUI;
-using Services;
 using Services.Caches;
-using Services.Daemon;
 using Services.Extensions;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.ViewModels.Common;
+using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Account
 {
-    public class AccountHomeViewModel : ViewModelBase
+    public class AccountHomeViewModel : ViewModelBase, IActivatableViewModel
     {
         private readonly WalletCache _walletCache;
         private readonly UserPreferrencesStore _userPreferrencesStore;
         private readonly NotificationService _notificationService;
-        private readonly WalletService _walletService;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
-        /*
-        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletCache.WalletAddress>()
-        {
-            new WalletCache.WalletAddress
-            {
-                Address = "1AxastPBd7LTHktMoMJvrAfG1h5cEtrT83SdGqzcW3NqRgJA3TzqFAr4wbgXPLBSuA9xhTPy44B84EYHFkrGSNwBLoSbAJh",
-                Name = "taStealth",
-                Balance = 350259,
-                Type = WalletCache.AddressType.STEALTH,
-                Synced = true,
-                Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, "1AxastPBd7LTHkt")
-            },
-            new WalletCache.WalletAddress
-            {
-                Address = "1AxastPBd7LTHktMoMJvrAfG1h5cEtrT83SdGqzcW3NqRgJA3TzqFAr4wbgXPLBSuA9xhTPy44B84EYHFkrGSNwBLoSbAJh",
-                Name = "taStealth",
-                Balance = 350259,
-                Type = WalletCache.AddressType.TRANSPARENT,
-                Synced = false,
-                Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, "1AxastPBd7LTHkt")
-            }
-        };
-        */
+        
 
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public bool HideBalance => _userPreferrencesStore.HideBalance;
 
-        public AccountHomeViewModel() 
-        {
-        }
+        public ViewModelActivator Activator { get; set; }
 
-        public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, WalletService walletService, NavigationServiceFactory navigationServiceFactory)
+        public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
             _walletCache = walletCache;
             _userPreferrencesStore = userPreferrencesStore;
             _notificationService = notificationService;
-            _walletService = walletService;
             _navigationServiceFactory = navigationServiceFactory;
             Accounts.CollectionChanged += AccountsChanged;
+
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
+            {
+                Disposable.Create(() =>
+                {
+                    Accounts.CollectionChanged -= AccountsChanged;
+                }).DisposeWith(d);
+            });
         }
 
         private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -73,7 +53,7 @@ namespace Discreet_GUI.Views.Account
         public async Task CopyAddress(string parameter)
         {
             await Application.Current.Clipboard.SetTextAsync(parameter);
-            _notificationService.Display("Copied address to clipboard");
+            _notificationService.DisplayInformation("Copied address to clipboard");
         }
 
         void ToggleDisplayBalance()

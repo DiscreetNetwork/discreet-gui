@@ -1,11 +1,7 @@
 ﻿using Avalonia.Data.Converters;
 using Services;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Discreet_GUI.ValueConverters
 {
@@ -15,7 +11,9 @@ namespace Discreet_GUI.ValueConverters
         {
             ulong val = (ulong)value;
 
-            return DISTConverter.ToStringFormat(DISTConverter.Divide(val));
+            decimal? balanceDivided = DISTConverter.Divide(val);
+
+            return balanceDivided is null ? "NaN" : DISTConverter.ToStringFormat(balanceDivided.Value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

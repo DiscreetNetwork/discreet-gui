@@ -1,29 +1,25 @@
-﻿using Avalonia.Controls.Notifications;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Discreet_GUI.Factories.Navigation;
-using Discreet_GUI.Services;
-using Discreet_GUI.Services.Navigation.Common;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.CreateWallet;
 using Discreet_GUI.Views.Layouts;
+using System.Reactive.Concurrency;
+using System.Linq;
+using Discreet_GUI.Views.Modals;
+using Services.Daemon.Wallet;
+using Discreet_GUI.Services;
+using System.Reactive.Disposables;
 
 namespace Discreet_GUI.Views.Start
 {
     [Layout(typeof(PurpleTitleBarLayoutViewModel))]
-    public class StartViewModel : ViewModelBase
+    public class StartViewModel : ViewModelBase, IActivatableViewModel
     {
-        public ReactiveCommand<Unit, Unit> NavigateCreateWalletChoicesViewCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> NavigateExistingWalletChoicesViewCommand { get; set; }
-
-
         /// <summary>
         /// Determines what Image to display in the carousel
         /// </summary>
@@ -44,26 +40,36 @@ namespace Discreet_GUI.Views.Start
         /// Controls the carousel loop
         /// </summary>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public string CurrentVersion { get => $"Version: {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}"; }
 
+        public ViewModelActivator Activator { get; set; }
+
         public StartViewModel(NavigationServiceFactory navigationServiceFactory)
         {
-            NavigateCreateWalletChoicesViewCommand = ReactiveCommand.Create(() =>
+            Activator = new ViewModelActivator();
+            this.WhenActivated(d =>
             {
-                _cancellationTokenSource.Cancel();
-                navigationServiceFactory.Create<WalletNameViewModel>().Navigate();
+                _ = InitializeCarousel(_cancellationTokenSource.Token);
+
+                Disposable.Create(() => _cancellationTokenSource.Cancel()).DisposeWith(d);
             });
 
-
-            NavigateExistingWalletChoicesViewCommand = ReactiveCommand.Create(() =>
-            {
-                navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate();
-            });
-
-            _ = InitializeCarousel(_cancellationTokenSource.Token);
+            
+            _navigationServiceFactory = navigationServiceFactory;
         }
 
+        void NavigateCreateWalletChoicesViewCommand()
+        {
+            _cancellationTokenSource.Cancel();
+            _navigationServiceFactory.Create<WalletNameViewModel>().Navigate();
+        }
+
+        void NavigateExistingWalletChoicesViewCommand()
+        {
+            _navigationServiceFactory.Create<ExistingWalletChoicesViewModel>().Navigate();
+        }
 
         async Task InitializeCarousel(CancellationToken cancellationToken)
         {
@@ -91,6 +97,8 @@ namespace Discreet_GUI.Views.Start
                 }
             }
         }
+
+        
 
         void ResetSteps()
         {

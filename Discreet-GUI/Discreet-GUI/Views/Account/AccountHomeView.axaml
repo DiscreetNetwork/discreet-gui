@@ -68,11 +68,19 @@
 		  <Label Grid.Column="3" Foreground="#6F6F6F" FontWeight="300" FontSize="16">Address</Label>
 	  </Grid>
 
-	  <ScrollViewer Grid.Row="4" Margin="0 0 25 30">
+	  <ScrollViewer Grid.Row="4" Margin="0 10 25 30">
 		  <ItemsControl Items="{Binding Accounts}">
+			  <ItemsControl.Styles>
+				  <Style Selector="ContentPresenter > Border">
+					  <Setter Property="Background" Value="#212122"/>
+				  </Style>
+				  <Style Selector="ContentPresenter:nth-child(2n+2) > Border">
+					  <Setter Property="Background" Value="Transparent"/>
+				  </Style>
+			  </ItemsControl.Styles>
 			  <ItemsControl.ItemTemplate>
 				  <DataTemplate>
-					  <Border Margin="0 10 0 0" Padding="0 7 0 7" BorderThickness="0 0 0 1" BorderBrush="#313131">
+					  <Border Margin="0 0 0 0" Padding="6 12 0 12" BorderBrush="#252527" CornerRadius="6">
 						  <Grid>
 							  <Grid.ColumnDefinitions>
 								  <!-- Image -->
