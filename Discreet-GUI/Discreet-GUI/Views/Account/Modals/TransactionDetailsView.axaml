@@ -59,33 +59,18 @@
 							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
 								<Label Foreground="#A0A0A0" FontWeight="300">Transaction ID: </Label>
 
-								<StackPanel Orientation="Horizontal" Margin="20 0 0 0">
-									<Button Padding="0" Cursor="Hand" FontWeight="300"  Content="{Binding TransactionId}" Command="{Binding CopyTransactionHash}">
-										<Button.Styles>
-											<Style Selector="Button">
-												<Setter Property="Background" Value="Transparent"/>
-												<Setter Property="Foreground" Value="White"/>
-											</Style>
-											<Style Selector="Button:pointerover /template/ ContentPresenter">
-												<Setter Property="Background" Value="Transparent"/>
-												<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
-											</Style>
-										</Button.Styles>
-									</Button>
-
-									<Button Padding="0" Margin="10 0 0 0" Cursor="Hand" FontWeight="300"  Content="[ View on explorer ]" Command="{Binding DisplayTransactionInExplorer}">
-										<Button.Styles>
-											<Style Selector="Button">
-												<Setter Property="Background" Value="Transparent"/>
-												<Setter Property="Foreground" Value="#ffa0a0a0"/>
-											</Style>
-											<Style Selector="Button:pointerover /template/ ContentPresenter">
-												<Setter Property="Background" Value="Transparent"/>
-												<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
-											</Style>
-										</Button.Styles>
-									</Button>
-								</StackPanel>
+								<Button Padding="0" Margin="20 0 0 0" Cursor="Hand" FontWeight="300"  Content="{Binding TransactionId}" Command="{Binding CopyTransactionHash}">
+									<Button.Styles>
+										<Style Selector="Button">
+											<Setter Property="Background" Value="Transparent"/>
+											<Setter Property="Foreground" Value="White"/>
+										</Style>
+										<Style Selector="Button:pointerover /template/ ContentPresenter">
+											<Setter Property="Background" Value="Transparent"/>
+											<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
+										</Style>
+									</Button.Styles>
+								</Button>
 							</StackPanel>
 
 							<StackPanel Orientation="Horizontal" Margin="0 0 0 0">
@@ -97,6 +82,19 @@
 								<Label Foreground="#A0A0A0" FontWeight="300">Confirmed:</Label>
 								<Label Foreground="#A0A0A0" FontWeight="300" Margin="46 0 0 0">yes</Label>
 							</StackPanel>
+
+							<Button Padding="0" Margin="0 10 0 10" Cursor="Hand" FontWeight="300"  Content="[ View on explorer ]" Command="{Binding DisplayTransactionInExplorer}">
+								<Button.Styles>
+									<Style Selector="Button">
+										<Setter Property="Background" Value="Transparent"/>
+										<Setter Property="Foreground" Value="White"/>
+									</Style>
+									<Style Selector="Button:pointerover /template/ ContentPresenter">
+										<Setter Property="Background" Value="Transparent"/>
+										<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
+									</Style>
+								</Button.Styles>
+							</Button>
 						</StackPanel>
 					</ScrollViewer>	
 				</Grid>
