@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -36,6 +38,9 @@ namespace Discreet_GUI.Views.Modals
         private string _statusText = string.Empty;
         public string StatusText { get => _statusText; set { _statusText = value; OnPropertyChanged(nameof(StatusText)); } }
 
+        public bool ChangelogsAvailable { get; set; }
+        public string Changelogs => _versionUpdateStore.Changelogs;
+
         private string _fileName = string.Empty;
         private byte[] _fileBytes = null;
 
@@ -45,6 +50,7 @@ namespace Discreet_GUI.Views.Modals
             _versionUpdateStore = versionUpdateStore;
             _httpClient = httpClient;
             StatusText = _versionUpdateStore.NextVersion;
+            ChangelogsAvailable = !string.IsNullOrWhiteSpace(Changelogs);
         }
 
         public void RemindMeLater()
@@ -133,5 +139,10 @@ namespace Discreet_GUI.Views.Modals
         {
             _navigationServiceFactory.CreateModalNavigationService().Navigate();
         }
+
+
+
+
+        
     }
 }

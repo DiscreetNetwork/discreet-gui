@@ -15,5 +15,8 @@ namespace Discreet_GUI.Stores
         private bool _remindMeLater = false;
         public bool RemindMeLater { get => _remindMeLater; set { _remindMeLater = value; OnRemindMeLaterChanged(); } }
         public void OnRemindMeLaterChanged() => RemindMeLaterChanged?.Invoke();
+
+
+        public string Changelogs { get; set; }
     }
 }
