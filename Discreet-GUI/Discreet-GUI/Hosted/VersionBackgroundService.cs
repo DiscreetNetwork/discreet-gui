@@ -9,6 +9,7 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.Views.Modals;
+using System.Text.Json;
 
 namespace Discreet_GUI.Hosted
 {
@@ -67,6 +68,21 @@ namespace Discreet_GUI.Hosted
 
 
                 if (!foundNewVersion) continue;
+
+                try
+                {
+                    var availablePackageResponse = await _httpClient.GetAsync("https://releases.discreet.net/downloads/windows/gui/latest/available");
+                    if (!availablePackageResponse.IsSuccessStatusCode) continue;
+                    var content = await availablePackageResponse.Content.ReadAsStringAsync();
+                    var availablePackageName = JsonSerializer.Deserialize<string>(content);
+                    if (!availablePackageName.Contains(newVersion)) continue;
+                }
+                catch (Exception)
+                {
+                    _notificationService.DisplayError("An error occured while trying to check for updates.");
+                    continue;
+                }
+                
 
                 // New version, reset settings and display popup
                 if(!string.IsNullOrWhiteSpace(_versionUpdateStore.NextVersion) && !_versionUpdateStore.NextVersion.Equals(newVersion))

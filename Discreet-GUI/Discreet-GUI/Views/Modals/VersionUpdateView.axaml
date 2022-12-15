@@ -9,6 +9,13 @@
 		<StyleInclude Source="/ApplicationStyles.axaml"/>
 	</UserControl.Styles>
 
+	<UserControl.Resources>
+		<LinearGradientBrush x:Key="Gradient" StartPoint="0%,0%" EndPoint="100%,100%">
+			<GradientStop Offset="0" Color="#AB00FF"/>
+			<GradientStop Offset="1" Color="#17CCF6"/>
+		</LinearGradientBrush>
+	</UserControl.Resources>
+
 	<Grid Background="Transparent">
 		<Rectangle Fill="#181818" Opacity="0.95"/>
 
@@ -17,19 +24,12 @@
 				VerticalAlignment="Center" HorizontalAlignment="Center">
 
 			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="90"/>
-					<RowDefinition Height="35"/>
-					<RowDefinition Height="60"/>
-					<RowDefinition Height="35"/>
-				</Grid.RowDefinitions>
-				<Label Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DDDDDD" FontSize="18">New update available</Label>
+				<Label Margin="0 25 0 0" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#DDDDDD" FontSize="18">New update available</Label>
 
-				<Label Grid.Row="1" HorizontalAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Foreground="#dddddd" Content="{Binding NewVersion}"/>
-				<Label Grid.Row="2" HorizontalAlignment="Center" Margin="0 0 0 5" FontSize="15" VerticalContentAlignment="Center" Foreground="#919191" Content="{Binding UpdateMessage}"/>
+				<Label Margin="0 0 0 30" HorizontalAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Foreground="#dddddd" Content="{Binding StatusText}"/>
 
-				<Button Grid.Row="3" Classes="hand" HorizontalAlignment="Left" Margin="50 0 0 0" Command="{Binding RemindMeLater}">
-					Remind me later
+				<Button Classes="hand" IsVisible="{Binding !FileSaved}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 0 35" Command="{Binding RemindMeLater}">
+					.
 					<Button.DataTemplates>
 						<DataTemplate>
 							<TextBlock TextDecorations="Underline" Text="Remind me later" Foreground="Gray"/>
@@ -44,6 +44,59 @@
 						</Style>
 					</Button.Styles>
 				</Button>
+
+				<Button Classes="hand" IsVisible="{Binding !Downloading}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 50 35" Command="{Binding Download}">
+					.
+					<Button.DataTemplates>
+						<DataTemplate>
+							<TextBlock TextDecorations="Underline" Text="Download now" Foreground="Gray"/>
+						</DataTemplate>
+					</Button.DataTemplates>
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Button.Styles>
+				</Button>
+
+				<Button Classes="hand" IsVisible="{Binding DownloadCompleted}" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Width="75" Margin="0 0 50 35" Command="{Binding Save}">
+					.
+					<Button.DataTemplates>
+						<DataTemplate>
+							<TextBlock TextDecorations="Underline" Text="Save" Foreground="Gray"/>
+						</DataTemplate>
+					</Button.DataTemplates>
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Button.Styles>
+				</Button>
+
+				<Button Classes="hand" IsVisible="{Binding FileSaved}" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Width="100" Margin="0 0 50 35" Command="{Binding Continue}">
+					.
+					<Button.DataTemplates>
+						<DataTemplate>
+							<TextBlock TextDecorations="Underline" Text="Continue" Foreground="Gray"/>
+						</DataTemplate>
+					</Button.DataTemplates>
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+					</Button.Styles>
+				</Button>
+
+				<ProgressBar IsVisible="{Binding Downloading}" Margin="1 0 0 3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="5" Width="543" Minimum="0" Maximum="100" Value="{Binding DownloadPercent}" Background="Transparent" Foreground="{StaticResource Gradient}"/>
 			</Grid>
 		</Border>
 	</Grid>
