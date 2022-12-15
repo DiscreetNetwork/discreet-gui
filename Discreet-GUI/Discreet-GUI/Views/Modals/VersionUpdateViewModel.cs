@@ -66,7 +66,11 @@ namespace Discreet_GUI.Views.Modals
             StatusText = "Downloading the new update..";
 
 
-            var response = await _httpClient.GetAsync("https://releases.discreet.net/downloads/windows/gui/latest/", HttpCompletionOption.ResponseHeadersRead);
+            var downloadEndpoint = Environment.OSVersion.Platform == PlatformID.Unix ?
+                "https://releases.discreet.net/downloads/debian/gui/latest/" :
+                "https://releases.discreet.net/downloads/windows/gui/latest/";
+
+            var response = await _httpClient.GetAsync(downloadEndpoint, HttpCompletionOption.ResponseHeadersRead);
             if (!response.IsSuccessStatusCode)
             {
                 StatusText = "Something went wrong, restart the wallet and try again.";
