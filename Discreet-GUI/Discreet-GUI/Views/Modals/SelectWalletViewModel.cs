@@ -13,6 +13,7 @@ using Discreet_GUI.Views.Start;
 using Services.Daemon.Wallet;
 using Services.Daemon.Wallet.Models;
 using System.Reactive.Disposables;
+using System.Linq;
 
 namespace Discreet_GUI.Views.Modals
 {
@@ -34,9 +35,9 @@ namespace Discreet_GUI.Views.Modals
 
         public string EnteredPassword { get; set; }
 
-        private List<Wallet> _loadedWallets;
-        public List<Wallet> LoadedWallets { get => _loadedWallets; set { _loadedWallets = value; OnPropertyChanged(nameof(LoadedWallets)); OnPropertyChanged(nameof(SelectedWallet)); } }
-        public Wallet SelectedWallet => LoadedWallets[SelectedWalletIndex];
+        private List<string> _loadedWallets;
+        public List<string> LoadedWallets { get => _loadedWallets; set { _loadedWallets = value; OnPropertyChanged(nameof(LoadedWallets)); OnPropertyChanged(nameof(SelectedWallet)); } }
+        public string SelectedWallet => LoadedWallets[SelectedWalletIndex];
 
         private List<WalletStatusData> _walletStatuses;
         public List<WalletStatusData> WalletStatuses { get => _walletStatuses; set { _walletStatuses = value; OnPropertyChanged(nameof(WalletStatuses)); OnPropertyChanged(nameof(SelectedWalletStatus)); } }
@@ -68,16 +69,7 @@ namespace Discreet_GUI.Views.Modals
         public async Task OnActivated()
         {
             await Task.Delay(250);
-            var wallets = await _walletService.GetWallets();
-            if (wallets is null)
-            {
-                _notificationService.DisplayError("Failed to load wallets.");
-            }
-            else
-            {
-                LoadedWallets = wallets;
-            }
-
+            
             var statuses = await _walletService.GetWalletStatuses();
             if (statuses is null)
             {
@@ -86,6 +78,7 @@ namespace Discreet_GUI.Views.Modals
             else
             {
                 WalletStatuses = statuses;
+                LoadedWallets = statuses.Select(x => x.Label).ToList();
             }
         }
 
@@ -104,7 +97,7 @@ namespace Discreet_GUI.Views.Modals
         {
             if(SelectedWalletStatus.Status == WalletStatus.UNLOADED)
             {
-                var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+                var success = await _walletService.LoadWallet(LoadedWallets[SelectedWalletIndex], EnteredPassword);
                 if (!success)
                 {
                     _notificationService.DisplayError("Failed to load wallet, the passphrase might be wrong.");
@@ -113,7 +106,7 @@ namespace Discreet_GUI.Views.Modals
             }
             else if(SelectedWalletStatus.Status == WalletStatus.LOCKED)
             {
-                var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex].Label, EnteredPassword);
+                var unlocked = await _walletService.UnlockWallet(LoadedWallets[SelectedWalletIndex], EnteredPassword);
                 if (!unlocked)
                 {
                     _notificationService.DisplayError("Incorrect passphrase were provided.");
@@ -122,7 +115,7 @@ namespace Discreet_GUI.Views.Modals
             }
 
             _walletCache.ClearCache();
-            _walletCache.Label = LoadedWallets[SelectedWalletIndex].Label;
+            _walletCache.Label = LoadedWallets[SelectedWalletIndex];
             _navigationServiceFactory.CreateAccountNavigation<AccountHomeViewModel>().Navigate();
             _navigationServiceFactory.CreateAccountNavigation<AccountLeftNavigationLayoutViewModel>().Navigate();
         }

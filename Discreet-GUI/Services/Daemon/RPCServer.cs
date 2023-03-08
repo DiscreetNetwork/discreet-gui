@@ -33,7 +33,7 @@ namespace Services.Daemon
                 }
 
                 var resp = DaemonResponse.Deserialize(responseText);
-
+                
                 return resp;
             }
             catch(HttpRequestException)

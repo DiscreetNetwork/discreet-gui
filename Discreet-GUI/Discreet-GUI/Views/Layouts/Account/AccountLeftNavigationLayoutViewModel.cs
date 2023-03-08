@@ -108,28 +108,34 @@ namespace Discreet_GUI.Views.Layouts.Account
                 return;
             }
 
-            _walletCache.EntropyHash = BitConverter.ToString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(walletToFind.Entropy)));
+            _walletCache.EntropyHash = BitConverter.ToString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(walletToFind.EntropyChecksum)));
             _walletCache.LastSeenHeight = walletToFind.LastSeenHeight;
-            _walletCache.Synced = walletToFind.Synced;
 
-            walletToFind.Addresses.ForEach(a =>
+            //var syncStatus = await _walletService.GetWalletHeight(_walletCache.Label);
+            //_walletCache.Synced = syncStatus.Synced;
+            //_walletCache.LastSeenHeight = syncStatus.Height;
+
+            var addresses = await _walletService.GetWalletAddresses(_walletCache.Label);
+            foreach (var a in addresses)
             {
+                //var addrSyncStatus = await _walletService.GetAddressHeight(a.Address);
                 var accnt = new WalletCache.WalletAddress
                 {
                     Name = a.Name,
                     Address = a.Address,
                     Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
                     Balance = a.Balance,
-                    Synced = a.Synced,
-                    Syncer = a.Syncer,
-                    UTXOs = new ObservableCollection<int>(a.UTXOs)
+                    //Synced = addrSyncStatus.Synced,
+                    //Syncer = addrSyncStatus.Syncer,
+                    UTXOs = new ObservableCollection<int>(),
+                    //Height = addrSyncStatus.Height
                 };
 
                 var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
                 accnt.Identicon = icon;
 
                 _walletCache.Accounts.Add(accnt);
-            });
+            }
 
             Task t1 = Task.Run(async () =>
             {
