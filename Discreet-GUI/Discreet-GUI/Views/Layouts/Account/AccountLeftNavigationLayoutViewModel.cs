@@ -101,6 +101,10 @@ namespace Discreet_GUI.Views.Layouts.Account
 
         async Task LoadWalletData()
         {
+            var _lbl = _walletCache.Label;
+            _walletCache.ClearCache();
+            _walletCache.Label = _lbl;
+
             var walletToFind = await _walletService.GetWallet(_walletCache.Label);
             if (walletToFind == null)
             {
