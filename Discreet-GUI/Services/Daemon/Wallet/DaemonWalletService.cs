@@ -79,20 +79,58 @@ namespace Services.Daemon.Wallet
         /// <returns>A <see cref="Wallet"/> on sucess; <see langword="null"/> if the call failed.</returns>
         public async Task<Models.Wallet> GetWallet(string label)
         {
-            var wallets = await GetWallets();
+            /*var wallets = await GetWallets();
             if (wallets is null) return null;
 
-            var walletToFind = wallets.Where(w => w.Label.Equals(label)).FirstOrDefault();
-            if (walletToFind is null) return null;
+            var walletToFind = wallets.Where(w => w.Equals(label)).FirstOrDefault();
+            if (walletToFind is null) return null;*/
+            var req = new DaemonRequest("get_wallet", label);
+            
+            var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
 
-            return walletToFind;
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<Models.Wallet>((JsonElement)resp.Result);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Models.WalletAddress>> GetWalletAddresses(string label)
+        {
+            var req = new DaemonRequest("get_addresses", label);
+
+            var resp = await _rpcServer.Request(req);
+            if (resp is null) return null;
+
+            if (resp.ContainsError(out var error))
+            {
+                return null;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<Models.WalletAddress>>((JsonElement)resp.Result);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
-        /// Retrieves all wallets from the Daemon's WalletDB.
+        /// Retrieves all wallet labels from the Daemon's WalletDB.
         /// </summary>
         /// <returns>A <see cref='List{T}'/> of <see cref='Wallet'/> on success; <see langword='null'/> if the call fails.</returns>
-        public async Task<List<Models.Wallet>> GetWallets()
+        public async Task<List<string>> GetWallets()
         {
             var req = new DaemonRequest("get_wallets_from_db");
 
@@ -106,7 +144,7 @@ namespace Services.Daemon.Wallet
 
             try
             {
-                return JsonSerializer.Deserialize<List<Models.Wallet>>((JsonElement)resp.Result);
+                return JsonSerializer.Deserialize<List<string>>((JsonElement)resp.Result);
             }
             catch
             {

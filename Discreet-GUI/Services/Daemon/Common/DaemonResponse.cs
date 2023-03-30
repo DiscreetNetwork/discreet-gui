@@ -16,6 +16,8 @@ namespace Services.Daemon.Common
 
         [JsonPropertyName("result")]
         public object Result { get; set; }
+        [JsonPropertyName("error")]
+        public DaemonErrorResponse Error { get; set; }
 
         public DaemonResponse() { }
 
@@ -25,6 +27,11 @@ namespace Services.Daemon.Common
         {
             try
             {
+                if (Error != null)
+                {
+                    daemonErrorResponse = Error;
+                    return true;
+                }
                 JsonElement element = (JsonElement)Result;
                 DaemonErrorResponse error = JsonSerializer.Deserialize<DaemonErrorResponse>(element);
                 daemonErrorResponse = error;

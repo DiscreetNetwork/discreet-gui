@@ -35,20 +35,30 @@ namespace Services.Daemon.Transaction
             var req = new DaemonRequest("create_transaction", txRequest);
 
             var resp = await _rpcServer.Request(req);
-            if (resp is null) return null;
+            if (resp is null)
+            {
+                //System.Diagnostics.Debug.WriteLine("resp was null");
+                return null;
+            }
 
             if (resp.ContainsError(out var error))
             {
+                //System.Diagnostics.Debug.WriteLine(error.ErrMsg);
                 return null;
             }
 
             try
             {
                 var createTransactionResponse = JsonSerializer.Deserialize<CreateTransactionResponse>((JsonElement)resp.Result);
+                //if (!string.IsNullOrWhiteSpace(createTransactionResponse.Error))
+                //{
+                //    System.Diagnostics.Debug.WriteLine(createTransactionResponse.Error);
+                //}
                 return string.IsNullOrWhiteSpace(createTransactionResponse.Error) ? createTransactionResponse : null;
             }
             catch
             {
+                //System.Diagnostics.Debug.WriteLine("deserialization failed");
                 return null;
             }
         }

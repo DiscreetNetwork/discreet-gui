@@ -73,7 +73,7 @@
 					</ComboBox.Resources>
 					<ComboBox.DataTemplates>
 						<DataTemplate>
-							<TextBlock Text="{Binding Label}"/>
+							<TextBlock Text="{Binding}"/>
 						</DataTemplate>
 					</ComboBox.DataTemplates>
 				</ComboBox>
