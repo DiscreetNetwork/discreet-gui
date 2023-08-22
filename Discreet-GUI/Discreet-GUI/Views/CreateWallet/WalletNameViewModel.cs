@@ -102,7 +102,7 @@ namespace Discreet_GUI.Views.CreateWallet
                 return;
             }
 
-            if(wallets.Any(w => w.Label == WalletName))
+            if(wallets.Any(w => w == WalletName))
             {
                 _notificationService.DisplayError("A wallet with the specified label already exist.");
                 IsLoading = false;

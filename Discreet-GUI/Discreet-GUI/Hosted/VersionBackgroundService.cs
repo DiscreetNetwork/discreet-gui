@@ -9,6 +9,8 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.Services;
 using Discreet_GUI.Stores;
 using Discreet_GUI.Views.Modals;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Discreet_GUI.Hosted
 {
@@ -23,6 +25,7 @@ namespace Discreet_GUI.Hosted
         public VersionBackgroundService(HttpClient httpClient, NavigationServiceFactory navigationServiceFactory, VersionUpdateStore versionUpdateStore, DaemonCache daemonCache, NotificationService notificationService)
         {
             _httpClient = httpClient;
+            _httpClient.DefaultRequestHeaders.Add("user-agent", "Discreet GUI Wallet");
             _navigationServiceFactory = navigationServiceFactory;
             _versionUpdateStore = versionUpdateStore;
             _daemonCache = daemonCache;
@@ -68,6 +71,23 @@ namespace Discreet_GUI.Hosted
 
                 if (!foundNewVersion) continue;
 
+                try
+                {
+                    var availablePackageResponse = await _httpClient.GetAsync("https://releases.discreet.net/downloads/windows/gui/latest/available");
+                    if (!availablePackageResponse.IsSuccessStatusCode) continue;
+                    var content = await availablePackageResponse.Content.ReadAsStringAsync();
+                    var availablePackageName = JsonSerializer.Deserialize<string>(content);
+                    if (!availablePackageName.Contains(newVersion)) continue;
+                }
+                catch (Exception)
+                {
+                    _notificationService.DisplayError("An error occured while trying to check for updates.");
+                    continue;
+                }
+                
+                string changelogs = await GetChangelogs($"v{newVersion}");
+                _versionUpdateStore.Changelogs = changelogs;
+
                 // New version, reset settings and display popup
                 if(!string.IsNullOrWhiteSpace(_versionUpdateStore.NextVersion) && !_versionUpdateStore.NextVersion.Equals(newVersion))
                 {
@@ -87,6 +107,29 @@ namespace Discreet_GUI.Hosted
                 _versionUpdateStore.NextVersion = newVersion;
                 _navigationServiceFactory.CreateModalNavigationService<VersionUpdateViewModel>().Navigate();
             }
+        }
+
+        async Task<string> GetChangelogs(string tagToMatch)
+        {
+            var response = await _httpClient.GetAsync($"https://api.github.com/repos/discreetnetwork/discreet-gui/releases/latest");
+            if (!response.IsSuccessStatusCode) return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            var release = JsonSerializer.Deserialize<GithubRelease>(content);
+
+            if (tagToMatch.ToLower() != release.Tag.ToLower()) return null;
+
+            return release.Changelogs == "CHANGELOG" ? null : release.Changelogs;
+        }
+
+
+        private class GithubRelease
+        {
+            [JsonPropertyName("tag_name")]
+            public string Tag { get; set; }
+
+            [JsonPropertyName("body")]
+            public string Changelogs { get; set; }
         }
     }
 }
