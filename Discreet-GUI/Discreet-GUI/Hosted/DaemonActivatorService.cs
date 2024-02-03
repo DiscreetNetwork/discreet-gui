@@ -17,87 +17,33 @@ namespace Discreet_GUI.Hosted
     {
         private readonly IConfiguration _configuration;
         private readonly NotificationService _notificationService;
-        private readonly WalletCache _walletCache;
         private readonly DaemonLogCache _daemonLogCache;
         private readonly DaemonCache _daemonCache;
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         private Process _daemonProcess = null;
 
-        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, WalletCache walletCache, DaemonLogCache daemonLogCache, DaemonCache daemonCache, NavigationServiceFactory navigationServiceFactory)
+        public DaemonActivatorService(IConfiguration configuration, NotificationService notificationService, DaemonLogCache daemonLogCache, DaemonCache daemonCache, NavigationServiceFactory navigationServiceFactory)
         {
             _configuration = configuration;
             _notificationService = notificationService;
-            _walletCache = walletCache;
             _daemonLogCache = daemonLogCache;
             _daemonCache = daemonCache;
             _navigationServiceFactory = navigationServiceFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        { 
+        {
             bool useDaemonActivator = _configuration.GetValue<bool>("DaemonSettings:UseActivator");
             var executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
             var executableName = _configuration.GetValue<string>("DaemonSettings:ExecutableName");
             var redirectOutput = _configuration.GetValue<bool>("DaemonSettings:RedirectOutput");
 
-
-            // Check for other possible executable paths before starting
-            if(!File.Exists(executablePath) && useDaemonActivator && Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                string altPath = string.Empty;
-
-                if(Environment.OSVersion.Platform == PlatformID.Win32NT) // Windows
-                {
-                    FileInfo defaultWindowsPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon", "Discreet.exe"));
-                    FileInfo windowsAltPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe"));
-                    FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet.exe"));
-
-                    if(defaultWindowsPath.Exists)
-                    {
-                        altPath = defaultWindowsPath.FullName;
-                    }
-                    else if(windowsAltPath.Exists)
-                    {
-                        altPath = windowsAltPath.FullName;
-                    }
-                    else if(windowsPreviewPath.Exists)
-                    {
-                        altPath = windowsPreviewPath.FullName;
-                    }
-                }
-                else // Linux, MacOS
-                {
-                    FileInfo defaultLinuxPath = new FileInfo("/usr/lib/discreet/Discreet");
-                    FileInfo linuxPreviewPath = new FileInfo("/usr/lib/discreet-preview/Discreet");
-
-                    if(defaultLinuxPath.Exists)
-                    {
-                        altPath = defaultLinuxPath.FullName;
-                    }
-                    else if(linuxPreviewPath.Exists)
-                    {
-                        altPath = linuxPreviewPath.FullName;
-                    }
-                }
-
-                if(!string.IsNullOrWhiteSpace(altPath))
-                {
-                    _notificationService.DisplayInformation($"Using alternative daemon path: {altPath}");
-                    executablePath = altPath;
-                }
-            }
-            
-            while(!stoppingToken.IsCancellationRequested && !File.Exists(executablePath) && useDaemonActivator)
-            {
-                _notificationService.DisplayError("Could not find the daemon executable. Please update your 'discreet\\wallet-config\\appsettings.json' file with a full path to the daemon");
-                await Task.Delay(3000);
-                executablePath = _configuration.GetValue<string>("DaemonSettings:ExecutablePath");
-            }
-
-            // Initial check to see if the Daemon was running before the wallet were launched
+            // Check if the discreet daemon is already running
             _daemonProcess = Process.GetProcessesByName(executableName).FirstOrDefault();
-            if(_daemonProcess is not null)
+
+            // If it is, start watching that process
+            if (_daemonProcess is not null)
             {
                 _daemonProcess.EnableRaisingEvents = true;
                 _daemonProcess.Exited += DaemonProcessExited;
@@ -106,36 +52,48 @@ namespace Discreet_GUI.Hosted
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                if(this._daemonProcess is not null)
+                if (_daemonProcess is not null) { await Task.Delay(1000); continue; }   // Dont do anything if the daemon is running
+                if (!useDaemonActivator) { await Task.Delay(1000); continue; }          // Dont do anything if the activiator setting is disabled
+
+                // One additional check in case the discreet daemon was suddenly opened in a non expected way
+                _daemonProcess = Process.GetProcessesByName(executableName).FirstOrDefault();
+                if (_daemonProcess is not null)
                 {
-                    await Task.Delay(3000);
+                    _notificationService.DisplayInformation("Found a running instance of the discreet daemon.");
+                    _daemonProcess.EnableRaisingEvents = true;
+                    _daemonProcess.Exited += DaemonProcessExited;
+                    _daemonCache.DaemonStarted = true;
+                    await Task.Delay(1000);
                     continue;
                 }
 
-                this._daemonProcess = Process.GetProcessesByName(executableName).FirstOrDefault();
-                if(this._daemonProcess is not null)
+                // Create a new daemon process
+                if (!File.Exists(executablePath))
                 {
-                    this._daemonProcess.EnableRaisingEvents = true;
-                    this._daemonProcess.Exited += DaemonProcessExited;
-                    continue;
-                }
-
-                // At this point the daemon should be started by the wallet, if 'activator' is enabled
-                if(!useDaemonActivator)
-                {
-                    await Task.Delay(3000);
-                    continue;
+                    var altPath = GetAlternativeExecutablePath();
+                    if (!string.IsNullOrWhiteSpace(altPath))
+                    {
+                        _notificationService.DisplayInformation($"Found a non-default path to the discreet executable");
+                        executablePath = altPath;
+                    }
+                    else
+                    {
+                        _notificationService.DisplayInformation($"Could not find the discreet executable on the file system. Please update your configuration file with the correct path to the discreet daemon executable.");
+                        executablePath = null;
+                        await Task.Delay(5000);
+                        continue;
+                    }
                 }
 
                 StringBuilder outputBuilder = new StringBuilder();
                 StringBuilder errorBuilder = new StringBuilder();
-                
+
                 _daemonProcess = new Process();
                 _daemonProcess.StartInfo.FileName = executablePath;
                 _daemonProcess.StartInfo.UseShellExecute = false;
                 _daemonProcess.StartInfo.CreateNoWindow = redirectOutput;
 
-                if(redirectOutput)
+                if (redirectOutput)
                 {
                     _daemonProcess.StartInfo.RedirectStandardError = true;
                     _daemonProcess.ErrorDataReceived += (s, e) =>
@@ -155,7 +113,7 @@ namespace Discreet_GUI.Hosted
                     _daemonProcess.StartInfo.RedirectStandardOutput = true;
                     _daemonProcess.OutputDataReceived += (s, e) =>
                     {
-                        if(e.Data is null)
+                        if (e.Data is null)
                         {
                             if (outputBuilder.Length == 0) return;
 
@@ -181,7 +139,7 @@ namespace Discreet_GUI.Hosted
                     throw;
                 }
 
-                if(redirectOutput)
+                if (redirectOutput)
                 {
                     _daemonProcess.BeginErrorReadLine();
                     _daemonProcess.BeginOutputReadLine();
@@ -198,6 +156,45 @@ namespace Discreet_GUI.Hosted
             _navigationServiceFactory.Create<Views.Start.StartViewModel>().Navigate();
             _navigationServiceFactory.SetDaemonStartupModal();
             _daemonProcess = null;
+        }
+
+        private string? GetAlternativeExecutablePath()
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT) // Windows
+            {
+                FileInfo defaultWindowsPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon", "Discreet.exe"));
+                FileInfo windowsAltPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet", "Discreet Daemon", "Discreet.exe"));
+                FileInfo windowsPreviewPath = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Discreet Daemon - Preview", "Discreet.exe"));
+
+                if (defaultWindowsPath.Exists)
+                {
+                    return defaultWindowsPath.FullName;
+                }
+                else if (windowsAltPath.Exists)
+                {
+                    return windowsAltPath.FullName;
+                }
+                else if (windowsPreviewPath.Exists)
+                {
+                    return windowsPreviewPath.FullName;
+                }
+            }
+            else // Linux, MacOS
+            {
+                FileInfo defaultLinuxPath = new FileInfo("/usr/lib/discreet/Discreet");
+                FileInfo linuxPreviewPath = new FileInfo("/usr/lib/discreet-preview/Discreet");
+
+                if (defaultLinuxPath.Exists)
+                {
+                    return defaultLinuxPath.FullName;
+                }
+                else if (linuxPreviewPath.Exists)
+                {
+                    return linuxPreviewPath.FullName;
+                }
+            }
+
+            return null;
         }
     }
 }
