@@ -32,8 +32,6 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
-		<Label Grid.Row="0" FontSize="30" Foreground="#8C52C0">Send</Label>
-
 		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 20 0 0">
 			<Label FontSize="36" Foreground="white" Padding="4 0 5 0"  FontWeight="300" Content="{Binding SelectedAccount.Balance, Converter={StaticResource BalanceToDecimalStringConverter}}"/>
 			<Label FontSize="24" Foreground="white" VerticalAlignment="Bottom" Margin="0 0 0 2" FontWeight="100" >DIST available</Label>
@@ -51,7 +49,7 @@
 			<NumericUpDown.Styles>
 				<Style Selector="NumericUpDown, NumericUpDown:pointerover">
 					<Setter Property="Background" Value="#181818"/>
-					<Setter Property="BorderBrush" Value="Gray"/>
+					<Setter Property="BorderBrush" Value="#383838"/>
 					<Setter Property="CornerRadius" Value="6"/>
 					<Setter Property="Foreground" Value="White"/>
 				</Style>
@@ -81,20 +79,9 @@
 			</ComboBox.DataTemplates>
 		</ComboBox>
 
-		<Label Grid.Row="10" FontSize="16" FontWeight="300" Margin="0 50 0 0" Foreground="#C0C0C0">Transaction fee</Label>
-		<ComboBox Grid.Row="11" Classes="dropdown-dark" CornerRadius="8" Height="40" Width="350" Margin="0 5 0 0" Items="{Binding FeeItems}" SelectedIndex="{Binding SelectedFeeItemsIndex}">
-			<ComboBox.Resources>
-				<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#181818"/>
-			</ComboBox.Resources>
-			<ComboBox.DataTemplates>
-				<DataTemplate>
-					<TextBlock Text="{Binding Fee}"/>
-				</DataTemplate>
-			</ComboBox.DataTemplates>
-		</ComboBox>
-
-		<Button Classes="btn btn-pink hand" Grid.Row="12" Height="50" Width="300" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25" Command="{Binding DisplayConfirm}">Send</Button>
-
+		<Border Classes="elevatedButton" Grid.Row="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 25 25">
+			<Button Classes="elevatedButton light" Height="45" Width="300" FontWeight="300" FontSize="18" Command="{Binding DisplayConfirm}">Send</Button>
+		</Border>
 	</Grid>
   
 </UserControl>

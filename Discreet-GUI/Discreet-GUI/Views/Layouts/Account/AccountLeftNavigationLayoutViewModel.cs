@@ -38,8 +38,7 @@ namespace Discreet_GUI.Views.Layouts.Account
         private Avalonia.Media.Imaging.Bitmap _walletIdenticon;
         public Avalonia.Media.Imaging.Bitmap WalletIdenticon { get => _walletIdenticon; set { _walletIdenticon = value; OnPropertyChanged(nameof(WalletIdenticon)); } }
 
-        public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
-        public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
+        public ulong TotalBalance => (ulong)_walletCache.Accounts.Sum(x => (long)x.Balance);
         public string WalletLabel => _walletCache.Label;
 
         private string _daemonSyncLabel = "Daemon is synchronised";
@@ -70,7 +69,7 @@ namespace Discreet_GUI.Views.Layouts.Account
             _userPreferrencesStore = userPreferrencesStore;
             _userPreferrencesStore.HideBalanceChanged += HideBalanceChangedHandler;
 
-            Accounts.CollectionChanged += AccountsChangedHandler;
+            _walletCache.BalanceChanged += BalanceChangedHandler;
 
             _accountNavigationStore = accountNavigationStore;
             accountNavigationStore.CurrentViewModelChanged += CurrentAccountViewModelChangedHandler;
@@ -88,7 +87,7 @@ namespace Discreet_GUI.Views.Layouts.Account
 
                 Disposable.Create(() =>
                 {
-                    Accounts.CollectionChanged -= AccountsChangedHandler;
+                    _walletCache.BalanceChanged -= BalanceChangedHandler;
                     daemonCache.SyncPercentageChanged -= UpdateSyncingStatus;
                     walletCache.NumberOfConnectionsChanged -= NumberOfConnectionsChangedHandler;
                     accountNavigationStore.CurrentViewModelChanged -= CurrentAccountViewModelChangedHandler;
@@ -122,23 +121,7 @@ namespace Discreet_GUI.Views.Layouts.Account
             var addresses = await _walletService.GetWalletAddresses(_walletCache.Label);
             foreach (var a in addresses)
             {
-                //var addrSyncStatus = await _walletService.GetAddressHeight(a.Address);
-                var accnt = new WalletCache.WalletAddress
-                {
-                    Name = a.Name,
-                    Address = a.Address,
-                    Type = a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT,
-                    Balance = a.Balance,
-                    //Synced = addrSyncStatus.Synced,
-                    //Syncer = addrSyncStatus.Syncer,
-                    UTXOs = new ObservableCollection<int>(),
-                    //Height = addrSyncStatus.Height
-                };
-
-                var icon = JazziconEx.IdenticonToAvaloniaBitmap(160, accnt.Address);
-                accnt.Identicon = icon;
-
-                _walletCache.Accounts.Add(accnt);
+                _walletCache.AddAccount(a.Name, a.Address, a.Balance, a.Type == 0 ? WalletCache.AddressType.STEALTH : WalletCache.AddressType.TRANSPARENT);
             }
 
             Task t1 = Task.Run(async () =>
@@ -152,6 +135,7 @@ namespace Discreet_GUI.Views.Layouts.Account
 
             Task t2 = Task.Run(async () =>
             {
+                bool balanceChanged = false;
                 foreach (var address in _walletCache.Accounts)
                 {
                     var fetchedBalance = await _walletService.GetBalance(address.Address);
@@ -160,8 +144,13 @@ namespace Discreet_GUI.Views.Layouts.Account
                         continue;
                     }
 
-                    if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
+                    if (address.Balance != fetchedBalance)
+                    {
+                        address.Balance = fetchedBalance.Value;
+                        balanceChanged = true;
+                    }
                 }
+                if (balanceChanged) _walletCache.NotifyBalanceChanged();
             });
 
             Task t3 = Task.Run(async () =>
@@ -196,6 +185,11 @@ namespace Discreet_GUI.Views.Layouts.Account
 
             WalletLoaded = true;
             OnPropertyChanged(nameof(WalletLoaded));
+        }
+
+        void BalanceChangedHandler()
+        {
+            OnPropertyChanged(nameof(TotalBalance));
         }
 
         void UpdateSyncingStatus()
@@ -251,10 +245,6 @@ namespace Discreet_GUI.Views.Layouts.Account
             _navigationServiceFactory.CreateAccountNavigation<SettingsViewModel>().Navigate();
         }
 
-        private void AccountsChangedHandler(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(TotalBalance));
-        }
         private void NumberOfConnectionsChangedHandler()
         {
             OnPropertyChanged(nameof(NumberOfConnections));

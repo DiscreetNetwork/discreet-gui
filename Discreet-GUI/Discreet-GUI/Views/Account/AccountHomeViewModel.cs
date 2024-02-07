@@ -20,12 +20,15 @@ namespace Discreet_GUI.Views.Account
         private readonly NavigationServiceFactory _navigationServiceFactory;
 
         public ObservableCollectionEx<WalletCache.WalletAddress> Accounts => _walletCache.Accounts;
-        
-
         public ulong TotalBalance => (ulong)Accounts.Sum(x => (long)x.Balance);
         public bool HideBalance => _userPreferrencesStore.HideBalance;
 
         public ViewModelActivator Activator { get; set; }
+
+        public AccountHomeViewModel()
+        {
+            Activator = new();
+        }
 
         public AccountHomeViewModel(WalletCache walletCache, UserPreferrencesStore userPreferrencesStore, NotificationService notificationService, NavigationServiceFactory navigationServiceFactory)
         {
@@ -33,20 +36,27 @@ namespace Discreet_GUI.Views.Account
             _userPreferrencesStore = userPreferrencesStore;
             _notificationService = notificationService;
             _navigationServiceFactory = navigationServiceFactory;
-            Accounts.CollectionChanged += AccountsChanged;
+            _walletCache.AccountsChanged += AccountsChanged;
+            _walletCache.BalanceChanged += BalanceChanged;
 
             Activator = new ViewModelActivator();
             this.WhenActivated(d =>
             {
                 Disposable.Create(() =>
                 {
-                    Accounts.CollectionChanged -= AccountsChanged;
+                    _walletCache.AccountsChanged -= AccountsChanged;
+                    _walletCache.BalanceChanged -= BalanceChanged;
                 }).DisposeWith(d);
             });
         }
 
-        private void AccountsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void BalanceChanged()
         {
+            OnPropertyChanged(nameof(TotalBalance));
+        }
+        private void AccountsChanged()
+        {
+            OnPropertyChanged(nameof(Accounts));
             OnPropertyChanged(nameof(TotalBalance));
         }
 

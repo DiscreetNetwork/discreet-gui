@@ -6,6 +6,50 @@
         </Border>
     </Design.PreviewWith>
 
+	<Styles.Resources>
+		<LinearGradientBrush x:Key="Gradient" StartPoint="0%,0%" EndPoint="100%,100%">
+			<GradientStop Offset="0" Color="#2b2b2c"/>
+			<GradientStop Offset="1" Color="#3a3a3d"/>
+		</LinearGradientBrush>
+	</Styles.Resources>
+
+	<!-- ELEVATED BUTTON -->
+	<Style Selector="Border.elevatedButton">
+		<Setter Property="BoxShadow" Value="0 2 10 0 #aa0f0f0f"/>
+		<Setter Property="CornerRadius" Value="10"/>
+	</Style>
+	<Style Selector="Button.elevatedButton.light">
+		<Setter Property="Background" Value="#2a2a2c"/>
+	</Style>
+	<Style Selector="Button.elevatedButton.lighter">
+		<Setter Property="Background" Value="#323234"/>
+	</Style>
+	<Style Selector="Button.elevatedButton.dark">
+		<Setter Property="Background" Value="#232324"/>
+	</Style>
+	<Style Selector="Button.elevatedButton">
+		<Setter Property="Foreground" Value="White"/>
+		<Setter Property="Cursor" Value="Hand"/>
+		<Setter Property="CornerRadius" Value="10"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+	</Style>
+	<Style Selector="Button.elevatedButton.light:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="#323234"/>
+	</Style>
+	<Style Selector="Button.elevatedButton.lighter:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="#373739"/>
+	</Style>
+	<Style Selector="Button.elevatedButton.dark:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="#282829"/>
+	</Style>
+	<Style Selector="Button.elevatedButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="TextBlock.Foreground" Value="White"/>
+	</Style>
+	
+	
+	
+	
     <Style Selector="Grid.bg-dark, StackPanel.bg-dark">
 		<Setter Property="Background" Value="#292929"/>
     </Style>
@@ -40,7 +84,7 @@
 
 	<!-- ComboBox style -->
 	<Style Selector="ComboBox.dropdown-dark">
-		<Setter Property="BorderBrush" Value="Gray"/>
+		<Setter Property="BorderBrush" Value="#383838"/>
 		<Setter Property="Foreground" Value="#dddddd"/>
 		<Setter Property="Background" Value="#181818"/>
 		<Setter Property="CornerRadius" Value="6"/>
@@ -73,9 +117,7 @@
   <Style Selector="Button.btn-outline-pink">
 	  <Setter Property="Background" Value="Transparent"/>
 	  <Setter Property="Foreground" Value="White"/>
-	  <Setter Property="BorderBrush">
-		  <SolidColorBrush Color="#D95A86"/>
-	  </Setter>
+	  <Setter Property="BorderBrush" Value="{StaticResource Gradient}"/>
 	  <Setter Property="BorderThickness" Value="1, 1, 1, 1"/>
 	  <Setter Property="HorizontalContentAlignment" Value="Center"/>
 	  <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -199,7 +241,7 @@
   </Style>
 
   <Style Selector="TextBox.input /template/ Border#PART_BorderElement">
-    <Setter Property="BorderBrush" Value="Gray"/>
+    <Setter Property="BorderBrush" Value="#383838"/>
     <Setter Property="Background" Value="#181818"/>
     <Setter Property="CornerRadius" Value="6"/>
   </Style>

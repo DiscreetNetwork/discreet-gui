@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:Discreet_GUI.Views.Account"
 			 xmlns:converters="using:Discreet_GUI.ValueConverters"
+			 xmlns:components="using:Discreet_GUI.Components"
              mc:Ignorable="d"
              x:Class="Discreet_GUI.Views.Account.AccountHomeView" Design.Height="800" Design.Width="1000">
 
@@ -20,6 +21,7 @@
 	
   <UserControl.Styles>
     <StyleInclude Source="/ApplicationStyles.axaml"/>
+	
   </UserControl.Styles>
   
   <Grid Background="#1C1C1D">
@@ -32,8 +34,6 @@
 			<RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-	    <Label Foreground="#8C52C0" FontSize="30">Home</Label>
-	  
         <Label Foreground="white" Padding="4 0 0 0" Margin="0 40 0 0" Grid.Row="1" FontSize="18" FontWeight="200" >Total Balance</Label>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
 			<Label IsVisible="{Binding !HideBalance}" FontSize="34" Foreground="white" Padding="4 0 5 0" VerticalContentAlignment="Bottom" Content="{Binding TotalBalance, Converter={StaticResource BalanceToDecimalStringConverter}}"></Label>
@@ -110,10 +110,10 @@
 										  <Setter Property="Background" Value="Transparent"/>
 									  </Style>
 									  <Style Selector="Label">
-										  <Setter Property="Foreground" Value="White"/>
+										  <Setter Property="Foreground" Value="#e6e6e6"/>
 									  </Style>
 									  <Style Selector="Button:pointerover Label">
-										  <Setter Property="Foreground" Value="#D35683"/>
+										  <Setter Property="Foreground" Value="White"/>
 									  </Style>
 								  </Button.Styles>
 							  </Button>
@@ -137,7 +137,7 @@
 										  <Setter Property="Background" Value="Transparent"/>
 									  </Style>
 									  <Style Selector="Button:pointerover Label">
-										  <Setter Property="Foreground" Value="#D35683"/>
+										  <Setter Property="Foreground" Value="White"/>
 									  </Style>
 									  <Style Selector="Image">
 										  <Setter Property="Source" Value="/Assets/Buttons/copy_wallet_default.png"/>
@@ -147,16 +147,28 @@
 									  </Style>
 								  </Button.Styles>
 							  </Button>
-							  <Image Grid.Column="6" Classes.Synced="{Binding Synced}" Width="20" HorizontalAlignment="Right" Margin="0 0 25 0">
-								  <Image.Styles>
-									  <Style Selector="Image">
-										  <Setter Property="Source" Value="/Assets/Icons/unsynced-wallet.png"/>
-									  </Style>
-									  <Style Selector="Image.Synced">
-										  <Setter Property="Source" Value="/Assets/Icons/pink-checkmark.png"/>
-									  </Style>
-								  </Image.Styles>
-							  </Image>
+							  <Grid Grid.Column="6" HorizontalAlignment="Right" Margin="0 0 25 0">
+								  <Image Classes.Synced="{Binding Synced}" Width="20" >
+									  <Image.Styles>
+										  <Style Selector="Image">
+											  <Setter Property="Source" Value="/Assets/checkbox_unchecked.png"/>
+										  </Style>
+										  <Style Selector="Image.Synced">
+											  <Setter Property="Source" Value="/Assets/checkbox_checked.png"/>
+										  </Style>
+									  </Image.Styles>
+								  </Image>
+								  <Border Classes.Synced="{Binding Synced}" Width="20" Height="20">
+									  <Border.Styles>
+										  <Style Selector="Border">
+											  <Setter Property="Background" Value="#aa1c1c1d"/>
+										  </Style>
+										  <Style Selector="Border.Synced">
+											  <Setter Property="Background" Value="Transparent"/>
+										  </Style>
+									  </Border.Styles>
+								  </Border>
+							  </Grid>
 						  </Grid>
 					  </Border>
 				  </DataTemplate>
@@ -164,7 +176,10 @@
 		  </ItemsControl>
 	  </ScrollViewer>
 
-    <Button Grid.Row="5" Classes="btn btn-outline-pink content-center align-v-bottom align-h-right hand" Margin="0 0 25 25" Height="50" Width="300" FontWeight="300" FontSize="18" Command="{Binding DisplayCreateNewAccount}">Create new account</Button>
+	  
+	<Border Classes="elevatedButton" Grid.Row="12"  HorizontalAlignment="Right" Margin="0 0 25 25" >
+		<Button Classes="elevatedButton dark" Height="45" Width="300" FontWeight="300" FontSize="18" Command="{Binding DisplayCreateNewAccount}">Create new account</Button>
+	</Border>
         
     </Grid>
 </UserControl>

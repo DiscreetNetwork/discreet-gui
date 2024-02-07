@@ -119,9 +119,23 @@
 	  </StackPanel>
     </Grid>
 
-	<Button Grid.Row="3" Classes="btn-outline-pink hand" Width="300" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" Margin="25 0 0 25" 
-			Command="{Binding BackCommand}">Back</Button>
-	<Button Grid.Row="3" Classes="btn btn-pink hand" Width="300" Height="50" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="17"
-			IsEnabled="{Binding CanContinue}" Command="{Binding NextCommand}">Recover wallet</Button>
+	  <Border Classes="elevatedButton" Grid.Row="3" Margin="25 0 0 25" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+		  <Button
+			  Classes="elevatedButton light"
+			  Height="45" Width="300"
+			  FontSize="18"  
+			  Command="{Binding BackCommand}">
+			  Return
+		  </Button>
+	  </Border>
+
+	  <Border Grid.Row="3" Classes="elevatedButton" Margin="0 0 25 25" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+		  <Button
+			  Classes="elevatedButton lighter"
+			  FontSize="18" Height="45" Width="300"
+			  Foreground="#bdbdbd"
+			  IsEnabled="{Binding CanContinue}"
+			  Command="{Binding NextCommand}">Recover wallet</Button>
+	  </Border>
   </Grid>
 </UserControl>

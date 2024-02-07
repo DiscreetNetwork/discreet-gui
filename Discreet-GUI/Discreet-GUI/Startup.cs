@@ -117,7 +117,7 @@ namespace Discreet_GUI
                 DaemonSettings = new
                 {
                     UseActivator = true,
-                    RedirectOutput = false,
+                    RedirectOutput = true,
                     ExecutableName = "Discreet",
                     ExecutablePath = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) ? "/usr/lib/discreet/Discreet" : $"{Environment.ExpandEnvironmentVariables("%PROGRAMFILES%")}\\Discreet Daemon\\Discreet.exe"
                 },
