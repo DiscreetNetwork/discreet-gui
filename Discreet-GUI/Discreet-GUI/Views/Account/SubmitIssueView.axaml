@@ -15,7 +15,7 @@
 	</UserControl.Resources>
 	
 	<Border Background="#1C1C1D">
-		<Grid Margin="0 0 25 25">
+		<Grid Margin="0 0 25 0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="50"/>
 				<RowDefinition Height="50"/>
@@ -29,9 +29,6 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 		
-			<Label Grid.Row="0"
-				   FontSize="30" Foreground="#8C52C0">Submit an issue</Label>
-
 			<Label Grid.Row="1"
 				   Foreground="Gray" FontSize="16">All information submitted is anonymous but will greatly help us improve Discreet</Label>
 
@@ -83,16 +80,9 @@
 				<Button HorizontalAlignment="Left" Classes="btn btn-gray hand" Margin="220 5 5 5" Width="75" Height="28" Padding="5 4 5 5" Background="#3E3E3E" Foreground="White" BorderBrush="#FF3E3E3E" Command="{Binding OpenFolderDialogCommand}">Browse</Button>
 			</Grid>
 
-			<Button Grid.Row="9" 
-					Classes="btn btn-pink hand spinner" IsEnabled="{Binding !IsLoading}" Classes.loading="{Binding IsLoading}"
-					Height="50" Width="300" FontSize="16"
-					VerticalAlignment="Bottom" HorizontalAlignment="Right"
-					Command="{Binding SubmitIssue}">
-				<Grid>
-					<Label Foreground="White" VerticalAlignment="Center">Submit</Label>
-					<Image Source="/Assets/Icons/spinner-2.png" Width="25"/>
-				</Grid>
-			</Button>
+			<Border Classes="elevatedButton" Grid.Row="8" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 0 0">
+				<Button Classes="elevatedButton dark" Height="45" Width="300" FontWeight="300" FontSize="18" Command="{Binding SubmitIssue}">Submit issue</Button>
+			</Border>
 		</Grid>
 	</Border>
 </UserControl>

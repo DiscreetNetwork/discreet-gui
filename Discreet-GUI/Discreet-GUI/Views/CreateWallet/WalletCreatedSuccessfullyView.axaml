@@ -22,6 +22,8 @@
     <Label Grid.Row="0" Margin="0 50 0 0" FontSize="26" HorizontalAlignment="Center" Foreground="#DDDDDD" >Success!</Label>
     <Label Grid.Row="1" FontSize="16" Margin="10 0 0 0" HorizontalAlignment="Center" Foreground="#9A9A9A" >Your wallet was successfully created!</Label>
     <Image Grid.Row="2" Margin="0 0 0 0" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/Images/shield-platform.png"/>
-    <Button Grid.Row="3" Classes="btn btn-pink content-center align-center hand" VerticalAlignment="Center" Margin="0 58 0 0" Height="50" Width="300" FontSize="20" Command="{Binding NavigateNextCommand}">Continue</Button>
+	<Border Grid.Row="3"  Classes="elevatedButton" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 58 0 0">
+		<Button Width="250" Height="40" IsEnabled="{Binding CanContinue}" Classes="elevatedButton lighter" Command="{Binding NavigateNextCommand}">Continue</Button>
+	</Border>
   </Grid>
 </UserControl>

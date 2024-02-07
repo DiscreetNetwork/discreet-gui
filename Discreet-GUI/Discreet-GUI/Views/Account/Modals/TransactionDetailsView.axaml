@@ -33,7 +33,7 @@
 							</Style>
 						</Button.Styles>
 					</Button>
-					<Label VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="#9D55DE" FontWeight="300" Margin="15 15 0 0">Transaction details</Label>
+					<Label VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="White" FontWeight="300" Margin="15 15 0 0">Transaction details</Label>
 
 					<ScrollViewer Margin="15 60 15 15" Padding="0 0 15 15" HorizontalScrollBarVisibility="Auto">
 						<StackPanel>
@@ -63,11 +63,11 @@
 									<Button.Styles>
 										<Style Selector="Button">
 											<Setter Property="Background" Value="Transparent"/>
-											<Setter Property="Foreground" Value="White"/>
+											<Setter Property="Foreground" Value="#e6e6e6"/>
 										</Style>
 										<Style Selector="Button:pointerover /template/ ContentPresenter">
 											<Setter Property="Background" Value="Transparent"/>
-											<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
+											<Setter Property="TextBlock.Foreground" Value="White"/>
 										</Style>
 									</Button.Styles>
 								</Button>
@@ -87,11 +87,11 @@
 								<Button.Styles>
 									<Style Selector="Button">
 										<Setter Property="Background" Value="Transparent"/>
-										<Setter Property="Foreground" Value="White"/>
+										<Setter Property="Foreground" Value="#e6e6e6"/>
 									</Style>
 									<Style Selector="Button:pointerover /template/ ContentPresenter">
 										<Setter Property="Background" Value="Transparent"/>
-										<Setter Property="TextBlock.Foreground" Value="#ff9d55de"/>
+										<Setter Property="TextBlock.Foreground" Value="White"/>
 									</Style>
 								</Button.Styles>
 							</Button>

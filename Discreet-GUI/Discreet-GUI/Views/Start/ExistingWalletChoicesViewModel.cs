@@ -4,6 +4,7 @@ using Discreet_GUI.Factories.Navigation;
 using Discreet_GUI.ViewModels.Common;
 using Discreet_GUI.Views.Layouts;
 using Discreet_GUI.Views.Modals;
+using System.Reflection;
 
 namespace Discreet_GUI.Views.Start
 {
@@ -11,6 +12,7 @@ namespace Discreet_GUI.Views.Start
     class ExistingWalletChoicesViewModel : ViewModelBase
     {
         private readonly NavigationServiceFactory _navigationServiceFactory;
+        public string CurrentVersion { get => $"Version: {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}"; }
 
         public ExistingWalletChoicesViewModel(NavigationServiceFactory navigationServiceFactory)
         {

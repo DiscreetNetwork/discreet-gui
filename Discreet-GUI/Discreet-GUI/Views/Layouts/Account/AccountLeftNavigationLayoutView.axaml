@@ -10,6 +10,14 @@
 
 	<UserControl.Resources>
 		<c:BalanceToDecimalStringConverter x:Key="BalanceToDecimalStringConverter"/>
+		<LinearGradientBrush x:Key="Gradient" StartPoint="0%,0%" EndPoint="100%,100%">
+			<GradientStop Offset="0" Color="#2b2b2c"/>
+			<GradientStop Offset="1" Color="#3a3a3d"/>
+		</LinearGradientBrush>
+		<LinearGradientBrush x:Key="ProgressbarForeground" StartPoint="0%,0%" EndPoint="100%,100%">
+			<GradientStop Offset="0" Color="#3e3e41"/>
+			<GradientStop Offset="1" Color="#505053"/>
+		</LinearGradientBrush>
 	</UserControl.Resources>
 	
   <UserControl.Styles>
@@ -23,13 +31,13 @@
 	  <Setter Property="CornerRadius" Value="0"/>
     </Style>
     <Style Selector="Button.NavButton.Active">
-      <Setter Property="BorderBrush" Value="#D95A86"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Gradient}"/>
       <Setter Property="BorderThickness" Value="0,4,0,0"/>
       <Setter Property="Background" Value="#282828"/>
     </Style>
     
     <Style Selector="Button.NavButton.Active:pointerover /template/ ContentPresenter">
-      <Setter Property="BorderBrush" Value="#D95A86"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Gradient}"/>
       <Setter Property="BorderThickness" Value="0,4,0,0"/>
       <Setter Property="Background" Value="#282828"/>
     </Style>
@@ -149,7 +157,7 @@
 				  <Border Grid.Row="0" BorderThickness="0 1 0 1" BorderBrush="#252527">
 					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[0]}"  Command="{Binding NavigateHomeCommand}">
 						  <StackPanel Classes="NavButton">
-							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}" Source="/Assets/Icons/account-home.png"/>
+							  <Image Height="20" Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[0]}" Source="/Assets/Icons/account-home.png"/>
 							  <Label FontSize="18" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9E9E9E">Home</Label>
 							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[0]}" Height="15" Margin="140 0 0 0"/>
 						  </StackPanel>
@@ -159,7 +167,7 @@
 				  <Border Grid.Row="1" BorderThickness="0 0 0 1" BorderBrush="#252527">
 					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[1]}" Grid.Row="1" Command="{Binding NavigateSendCommand}">
 						  <StackPanel Classes="NavButton">
-							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Source="/Assets/Icons/account-send.png"/>
+							  <Image Height="20" Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[1]}" Source="/Assets/Icons/account-send.png"/>
 							  <Label Classes="NavButton">Send</Label>
 							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[1]}" Height="15" Margin="145 0 0 0"/>
 						  </StackPanel>
@@ -169,7 +177,7 @@
 				  <Border Grid.Row="2" BorderThickness="0 0 0 1" BorderBrush="#252527">
 					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[2]}" Grid.Row="3" Command="{Binding NavigateTransactionsCommand}">
 						  <StackPanel Classes="NavButton">
-							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Source="/Assets/Icons/account-transactions.png"/>
+							  <Image Height="20" Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[2]}" Source="/Assets/Icons/account-transactions.png"/>
 							  <Label Classes="NavButton">Transactions</Label>
 							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[2]}" Height="15" Margin="80 0 0 0"/>
 						  </StackPanel>
@@ -179,7 +187,7 @@
 				  <Border Grid.Row="3" BorderThickness="0 0 0 1" BorderBrush="#252527">
 					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[3]}" Grid.Row="3" Command="{Binding NavigateSubmitIssueCommand}">
 						  <StackPanel Classes="NavButton">
-							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Source="/Assets/Buttons/report-issue-testnet.png"/>
+							  <Image Height="20" Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[3]}" Source="/Assets/Icons/submit-issue.png"/>
 							  <Label Classes="NavButton">Submit issue</Label>
 							  <Label Margin="10 0 0 0" Foreground="#CCCCCC" Background="#404040" HorizontalAlignment="Left" CornerRadius="10" Height="18" Width="50" FontSize="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="Alpha"/>
 							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[3]}" Height="15" Margin="20 0 0 0"/>
@@ -190,7 +198,7 @@
 				  <Border Grid.Row="4" BorderThickness="0 0 0 1" BorderBrush="#252527">
 					  <Button Classes="NavButton" Cursor="Hand" Classes.Active="{Binding ButtonActiveStates[4]}" Grid.Row="4" Command="{Binding NavigateAccountSettingsCommand}">
 						  <StackPanel Classes="NavButton">
-							  <Image Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Source="/Assets/Icons/settings-icon.png"/>
+							  <Image Height="20" Classes="NavButton" Classes.Active="{Binding ButtonActiveStates[4]}" Source="/Assets/Icons/settings-icon.png"/>
 							  <Label Classes="NavButton">Settings</Label>
 							  <Image Classes="Arrow" Classes.Active="{Binding ButtonActiveStates[4]}" Height="15" Margin="120 0 0 0"/>
 						  </StackPanel>
@@ -202,7 +210,7 @@
 			  <!-- Wallet status area -->
 			  <StackPanel Grid.Row="2" Margin="15 0 15 20" VerticalAlignment="Bottom">
 				  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB" Content="{Binding DaemonSyncLabel}"/>
-				  <ProgressBar Margin="0 3 0 16" Background="#858585" Height="10" CornerRadius="5" Minimum="0" Maximum="1" bh:ProgressBarBehaviour.Value="{Binding SyncPercentage}" Foreground="#D95A86"/>
+				  <ProgressBar Margin="0 3 0 16" Height="10" CornerRadius="5" Minimum="0" Maximum="1" bh:ProgressBarBehaviour.Value="{Binding SyncPercentage}" Foreground="{StaticResource ProgressbarForeground}"/>
 				  <StackPanel Orientation="Horizontal">
 					  <Image Source="/Assets/Icons/wifi-white.png" Width="20" Margin="0 0 10 0"/>
 					  <Label FontSize="12" FontWeight="300" Foreground="#F2EFEB">Connected to </Label>
