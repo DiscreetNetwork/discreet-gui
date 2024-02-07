@@ -45,12 +45,17 @@ namespace Services.Caches
         private int _numberOfConnections;
         public int NumberOfConnections { get => _numberOfConnections; set { _numberOfConnections = value; NumberOfConnectionsChanged?.Invoke(); } }
 
+        public event Action AccountsChanged;
         public ObservableCollectionEx<WalletAddress> Accounts { get; set; } = new ObservableCollectionEx<WalletAddress>();
+
+        public event Action BalanceChanged;
+        public void NotifyBalanceChanged() => BalanceChanged?.Invoke();
 
         public void AddAccount(string name, string address, ulong balance, AddressType addressType)
         {
             Accounts.Add(new WalletAddress { Name = name, Address = address, Balance = balance, Identicon = JazziconEx.IdenticonToAvaloniaBitmap(160, address), Type = addressType });
-
+            AccountsChanged?.Invoke();
+            BalanceChanged?.Invoke();
         }
 
 
