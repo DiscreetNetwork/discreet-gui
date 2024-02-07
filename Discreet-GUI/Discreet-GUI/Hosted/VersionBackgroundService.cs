@@ -39,6 +39,7 @@ namespace Discreet_GUI.Hosted
                 await Task.Delay(1000 * 5);
 
                 if (!_daemonCache.DaemonStarted) continue;
+                if(_versionUpdateStore.FileSaved) continue;
 
                 HttpResponseMessage response = null;
 

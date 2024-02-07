@@ -75,8 +75,12 @@
 		</ListBox.ItemsPanel>
 	</ListBox>
 
-	<Button Grid.Row="6" Classes="btn-outline-pink hand" Width="300" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" Margin="25 0 0 25" Command="{Binding NavigateBackCommand}">Back</Button>
-    <Button Grid.Row="6" Classes="btn btn-pink content-center align-center hand" Width="300" Height="50" FontSize="20" Margin="0 0 25 25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding NavigateNextCommand}" Content="{Binding ContinueButtonContent}"/>
+	<Border Grid.Row="6"  Classes="elevatedButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="25 0 0 25">
+		<Button Width="250" Height="40" Classes="elevatedButton light" Command="{Binding NavigateBackCommand}">Previous</Button>
+	</Border>
 
+	<Border Grid.Row="6"  Classes="elevatedButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 25 25">
+		<Button Width="250" Height="40" IsEnabled="{Binding CanContinue}" Classes="elevatedButton lighter" Command="{Binding NavigateNextCommand}">Continue</Button>
+	</Border>
   </Grid>
 </UserControl>

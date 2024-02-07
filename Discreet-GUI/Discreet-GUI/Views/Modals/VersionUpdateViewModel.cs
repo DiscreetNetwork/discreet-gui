@@ -33,7 +33,7 @@ namespace Discreet_GUI.Views.Modals
         public bool DownloadCompleted { get => _downloadCompleted; set { _downloadCompleted = value; OnPropertyChanged(nameof(DownloadCompleted)); } }
 
         private bool _fileSaved = false;
-        public bool FileSaved { get => _fileSaved; set { _fileSaved = value; OnPropertyChanged(nameof(FileSaved)); } }
+        public bool FileSaved { get => _fileSaved; set { _fileSaved = value; OnPropertyChanged(nameof(FileSaved)); _versionUpdateStore.FileSaved = value; } }
 
         private string _statusText = string.Empty;
         public string StatusText { get => _statusText; set { _statusText = value; OnPropertyChanged(nameof(StatusText)); } }

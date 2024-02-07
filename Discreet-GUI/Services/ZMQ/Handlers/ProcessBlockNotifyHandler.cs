@@ -44,6 +44,7 @@ namespace Services.ZMQ.Handlers
 
         public async Task UpdateAddressBalances()
         {
+            bool balanceChanged = false;
             foreach (var address in _walletCache.Accounts)
             {
                 var fetchedBalance = await _walletService.GetBalance(address.Address);
@@ -53,7 +54,16 @@ namespace Services.ZMQ.Handlers
                 }
 
 
-                if (address.Balance != fetchedBalance) address.Balance = fetchedBalance.Value;
+                if (address.Balance != fetchedBalance)
+                {
+                    address.Balance = fetchedBalance.Value;
+                    balanceChanged = true;
+                }
+            }
+
+            if(balanceChanged)
+            {
+                _walletCache.NotifyBalanceChanged();
             }
         }
 
